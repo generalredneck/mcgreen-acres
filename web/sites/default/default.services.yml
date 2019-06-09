@@ -89,4 +89,86 @@ parameters:
     # Drupal allows portions of the page to be automatically deferred when
     # rendering to improve cache performance. That is especially helpful for
     # cache contexts that vary widely, such as the active user. On some sites
-    # those may be different, however, such as 
+    # those may be different, however, such as sites with only a handful of
+    # users. If you know what the high-cardinality cache contexts are for your
+    # site, specify those here. If you're not sure, the defaults are fairly safe
+    # in general.
+    #
+    # For more information about rendering optimizations see
+    # https://www.drupal.org/developing/api/8/render/arrays/cacheability#optimizing
+    auto_placeholder_conditions:
+      # Max-age at or below which caching is not considered worthwhile.
+      #
+      # Disable by setting to -1.
+      #
+      # @default 0
+      max-age: 0
+      # Cache contexts with a high cardinality.
+      #
+      # Disable by setting to [].
+      #
+      # @default ['session', 'user']
+      contexts: ['session', 'user']
+      # Tags with a high invalidation frequency.
+      #
+      # Disable by setting to [].
+      #
+      # @default []
+      tags: []
+  # Cacheability debugging:
+  #
+  # Responses with cacheability metadata (CacheableResponseInterface instances)
+  # get X-Drupal-Cache-Tags and X-Drupal-Cache-Contexts headers.
+  #
+  # For more information about debugging cacheable responses, see
+  # https://www.drupal.org/developing/api/8/response/cacheable-response-interface
+  #
+  # Not recommended in production environments
+  # @default false
+  http.response.debug_cacheability_headers: false
+  factory.keyvalue:
+    {}
+    # Default key/value storage service to use.
+    # @default keyvalue.database
+    # default: keyvalue.database
+    # Collection-specific overrides.
+    # state: keyvalue.database
+  factory.keyvalue.expirable:
+    {}
+    # Default key/value expirable storage service to use.
+    # @default keyvalue.database.expirable
+    # default: keyvalue.database.expirable
+  # Allowed protocols for URL generation.
+  filter_protocols:
+    - http
+    - https
+    - ftp
+    - news
+    - nntp
+    - tel
+    - telnet
+    - mailto
+    - irc
+    - ssh
+    - sftp
+    - webcal
+    - rtsp
+
+   # Configure Cross-Site HTTP requests (CORS).
+   # Read https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+   # for more information about the topic in general.
+   # Note: By default the configuration is disabled.
+  cors.config:
+    enabled: false
+    # Specify allowed headers, like 'x-allowed-header'.
+    allowedHeaders: []
+    # Specify allowed request methods, specify ['*'] to allow all possible ones.
+    allowedMethods: []
+    # Configure requests allowed from specific origins.
+    allowedOrigins: ['*']
+    # Sets the Access-Control-Expose-Headers header.
+    exposedHeaders: false
+    # Sets the Access-Control-Max-Age header.
+    maxAge: false
+    # Sets the Access-Control-Allow-Credentials header.
+    supportsCredentials: false

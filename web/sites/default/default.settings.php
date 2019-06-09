@@ -698,4 +698,82 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * Drupal core can use the Symfony trusted host mechanism to prevent HTTP Host
  * header spoofing.
  *
- * To enable the trusted host mechanism, you enable your allo
+ * To enable the trusted host mechanism, you enable your allowable hosts
+ * in $settings['trusted_host_patterns']. This should be an array of regular
+ * expression patterns, without delimiters, representing the hosts you would
+ * like to allow.
+ *
+ * For example:
+ * @code
+ * $settings['trusted_host_patterns'] = [
+ *   '^www\.example\.com$',
+ * ];
+ * @endcode
+ * will allow the site to only run from www.example.com.
+ *
+ * If you are running multisite, or if you are running your site from
+ * different domain names (eg, you don't redirect http://www.example.com to
+ * http://example.com), you should specify all of the host patterns that are
+ * allowed by your site.
+ *
+ * For example:
+ * @code
+ * $settings['trusted_host_patterns'] = [
+ *   '^example\.com$',
+ *   '^.+\.example\.com$',
+ *   '^example\.org$',
+ *   '^.+\.example\.org$',
+ * ];
+ * @endcode
+ * will allow the site to run off of all variants of example.com and
+ * example.org, with all subdomains included.
+ */
+
+/**
+ * The default list of directories that will be ignored by Drupal's file API.
+ *
+ * By default ignore node_modules and bower_components folders to avoid issues
+ * with common frontend tools and recursive scanning of directories looking for
+ * extensions.
+ *
+ * @see file_scan_directory()
+ * @see \Drupal\Core\Extension\ExtensionDiscovery::scanDirectory()
+ */
+$settings['file_scan_ignore_directories'] = [
+  'node_modules',
+  'bower_components',
+];
+
+/**
+ * The default number of entities to update in a batch process.
+ *
+ * This is used by update and post-update functions that need to go through and
+ * change all the entities on a site, so it is useful to increase this number
+ * if your hosting configuration (i.e. RAM allocation, CPU speed) allows for a
+ * larger number of entities to be processed in a single batch run.
+ */
+$settings['entity_update_batch_size'] = 50;
+
+/**
+ * Entity update backup.
+ *
+ * This is used to inform the entity storage handler that the backup tables as
+ * well as the original entity type and field storage definitions should be
+ * retained after a successful entity update process.
+ */
+$settings['entity_update_backup'] = TRUE;
+
+/**
+ * Load local development override configuration, if available.
+ *
+ * Use settings.local.php to override variables on secondary (staging,
+ * development, etc) installations of this site. Typically used to disable
+ * caching, JavaScript/CSS compression, re-routing of outgoing emails, and
+ * other things that should not happen on development and testing sites.
+ *
+ * Keep this code block at the end of this file to take full effect.
+ */
+#
+# if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+#   include $app_root . '/' . $site_path . '/settings.local.php';
+# }
