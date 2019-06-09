@@ -1,0 +1,8 @@
+name: mcgreen-acres
+recipe: drupal8
+config:
+  webroot: web
+tooling:
+  drush:
+    service: appserver
+    cmd: "drush --root=/app/web"

@@ -1,0 +1,17 @@
+// mcgreen_acres_theme Maintenance page custom style.
+// -----------------------------------------------------------------------------
+@import "../../node_modules/bootstrap/scss/functions";  // Bootstrap functions.
+@import "../../node_modules/bootstrap/scss/mixins";     // Bootstrap mixins.
+@import "../variables";                   // mcgreen_acres_theme variables.
+@import "../mixins";                      // mcgreen_acres_theme mixins.
+// -----------------------------------------------------------------------------
+
+// Insert your mcgreen_acres_theme maintenance page custom SASS styling.
+
+.maintenance-page {
+  footer {
+    .footer-credits {
+      font-size: 12px;
+    }
+  }
+}
