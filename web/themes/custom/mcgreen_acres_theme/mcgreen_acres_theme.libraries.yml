@@ -1,0 +1,30 @@
+global-styling:
+  version: 1.0
+  css:
+    theme:
+      css/bootstrap.min.css: {}
+      css/font.css: {}
+      css/font-awesome.min.css: {}
+      css/swiper.min.css: {}
+      css/magnific-popup.css: {}
+      css/layers.css: {}
+      css/navigation.css: {}
+      css/settings.css: {}
+      css/range.css: {}
+      css/nice-select.css: {}
+      css/style.css: {}
+      css/custom.css: {}
+
+global-scripts:
+  version: 1.0
+  js:
+    js/bootstrap.min.js: {}
+    js/swiper.min.js: {}
+    js/custom.js: {}
+    js/jquery.appear.js: {}
+    js/jquery.countTo.js: {}
+    js/isotope.min.js: {}
+    js/nice-select.min.js: {}
+    js/range.js: {}
+  dependencies:
+    - core/jquery

@@ -1,0 +1,28 @@
+name: mcgreen_acres_theme
+type: theme
+description: 'Custom theme for McGreen Acres website'
+package: McGreen Acres
+core: 8.x
+libraries:
+  - mcgreen_acres_theme/global-styling
+  - mcgreen_acres_theme/global-scripts
+
+base theme: stable
+
+regions:
+  header:             'Header'
+  primary_menu:       'Main menu'
+  secondary_menu:     'Secondary menu'
+  breadcrumb:         'Breadcrumb'
+  highlighted:        'Highlighted'
+  help:               'Help'
+  content:            'Content'
+  sidebar_first:      'Left Sidebar'
+  sidebar_second:     'Right Sidebar'
+  footer1:            'Footer 1'
+  footer2:            'Footer 2'
+  footer3:            'Footer 3'
+  footer4:            'Footer 4'
+  footer:             'Copyright'
+
+logo: 'logo.png'

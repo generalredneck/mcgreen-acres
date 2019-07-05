@@ -1,0 +1,37 @@
+.clv_main_wrapper .clv_header .clv_left_header {
+  padding: 10px 0px;
+}
+.clv_logo img {
+  height: 140px;
+}
+
+.clv_right_header .clv_address .address_block p {
+  line-height: 1.5;
+}
+
+.address_block .agri_social_links {
+  margin-top: 5px;
+}
+
+.breadcrumb_wrapper .breadcrumb_inner h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: capitalize;
+}
+
+.index_v2 .breadcrumb_block {
+  background-color: #1fa12e;
+}
+
+.index_v2 main {
+  padding-top: 25px;
+}
+
+.clv_footer_wrapper {
+  color: #ffffff;
+}
+
+#block-mcgreen-acres-footer-social span {
+  margin-right: 10px;
+}
