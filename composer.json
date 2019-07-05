@@ -1,121 +1,82 @@
 {
-  "name": "vardot/varbase-project",
-  "description": "Project template for Varbase distribution.",
-  "type": "project",
-  "license": "GPL-2.0-or-later",
-  "authors": [
-    {
-      "name": "Vardot",
-      "homepage": "https://github.com/vardot",
-      "role": "Maintainer"
-    }
-  ],
-  "support": {
-    "issues": "http://drupal.org/project/issues/varbase",
-    "source": "http://cgit.drupalcode.org/varbase"
-  },
-  "repositories": {
-    "drupal": {
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
-      },
-    "assets": {
-      "type": "composer",
-      "url": "https://asset-packagist.org"
-    },
-    "composer-patches": {
-      "type": "vcs",
-      "url": "https://github.com/vardot/composer-patches"
-    }
-  },
-  "require": {
-    "composer/installers": "~1.0",
-    "oomphinc/composer-installers-extender": "~1.0",
-    "cweagans/composer-patches": "~1.0",
-    "drupal-composer/drupal-scaffold": "~2.0",
-    "drupal/drupal-library-installer-plugin": "^0.3",
-    "drush/drush": "^8.2.0",
-    "webflo/drupal-finder": "~1.0",
-    "webmozart/path-util": "~2.0",
-    "vardot/varbase": "8.7.x-dev",
-    "vardot/varbase-updater": "1.x-dev"
-  },
-  "replace": {
-    "ajaxorg/ace-builds": "*"
-  },
-  "config": {
-    "bin-dir": "bin/",
-    "secure-http": false,
-    "optimize-autoloader": true,
-    "preferred-install": {
-      "drupal/core": "dist"
-    }
-  },
-  "scripts": {
-    "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-    "post-install-cmd": [
-      "Varbase\\composer\\ScriptHandler::createRequiredFiles",
-      "Varbase\\composer\\ScriptHandler::removeGitDirectories",
-      "@composer drupal-scaffold"
+    "name": "drupal-composer/drupal-project",
+    "description": "Project template for Drupal 8 projects with composer",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "",
+            "role": ""
+        }
     ],
-    "post-update-cmd": [
-      "Varbase\\composer\\ScriptHandler::createRequiredFiles",
-      "Varbase\\composer\\ScriptHandler::removeGitDirectories"
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
     ],
-    "post-drupal-scaffold-cmd": ["Varbase\\composer\\ScriptHandler::postDrupalScaffoldProcedure"]
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "conflict": {
-    "drupal/drupal": "*"
-  },
-  "extra": {
-    "_readme": [
-      "NOTICE: We're now using composer patches from Vardot repository to suggest",
-      "several fixes and better handling of patches in your Drupal project.",
-      "You'll notice that we have included (https://github.com/vardot/composer-patches)",
-      "in this composer.json repositories. This will replace the original",
-      "library (cweagans/composer-patches) with our own from (vardot/composer-patches).",
-      "See https://github.com/cweagans/composer-patches/pull/243 and more details",
-      "on our changes on the composer-patches package. Once our changes get merged,",
-      "we will revert to using (cweagans/composer-patches) without this override."
-    ],
-    "branch-alias": {
-      "dev-8.x-7.x": "8.7.x-dev"
+    "require": {
+        "php": ">=5.6",
+        "composer/installers": "^1.2",
+        "cweagans/composer-patches": "^1.6.5",
+        "drupal-composer/drupal-scaffold": "^2.5",
+        "drupal/console": "^1.0.2",
+        "drupal/core": "^8.7.0",
+        "drush/drush": "^9.0.0",
+        "vlucas/phpdotenv": "^2.4",
+        "webflo/drupal-finder": "^1.0.0",
+        "webmozart/path-util": "^2.3",
+        "zaporylie/composer-drupal-optimizations": "^1.0"
     },
-    "installer-types": [
-      "bower-asset",
-      "npm-asset"
-    ],
-    "installer-paths": {
-      "web/core": ["type:drupal-core"],
-      "web/profiles/{$name}": ["type:drupal-profile"],
-      "web/modules/contrib/{$name}": ["type:drupal-module"],
-      "web/themes/contrib/{$name}": ["type:drupal-theme"],
-      "web/libraries/slick": ["npm-asset/slick-carousel"],
-      "web/libraries/ace": ["npm-asset/ace-builds"],
-      "web/libraries/{$name}": [
-        "type:drupal-library",
-        "type:bower-asset",
-        "type:npm-asset"
-      ],
-      "web/modules/custom/{$name}": ["type:drupal-custom-module"],
-      "web/themes/custom/{$name}": ["type:drupal-custom-theme"],
-      "drush/contrib/{$name}": ["type:drupal-drush"]
+    "require-dev": {
+        "webflo/drupal-core-require-dev": "^8.7.0"
     },
-    "drupal-libraries": {
-      "library-directory": "web/libraries",
-      "libraries": [
-          {"name": "dropzone","package": "npm-asset/dropzone"},
-          {"name": "blazy", "package": "npm-asset/blazy"},
-          {"name": "slick", "package": "npm-asset/slick-carousel"},
-          {"name": "ace", "package": "npm-asset/ace-builds"}
-      ]
+    "conflict": {
+        "drupal/drupal": "*"
     },
-    "enable-patching": true,
-    "composer-exit-on-patch-failure": true,
-    "patchLevel": {
-       "drupal/core": "-p2"
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "classmap": [
+            "scripts/composer/ScriptHandler.php"
+        ],
+        "files": ["load.environment.php"]
+    },
+    "scripts": {
+        "pre-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "pre-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "post-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ],
+        "post-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ]
+    },
+    "extra": {
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "installer-paths": {
+            "web/core": ["type:drupal-core"],
+            "web/libraries/{$name}": ["type:drupal-library"],
+            "web/modules/contrib/{$name}": ["type:drupal-module"],
+            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "web/themes/contrib/{$name}": ["type:drupal-theme"],
+            "drush/Commands/{$name}": ["type:drupal-drush"]
+        },
+        "drupal-scaffold": {
+            "initial": {
+                ".editorconfig": "../.editorconfig",
+                ".gitattributes": "../.gitattributes"
+            }
+        }
     }
-  }
 }
