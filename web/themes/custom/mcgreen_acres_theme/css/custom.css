@@ -28,6 +28,10 @@
   padding-top: 25px;
 }
 
+.path-frontpage .index_v2 main {
+  padding-top: 0px;
+}
+
 .clv_footer_wrapper {
   color: #ffffff;
 }
