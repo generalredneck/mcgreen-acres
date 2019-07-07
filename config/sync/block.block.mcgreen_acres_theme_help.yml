@@ -1,0 +1,22 @@
+uuid: 4ba67b7d-edd2-4847-b876-010934fc79e6
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - mcgreen_acres_theme
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: mcgreen_acres_theme_help
+theme: mcgreen_acres_theme
+region: help
+weight: -6
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

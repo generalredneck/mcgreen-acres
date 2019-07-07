@@ -1,0 +1,22 @@
+uuid: 7a475ba8-946a-43a3-8a04-44f97cd27bda
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.mcgreen_acres_address
+  module:
+    - simple_block
+  theme:
+    - mcgreen_acres_theme
+id: mcgreenacresaddress
+theme: mcgreen_acres_theme
+region: header
+weight: 0
+provider: null
+plugin: 'simple_block:mcgreen_acres_address'
+settings:
+  id: 'simple_block:mcgreen_acres_address'
+  label: 'McGreen Acres  Address'
+  provider: simple_block
+  label_display: '0'
+visibility: {  }

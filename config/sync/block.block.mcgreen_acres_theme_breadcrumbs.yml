@@ -1,0 +1,22 @@
+uuid: bbae88b7-c32c-48ba-b940-cfc6752fc4e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - mcgreen_acres_theme
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: mcgreen_acres_theme_breadcrumbs
+theme: mcgreen_acres_theme
+region: breadcrumb
+weight: -5
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }
