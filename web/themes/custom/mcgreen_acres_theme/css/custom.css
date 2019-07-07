@@ -1,6 +1,13 @@
 .clv_main_wrapper .clv_header .clv_left_header {
   padding: 10px 0px;
+  text-align: center;
 }
+
+.clv_main_wrapper .clv_header .clv_left_header .slogan {
+  font-family: 'Kaushan Script', cursive;
+  color: rgb(0,93,40);
+}
+
 .clv_logo img {
   height: 140px;
 }

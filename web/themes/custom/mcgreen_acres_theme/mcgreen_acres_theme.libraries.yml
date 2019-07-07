@@ -14,6 +14,7 @@ global-styling:
       css/nice-select.css: {}
       css/style.css: {}
       css/custom.css: {}
+      //fonts.googleapis.com/css?family=Kaushan+Script&display=swap: {type: external}
 
 global-scripts:
   version: 1.0
