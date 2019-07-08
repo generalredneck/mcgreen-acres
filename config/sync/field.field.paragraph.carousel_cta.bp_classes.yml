@@ -1,0 +1,19 @@
+uuid: b34a3986-4340-487f-8490-6883c1216428
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_classes
+    - paragraphs.paragraphs_type.carousel_cta
+id: paragraph.carousel_cta.bp_classes
+field_name: bp_classes
+entity_type: paragraph
+bundle: carousel_cta
+label: 'CSS class(es)'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

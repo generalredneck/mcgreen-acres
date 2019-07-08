@@ -1,0 +1,11 @@
+uuid: 193c9ac5-22ae-43d7-a56e-de6a4aff0303
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 22nNh-bK4pUi8eTgQUaRmS_PYB6LfbjeUbLlKr4IkyQ
+id: bp_webform
+label: Webform
+icon_uuid: null
+description: null
+behavior_plugins: {  }

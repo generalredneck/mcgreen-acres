@@ -1,0 +1,21 @@
+uuid: 1c91119e-9d30-4ea2-a737-3d510370df6c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_background
+    - paragraphs.paragraphs_type.carousel_cta
+  module:
+    - options
+id: paragraph.carousel_cta.bp_background
+field_name: bp_background
+entity_type: paragraph
+bundle: carousel_cta
+label: 'Background color'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

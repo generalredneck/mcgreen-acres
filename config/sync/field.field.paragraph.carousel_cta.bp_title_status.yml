@@ -1,0 +1,23 @@
+uuid: bdc7940d-2b57-4374-a237-d202535e14d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_title_status
+    - paragraphs.paragraphs_type.carousel_cta
+id: paragraph.carousel_cta.bp_title_status
+field_name: bp_title_status
+entity_type: paragraph
+bundle: carousel_cta
+label: 'Don''t show title on page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

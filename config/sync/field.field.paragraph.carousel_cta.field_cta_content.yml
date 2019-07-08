@@ -1,0 +1,21 @@
+uuid: d9f87395-a17f-4291-9531-de0996b6405b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_cta_content
+    - paragraphs.paragraphs_type.carousel_cta
+  module:
+    - text
+id: paragraph.carousel_cta.field_cta_content
+field_name: field_cta_content
+entity_type: paragraph
+bundle: carousel_cta
+label: 'CTA Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

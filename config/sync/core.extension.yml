@@ -1,6 +1,9 @@
 module:
+  advanced_text_formatter: 0
   automated_cron: 0
+  better_exposed_filters: 0
   big_pipe: 0
+  blazy: 0
   block: 0
   block_content: 0
   block_visibility_groups: 0
@@ -11,26 +14,46 @@ module:
   config: 0
   contact: 0
   contextual: 0
+  crop: 0
   ctools: 0
   datetime: 0
   dblog: 0
+  dropzonejs: 0
+  dropzonejs_eb_widget: 0
   dynamic_page_cache: 0
   editor: 0
+  embed: 0
+  entity_browser: 0
+  entity_browser_enhanced: 0
+  entity_browser_entity_form: 0
+  entity_browser_generic_embed: 0
+  entity_embed: 0
+  entity_reference_revisions: 0
   field: 0
+  field_group: 0
   field_ui: 0
   file: 0
   filter: 0
+  focal_point: 0
   help: 0
   history: 0
   image: 0
+  inline_entity_form: 0
+  layout_discovery: 0
   link: 0
+  maxlength: 0
+  media: 0
+  media_library: 0
   menu_ui: 0
   node: 0
   options: 0
   page_cache: 0
+  paragraphs_edit: 0
+  paragraphs_previewer: 0
   path: 0
   quickedit: 0
   rdf: 0
+  responsive_image: 0
   search: 0
   shortcut: 0
   simple_block: 0
@@ -41,9 +64,19 @@ module:
   tour: 0
   update: 0
   user: 0
+  varbase_bootstrap_paragraphs: 0
+  varbase_media: 0
+  views_bulk_edit: 0
+  views_bulk_operations: 0
+  views_infinite_scroll: 0
   views_ui: 0
+  viewsreference: 0
+  webform: 0
+  ds: 1
   menu_link_content: 1
+  ds_extras: 2
   views: 10
+  paragraphs: 11
   standard: 1000
 theme:
   stable: 0

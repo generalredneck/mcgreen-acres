@@ -1,0 +1,23 @@
+uuid: 4386a156-8a58-43aa-b809-aae509a72698
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_gutter
+    - paragraphs.paragraphs_type.carousel_cta
+id: paragraph.carousel_cta.bp_gutter
+field_name: bp_gutter
+entity_type: paragraph
+bundle: carousel_cta
+label: Gutter
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
