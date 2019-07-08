@@ -29,6 +29,7 @@
         "drupal/core": "^8.7.0",
         "drupal/ctools": "^3.2",
         "drupal/simple_block": "^1.0@beta",
+        "drupal/varbase_bootstrap_paragraphs": "^7.0",
         "drush/drush": "^9.0.0",
         "npm-asset/slick-carousel": "^1.8",
         "oomphinc/composer-installers-extender": "^1.1",
@@ -78,6 +79,11 @@
         },
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "patches": {
+            "drupal/varbase_bootstrap_paragraphs": {
+                "bootstrap4": "patches/varbase_bootstra_paragraphs-bootstrap4.patch"
+            }
         },
         "installer-types": [
             "bower-asset",
