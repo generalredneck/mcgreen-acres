@@ -1,23 +1,23 @@
-uuid: 57662f03-212b-4051-984a-fa8a82b9dc06
+uuid: 40d46217-d523-4a5f-873b-093c05ddd26d
 langcode: en
 status: true
 dependencies:
   config:
-    - simple_block.simple_block.mcgreen_acres_footer_social
+    - simple_block.simple_block.footer_social
   module:
     - block_visibility_groups
     - simple_block
   theme:
     - mcgreen_acres_theme
-id: mcgreen_acres_footer_social
+id: hangout
 theme: mcgreen_acres_theme
-region: footer2
-weight: -6
+region: footer3
+weight: 0
 provider: null
-plugin: 'simple_block:mcgreen_acres_footer_social'
+plugin: 'simple_block:footer_social'
 settings:
-  id: 'simple_block:mcgreen_acres_footer_social'
-  label: 'Contact Us'
+  id: 'simple_block:footer_social'
+  label: 'Hang Out'
   provider: simple_block
   label_display: visible
 visibility:

@@ -1,0 +1,19 @@
+uuid: 601e7a40-9ecd-4a99-a9de-744ce00889eb
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 92bXZdyYJ5xqukdfmGRr_CYcwm1vfuS8b8aJ7X_G7E0
+id: taxonomy_term
+label: 'Taxonomy term'
+tags:
+  description: '[term:description]'
+  title: '[term:name] | [site:name]'
+  canonical_url: '[term:url]'
+  abstract: '[term:description]'
+  keywords: '[term:name]'
+  og_title: '[term:name] | [site:name]'
+  og_description: '[term:description]'
+  pinterest_description: '[term:description]'
+  twitter_cards_description: '[term:description]'
+  twitter_cards_title: '[term:name] | [site:name]'

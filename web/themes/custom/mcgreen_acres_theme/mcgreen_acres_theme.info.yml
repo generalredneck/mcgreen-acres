@@ -22,7 +22,6 @@ regions:
   footer1:            'Footer 1'
   footer2:            'Footer 2'
   footer3:            'Footer 3'
-  footer4:            'Footer 4'
   footer:             'Copyright'
 
 logo: 'logo.png'
