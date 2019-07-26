@@ -12,7 +12,6 @@ module:
   checklistapi: 0
   ckeditor: 0
   color: 0
-  comment: 0
   config: 0
   contact: 0
   contextual: 0
@@ -20,6 +19,7 @@ module:
   ctools: 0
   datetime: 0
   dblog: 0
+  diff: 0
   dropzonejs: 0
   dropzonejs_eb_widget: 0
   dynamic_page_cache: 0
