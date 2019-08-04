@@ -27,6 +27,9 @@
 }
 
 @media (max-width: 991px) {
+  .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
+    left: auto;
+  }
   .clv_right_header .clv_menu .clv_menu_nav {
     background-color: rgb(0,93,40);
   }
