@@ -135,6 +135,12 @@
   border-radius: 2rem;
   background-color: rgba(0,0,0,.5);
 }
+
+.juicer-feed h1.referral {
+  display:none !important;
+}
+
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) {
   .carousel-caption p {
@@ -194,4 +200,8 @@
 
 .clv_footer_wrapper a:hover {
   color: #1fa12e;
+}
+
+.path-frontpage {
+	background-color: #f4f8ff;
 }

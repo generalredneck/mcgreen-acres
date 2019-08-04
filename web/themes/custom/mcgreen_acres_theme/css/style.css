@@ -98,14 +98,14 @@ ul{
 .padding-0{
 	padding: 0 !important;
 }
-.clv_section{
-	padding: 100px 0px;
+.clv_section, .clv-section{
+	padding-top: 50px;
 }
 .clv_heading{
 	text-align: center;
 	margin-bottom: 30px;
 }
-.clv_heading h3{
+.clv_heading h3, .clv-section h2{
 	font-size: 40px;
 	color: #fec007;
 	font-weight: 700;
@@ -1995,9 +1995,17 @@ ul{
 17. Index2 start
 *******************************************************/
 
-.index_v2 .clv_heading h3{
+.index_v2 .clv_heading h3, .index_v2 .clv-section h2{
+	text-align: center;
 	color: #1fa12e;
+	border-bottom: 2px solid #2B5D28;
+	margin-bottom: 20px;
 }
+
+.index_v2 .clv-section.alternate-color {
+	background-color: #f4f8ff
+}
+
 /*Header Start*/
 .index_v2.clv_main_wrapper .clv_header {
 	background-color: #f4f9ff;
@@ -6843,7 +6851,7 @@ ul{
 /*Breadcrumb Start*/
 .breadcrumb_wrapper{
 	position: relative;
-	background: url('https://via.placeholder.com/1920x160') no-repeat center;
+	background: url('../images/headerbackground.jpg') no-repeat center;
 	background-size: cover;
 	padding: 63px 0px 57px;
 	z-index: 1;
