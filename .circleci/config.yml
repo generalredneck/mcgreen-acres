@@ -42,7 +42,7 @@ jobs:
       - run: sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev
       - run: sudo docker-php-ext-install -j$(nproc) iconv
       - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-      - run: sudo docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
+      - run: sudo docker-php-ext-install gd mbstring opcache pdo pdo_mysql zip
       - run: "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
       - run: composer install
       - run: echo "build assets for deploying" && composer build-assets
