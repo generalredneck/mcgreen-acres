@@ -1,0 +1,11 @@
+uuid: 50f2d99b-242a-4547-bcd8-c0b1c6913247
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.raw_html
+id: footer_social
+title: 'Hang Out'
+content:
+  value: "<ul class=\"agri_social_links\">\r\n\t\t\t\t\t\t\t<li><a href=\"https://www.facebook.com/McGreenAcres/\"><span><i class=\"fa fa-facebook\" aria-hidden=\"true\"></i></span></a></li>\r\n\t\t\t\t\t\t\t<li><a href=\"https://twitter.com/McGreenAcres\"><span><i class=\"fa fa-twitter\" aria-hidden=\"true\"></i></span></a></li>\r\n\t\t\t\t\t\t\t<li><a href=\"https://www.youtube.com/channel/UCBD5du2_sCbhKLWPRfHFBkw\"><span><i class=\"fa fa-youtube-play\" aria-hidden=\"true\"></i></span></a></li>\r\n\t\t\t\t\t\t</ul>"
+  format: raw_html

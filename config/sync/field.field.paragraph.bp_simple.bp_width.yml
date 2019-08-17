@@ -1,0 +1,23 @@
+uuid: 9a4ab2a1-0e9f-40b4-aae4-2d1cae7b9e9c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_width
+    - paragraphs.paragraphs_type.bp_simple
+  module:
+    - options
+_core:
+  default_config_hash: GsjkVGD3divblS4M9uV0WWVCrhYY_q--FdJ3Kx4u2Dk
+id: paragraph.bp_simple.bp_width
+field_name: bp_width
+entity_type: paragraph
+bundle: bp_simple
+label: Width
+description: ''
+required: true
+translatable: false
+default_value: paragraph--width--full
+default_value_callback: ''
+settings: {  }
+field_type: list_string

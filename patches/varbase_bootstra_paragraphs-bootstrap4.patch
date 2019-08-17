@@ -1,0 +1,92 @@
+diff --git a/README.md b/README.md
+index b22f9d9..04f3270 100755
+--- a/README.md
++++ b/README.md
+@@ -46,8 +46,8 @@ background color options.
+   * Narrow : col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1
+   * Medium : col-md-8 col-md-offset-2
+   * Wide : col-md-10 col-md-offset-1
+-  * Full : col-xs-12
+-  * Edge to Edge : bg-edge2edge col-xs-12
++  * Full : col-12
++  * Edge to Edge : bg-edge2edge col-12
+ 
+ **Installation:**
+ 
+diff --git a/templates/paragraph--bp-carousel.html.twig b/templates/paragraph--bp-carousel.html.twig
+index 3875af9..fc755fc 100755
+--- a/templates/paragraph--bp-carousel.html.twig
++++ b/templates/paragraph--bp-carousel.html.twig
+@@ -125,12 +125,12 @@ view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+             <div class="paragraph--layout-slideshow__slide-{{ key + 1 }} item carousel-item{% if loop.first %} active{% endif %}">{{ item }}</div>
+           {% endfor %}
+         </div>
+-        <a class="left carousel-control" href="#{{ paragraph_id }}" role="button" data-slide="prev">
+-          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
++        <a class="left carousel-control-prev" href="#{{ paragraph_id }}" role="button" data-slide="prev">
++          <span class="fa fa-chevron-left" aria-hidden="true"></span>
+           <span class="sr-only">Previous</span>
+         </a>
+-        <a class="right carousel-control" href="#{{ paragraph_id }}" role="button" data-slide="next">
+-          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
++        <a class="right carousel-control-next" href="#{{ paragraph_id }}" role="button" data-slide="next">
++          <span class="fa fa-chevron-right" aria-hidden="true"></span>
+           <span class="sr-only">Next</span>
+         </a>
+       </div>
+diff --git a/templates/paragraph--bp-columns-three-uneven.html.twig b/templates/paragraph--bp-columns-three-uneven.html.twig
+index dedf7a9..91e2c6d 100755
+--- a/templates/paragraph--bp-columns-three-uneven.html.twig
++++ b/templates/paragraph--bp-columns-three-uneven.html.twig
+@@ -54,9 +54,9 @@
+     'paragraph--style--25-50-25' == column_style_3 ? 'col-lg-3',
+     'paragraph--style--50-25-25' == column_style_3 ? 'col-lg-6',
+     'paragraph--style--25-25-50' == column_style_3 ? 'col-lg-3',
+-    'paragraph--style--16-66-16' == column_style_3 ? 'col-lg-2 col-xs-6',
++    'paragraph--style--16-66-16' == column_style_3 ? 'col-lg-2 col-6',
+     'paragraph--style--66-16-16' == column_style_3 ? 'col-lg-8',
+-    'paragraph--style--16-16-66' == column_style_3 ? 'col-lg-2 col-xs-6',
++    'paragraph--style--16-16-66' == column_style_3 ? 'col-lg-2 col-6',
+   ]
+   %}
+   {% set col_2 = [
+@@ -64,16 +64,16 @@
+     'paragraph--style--50-25-25' == column_style_3 ? 'col-lg-3',
+     'paragraph--style--25-25-50' == column_style_3 ? 'col-lg-3',
+     'paragraph--style--16-66-16' == column_style_3 ? 'col-lg-8',
+-    'paragraph--style--66-16-16' == column_style_3 ? 'col-lg-2 col-xs-6',
+-    'paragraph--style--16-16-66' == column_style_3 ? 'col-lg-2 col-xs-6',
++    'paragraph--style--66-16-16' == column_style_3 ? 'col-lg-2 col-6',
++    'paragraph--style--16-16-66' == column_style_3 ? 'col-lg-2 col-6',
+   ]
+   %}
+   {% set col_3 = [
+     'paragraph--style--25-50-25' == column_style_3 ? 'col-lg-3',
+     'paragraph--style--50-25-25' == column_style_3 ? 'col-lg-3',
+     'paragraph--style--25-25-50' == column_style_3 ? 'col-lg-6',
+-    'paragraph--style--16-66-16' == column_style_3 ? 'col-lg-2 col-xs-6',
+-    'paragraph--style--66-16-16' == column_style_3 ? 'col-lg-2 col-xs-6',
++    'paragraph--style--16-66-16' == column_style_3 ? 'col-lg-2 col-6',
++    'paragraph--style--66-16-16' == column_style_3 ? 'col-lg-2 col-6',
+     'paragraph--style--16-16-66' == column_style_3 ? 'col-lg-8',
+   ]
+   %}
+diff --git a/varbase_bootstrap_paragraphs.module b/varbase_bootstrap_paragraphs.module
+index fbab85d..d6302ae 100755
+--- a/varbase_bootstrap_paragraphs.module
++++ b/varbase_bootstrap_paragraphs.module
+@@ -66,11 +66,11 @@ function varbase_bootstrap_paragraphs_preprocess_paragraph(&$variables) {
+     'paragraph--width--narrow' => 'col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1',
+     'paragraph--width--medium' => 'col-md-8 col-md-offset-2',
+     'paragraph--width--wide' => 'col-md-10 col-md-offset-1',
+-    'paragraph--width--full' => 'col-xs-12',
+-    'bg-edge2edge' => 'bg-edge2edge col-xs-12 no-padding',
++    'paragraph--width--full' => 'col-12',
++    'bg-edge2edge' => 'bg-edge2edge col-12 no-padding',
+   ];
+ 
+-  $width = 'col-xs-12';
++  $width = 'col-12';
+   if (isset($width_map[$width_value])) {
+     $width = $width_map[$width_value];
+   }

@@ -1,0 +1,119 @@
+uuid: e640b6d3-8448-4296-90d6-4f23953559d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.carousel_cta.bp_background
+    - field.field.paragraph.carousel_cta.bp_classes
+    - field.field.paragraph.carousel_cta.bp_gutter
+    - field.field.paragraph.carousel_cta.bp_image_field
+    - field.field.paragraph.carousel_cta.bp_link
+    - field.field.paragraph.carousel_cta.bp_title
+    - field.field.paragraph.carousel_cta.bp_title_status
+    - field.field.paragraph.carousel_cta.bp_width
+    - field.field.paragraph.carousel_cta.field_cta_content
+    - paragraphs.paragraphs_type.carousel_cta
+  module:
+    - ds
+    - link
+    - options
+    - text
+id: paragraph.carousel_cta.preview
+targetEntityType: paragraph
+bundle: carousel_cta
+mode: preview
+content:
+  bp_background:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  bp_classes:
+    weight: 6
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  bp_gutter:
+    weight: 7
+    label: hidden
+    settings:
+      format: default
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: boolean
+    region: content
+  bp_image_field:
+    weight: 2
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  bp_link:
+    weight: 4
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  bp_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  bp_title_status:
+    weight: 1
+    label: hidden
+    settings:
+      format: true-false
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: boolean
+    region: content
+  bp_width:
+    weight: 8
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_cta_content:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden: {  }

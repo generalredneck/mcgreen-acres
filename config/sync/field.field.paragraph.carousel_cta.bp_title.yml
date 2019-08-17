@@ -1,0 +1,19 @@
+uuid: 53d975df-a5e2-4381-a79f-b920c92c8457
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_title
+    - paragraphs.paragraphs_type.carousel_cta
+id: paragraph.carousel_cta.bp_title
+field_name: bp_title
+entity_type: paragraph
+bundle: carousel_cta
+label: 'Component title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

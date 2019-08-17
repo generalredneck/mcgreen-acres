@@ -1,0 +1,11 @@
+uuid: d8832213-4e36-4731-a9f3-248b9d8a8b77
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: y0YF_9R6plwri81F8jtC-a1wTX61wObnkRwWk_P2RHE
+id: bp_block
+label: 'Drupal Block'
+icon_uuid: null
+description: null
+behavior_plugins: {  }

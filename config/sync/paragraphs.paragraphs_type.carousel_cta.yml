@@ -1,0 +1,9 @@
+uuid: 00790641-dc38-410d-bc43-35bc32dd26c9
+langcode: en
+status: true
+dependencies: {  }
+id: carousel_cta
+label: 'Carousel Call To Action'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

@@ -1,0 +1,12 @@
+uuid: bab20e6b-01de-4572-8e3b-bd4524223b61
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+_core:
+  default_config_hash: O_9-05HJZRwp944Fg-DeTtxJ6mF9e2IKbXPX9Bx_Pxg
+id: media.s10_traditional
+label: 'Size 10 traditional 4:3'
+targetEntityType: media
+cache: true

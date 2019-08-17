@@ -1,0 +1,62 @@
+progress:
+  '#changed': 1563050797
+  '#changed_by': '1'
+  '#completed_items': 19
+  '#items':
+    install_and_enable_seo_checklist_module:
+      '#completed': 1563039303
+      '#uid': '1'
+    install_and_enable_admin_toolbar_module:
+      '#completed': 1563039673
+      '#uid': '1'
+    install_composer_command_line_tool:
+      '#completed': 1563039303
+      '#uid': '1'
+    install_console_command_line_tool:
+      '#completed': 1563039303
+      '#uid': '1'
+    install_drush_command_line_tool:
+      '#completed': 1563039303
+      '#uid': '1'
+    show_cli_commands:
+      '#completed': 1563039303
+      '#uid': '1'
+    enable_clean_urls:
+      '#completed': 1563039673
+      '#uid': '1'
+    install_and_enable_redirect_module:
+      '#completed': 1563039673
+      '#uid': '1'
+    configure_the_redirect_module:
+      '#completed': 1563041533
+      '#uid': '1'
+    install_and_enable_pathauto_module:
+      '#completed': 1563041533
+      '#uid': '1'
+    configure_pathauto_module:
+      '#completed': 1563041533
+      '#uid': '1'
+    create_pathauto_patterns:
+      '#completed': 1563041533
+      '#uid': '1'
+    install_and_enable_metatag_module:
+      '#completed': 1563047965
+      '#uid': '1'
+    set_metatags_for_your_site:
+      '#completed': 1563047965
+      '#uid': '1'
+    install_and_enable_alternate_hreflang_module:
+      '#completed': 1563047965
+      '#uid': '1'
+    install_and_enable_xml_sitemap_module:
+      '#completed': 1563050599
+      '#uid': '1'
+    configure_xml_sitemap_module:
+      '#completed': 1563050599
+      '#uid': '1'
+    install_and_enable_diff_module:
+      '#completed': 1563050797
+      '#uid': '1'
+    configure_the_diff_module:
+      '#completed': 1563050797
+      '#uid': '1'

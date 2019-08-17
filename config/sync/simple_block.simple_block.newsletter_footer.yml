@@ -1,0 +1,11 @@
+uuid: f4dd6888-d097-4d5c-96f6-02b822770900
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.raw_html
+id: newsletter_footer
+title: Subscribe
+content:
+  value: "\t\t<div class=\"container\">\r\n\t\t\t<div class=\"row\">\r\n\t\t\t\t<div class=\"col-md-12\">\r\n\t\t\t<div id='newsletter' class=\"clv_newsletter_wrapper\">\r\n\t\t\t\t<div class=\"newsletter_text\">\r\n\t\t\t\t\t<h2>get monthly updates</h2>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"newsletter_field\">\r\n\t\t\t\t\t<h3>don't miss out on the good news!</h3>\r\n<form action=\"https://mcgreenacres.us3.list-manage.com/subscribe/post?u=977220d4ca4904db77a89bd54&amp;id=39ae9d9efa\" method=\"post\" id=\"mc-embedded-subscribe-form\" name=\"mc-embedded-subscribe-form\" class=\"validate\" target=\"_blank\" novalidate>\t\t\t\t\t\r\n<div class=\"newsletter_field_block\">\r\n                                                \r\n\t\t\t\t\t\t<div style=\"position: absolute; left: -5000px;\" aria-hidden=\"true\"><input type=\"text\" name=\"b_977220d4ca4904db77a89bd54_39ae9d9efa\" tabindex=\"-1\" value=\"\"></div>\r\n\t                                        <input type=\"email\" value=\"\" name=\"EMAIL\" class=\"email\" id=\"mce-EMAIL\" placeholder=\"email address\" required>\r\n\t\t\t\t\t\t<input type=\"submit\" value=\"Sign up\" name=\"subscribe\" id=\"mc-embedded-subscribe\" class=\"btn btn-dark btn-lg\">\r\n\t\t\t\t\t</div>\r\n\r\n                                                </form>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n</div>\r\n</div>\r\n</div>"
+  format: raw_html

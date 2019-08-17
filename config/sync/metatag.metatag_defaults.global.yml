@@ -1,0 +1,43 @@
+uuid: 6cd881e5-7a82-4029-ba63-0f537abaf614
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: sL588ui1E_8-2c_UupwyYxcqX2OVyMFp3HTLbbFqvPc
+id: global
+label: Global
+tags:
+  icbm: '32.69345223660298, -96.50738602150476'
+  geo_region: US-TX
+  referrer: unsafe-url
+  geo_position: '32.69345223660298, -96.50738602150476'
+  title: '[current-page:title] | [site:name]'
+  content_language: en-US
+  rights: 'Copyright ©[date:html_year] McGreen Acres. All rights reserved.'
+  shortlink: '[current-page:url:unaliased]'
+  canonical_url: '[current-page:url:absolute]'
+  geo_placename: 'McGeen Acres'
+  hreflang_xdefault: '[current-page:url:absolute]'
+  'hreflang_per_language:hreflang_en': '[current-page:url:absolute]'
+  og_locale: en_US
+  og_image_height: '1550'
+  og_image_alt: 'McGreen Acres Logo'
+  og_street_address: '9650 FM740'
+  og_image_width: '2162'
+  og_postal_code: '75126'
+  og_phone_number: 1-469-248-5703
+  og_image_type: image/png
+  og_latitude: '32.69345223660298'
+  og_email: mcgreenacres@gmail.com
+  og_image: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
+  og_region: Texas
+  og_site_name: 'McGreen Acres'
+  og_country_name: 'United States'
+  og_locality: Forney
+  og_longitude: '-96.50738602150476'
+  pinterest_media: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
+  pinterest_url: '[current-page:url:absolute]'
+  twitter_cards_site: '@McGreenAcres'
+  twitter_cards_type: summary
+  twitter_cards_site_id: '1147598700446965760'
+  twitter_cards_page_url: '[current-page:url:absolute]'

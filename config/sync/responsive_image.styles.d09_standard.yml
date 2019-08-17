@@ -1,0 +1,26 @@
+uuid: 477c6fc9-9869-4695-b242-a254ae15f930
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.d08_standard
+    - image.style.d09_standard
+  module:
+    - varbase_media
+_core:
+  default_config_hash: QZ460IhbXEh5GVMFOSMI86MoXmUHLGsNfpf-78CTmhg
+id: d09_standard
+label: 'Display 09 responsive standard 16:9'
+image_style_mappings:
+  -
+    breakpoint_id: varbase_media.screen-sm-max
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: d08_standard
+  -
+    breakpoint_id: varbase_media.screen-md-min
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: d09_standard
+breakpoint_group: varbase_media
+fallback_image_style: d08_standard
