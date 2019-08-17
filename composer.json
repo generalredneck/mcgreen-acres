@@ -79,6 +79,9 @@
         ],
         "post-update-cmd": [
             "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ],
+        "build-assets": [
+            "echo 'Nothing to build'"
         ]
     },
     "extra": {
