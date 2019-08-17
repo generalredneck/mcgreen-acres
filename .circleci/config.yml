@@ -39,7 +39,7 @@ jobs:
       - checkout
       - run: sudo composer self-update
       - run: sudo apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev
-	    - run: sudo docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
+      - run: sudo docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr
       - run: sudo docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
       - run: "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
       - run: composer install
