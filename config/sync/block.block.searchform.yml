@@ -1,0 +1,28 @@
+uuid: 4cb9aade-ccd7-4fbc-8838-063f666f1500
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.blog
+  module:
+    - block_visibility_groups
+    - search
+  theme:
+    - mcgreen_acres_theme
+id: searchform
+theme: mcgreen_acres_theme
+region: sidebar_second
+weight: 0
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form'
+  provider: search
+  label_display: visible
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: blog
+    context_mapping: {  }

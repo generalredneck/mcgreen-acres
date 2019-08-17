@@ -2,74 +2,22 @@
 
 /**
  * @file
- * Functions to support theming in the SASS Starterkit subtheme.
+ * Functions to support theming in the mcgreen_acres_theme theme.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\views_bootstrap\ViewsBootstrap;
-use Drupal\Core\Template\Attribute;
-
-/**
- * Implements hook_theme_registry_alter().
- */
-function mcgreen_acres_theme_theme_registry_alter(&$theme_registry) {
-  // mcgreen_acres_theme path.
-  $mcgreen_acres_theme_path = Drupal::service('theme_handler')->getTheme('mcgreen_acres_theme')->getPath();
-  $theme_registry['entity_embed_container']['path'] = $mcgreen_acres_theme_path . '/templates/entity-embed';
-
-  $pages = [
-    'page__user__login' => 'page--user--login',
-    'page__user__register' => 'page--user--register',
-    'page__user__password' => 'page--user--password',
-    'page__user__reset' => 'page--user--reset',
-  ];
-
-  foreach ($pages as $key => $template) {
-    $theme_registry[$key]['path'] = $mcgreen_acres_theme_path  . '/templates/betterlogin';
-  }
-}
-
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function mcgreen_acres_theme_theme_suggestions_page_alter(array &$suggestions, array $variables) {
-  if ($node = \Drupal::routeMatch()->getParameter('node')) {
-    if(is_numeric($node)) {
-      $node = \Drupal\node\Entity\Node::load($node);
-    }
-    if($node instanceof \Drupal\node\NodeInterface) {
-      array_splice($suggestions, 1, 0, 'page__' . $node->bundle());
-    }
-  }
-}
-
-
-function mcgreen_acres_theme_preprocess_html(&$variables) {
-  // Add information about the number of sidebars.
-  if (theme_get_setting('bootstrap_barrio_navbar_position')) {
-    $variables['navbar_position'] = theme_get_setting('bootstrap_barrio_navbar_position');
-  }
-}
-
-/**
- * Implements hook_preprocess_page().
- */
-function mcgreen_acres_theme_preprocess_page(&$variables) {
-  $variables['logo_print'] = \Drupal::request()->getBaseUrl() . '/' . drupal_get_path('theme', 'mcgreen_acres_theme') . '/logo-print.png';
-}
 
 /**
  * Implements hook_preprocess_paragraph().
  */
 function mcgreen_acres_theme_preprocess_paragraph(&$variables) {
-  $file_path = null;
-  if (isset($variables['paragraph']->bp_image_field)
+  if ($variables['paragraph']->bundle() == 'carousel_cta'
+    && isset($variables['paragraph']->bp_image_field)
     && isset($variables['paragraph']->bp_image_field->target_id)) {
 
     // Get the target id and build the url.
+    $file_path = NULL;
     $paragraph = &$variables['paragraph'];
     if (isset($paragraph->get('bp_image_field')->entity)
       && isset($paragraph->get('bp_image_field')->entity->field_media_image)
@@ -79,105 +27,156 @@ function mcgreen_acres_theme_preprocess_paragraph(&$variables) {
       $file = File::load($target_id);
       if (isset($file)) {
         $file_uri = $file->getFileUri();
-        $style = ImageStyle::load('de2e');
+        $style = ImageStyle::load('d12_standard');
         $file_path = $style->buildUrl($file_uri);
       }
     }
-  }
-
-  $width_value = null;
-  if (isset($variables['paragraph']->bp_width)
-    && isset($variables['paragraph']->bp_width->value)) {
-
-    $width_value = $variables['paragraph']->bp_width->value;
-  }
-
-  $width_map = [
-    'paragraph--width--tiny' => 'col-md-4 offset-md-4 col-sm-8 offset-sm-2',
-    'paragraph--width--narrow' => 'col-md-6 offset-md-3 col-sm-10 offset-sm-1',
-    'paragraph--width--medium' => 'col-md-8 offset-md-2',
-    'paragraph--width--wide' => 'col-md-10 offset-md-1',
-    'paragraph--width--full' => 'col-12',
-    'bg-edge2edge' => 'bg-edge2edge col-12',
-  ];
-
-
-  $width = 'col-12';
-  if (isset($width_map[$width_value])) {
-    $width = $width_map[$width_value];
-  }
-
-
-  $custom_paragraph_classes_value = null;
-  if (isset($variables['paragraph']->bp_classes)
-      && isset($variables['paragraph']->bp_classes->value)) {
-    $custom_paragraph_classes_value = $variables['paragraph']->bp_classes->value;
-  }
-
-  $gutter_value = FALSE;
-  if (isset($variables['paragraph']->bp_gutter)
-      && isset($variables['paragraph']->bp_gutter->value)) {
-    $gutter_value = $variables['paragraph']->bp_gutter->value;
-  }
-
-  $title_status = FALSE;
-  if (isset($variables['paragraph']->bp_title_status)
-      && isset($variables['paragraph']->bp_title_status->value)) {
-    $title_status = $variables['paragraph']->bp_title_status->value;
-  }
-
-  // Add variables to template.
-  $variables["VBP"] = [
-    'background_image' => [
-      'type' => 'image',
+    if (empty($variables['MCGA'])) {
+      $variables['MCGA'] = [];
+    }
+    $variables['MCGA']['image'] = [
       'url' => $file_path,
-    ],
-    'bp_width' => [
-      'type' => 'string',
-      'value' => $width,
-    ],
-    'bp_classes' => [
-      'type' => 'string',
-      'value' => $custom_paragraph_classes_value,
-    ],
-    'bp_gutter' => [
-      'type' => 'bool',
-      'value' => $gutter_value,
-    ],
-    'bp_title_status' => [
-      'type' => 'bool',
-      'value' => $title_status,
-    ],
-  ];
+    ];
+
+  }
 }
 
 /**
- * Prepares variables for views grid templates.
- *
- * Default template: views-bootstrap-grid.html.twig.
- *
- * @param array $vars
- *   An associative array containing:
- *   - view: A ViewExecutable object.
- *   - rows: The raw row data.
+ * Implements hook_preprocess_HOOK() for html.html.twig.
  */
-function mcgreen_acres_theme_preprocess_views_bootstrap_grid(array &$vars) {
-  $view = $vars['view'];
-  $vars['id'] = ViewsBootstrap::getUniqueId($view);
-  $vars['attributes']['class'][] = 'grid';
-  $options = $view->style_plugin->options;
-  $options['automatic_width'] = ['default' => TRUE];
-  $horizontal = ($options['alignment'] === 'horizontal');
+function mcgreen_acres_theme_preprocess_html(array &$variables) {
+  /* Add class to html tag */
+  //$variables['html_attributes']->addClass('no-js');
 
-  if(isset($options["col_xs"])){
-    $options["col_xs"] = str_replace("xs-","",$options["col_xs"]);
-  }
+  // Don't display the site name twice on the front page (and potentially others)
+  /*if (isset($variables['head_title_array']['title']) && isset($variables['head_title_array']['name']) && ($variables['head_title_array']['title'] == $variables['head_title_array']['name'])) {
+    $variables['head_title'] = $variables['head_title_array']['name'];
+  }*/
+}
 
-  foreach (['xs', 'sm', 'md', 'lg'] as $size) {
-    $vars["col_" . $size] = $options["col_" . $size];
-    // Get the value from the size sting.
-    $vars['sizes'][$size] = ViewsBootstrap::getColSize($options["col_" . $size]);
-  }
-  $vars['options'] = $options;
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function mcgreen_acres_theme_page_attachments_alter(array &$page) {
+  // Tell IE to use latest rendering engine (not to use compatibility mode).
+  /*$ie_edge = [
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => [
+    'http-equiv' => 'X-UA-Compatible',
+    'content' => 'IE=edge',
+    ],
+  ];
+  $page['#attached']['html_head'][] = [$ie_edge, 'ie_edge'];*/
+}
 
+/**
+ * Implements hook_preprocess_page() for page.html.twig.
+ */
+function mcgreen_acres_theme_preprocess_page(array &$variables) {
+  $variables['theme_path'] = base_path() . $variables['directory'];
+}
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+
+}
+
+/**
+ * Implements hook_theme_suggestions_node_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_node_alter(array &$suggestions, array $variables) {
+  /*$node = $variables['elements']['#node'];
+
+  if ($variables['elements']['#view_mode'] == "full") {
+
+  }*/
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for Block document templates.
+ */
+function mcgreen_acres_theme_preprocess_block(array &$variables) {
+
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  /*$element = $variables['element'];
+  $suggestions[] = 'field__' . $element['#view_mode'];
+  $suggestions[] = 'field__' . $element['#view_mode'] . '__' . $element['#field_name'];*/
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_fieldset_alter(array &$suggestions, array $variables) {
+  /*$element = $variables['element'];
+  if (isset($element['#attributes']['class']) && in_array('form-composite', $element['#attributes']['class'])) {
+    $suggestions[] = 'fieldset__form_composite';
+  }*/
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function mcgreen_acres_theme_preprocess_node(array &$variables) {
+  // Default to turning off byline/submitted.
+  //$variables['display_submitted'] = FALSE;
+}
+
+/**
+ * Implements hook_theme_suggestions_views_view_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+
+}
+
+/**
+ * Implements hook_preprocess_form().
+ */
+function mcgreen_acres_theme_preprocess_form(array &$variables) {
+  //$variables['attributes']['novalidate'] = 'novalidate';
+}
+
+/**
+ * Implements hook_preprocess_select().
+ */
+function mcgreen_acres_theme_preprocess_select(array &$variables) {
+  //$variables['attributes']['class'][] = 'select-chosen';
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function mcgreen_acres_theme_preprocess_field(array &$variables, $hook) {
+  /*switch ($variables['element']['#field_name']) {
+  }*/
+}
+
+/**
+ * Implements hook_preprocess_details().
+ */
+function mcgreen_acres_theme_preprocess_details(array &$variables) {
+  /*$variables['attributes']['class'][] = 'details';
+  $variables['summary_attributes']['class'] = 'summary';*/
+}
+
+/**
+ * Implements hook_theme_suggestions_details_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_details_alter(array &$suggestions, array $variables) {
+
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function mcgreen_acres_theme_preprocess_menu_local_task(array &$variables) {
+  $variables['element']['#link']['url']->setOption('attributes', ['class'=>'nav-link']);
+  $variables['element']['#link']['url']->setOption('attributes', ['class'=>'nav-link']);
 }

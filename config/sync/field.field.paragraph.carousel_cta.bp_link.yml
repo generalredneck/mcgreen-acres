@@ -1,0 +1,23 @@
+uuid: 9e601a12-7f03-47f7-8416-8a0c28d23fbc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.bp_link
+    - paragraphs.paragraphs_type.carousel_cta
+  module:
+    - link
+id: paragraph.carousel_cta.bp_link
+field_name: bp_link
+entity_type: paragraph
+bundle: carousel_cta
+label: 'Button Link'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

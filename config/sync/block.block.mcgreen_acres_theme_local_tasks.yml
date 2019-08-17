@@ -1,0 +1,22 @@
+uuid: 9ceefd22-0e9a-42f0-b547-f9994f5f0fe4
+langcode: en
+status: true
+dependencies:
+  theme:
+    - mcgreen_acres_theme
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: mcgreen_acres_theme_local_tasks
+theme: mcgreen_acres_theme
+region: content
+weight: -7
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }

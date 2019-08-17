@@ -1,0 +1,27 @@
+uuid: 55f64be6-f78d-4363-a252-d73964843433
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - node
+id: blog
+label: Blog
+logic: or
+conditions:
+  d5e1a55a-e37e-4697-8ad8-18cd4cd1254c:
+    id: node_type
+    bundles:
+      article: article
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uuid: d5e1a55a-e37e-4697-8ad8-18cd4cd1254c
+  179ee528-78f9-4191-b8bb-6bccc26168db:
+    id: 'entity_bundle:taxonomy_term'
+    bundles:
+      blog_topics: blog_topics
+    negate: false
+    context_mapping: {  }
+    uuid: 179ee528-78f9-4191-b8bb-6bccc26168db
+allow_other_conditions: false

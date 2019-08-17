@@ -1,0 +1,135 @@
+uuid: f37b14b2-bcb4-4085-99ac-2a93bc5a4d18
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.image_browser
+    - field.field.paragraph.carousel_cta.bp_background
+    - field.field.paragraph.carousel_cta.bp_classes
+    - field.field.paragraph.carousel_cta.bp_gutter
+    - field.field.paragraph.carousel_cta.bp_image_field
+    - field.field.paragraph.carousel_cta.bp_link
+    - field.field.paragraph.carousel_cta.bp_title
+    - field.field.paragraph.carousel_cta.bp_title_status
+    - field.field.paragraph.carousel_cta.bp_width
+    - field.field.paragraph.carousel_cta.field_cta_content
+    - paragraphs.paragraphs_type.carousel_cta
+  module:
+    - entity_browser
+    - field_group
+    - link
+    - text
+third_party_settings:
+  field_group:
+    group_component_title:
+      children:
+        - bp_title
+        - bp_title_status
+      parent_name: ''
+      weight: 0
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: true
+      label: 'Component title'
+      region: content
+    group_styling_settings:
+      children:
+        - bp_width
+        - bp_gutter
+        - bp_background
+        - bp_classes
+      parent_name: ''
+      weight: 4
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: true
+      label: 'Styling settings'
+      region: content
+id: paragraph.carousel_cta.default
+targetEntityType: paragraph
+bundle: carousel_cta
+mode: default
+content:
+  bp_background:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  bp_classes:
+    weight: 10
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  bp_gutter:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  bp_image_field:
+    weight: 1
+    settings:
+      entity_browser: image_browser
+      field_widget_display: rendered_entity
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_edit: true
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  bp_link:
+    weight: 3
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  bp_title:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  bp_title_status:
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  bp_width:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_cta_content:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+hidden:
+  created: true
+  status: true

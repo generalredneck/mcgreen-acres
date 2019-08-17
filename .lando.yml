@@ -2,6 +2,7 @@ name: mcgreen-acres
 recipe: drupal8
 config:
   webroot: web
+  xdebug: true
 tooling:
   drush:
     service: appserver

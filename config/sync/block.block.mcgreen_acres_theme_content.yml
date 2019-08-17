@@ -1,0 +1,22 @@
+uuid: b0349cdb-4db6-4dbf-8c7a-3c46140ce431
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - mcgreen_acres_theme
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: mcgreen_acres_theme_content
+theme: mcgreen_acres_theme
+region: content
+weight: -5
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,4 +1,0 @@
-# Schema for the configuration files of the mcgreen_acres_theme.
-mcgreen_acres_theme.settings:
-  type: theme_settings
-  label: 'mcgreen_acres_theme settings'

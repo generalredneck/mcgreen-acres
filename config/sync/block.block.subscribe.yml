@@ -1,0 +1,28 @@
+uuid: ff3f4482-bef0-41d8-bcbb-a64e5a2984bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.newsletter_footer
+  module:
+    - block_visibility_groups
+    - simple_block
+  theme:
+    - mcgreen_acres_theme
+id: subscribe
+theme: mcgreen_acres_theme
+region: content
+weight: 0
+provider: null
+plugin: 'simple_block:newsletter_footer'
+settings:
+  id: 'simple_block:newsletter_footer'
+  label: Subscribe
+  provider: simple_block
+  label_display: '0'
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+    context_mapping: {  }

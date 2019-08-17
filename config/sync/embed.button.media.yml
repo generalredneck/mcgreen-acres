@@ -1,0 +1,39 @@
+uuid: 561e8187-924a-4338-a7af-439b3a7dddd2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.large
+    - core.entity_view_mode.media.medium
+    - core.entity_view_mode.media.original
+    - core.entity_view_mode.media.small
+    - media.type.audio
+    - media.type.file
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+  module:
+    - entity_embed
+    - media
+_core:
+  default_config_hash: h11-XuvqtPMBaTE3CEtifGRH0qkEXdwETokRBOnuLF0
+label: 'Media Library'
+id: media
+type_id: entity
+type_settings:
+  entity_type: media
+  bundles:
+    - audio
+    - file
+    - image
+    - remote_video
+    - video
+  display_plugins:
+    - 'view_mode:media.large'
+    - 'view_mode:media.medium'
+    - 'view_mode:media.original'
+    - 'view_mode:media.small'
+  entity_browser: editor_media_browser
+  entity_browser_settings:
+    display_review: false
+icon_uuid: null
