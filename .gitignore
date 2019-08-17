@@ -7,8 +7,8 @@
 /web/profiles/contrib/
 /web/libraries/
 
+######## ACQUIA IGNORE BELOW THIS LINE ########
 # Ignore sensitive information
-/web/sites/*/settings.php
 /web/sites/*/settings.local.php
 
 # Ignore Drupal's file directory
