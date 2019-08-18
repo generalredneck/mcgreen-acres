@@ -24,7 +24,7 @@
 version: 2
 defaults: &defaults
   docker:
-    - image: circleci/php:7.3-node-browsers
+    - image: circleci/php:7.0-node-browsers
       environment:
         DATE_TIMEZONE: America/Chicago
         TERM: xterm
