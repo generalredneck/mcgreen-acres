@@ -774,6 +774,22 @@ $settings['entity_update_backup'] = TRUE;
  * Keep this code block at the end of this file to take full effect.
  */
 
+$environment = 'local';
+if (DRUPAL_ROOT == '/var/www/mcgreenacr/web') {
+  $environment = 'live';
+}
+
+if ($environment == 'live') {
+  if (php_sapi_name() != "cli") {
+    if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != 'mcgreenacres.com') {
+      $newurl = 'http://mcgreenacres.com/'. $_SERVER['REQUEST_URI'];
+      header('HTTP/1.0 301 Moved Permanently');
+      header("Location: $newurl");
+      exit;
+    }
+  }
+}
+
 $config_directories['sync'] = '../config/sync';
 
 $settings['trusted_host_patterns'] = [
