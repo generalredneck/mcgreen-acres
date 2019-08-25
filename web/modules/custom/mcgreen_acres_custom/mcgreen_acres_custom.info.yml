@@ -1,0 +1,5 @@
+name: 'McGreen Acres Custom'
+type: module
+description: 'Custom functionality for McGreen Acres site.'
+core: 8.x
+package: 'McGreen Acres'

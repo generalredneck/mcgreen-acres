@@ -1,0 +1,13 @@
+{
+    "name": "mcgreen_acres_custom",
+    "type": "drupal-module",
+    "description": "Custom functionality for McGreen Acres site.",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/mcgreen_acres_custom",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/mcgreen_acres_custom",
+        "source": "http://cgit.drupalcode.org/mcgreen_acres_custom",
+    },
+}
