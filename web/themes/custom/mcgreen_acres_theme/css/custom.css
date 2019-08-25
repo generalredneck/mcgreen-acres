@@ -1,3 +1,10 @@
+a {
+  color: #1fa12e;
+}
+a:hover {
+  color: #3C7043;
+  text-decoration: underline;
+}
 .clv_main_wrapper .clv_header .clv_left_header {
   padding: 10px 0px;
   text-align: center;
@@ -25,6 +32,9 @@
   width: 70%;
   padding-left: 30px;
 }
+.index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a:hover {
+  text-decoration: none;
+}
 
 @media (max-width: 991px) {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
@@ -37,6 +47,10 @@
 
 .address_block .agri_social_links {
   margin-top: 5px;
+}
+
+.breadcrumb_wrapper {
+  margin-bottom: 50px;
 }
 
 .breadcrumb_wrapper .breadcrumb_inner h1 {
@@ -205,3 +219,31 @@
 .path-frontpage {
 	background-color: #f4f8ff;
 }
+
+/* Blog Teaser */
+
+.blog_section .agri_blog_image .agri_blog_topic{
+	position: absolute;
+	bottom: -20px;
+	right: 35px;
+	display: flex;
+	align-items: center;
+	font-family: 'Source Sans Pro', sans-serif;
+	justify-content: center;
+	text-transform: capitalize;
+	width: 150px;
+	height: 45px;
+	font-size: 18px;
+	font-weight: 700;
+	color: #1fa12e;
+	background-color: #ffffff;
+	border-radius: 30px;
+}
+
+.blog_section .agri_blog_image .agri_blog_topic a{
+	color: #1fa12e;
+}
+.blog_section .links {
+
+}
+.blog_section .links

@@ -1,0 +1,33 @@
+							<div class="blog_section">
+								<div class="agri_blog_image">
+									{{ content.field_images }}
+									<span class="agri_blog_date">{{ node.created.value|format_date('custom', 'F j, Y') }}</span>
+									<span class="agri_blog_topic">{{ content.field_topic }}</span>
+								</div>
+								<div class="agri_blog_content">
+									<h3{{ title_attributes }}>
+										<a href="{{ url }}" rel="bookmark">{{ label }}</a>
+									</h3>
+									<div class="blog_user">
+										{% if display_submitted %}
+										<div class="user_name">
+											{{ author_picture }}
+											{{ author_name }}
+										</div>
+										{% endif %}
+										<div class="comment_block">
+											<span><i class="fa fa-comments-o" aria-hidden="true"></i></span>
+											<a href="javascript:;">26 comments</a>
+										</div>
+										<div>
+											{{ metadata }}
+										</div>
+									</div>
+									<div{{ content_attributes }}>
+										{{ content|without('field_images', 'field_topic', 'links') }}
+									</div>
+									<div>
+										{{ content.links }}
+									</div>
+								</div>
+							</div>
