@@ -3,6 +3,7 @@ recipe: drupal8
 config:
   webroot: web
   xdebug: true
+  php: "7.0"
 tooling:
   drush:
     service: appserver
