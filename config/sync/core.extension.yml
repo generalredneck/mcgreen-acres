@@ -45,6 +45,7 @@ module:
   layout_discovery: 0
   link: 0
   maxlength: 0
+  mcgreen_acres_custom: 0
   media: 0
   media_library: 0
   menu_block: 0

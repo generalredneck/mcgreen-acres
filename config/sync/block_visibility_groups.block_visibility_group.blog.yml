@@ -5,6 +5,7 @@ dependencies:
   module:
     - ctools
     - node
+    - system
 id: blog
 label: Blog
 logic: or
@@ -24,4 +25,10 @@ conditions:
     negate: false
     context_mapping: {  }
     uuid: 179ee528-78f9-4191-b8bb-6bccc26168db
+  8331f8ba-d026-4496-9b6e-6146fab44327:
+    id: request_path
+    pages: "/blog\r\n/blog/*"
+    negate: false
+    context_mapping: {  }
+    uuid: 8331f8ba-d026-4496-9b6e-6146fab44327
 allow_other_conditions: false
