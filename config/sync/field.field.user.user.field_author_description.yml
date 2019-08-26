@@ -1,0 +1,21 @@
+uuid: a7712ab5-1e2f-45e9-8cfa-4537e73dc653
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_author_description
+  module:
+    - text
+    - user
+id: user.user.field_author_description
+field_name: field_author_description
+entity_type: user
+bundle: user
+label: 'Author Description'
+description: 'This will show up as a short blurb about you.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

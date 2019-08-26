@@ -1,0 +1,28 @@
+uuid: 7666aed0-357c-42da-abf6-c397f2f7bc15
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.blog
+  module:
+    - block_visibility_groups
+    - mcgreen_acres_custom
+  theme:
+    - mcgreen_acres_theme
+id: searchblock
+theme: mcgreen_acres_theme
+region: sidebar_second
+weight: -7
+provider: null
+plugin: search_block
+settings:
+  id: search_block
+  label: Search
+  provider: mcgreen_acres_custom
+  label_display: visible
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: blog
+    context_mapping: {  }

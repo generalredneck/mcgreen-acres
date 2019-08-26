@@ -85,6 +85,14 @@ function mcgreen_acres_theme_theme_suggestions_page_alter(array &$suggestions, a
 }
 
 /**
+ * Implements hook_theme_suggestsions_user_alter().
+ */
+function mcgreen_acres_theme_theme_suggestions_user_alter(array &$suggestions, array $variables) {
+  $suggestions[] = $variables['theme_hook_original'] . '__' . $variables['elements']['#view_mode'];
+
+}
+
+/**
  * Implements hook_theme_suggestions_node_alter().
  */
 function mcgreen_acres_theme_theme_suggestions_node_alter(array &$suggestions, array $variables) {

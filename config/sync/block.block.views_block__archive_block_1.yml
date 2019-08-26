@@ -1,25 +1,28 @@
-uuid: 4cb9aade-ccd7-4fbc-8838-063f666f1500
+uuid: 315da049-433e-4f07-b7eb-9c42d0c3d636
 langcode: en
 status: true
 dependencies:
   config:
     - block_visibility_groups.block_visibility_group.blog
+    - views.view.archive
   module:
     - block_visibility_groups
-    - search
+    - views
   theme:
     - mcgreen_acres_theme
-id: searchform
+id: views_block__archive_block_1
 theme: mcgreen_acres_theme
 region: sidebar_second
 weight: 0
 provider: null
-plugin: search_form_block
+plugin: 'views_block:archive-block_1'
 settings:
-  id: search_form_block
-  label: 'Search form'
-  provider: search
+  id: 'views_block:archive-block_1'
+  label: Archive
+  provider: views
   label_display: visible
+  views_label: Archive
+  items_per_page: none
 visibility:
   condition_group:
     id: condition_group

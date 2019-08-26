@@ -10,9 +10,11 @@
 #}
 {% set classes = [
     'clear-both',
+    'sidebar_search',
 ] %}
 <div{{ attributes.addClass(classes) }}>
-    {% for content in value %}
-        <p>{{value}}</p>
-    {% endfor %}
+<form action="/blog/search" method="get">
+    <input type="text" name="search_api_views_fulltext" placeholder="Search here" type="text" />
+    <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
+</form>
 </div>

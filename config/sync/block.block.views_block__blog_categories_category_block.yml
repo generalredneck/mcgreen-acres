@@ -1,0 +1,31 @@
+uuid: 17daf943-9d9b-458a-af73-3937ba2a4a81
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.blog
+    - views.view.blog_categories
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - mcgreen_acres_theme
+id: views_block__blog_categories_category_block
+theme: mcgreen_acres_theme
+region: sidebar_second
+weight: -6
+provider: null
+plugin: 'views_block:blog_categories-category_block'
+settings:
+  id: 'views_block:blog_categories-category_block'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: blog
+    context_mapping: {  }

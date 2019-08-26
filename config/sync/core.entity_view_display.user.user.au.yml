@@ -1,32 +1,29 @@
-uuid: b81b4f4e-f11d-4172-8359-7f4c77325cfe
+uuid: d71c523a-4fbe-4f30-987f-5105dc8b3757
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.user.au
     - field.field.user.user.field_author_description
     - field.field.user.user.user_picture
-    - image.style.thumbnail
+    - image.style.d02_square
   module:
+    - ds
     - image
     - text
     - user
 _core:
   default_config_hash: V51QPCKkgNREKtSmB9Iu2wmAMEpktVpnzklWaZV8UYo
-id: user.user.default
+id: user.user.au
 targetEntityType: user
 bundle: user
-mode: default
+mode: au
 content:
   field_author_description:
-    weight: 6
-    label: above
-    settings: {  }
-    third_party_settings: {  }
     type: text_default
+    weight: 1
     region: content
-  member_for:
-    weight: 5
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   user_picture:
@@ -34,8 +31,16 @@ content:
     weight: 0
     region: content
     settings:
-      image_style: thumbnail
-      image_link: content
-    third_party_settings: {  }
+      image_style: d02_square
+      image_link: ''
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
     label: hidden
-hidden: {  }
+hidden:
+  member_for: true

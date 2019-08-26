@@ -1,0 +1,10 @@
+uuid: 98ee5ce5-644f-418a-903b-2378ef20727d
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.au
+label: 'Author Message Box'
+targetEntityType: user
+cache: true
