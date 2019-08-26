@@ -271,8 +271,9 @@ display:
       query:
         type: views_query
         options: {  }
-      path: archive
-      display_extenders: {  }
+      path: blog/archive
+      display_extenders:
+        metatag_display_extender: {  }
     cache_metadata:
       contexts:
         - 'languages:language_interface'
