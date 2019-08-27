@@ -250,6 +250,9 @@ a:hover {
   right: 0px;
   transform: translateY(-50%);
 }
+.author_message_box {
+  background-color: #1fa12e;
+}
 
 #views-exposed-form-blog-search-page-1 {
   display: none;
@@ -257,4 +260,18 @@ a:hover {
 
 #block-views-block-tags-tag-block div > div:not(.contextual){
   display: inline-block;
+}
+
+.blog_section blockquote {
+  position: relative;
+  z-index: 1;
+  padding: 10px 20px;
+  text-align: center;
+  background-image: url(../images/bg_quote.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  font-size: 18px;
+  color: #222222;
+  font-style: italic;
+  min-height: 106px;
 }
