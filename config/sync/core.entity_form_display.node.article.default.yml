@@ -5,11 +5,13 @@ dependencies:
   config:
     - entity_browser.browser.editor_media_browser
     - field.field.node.article.body
+    - field.field.node.article.field_disqus_comment
     - field.field.node.article.field_images
     - field.field.node.article.field_tags
     - field.field.node.article.field_topic
     - node.type.article
   module:
+    - disqus
     - entity_browser
     - path
     - text
@@ -35,6 +37,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_disqus_comment:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: disqus_comment
+    region: content
   field_images:
     weight: 2
     settings:

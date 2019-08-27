@@ -28,13 +28,14 @@
 										</div>
 									{% endif %}
 									<div{{ content_attributes }}>
-										{{ content|without('field_images', 'field_topic', 'links') }}
+										{{ content|without('field_disqus_comment','field_images', 'field_topic', 'links') }}
 									</div>
 									<div>
 										{{ content.links }}
 									</div>
 									{% if view_mode == 'full' %}
 										{{ drupal_view('author_block', 'author_message_box', node.getOwnerId()) }}
+										{{ content.field_disqus_comment }}
 									{% endif %}
 								</div>
 							</div>
