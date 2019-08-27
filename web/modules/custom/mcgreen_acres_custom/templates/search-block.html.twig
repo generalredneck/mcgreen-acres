@@ -14,7 +14,7 @@
 ] %}
 <div{{ attributes.addClass(classes) }}>
 <form action="/blog/search" method="get">
-    <input type="text" name="search_api_views_fulltext" placeholder="Search here" type="text" />
-    <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
+    <input type="text" name="search_api_fulltext" placeholder="Search here" type="text" value="{{ search_value }}"/>
+    <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-search"></i></button>
 </form>
 </div>

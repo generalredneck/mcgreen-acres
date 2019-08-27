@@ -33,7 +33,7 @@ function mcgreen_acres_custom_theme() {
     ],
     'search_block' => [
       'variables' => [
-        'content' => NULL
+        'search_value' => '',
       ],
       'render element' => 'children',
     ],

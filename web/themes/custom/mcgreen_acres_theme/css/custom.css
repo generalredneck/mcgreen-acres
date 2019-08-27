@@ -240,10 +240,21 @@ a:hover {
 	border-radius: 30px;
 }
 
-.blog_section .agri_blog_image .agri_blog_topic a{
+.blog_section .agri_blog_image .agri_blog_topic a {
 	color: #1fa12e;
 }
-.blog_section .links {
 
+.sidebar_search button {
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
 }
-.blog_section .links
+
+#views-exposed-form-blog-search-page-1 {
+  display: none;
+}
+
+#block-views-block-tags-tag-block div > div:not(.contextual){
+  display: inline-block;
+}

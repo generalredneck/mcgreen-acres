@@ -204,3 +204,7 @@ function mcgreen_acres_theme_preprocess_links__node(array &$variables) {
   }
 
 }
+
+/**
+ * Imeplements hook_form_alter().
+ */
