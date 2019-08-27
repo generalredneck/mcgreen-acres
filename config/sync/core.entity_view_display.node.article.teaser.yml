@@ -80,4 +80,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_disqus_comment: true
+  search_api_excerpt: true
