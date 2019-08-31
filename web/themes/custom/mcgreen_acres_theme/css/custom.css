@@ -155,33 +155,6 @@ a:hover {
 }
 
 
-/* Small devices (landscape phones, 576px and up)*/
-@media (min-width: 576px) {
-  .carousel-caption p {
-    font-size: 1.25rem;
-  }
-}
-
-/* Medium devices (tablets, 768px and up)*/
-@media (min-width: 768px) {
-  .carousel-caption p {
-    font-size: 1.75rem;
-  }
-}
-
-/* Large devices (desktops, 992px and up)*/
-@media (min-width: 992px) {
-  .carousel-caption p {
-    font-size: 2rem;
-  }
-}
-
-/* Extra large devices (large desktops, 1200px and up)*/
-@media (min-width: 1200px) {
-  .carousel-caption p {
-    font-size: 2.5em;
-  }
-}
 
 .clv_newsletter_wrapper {
   margin-top: 50px;
@@ -292,4 +265,52 @@ a:hover {
 
 .layout-sidebar-second > div > div {
   margin-bottom: 30px;
+}
+
+/* Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) {
+  .carousel-caption p {
+    font-size: 1.25rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+  .carousel-caption p {
+    font-size: 1.75rem;
+  }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+  .carousel-caption p {
+    font-size: 2rem;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+  .carousel-caption p {
+    font-size: 2.5em;
+  }
+}
+
+@media (max-width: 767px) {
+  .layout-sidebar-second {
+    margin-top: 80px;
+  }
+
+  .blog_section .agri_blog_image .agri_blog_date, .blog_section .agri_blog_image .agri_blog_topic {
+    width: 135px;
+    font-size: 14px;
+    height: 30px;
+    bottom: -15px;
+  }
+  .blog_section .agri_blog_image .agri_blog_date {
+    left: 15px;
+  }
+  .blog_section .agri_blog_image .agri_blog_topic {
+    right: 15px;
+  }
+
 }
