@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b5e36366b1c8caa6f5f4c0a00dbba2e",
+    "content-hash": "ac44544832283002d82b467a1bb87095",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3915,14 +3915,15 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1561765981",
+                    "datestamp": "1562161679",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "patches_applied": {
-                    "Issue #3070343: Allow to add a Drupal core link with Link Widget for Image entities using Entity Embed Dialog in CKEditor": "https://www.drupal.org/files/issues/2019-07-25/3070343-8.patch"
+                    "Issue #3070343: Allow to add a Drupal core link with Link Widget for Image entities using Entity Embed Dialog in CKEditor": "https://www.drupal.org/files/issues/2019-07-25/3070343-8.patch",
+                    "Issue #2679875: Inline Entity Form integration": "https://www.drupal.org/files/issues/2019-08-27/2679875-12.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3949,6 +3950,10 @@
                 {
                     "name": "cs_shadow",
                     "homepage": "https://www.drupal.org/user/2828287"
+                },
+                {
+                    "name": "oknate",
+                    "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
                     "name": "phenaproxima",
@@ -5124,6 +5129,83 @@
             "homepage": "https://www.drupal.org/project/pathauto",
             "support": {
                 "source": "https://git.drupalcode.org/project/pathauto"
+            }
+        },
+        {
+            "name": "drupal/realname",
+            "version": "1.0.0-rc2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/realname.git",
+                "reference": "8.x-1.0-rc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/realname-8.x-1.0-rc2.zip",
+                "reference": "8.x-1.0-rc2",
+                "shasum": "f5bd7f98fdf17ef3b7d8eb3c1f9a5c043f121354"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/token": "^1.0.0-alpha2"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-rc2",
+                    "datestamp": "1548970380",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/u/hass"
+                },
+                {
+                    "name": "See other contributors",
+                    "homepage": "https://www.drupal.org/node/266280/committers"
+                },
+                {
+                    "name": "coderintherye",
+                    "homepage": "https://www.drupal.org/user/297478"
+                },
+                {
+                    "name": "hass",
+                    "homepage": "https://www.drupal.org/user/85918"
+                },
+                {
+                    "name": "rmiddle",
+                    "homepage": "https://www.drupal.org/user/192183"
+                },
+                {
+                    "name": "theamoeba",
+                    "homepage": "https://www.drupal.org/user/251700"
+                },
+                {
+                    "name": "tkuldeep17",
+                    "homepage": "https://www.drupal.org/user/2498278"
+                },
+                {
+                    "name": "voxpelli",
+                    "homepage": "https://www.drupal.org/user/341713"
+                }
+            ],
+            "description": "Provides token-based name displays for users.",
+            "homepage": "https://www.drupal.org/project/realname",
+            "support": {
+                "source": "https://git.drupal.org/project/realname.git",
+                "issues": "https://www.drupal.org/project/issues/realname"
             }
         },
         {
@@ -12524,6 +12606,7 @@
         "drupal/devel_entity_updates": 5,
         "drupal/diff": 5,
         "drupal/disqus": 5,
+        "drupal/realname": 5,
         "drupal/simple_block": 10,
         "drupal/xmlsitemap": 15
     },
