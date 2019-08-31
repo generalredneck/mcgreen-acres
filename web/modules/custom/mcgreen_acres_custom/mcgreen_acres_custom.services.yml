@@ -1,0 +1,5 @@
+services:
+  mcgreen_acres_custom.route_subscriber:
+    class: Drupal\mcgreen_acres_custom\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
