@@ -90,4 +90,5 @@ permissions:
   - 'view own unpublished content'
   - 'view own unpublished media'
   - 'view page revisions'
+  - 'view the administration theme'
   - 'view unpublished paragraphs'

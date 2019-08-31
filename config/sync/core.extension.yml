@@ -91,6 +91,7 @@ module:
   views_ui: 0
   viewsreference: 0
   webform: 0
+  xmlsitemap_custom: 0
   ds: 1
   menu_link_content: 1
   pathauto: 1
