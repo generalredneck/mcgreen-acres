@@ -19,7 +19,7 @@ settings:
   id: search_block
   label: Search
   provider: mcgreen_acres_custom
-  label_display: visible
+  label_display: '0'
 visibility:
   condition_group:
     id: condition_group
