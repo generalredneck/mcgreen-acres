@@ -1,45 +1,45 @@
-							<div class="blog_section">
-								<div class="agri_blog_image">
-									{% if view_mode == 'teaser' %}
-										<a href="{{ url }}"{{ content.field_images }}</a>
-									{% else %}
-										{{ content.field_images }}
-									{% endif %}
-									<span class="agri_blog_date">{{ node.created.value|format_date('custom', 'F j, Y') }}</span>
-									{% if content.field_topic|render|striptags|trim %}
-									<span class="agri_blog_topic">{{ content.field_topic }}</span>
-									{% endif %}
-								</div>
-								<div class="agri_blog_content">
-									{% if view_mode == 'teaser' %}
-										<h3{{ title_attributes }}>
-											<a href="{{ url }}" rel="bookmark">{{ label }}</a>
-										</h3>
-										<div class="blog_user">
-											{% if display_submitted %}
-											<div class="user_name">
-												{{ author_picture }}
-												{{ author_name }}
-											</div>
-											{% endif %}
-											<div class="comment_block">
-												<span><i class="fa fa-comments-o" aria-hidden="true"></i></span>
-												<a href="javascript:;">26 comments</a>
-											</div>
-											<div>
-												{{ metadata }}
-											</div>
-										</div>
-									{% endif %}
-									<div{{ content_attributes }}>
-										{{ content|without('field_disqus_comment','field_images', 'field_topic', 'links') }}
-									</div>
-									<div>
-										{{ content.links }}
-									</div>
-									{% if view_mode == 'full' %}
-										{{ drupal_view('author_block', 'author_message_box', node.getOwnerId()) }}
-										{{ content.field_disqus_comment }}
-									{% endif %}
-								</div>
-							</div>
+<div class="blog_section">
+	<div class="agri_blog_image">
+		{% if view_mode == 'teaser' %}
+			<a href="{{ url }}"{{ content.field_images }}</a>
+		{% else %}
+			{{ content.field_images }}
+		{% endif %}
+		<span class="agri_blog_date">{{ node.created.value|format_date('custom', 'F j, Y') }}</span>
+		{% if content.field_topic|render|striptags|trim %}
+		<span class="agri_blog_topic">{{ content.field_topic }}</span>
+		{% endif %}
+	</div>
+	<div class="agri_blog_content">
+		{% if view_mode == 'teaser' %}
+			<h3{{ title_attributes }}>
+				<a href="{{ url }}" rel="bookmark">{{ label }}</a>
+			</h3>
+			<div class="blog_user">
+				{% if display_submitted %}
+				<div class="user_name">
+					{{ author_picture }}
+					{{ author_name }}
+				</div>
+				{% endif %}
+				<div class="comment_block">
+					<span><i class="fa fa-comments-o" aria-hidden="true"></i></span>
+					<a href="{{ url }}#disqus_thread" data-disqus-identifier="node/{{ node.id() }}">Comments</a>
+				</div>
+				<div>
+					{{ metadata }}
+				</div>
+			</div>
+		{% endif %}
+		<div{{ content_attributes }}>
+			{{ content|without('field_disqus_comment','field_images', 'field_topic', 'links') }}
+		</div>
+		<div>
+			{{ content.links }}
+		</div>
+		{% if view_mode == 'full' %}
+			{{ drupal_view('author_block', 'author_message_box', node.getOwnerId()) }}
+			{{ content.field_disqus_comment }}
+		{% endif %}
+	</div>
+</div>

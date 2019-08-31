@@ -202,6 +202,9 @@ function mcgreen_acres_theme_preprocess_links__node(array &$variables) {
       $readmore_link['#title']->getArguments()
     );
   }
+  if (!empty($variables['links']) && !empty($variables['links']['disqus_comments_num'])) {
+    unset($variables['links']['disqus_comments_num']);
+  }
 
 }
 
