@@ -73,6 +73,7 @@ permissions:
   - 'edit own video media'
   - 'edit terms in blog_topics'
   - 'edit terms in tags'
+  - 'opt-in or out of google analytics tracking'
   - 'post comments'
   - 'revert article revisions'
   - 'revert page revisions'

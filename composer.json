@@ -32,6 +32,7 @@
         "drupal/devel_entity_updates": "^1.0@RC",
         "drupal/diff": "^1.0@RC",
         "drupal/disqus": "^1.0@RC",
+        "drupal/google_analytics": "^3.0",
         "drupal/honeypot": "^1.29",
         "drupal/menu_block": "^1.5",
         "drupal/metatag": "^1.8",
