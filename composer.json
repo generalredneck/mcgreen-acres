@@ -42,7 +42,7 @@
         "drupal/seo_checklist": "^4.1",
         "drupal/simple_block": "^1.0@beta",
         "drupal/twig_tweak": "^2.4",
-        "drupal/varbase_bootstrap_paragraphs": "^7.0",
+        "drupal/varbase_bootstrap_paragraphs": "7.1",
         "drupal/xmlsitemap": "^1.0@alpha",
         "drush/drush": "^9.0.0",
         "npm-asset/slick-carousel": "^1.8",
