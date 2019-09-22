@@ -56,6 +56,7 @@ permissions:
   - 'delete page revisions'
   - 'delete terms in blog_topics'
   - 'delete terms in tags'
+  - 'dropzone upload files'
   - 'edit any article content'
   - 'edit any audio media'
   - 'edit any file media'
