@@ -57,7 +57,7 @@ jobs:
       # Commit and push to Acquia.
       - run: git add .
       - run: git commit -am "Built assets."
-      - run: git tag "`date +%F_%T`"
+      - run: git tag "`date +%F-%H%M%S`"
       - run: git push origin $CIRCLE_BRANCH:$CIRCLE_BRANCH-deploy -f --tags
 workflows:
   version: 2
