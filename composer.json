@@ -39,6 +39,7 @@
         "drupal/pathauto": "^1.4",
         "drupal/realname": "^1.0@RC",
         "drupal/redirect": "^1.4",
+        "drupal/scheduler": "^1.1",
         "drupal/search_api": "^1.14",
         "drupal/seo_checklist": "^4.1",
         "drupal/simple_block": "^1.0@beta",
