@@ -39,7 +39,7 @@ jobs:
       - checkout
       - run: sudo composer self-update
       - run: "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
-      - run: composer install --ignore-platform-reqs
+      - run: composer install --ignore-platform-reqs --no-dev
       - run: echo "build assets for deploying" && composer build-assets
       - run: echo "deploying to the $circle_branch on acquia."
       - run: git config --global user.email "$ACQUIA_BOT_EMAIL"
@@ -57,6 +57,7 @@ jobs:
       # Commit and push to Acquia.
       - run: git add .
       - run: git commit -am "Built assets."
+      - run: git tag "`date +%F_%T`"
       - run: git push origin $CIRCLE_BRANCH:$CIRCLE_BRANCH-deploy -f --tags
 workflows:
   version: 2
