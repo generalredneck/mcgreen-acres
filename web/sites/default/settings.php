@@ -779,6 +779,8 @@ if (DRUPAL_ROOT == '/var/www/mcgreenacr/web') {
   $environment = 'live';
 }
 
+$config['evercurrent.admin_config']['send'] = FALSE;
+
 if ($environment == 'live') {
   if (php_sapi_name() != "cli") {
     if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != 'mcgreenacres.com') {
@@ -788,6 +790,10 @@ if ($environment == 'live') {
       exit;
     }
   }
+  $config['evercurrent.admin_config']['send'] = TRUE;
+  $config['evercurrent.admin_config']['target_address'] = 'https://live-evercurrent-clone.pantheonsite.io';
+  $settings['evercurrent_environment_url'] = 'https://mcgreenacres.com';
+  $settings['evercurrent_environment_token'] = '5dc821ea0e4d42aa4e4c7cf495874466';
 }
 
 $config_directories['sync'] = '../config/sync';
