@@ -7,6 +7,7 @@ dependencies:
     - core.entity_view_mode.media.medium
     - core.entity_view_mode.media.original
     - core.entity_view_mode.media.small
+    - entity_browser.browser.editor_media_browser
     - media.type.audio
     - media.type.file
     - media.type.image
@@ -36,4 +37,7 @@ type_settings:
   entity_browser: editor_media_browser
   entity_browser_settings:
     display_review: false
+icon:
+  data: iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAACM0lEQVR42mNgoAYwuW/wRv8DIWjwzuSBuzhWA7T/6P4weUAI6n/Q/uMui9UArX8Whwm706FF66+7NHYD/lochbA8mJ2inRI8WLGpsu8kaIC7vMltrf9a/83PuHOSZYD1WpB2EHSoJcsAswswA2yWk2WAQw3UgH8ufmQZwMBgN8XwpeFrh2aEnLuwqxmSARJQUQ5XO/tWq80YBjAweLC5cyAbbnFQ97tTGtSAP+4SbrqOxVbbDV9q/dX6r/MLiwGowK4f5CWdn46lDAwO9Vr/jJ7q/IKFk9Z/vS8YBrhLO0citDvFaf2BKbadZzcRoRWHAU7RBm+0/lvu92AGG6ag/wFZufZvfAYcZmBwytL5CY3EFQwMHkymV9E1wOLI8LXVTsdC85OIMPhjftx2htY/hCK7aTYrsWj9a37avtvFBRLMVlu1f0MN0P2u/QeHbShQ95s7NyKErHbq/IZnZ2K0a/3X/oOckJAMMLtgehM31Pui9d/kPohldsFdFKsB+IHFIa3/bkqY4sQbcETrv5sOpQboYjEAEQukGeCmazvPapt9p/lpnZ/EhwHcAKdo3a8YKRE7cJd3yrFvdYo1u6j1D2aAuygosRNlgIsPIifo/IIZ4OKHkrBwG+DBZvIAoRBhgJsqLL+AoMFbnAa4GoIKDLgBvxFhYDsLOcfg9r8EIqi0/ut/cBdGKhtbTR7ofzS579CCNwht5yMMsNqJYYEwwcjzYLJZZPhS/6Pha8u9OMpi6gAAtanBp45Lz24AAAAASUVORK5CYII=
+  uri: 'public://embed-media_0.png'
 icon_uuid: null

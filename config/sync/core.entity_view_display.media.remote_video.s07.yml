@@ -7,6 +7,7 @@ dependencies:
     - field.field.media.remote_video.field_media_cover_image
     - field.field.media.remote_video.field_media_in_library
     - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_provider
     - media.type.remote_video
     - responsive_image.styles.d07_standard
   module:
@@ -165,5 +166,7 @@ hidden:
   created: true
   field_media_in_library: true
   field_media_oembed_video: true
+  field_provider: true
   name: true
+  search_api_excerpt: true
   uid: true

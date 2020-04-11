@@ -796,7 +796,7 @@ if ($environment == 'live') {
   $settings['evercurrent_environment_token'] = '5dc821ea0e4d42aa4e4c7cf495874466';
 }
 
-$config_directories['sync'] = '../config/sync';
+$settings['config_sync_directory'] = '../config/sync';
 
 $settings['trusted_host_patterns'] = [
    '^.*\.mcgreenacres(bees)?\.com$',
