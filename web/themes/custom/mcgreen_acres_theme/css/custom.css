@@ -316,8 +316,15 @@ a:hover {
     right: 15px;
   }
 
-
   .agri_blog_content img {
+    width: 100%;
+  }
+
+  .agri_blog_content .author_message_box img {
+    width: auto;
+  }
+
+  .paragraph--type--bp-simple img {
     width: 100%;
   }
 }
