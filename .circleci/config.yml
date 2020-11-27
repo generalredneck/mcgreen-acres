@@ -37,7 +37,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: sudo composer self-update
+      - run: sudo composer self-update 1.10.17
       - run: "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
       - run: composer install --ignore-platform-reqs --no-dev
       - run: echo "build assets for deploying" && composer build-assets
