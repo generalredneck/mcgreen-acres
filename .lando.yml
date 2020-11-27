@@ -7,4 +7,4 @@ config:
 tooling:
   drush:
     service: appserver
-    cmd: "drush --root=/app/web"
+    cmd: "drush --root=/app/web --uri=http://mcgreen-acres.lndo.site"
