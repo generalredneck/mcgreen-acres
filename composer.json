@@ -29,7 +29,7 @@
         "drupal/core-composer-scaffold": "^8.9.5",
         "drupal/core-recommended": "^8.9.5",
         "drupal/ctools": "^3.2",
-        "drupal/devel_entity_updates": "^1.0@RC",
+        "drupal/devel_entity_updates": "^3.0",
         "drupal/diff": "^1.0@RC",
         "drupal/disqus": "^1.0@RC",
         "drupal/evercurrent": "^2.0",
@@ -48,6 +48,7 @@
         "drupal/varbase_bootstrap_paragraphs": "7.1",
         "drupal/xmlsitemap": "^1.0@alpha",
         "drush/drush": "^9.7.1 | ^10.0.0",
+        "enyo/dropzone": "^5.8",
         "oomphinc/composer-installers-extender": "^1.1",
         "vlucas/phpdotenv": "^4.0",
         "webflo/drupal-finder": "^1.0.0",
@@ -83,7 +84,8 @@
             "web/libraries/{$name}": [
                 "type:drupal-library",
                 "vendor:bower-asset",
-                "vendor:npm-asset"
+                "vendor:npm-asset",
+                "enyo/dropzone"
             ],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
@@ -94,9 +96,16 @@
             "drupal/varbase_bootstrap_paragraphs": {
                 "bootstrap4": "patches/varbase_bootstra_paragraphs-bootstrap4.patch"
             },
-            "drupal/views_bulk_operations": {
-                "#3124833: Error when updating": "https://www.drupal.org/files/issues/2020-04-10/3124833-9.patch"
+            "drupal/varbase_media": {
+                "#3153617": "https://www.drupal.org/files/issues/2021-03-12/varbase_media-without_varbase_profile_update_entities-3153617-5.patch"
+            },
+            "drupal/ds": {
+                "#3203249": "https://git.drupalcode.org/project/ds/-/commit/3986629693e28e6bf849f4f472551f25ddbf682a.patch"
+            },
+            "drupal/metatag": {
+                "#3187583": "https://www.drupal.org/files/issues/2020-12-09/3187583-2.metatag-array-syntax-error.patch"
             }
+
         }
     },
     "conflict": {
