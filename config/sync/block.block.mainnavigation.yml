@@ -20,6 +20,8 @@ settings:
   label: 'Get Around'
   provider: menu_block
   label_display: visible
+  follow: false
+  follow_parent: child
   level: 1
   depth: 1
   expand: 0
