@@ -45,12 +45,12 @@
         "drupal/seo_checklist": "^4.1",
         "drupal/simple_block": "^1.0@beta",
         "drupal/twig_tweak": "^2.4",
-        "drupal/varbase_bootstrap_paragraphs": "7.1",
+        "drupal/varbase_bootstrap_paragraphs": "^7.1",
         "drupal/xmlsitemap": "^1.0@alpha",
         "drush/drush": "^9.7.1 | ^10.0.0",
         "enyo/dropzone": "^5.8",
         "npm-asset/blazy": "^1.6.0",
-        "oomphinc/composer-installers-extender": "^1.1",
+        "oomphinc/composer-installers-extender": "^2.0",
         "vlucas/phpdotenv": "^4.0",
         "webflo/drupal-finder": "^1.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.0"
@@ -61,7 +61,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.0.33"
+            "php": "7.4"
         }
     },
     "extra": {
@@ -78,7 +78,7 @@
             }
 
         },
-        "installer-types": ["npm-asset", "bower-asset", "library"],
+        "installer-types": ["npm-asset", "bower-asset"],
         "installer-paths": {
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": [
@@ -93,19 +93,9 @@
             "drush/Commands/contrib/{$name}": ["type:drupal-drush"]
         },
         "patches": {
-            "drupal/varbase_bootstrap_paragraphs": {
-                "bootstrap4": "patches/varbase_bootstra_paragraphs-bootstrap4.patch"
-            },
             "drupal/varbase_media": {
                 "#3153617": "https://www.drupal.org/files/issues/2021-03-12/varbase_media-without_varbase_profile_update_entities-3153617-5.patch"
-            },
-            "drupal/ds": {
-                "#3203249": "https://git.drupalcode.org/project/ds/-/commit/3986629693e28e6bf849f4f472551f25ddbf682a.patch"
-            },
-            "drupal/metatag": {
-                "#3187583": "https://www.drupal.org/files/issues/2020-12-09/3187583-2.metatag-array-syntax-error.patch"
             }
-
         }
     },
     "conflict": {
