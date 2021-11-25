@@ -19,7 +19,6 @@ module:
   ctools: 0
   datetime: 0
   dblog: 0
-  devel: 0
   diff: 0
   disqus: 0
   dropzonejs: 0
