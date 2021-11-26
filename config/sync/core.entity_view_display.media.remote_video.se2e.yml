@@ -45,14 +45,12 @@ content:
     label: hidden
     settings:
       responsive_image_style: de2e_standard
-      iframe_lazy: true
       icon: ''
       layout: ''
       thumbnail_style: ''
       view_mode: ''
       cache: 0
       current_view_mode: ''
-      optionset: default
       skin: ''
       style: ''
       background: false
@@ -60,16 +58,18 @@ content:
       box_caption_custom: ''
       box_style: ''
       box_media_style: ''
-      breakpoints: {  }
       caption: {  }
       image_style: ''
       media_switch: ''
       ratio: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      fx: ''
+      _uri: ''
+      breakpoints: {  }
       sizes: ''
-      grid: 0
       grid_header: ''
-      grid_medium: 0
-      grid_small: 0
     third_party_settings:
       ds:
         ft:
@@ -108,14 +108,12 @@ content:
     label: hidden
     settings:
       responsive_image_style: de2e_standard
-      iframe_lazy: true
       icon: ''
       layout: ''
       thumbnail_style: ''
       view_mode: ''
       cache: 0
       current_view_mode: ''
-      optionset: default
       skin: ''
       style: ''
       background: false
@@ -123,16 +121,18 @@ content:
       box_caption_custom: ''
       box_style: ''
       box_media_style: ''
-      breakpoints: {  }
       caption: {  }
       image_style: ''
       media_switch: ''
       ratio: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      fx: ''
+      _uri: ''
+      breakpoints: {  }
       sizes: ''
-      grid: 0
       grid_header: ''
-      grid_medium: 0
-      grid_small: 0
     third_party_settings:
       ds:
         ft:

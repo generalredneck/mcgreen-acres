@@ -4,9 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_media_in_library
     - media.type.image
+    - responsive_image.styles.default
   module:
-    - image
+    - ds
+    - responsive_image
 _core:
   default_config_hash: jOwnt_yq6AKAfqU6f0xKnxEkFQ2eTPJWxrk3WMLbL68
 id: media.image.default
@@ -17,14 +20,23 @@ content:
   field_media_image:
     label: visually_hidden
     settings:
-      image_style: ''
+      responsive_image_style: default
       image_link: file
-    third_party_settings: {  }
-    type: image
+    third_party_settings:
+      ds:
+        ft:
+          id: default
+          settings:
+            lb: ''
+            lb-col: false
+            classes: {  }
+    type: responsive_image
     weight: 1
     region: content
 hidden:
   created: true
+  field_media_in_library: true
   name: true
+  search_api_excerpt: true
   thumbnail: true
   uid: true

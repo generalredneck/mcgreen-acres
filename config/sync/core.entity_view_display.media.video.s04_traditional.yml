@@ -26,14 +26,12 @@ content:
     label: hidden
     settings:
       responsive_image_style: d04_traditional
-      iframe_lazy: true
       icon: ''
       layout: ''
       thumbnail_style: ''
       view_mode: ''
       cache: 0
       current_view_mode: ''
-      optionset: default
       skin: ''
       style: ''
       background: false
@@ -41,16 +39,18 @@ content:
       box_caption_custom: ''
       box_style: ''
       box_media_style: ''
-      breakpoints: {  }
       caption: {  }
       image_style: ''
       media_switch: ''
       ratio: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      fx: ''
+      _uri: ''
+      breakpoints: {  }
       sizes: ''
-      grid: 0
       grid_header: ''
-      grid_medium: 0
-      grid_small: 0
     third_party_settings:
       ds:
         ft:
@@ -87,14 +87,12 @@ content:
     label: hidden
     settings:
       responsive_image_style: d04_traditional
-      iframe_lazy: true
       icon: ''
       layout: ''
       thumbnail_style: ''
       view_mode: ''
       cache: 0
       current_view_mode: ''
-      optionset: default
       skin: ''
       style: ''
       background: false
@@ -102,16 +100,18 @@ content:
       box_caption_custom: ''
       box_style: ''
       box_media_style: ''
-      breakpoints: {  }
       caption: {  }
       image_style: ''
       media_switch: ''
       ratio: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
+      fx: ''
+      _uri: ''
+      breakpoints: {  }
       sizes: ''
-      grid: 0
       grid_header: ''
-      grid_medium: 0
-      grid_small: 0
     third_party_settings:
       ds:
         ft:
@@ -146,4 +146,5 @@ hidden:
   field_media_in_library: true
   field_media_video_file: true
   name: true
+  search_api_excerpt: true
   uid: true

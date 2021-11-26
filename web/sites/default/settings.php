@@ -797,6 +797,7 @@ if ($environment == 'live') {
 }
 
 $settings['config_sync_directory'] = '../config/sync';
+$settings['file_private_path'] = $app_root . '/../private';
 
 $settings['trusted_host_patterns'] = [
    '^.*\.mcgreenacres(bees)?\.com$',
