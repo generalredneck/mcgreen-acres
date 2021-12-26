@@ -22,12 +22,10 @@ mode: field_preview
 content:
   field_media_cover_image:
     type: image
-    weight: 1
-    region: content
     label: hidden
     settings:
-      image_style: field_preview
       image_link: ''
+      image_style: field_preview
     third_party_settings:
       ds:
         ft:
@@ -36,22 +34,22 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    weight: 1
+    region: content
   name:
     type: string
-    weight: 2
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   thumbnail:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: field_preview
       image_link: ''
+      image_style: field_preview
     third_party_settings:
       ds:
         ft:
@@ -60,6 +58,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_in_library: true

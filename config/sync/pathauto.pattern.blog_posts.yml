@@ -11,12 +11,12 @@ pattern: 'blog/[node:field_topic:entity:name]/[node:title]'
 selection_criteria:
   4acf96b8-1a40-43cd-a65e-6d47bc9a5f1b:
     id: node_type
-    bundles:
-      article: article
     negate: false
+    uuid: 4acf96b8-1a40-43cd-a65e-6d47bc9a5f1b
     context_mapping:
       node: node
-    uuid: 4acf96b8-1a40-43cd-a65e-6d47bc9a5f1b
+    bundles:
+      article: article
 selection_logic: and
 weight: -5
 relationships: {  }

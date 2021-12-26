@@ -27,88 +27,88 @@ bundle: bp_modal
 mode: default
 content:
   bp_background:
-    weight: 7
+    type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: list_key
+    weight: 7
     region: content
   bp_classes:
-    weight: 9
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 9
     region: content
   bp_gutter:
-    weight: 10
+    type: boolean
     label: hidden
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 10
     region: content
   bp_image_field:
-    weight: 8
+    type: entity_reference_entity_view
     label: hidden
     settings:
-      link: true
       view_mode: default
+      link: true
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 8
     region: content
   bp_modal_body:
     type: entity_reference_revisions_entity_view
-    weight: 4
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 4
     region: content
   bp_modal_button_text:
-    weight: 2
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   bp_modal_footer:
     type: entity_reference_revisions_entity_view
-    weight: 5
     label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 5
     region: content
   bp_modal_title:
-    weight: 3
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 3
     region: content
   bp_title:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   bp_title_status:
-    weight: 1
+    type: boolean
     label: hidden
     settings:
       format: true-false
-      format_custom_true: ''
       format_custom_false: ''
+      format_custom_true: ''
     third_party_settings:
       ds:
         ft:
@@ -117,14 +117,14 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    type: boolean
+    weight: 1
     region: content
   bp_width:
-    weight: 6
+    type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: list_key
+    weight: 6
     region: content
 hidden:
   created: true

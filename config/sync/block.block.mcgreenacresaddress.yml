@@ -17,6 +17,6 @@ plugin: 'simple_block:mcgreen_acres_address'
 settings:
   id: 'simple_block:mcgreen_acres_address'
   label: 'McGreen Acres  Address'
-  provider: simple_block
   label_display: '0'
+  provider: simple_block
 visibility: {  }

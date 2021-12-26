@@ -22,16 +22,14 @@ mode: teaser
 content:
   body:
     type: text_summary_or_trimmed
-    weight: 1
-    region: content
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
-    label: hidden
+    weight: 1
+    region: content
   field_images:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: hidden
     settings:
       view_mode: s09_standard
@@ -44,10 +42,11 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    weight: 0
+    region: content
   field_tags:
     type: entity_reference_label
-    weight: 3
-    region: content
+    label: hidden
     settings:
       link: true
     third_party_settings:
@@ -59,11 +58,10 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    label: hidden
+    weight: 3
+    region: content
   field_topic:
     type: entity_reference_label
-    weight: 2
-    region: content
     label: hidden
     settings:
       link: true
@@ -75,11 +73,13 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-  links:
-    weight: 4
+    weight: 2
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 4
+    region: content
 hidden:
   field_disqus_comment: true
   search_api_excerpt: true

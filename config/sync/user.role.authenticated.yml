@@ -1,7 +1,39 @@
 uuid: 6cac39b4-d4ec-41b7-a99d-ee3ac88e73d9
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
+    - filter.format.full_html
+    - filter.format.restricted_html
+    - media.type.audio
+    - media.type.file
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.article
+    - node.type.page
+    - taxonomy.vocabulary.blog_topics
+    - taxonomy.vocabulary.tags
+  module:
+    - contact
+    - disqus
+    - dropzonejs
+    - entity_browser
+    - file
+    - filter
+    - google_analytics
+    - media
+    - node
+    - paragraphs
+    - paragraphs_previewer
+    - path
+    - quickedit
+    - redirect
+    - shortcut
+    - system
+    - taxonomy
+    - toolbar
 _core:
   default_config_hash: btW6TFHajhy7Eo6YUvdFiPh4TcPggo8GBXYctjV6zag
 id: authenticated
@@ -9,7 +41,6 @@ label: 'Authenticated user'
 weight: 1
 is_admin: false
 permissions:
-  - 'access comments'
   - 'access content'
   - 'access content overview'
   - 'access editor_media_browser entity browser pages'
@@ -74,11 +105,8 @@ permissions:
   - 'edit terms in blog_topics'
   - 'edit terms in tags'
   - 'opt-in or out of google analytics tracking'
-  - 'post comments'
   - 'revert article revisions'
   - 'revert page revisions'
-  - 'search content'
-  - 'skip comment approval'
   - 'update media'
   - 'use text format basic_html'
   - 'use text format full_html'

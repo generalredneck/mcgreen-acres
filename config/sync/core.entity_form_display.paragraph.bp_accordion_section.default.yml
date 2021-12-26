@@ -18,25 +18,25 @@ content:
   bp_accordion_section_body:
     type: paragraphs
     weight: 1
+    region: content
     settings:
       title: Component
       title_plural: Components
       edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
       add_mode: modal
       form_display_mode: default
       default_paragraph_type: _none
-      closed_mode: summary
-      autocollapse: none
     third_party_settings: {  }
-    region: content
   bp_accordion_section_title:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

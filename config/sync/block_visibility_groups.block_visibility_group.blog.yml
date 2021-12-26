@@ -12,23 +12,23 @@ logic: or
 conditions:
   d5e1a55a-e37e-4697-8ad8-18cd4cd1254c:
     id: node_type
-    bundles:
-      article: article
     negate: false
+    uuid: d5e1a55a-e37e-4697-8ad8-18cd4cd1254c
     context_mapping:
       node: '@node.node_route_context:node'
-    uuid: d5e1a55a-e37e-4697-8ad8-18cd4cd1254c
+    bundles:
+      article: article
   179ee528-78f9-4191-b8bb-6bccc26168db:
     id: 'entity_bundle:taxonomy_term'
+    negate: false
+    uuid: 179ee528-78f9-4191-b8bb-6bccc26168db
+    context_mapping: {  }
     bundles:
       blog_topics: blog_topics
-    negate: false
-    context_mapping: {  }
-    uuid: 179ee528-78f9-4191-b8bb-6bccc26168db
   8331f8ba-d026-4496-9b6e-6146fab44327:
     id: request_path
-    pages: "/blog\r\n/blog/*"
     negate: false
-    context_mapping: {  }
     uuid: 8331f8ba-d026-4496-9b6e-6146fab44327
+    context_mapping: {  }
+    pages: "/blog\r\n/blog/*"
 allow_other_conditions: false

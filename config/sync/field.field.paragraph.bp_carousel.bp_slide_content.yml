@@ -34,7 +34,6 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       bp_simple: bp_simple
       bp_image: bp_image
@@ -48,53 +47,54 @@ settings:
       bp_tabs: bp_tabs
       bp_view: bp_view
       bp_webform: bp_webform
+    negate: 0
     target_bundles_drag_drop:
-      bp_simple:
-        enabled: true
-        weight: -33
-      bp_image:
-        enabled: true
-        weight: -32
       bp_accordion:
-        enabled: true
         weight: -31
-      carousel_cta:
         enabled: true
-        weight: -30
-      bp_columns:
-        enabled: true
-        weight: -29
-      bp_columns_three_uneven:
-        enabled: true
-        weight: -28
-      bp_columns_two_uneven:
-        enabled: true
-        weight: -27
-      bp_block:
-        enabled: true
-        weight: -26
-      bp_modal:
-        enabled: true
-        weight: -25
-      bp_tabs:
-        enabled: true
-        weight: -24
-      bp_view:
-        enabled: true
-        weight: -23
-      bp_webform:
-        enabled: true
-        weight: -22
       bp_accordion_section:
         weight: -21
         enabled: false
+      bp_block:
+        weight: -26
+        enabled: true
       bp_carousel:
         weight: -20
-        enabled: false
-      bp_tab_section:
-        weight: -19
         enabled: false
       bp_column_wrapper:
         weight: -18
         enabled: false
+      bp_columns:
+        weight: -29
+        enabled: true
+      bp_columns_three_uneven:
+        weight: -28
+        enabled: true
+      bp_columns_two_uneven:
+        weight: -27
+        enabled: true
+      bp_image:
+        weight: -32
+        enabled: true
+      bp_modal:
+        weight: -25
+        enabled: true
+      bp_simple:
+        weight: -33
+        enabled: true
+      bp_tab_section:
+        weight: -19
+        enabled: false
+      bp_tabs:
+        weight: -24
+        enabled: true
+      bp_view:
+        weight: -23
+        enabled: true
+      bp_webform:
+        weight: -22
+        enabled: true
+      carousel_cta:
+        weight: -30
+        enabled: true
 field_type: entity_reference_revisions

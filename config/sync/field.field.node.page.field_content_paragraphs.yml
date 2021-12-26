@@ -30,7 +30,6 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       bp_accordion: bp_accordion
       bp_block: bp_block
@@ -42,19 +41,23 @@ settings:
       bp_tabs: bp_tabs
       bp_view: bp_view
       bp_webform: bp_webform
+    negate: 0
     target_bundles_drag_drop:
       bp_accordion:
-        enabled: true
         weight: 16
+        enabled: true
       bp_accordion_section:
         weight: 17
         enabled: false
       bp_block:
-        enabled: true
         weight: 18
-      bp_carousel:
         enabled: true
+      bp_carousel:
         weight: 19
+        enabled: true
+      bp_column_wrapper:
+        weight: 23
+        enabled: true
       bp_columns:
         weight: 20
         enabled: false
@@ -64,28 +67,25 @@ settings:
       bp_columns_two_uneven:
         weight: 22
         enabled: false
-      bp_column_wrapper:
-        enabled: true
-        weight: 23
       bp_image:
-        enabled: true
         weight: 24
+        enabled: true
       bp_modal:
-        enabled: true
         weight: 25
+        enabled: true
       bp_simple:
-        enabled: true
         weight: 26
-      bp_tabs:
         enabled: true
-        weight: 27
       bp_tab_section:
         weight: 28
         enabled: false
+      bp_tabs:
+        weight: 27
+        enabled: true
       bp_view:
-        enabled: true
         weight: 29
-      bp_webform:
         enabled: true
+      bp_webform:
         weight: 30
+        enabled: true
 field_type: entity_reference_revisions

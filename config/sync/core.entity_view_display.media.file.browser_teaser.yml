@@ -19,20 +19,19 @@ bundle: file
 mode: browser_teaser
 content:
   name:
-    label: hidden
     type: string
-    weight: 1
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 1
     region: content
   thumbnail:
     type: image
-    weight: 0
     label: hidden
     settings:
-      image_style: d03_traditional
       image_link: ''
+      image_style: d03_traditional
     third_party_settings:
       ds:
         ft:
@@ -41,6 +40,7 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
+    weight: 0
     region: content
 hidden:
   created: true

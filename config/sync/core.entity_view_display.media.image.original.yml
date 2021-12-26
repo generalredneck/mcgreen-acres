@@ -17,37 +17,37 @@ bundle: image
 mode: original
 content:
   field_media_image:
-    weight: 0
+    type: blazy
     label: hidden
     settings:
-      image_style: ''
+      caption: {  }
       icon: ''
       layout: ''
-      thumbnail_style: ''
       view_mode: ''
       cache: 0
       current_view_mode: ''
       skin: ''
+      fx: ''
       style: ''
       background: false
       box_caption: ''
       box_caption_custom: ''
-      box_style: ''
       box_media_style: ''
-      caption: {  }
+      responsive_image_style: ''
+      box_style: ''
+      image_style: ''
       media_switch: ''
       ratio: ''
-      responsive_image_style: ''
-      grid: ''
-      grid_medium: ''
-      grid_small: ''
-      fx: ''
+      thumbnail_style: ''
       _uri: ''
       breakpoints: {  }
       sizes: ''
       grid_header: ''
+      grid: ''
+      grid_medium: ''
+      grid_small: ''
     third_party_settings: {  }
-    type: blazy
+    weight: 0
     region: content
 hidden:
   created: true

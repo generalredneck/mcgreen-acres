@@ -18,6 +18,7 @@ bundle: image
 mode: default
 content:
   field_media_image:
+    type: responsive_image
     label: visually_hidden
     settings:
       responsive_image_style: default
@@ -30,7 +31,6 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    type: responsive_image
     weight: 1
     region: content
 hidden:

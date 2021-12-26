@@ -34,7 +34,7 @@ bundle: bp_simple
 mode: preview
 content:
   bp_title:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
@@ -44,30 +44,30 @@ content:
           id: expert
           settings:
             lb: ''
-            prefix: ''
+            lbw: false
             lbw-el: ''
             lbw-cl: ''
             lbw-at: ''
+            lb-col: false
+            ow: false
             ow-el: ''
             ow-cl: ''
             ow-at: ''
+            ow-def-at: false
+            ow-def-cl: false
+            fis: false
             fis-el: ''
             fis-cl: ''
             fis-at: ''
+            fis-def-at: false
             fi: true
             fi-el: h5
             fi-cl: ''
             fi-at: ''
-            suffix: ''
-            lbw: false
-            lb-col: false
-            ow: false
-            ow-def-at: false
-            ow-def-cl: false
-            fis: false
-            fis-def-at: false
             fi-def-at: false
-    type: string
+            prefix: ''
+            suffix: ''
+    weight: 0
     region: content
 hidden:
   bp_background: true

@@ -16,11 +16,11 @@ third_party_settings:
   ds:
     layout:
       id: onecol
-      path: profiles/varbase/modules/contrib/panels/layouts/layout_onecol
       library: layout_discovery/onecol
       disable_css: false
       entity_classes: all_classes
       settings: {  }
+      path: profiles/varbase/modules/contrib/panels/layouts/layout_onecol
     regions:
       middle:
         - field_media_image
@@ -35,47 +35,47 @@ bundle: image
 mode: token
 content:
   created:
-    label: hidden
     type: timestamp
-    weight: 3
+    label: hidden
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 3
     region: content
   field_media_image:
-    weight: 0
+    type: image
     label: above
     settings:
-      image_style: ''
       image_link: ''
+      image_style: ''
     third_party_settings: {  }
-    type: image
+    weight: 0
     region: content
   name:
-    label: hidden
     type: string
-    weight: 1
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 1
     region: content
   thumbnail:
     type: responsive_image
-    weight: 0
     label: above
     settings:
       responsive_image_style: ''
       image_link: ''
     third_party_settings: {  }
+    weight: 0
     region: content
   uid:
-    label: hidden
     type: author
-    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   field_media_in_library: true

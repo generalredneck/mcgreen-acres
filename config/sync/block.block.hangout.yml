@@ -18,11 +18,11 @@ plugin: 'simple_block:footer_social'
 settings:
   id: 'simple_block:footer_social'
   label: 'Hang Out'
-  provider: simple_block
   label_display: visible
+  provider: simple_block
 visibility:
   condition_group:
     id: condition_group
     negate: false
-    block_visibility_group: ''
     context_mapping: {  }
+    block_visibility_group: ''

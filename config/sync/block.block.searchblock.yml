@@ -18,11 +18,11 @@ plugin: search_block
 settings:
   id: search_block
   label: Search
-  provider: mcgreen_acres_custom
   label_display: '0'
+  provider: mcgreen_acres_custom
 visibility:
   condition_group:
     id: condition_group
     negate: false
-    block_visibility_group: blog
     context_mapping: {  }
+    block_visibility_group: blog

@@ -19,13 +19,13 @@ plugin: 'views_block:tags-tag_block'
 settings:
   id: 'views_block:tags-tag_block'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
   views_label: ''
   items_per_page: none
 visibility:
   condition_group:
     id: condition_group
     negate: false
-    block_visibility_group: blog
     context_mapping: {  }
+    block_visibility_group: blog

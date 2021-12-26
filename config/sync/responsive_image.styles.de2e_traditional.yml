@@ -13,8 +13,6 @@ id: de2e_traditional
 label: 'Display Edge-to-Edge responsive traditional 4:3'
 image_style_mappings:
   -
-    breakpoint_id: responsive_image.viewport_sizing
-    multiplier: 1x
     image_mapping_type: sizes
     image_mapping:
       sizes: 100vw
@@ -23,5 +21,7 @@ image_style_mappings:
         - d10_traditional
         - d12_traditional
         - de2e_traditional
+    breakpoint_id: responsive_image.viewport_sizing
+    multiplier: 1x
 breakpoint_group: responsive_image
 fallback_image_style: de2e_traditional

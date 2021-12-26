@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: Vx5EGxHruJuiMSwDv8Mg3PBf9RaPo8o2MCj8_QeTUhg
 account: UA-148458829-1
 premium: false
 domain_mode: 0
@@ -36,5 +38,3 @@ codesnippet:
 translation_set: false
 cache: false
 debug: false
-_core:
-  default_config_hash: Vx5EGxHruJuiMSwDv8Mg3PBf9RaPo8o2MCj8_QeTUhg

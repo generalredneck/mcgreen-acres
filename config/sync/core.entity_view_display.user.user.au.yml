@@ -21,18 +21,17 @@ mode: au
 content:
   field_author_description:
     type: text_default
-    weight: 1
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
   user_picture:
     type: image
-    weight: 0
-    region: content
+    label: hidden
     settings:
-      image_style: d02_square
       image_link: ''
+      image_style: d02_square
     third_party_settings:
       ds:
         ft:
@@ -41,7 +40,8 @@ content:
             lb: ''
             lb-col: false
             classes: {  }
-    label: hidden
+    weight: 0
+    region: content
 hidden:
   member_for: true
   search_api_excerpt: true

@@ -23,15 +23,18 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       bp_accordion_section: bp_accordion_section
+    negate: 0
     target_bundles_drag_drop:
-      bp_accordion_section:
-        enabled: true
-        weight: 10
       bp_accordion:
         weight: 11
+        enabled: false
+      bp_accordion_section:
+        weight: 10
+        enabled: true
+      bp_block:
+        weight: 18
         enabled: false
       bp_carousel:
         weight: 13
@@ -39,32 +42,29 @@ settings:
       bp_columns:
         weight: 14
         enabled: false
-      bp_image:
-        weight: 16
-        enabled: false
-      bp_simple:
-        weight: 17
-        enabled: false
-      bp_view:
-        weight: 18
-        enabled: false
-      bp_block:
-        weight: 18
-        enabled: false
       bp_columns_three_uneven:
         weight: 21
         enabled: false
       bp_columns_two_uneven:
         weight: 22
         enabled: false
+      bp_image:
+        weight: 16
+        enabled: false
       bp_modal:
         weight: 24
+        enabled: false
+      bp_simple:
+        weight: 17
         enabled: false
       bp_tab_section:
         weight: 26
         enabled: false
       bp_tabs:
         weight: 27
+        enabled: false
+      bp_view:
+        weight: 18
         enabled: false
       bp_webform:
         weight: 29

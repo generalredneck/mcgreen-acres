@@ -1,3 +1,6 @@
+_core:
+  default_config_hash: yTxtFqBHnEWxQswuWvkjE8mKw2t8oKuCL1q8KnfHuGE
+langcode: en
 uuid: a2d3c6d5-ea5d-4f91-931b-a3648056dee3
 name: 'McGreen Acres'
 mail: admin@example.com
@@ -8,7 +11,4 @@ page:
   front: /node/1
 admin_compact_mode: false
 weight_select_max: 100
-langcode: en
 default_langcode: en
-_core:
-  default_config_hash: yTxtFqBHnEWxQswuWvkjE8mKw2t8oKuCL1q8KnfHuGE

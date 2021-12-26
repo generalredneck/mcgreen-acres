@@ -1,12 +1,12 @@
 admin_css: true
-responsive_image: true
 one_pixel: true
+placeholder: ''
+responsive_image: true
 blazy:
   loadInvisible: false
   offset: 100
   saveViewportOffsetDelay: 50
   validateDelay: 25
-placeholder: ''
 io:
   enabled: false
   unblazy: false
