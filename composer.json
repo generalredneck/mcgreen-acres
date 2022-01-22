@@ -48,7 +48,7 @@
         "drupal/twig_tweak": "^2.4",
         "drupal/varbase_bootstrap_paragraphs": "^9.0",
         "drupal/xmlsitemap": "^1.0@alpha",
-        "drush/drush": "^9.7.1 | ^10.0.0",
+        "drush/drush": "^9.7.1 | ^10.0.0 | ^11.0.0",
         "enyo/dropzone": "^5.8",
         "npm-asset/blazy": "^1.6.0",
         "oomphinc/composer-installers-extender": "^2.0",
@@ -62,6 +62,15 @@
         "sort-packages": true,
         "platform": {
             "php": "7.4"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "oomphinc/composer-installers-extender": true,
+            "drupal/console-extend-plugin": true,
+            "drupal/drupal-library-installer-plugin": true,
+            "drupal/core-composer-scaffold": true,
+            "zaporylie/composer-drupal-optimizations": true
         }
     },
     "extra": {

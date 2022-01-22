@@ -21,7 +21,6 @@ module:
   ctools: 0
   datetime: 0
   dblog: 0
-  devel: 0
   diff: 0
   disqus: 0
   dropzonejs: 0
@@ -117,4 +116,5 @@ theme:
   bartik: 0
   seven: 0
   mcgreen_acres_theme: 0
+  claro: 0
 profile: standard
