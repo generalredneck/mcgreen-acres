@@ -31,6 +31,7 @@
         "drupal/devel_entity_updates": "^3.0",
         "drupal/diff": "^1.0@RC",
         "drupal/disqus": "^1.0@RC",
+        "drupal/drd_agent": "^4.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/evercurrent": "^2.0",
         "drupal/google_analytics": "^3.0",
