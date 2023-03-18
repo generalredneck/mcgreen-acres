@@ -1,0 +1,33 @@
+<?php
+
+use Drupal\drd_agent\Agent\Remote\Requirements;
+
+/**
+ * Implements hook_requirements().
+ *
+ * {@inheritdoc}
+ */
+function drd_agent_requirements($phase) {
+  $requirements = [];
+  if (!empty($_SERVER['HTTP_X_DRD_VERSION']) && $phase === 'runtime') {
+    $requirements = Requirements::create(Drupal::getContainer())->collect();
+  }
+  return $requirements;
+}
+
+/**
+ * #3195153: Migrate agent settings from config to state.
+ */
+function drd_agent_update_8001(&$sandbox) {
+  $config = \Drupal::service('config.factory')->getEditable('drd_agent.settings');
+  $ott = $config->get('ott');
+  $authorised = $config->get('authorised') ?? [];
+  $debug_mode = $config->get('debug_mode');
+
+  $state = \Drupal::state();
+  $state->set('drd_agent.ott',$ott);
+  $state->set('drd_agent.authorised',$authorised);
+  $state->set('drd_agent.debug_mode',$debug_mode);
+
+  $config->delete();
+}
