@@ -4,6 +4,7 @@ set -eo pipefail
 
 mkdir -p ~/.ssh
 printf "Host *\nForwardAgent yes" >> ~/.ssh/config
+DRUSH_CMD='/opt/alt/php81/usr/bin/php ./vendor/bin/drush'
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 if [[ -z "$DOCROOT" ]]; then
@@ -31,10 +32,7 @@ fi
 if [[ -z "$REMOTE_BACKUP_DIRECTORY" ]]; then
   REMOTE_BACKUP_DIRECTORY="$REMOTE_PROJECT_ROOT/backups"
 fi
-if [[ -z "$DRUSH_CMD" ]]; then
-  DRUSH_CMD='/opt/alt/php81/usr/bin/php ./vendor/bin/drush'
-fi
-if [[ -z "$SYNC_CONIG" ]]; then
+if [[ -z "$SYNC_CONFIG" ]]; then
   SYNC_CONFIG="YES"
 fi
 REMOTE_ENV_NAME="live"

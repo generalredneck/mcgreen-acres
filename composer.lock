@@ -7366,12 +7366,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fourkitchens/pots.git",
-                "reference": "612e979c7a9271eba5d0416154a66d0b29ecc600"
+                "reference": "e426ff35abbbbdafcdf209616277f41af5821f68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/612e979c7a9271eba5d0416154a66d0b29ecc600",
-                "reference": "612e979c7a9271eba5d0416154a66d0b29ecc600",
+                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/e426ff35abbbbdafcdf209616277f41af5821f68",
+                "reference": "e426ff35abbbbdafcdf209616277f41af5821f68",
                 "shasum": ""
             },
             "conflict": {
@@ -7393,7 +7393,7 @@
                 "issues": "https://github.com/fourkitchens/pots/issues",
                 "source": "https://github.com/fourkitchens/pots/tree/general-deploy"
             },
-            "time": "2024-01-29T21:00:20+00:00"
+            "time": "2024-06-30T21:27:23+00:00"
         },
         {
             "name": "grasmash/expander",
