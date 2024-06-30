@@ -32,7 +32,7 @@ if [[ -z "$REMOTE_BACKUP_DIRECTORY" ]]; then
   REMOTE_BACKUP_DIRECTORY="$REMOTE_PROJECT_ROOT/backups"
 fi
 if [[ -z "$DRUSH_CMD" ]]; then
-  DRUSH_CMD='./vendor/bin/drush'
+  DRUSH_CMD='/opt/alt/php81/usr/bin/php ./vendor/bin/drush'
 fi
 if [[ -z "$SYNC_CONIG" ]]; then
   SYNC_CONFIG="YES"
