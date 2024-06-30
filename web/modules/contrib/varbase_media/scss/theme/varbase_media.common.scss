@@ -1,0 +1,279 @@
+@import "../defaults";   // Global defaults.
+
+// Varbase media common library style.
+// =============================================================================
+
+// Alignment classes for embedded entities.
+
+// Image align center style.
+.embedded-entity {
+  &.align-center {
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    figcaption {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+  }
+  
+  &.align-right {
+    margin: 0 0 1rem 1rem;
+    
+    figcaption {
+      text-align: center;
+    }
+  }
+  
+  &.align-left {
+    margin: 0 8px 8px 0;
+    
+    figcaption {
+      text-align: center;
+    }
+  }
+}
+
+picture {
+  &.align-right {
+    margin: 0 0 1rem 1rem;
+    
+    figcaption {
+      text-align: center;
+    }
+  }
+
+  &.align-left {
+    margin: 0 1rem 1rem 0;
+    
+    figcaption {
+      text-align: center;
+    }
+  }
+}
+
+figure {
+  &.align-center {
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    figcaption {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+  }
+  
+  &.align-right {
+    display:table;
+    margin: 0 0 1rem 1rem;
+    
+    figcaption {
+      display: table-caption;
+      caption-side: bottom;
+    }
+  }
+
+  &.align-left {
+    display:table;
+    margin: 0 1rem 1rem 0;
+    
+    figcaption {
+      display: table-caption;
+      caption-side: bottom;
+    }
+  }
+}
+
+img {
+  &.align-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.align-right {
+    margin: 0 0 1rem 1rem;
+  }
+}
+
+// Image caption Right and Left style (Fit Image).
+figure {
+  
+  &.align-right,
+  &.align-left {
+    display:table;
+
+    figcaption {
+      display: table-caption;
+      caption-side: bottom;
+      text-align: center;
+    }
+  }
+
+  &.caption.caption-drupal-media {
+
+    &.align-center {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+}
+
+.media {
+  &.media--type-remote-video,
+  &.media--type-video {
+    width: 100%;
+    
+    &.align-center {
+
+      figcaption {
+        display: table-caption;
+        caption-side: bottom;
+        text-align: center;
+      }
+    }
+
+    &.align-right {
+      display:table;
+      margin: 0 0 1rem 1rem;
+
+      figcaption {
+        display: table-caption;
+        caption-side: bottom;
+        text-align: center;
+      }
+    }
+
+    &.align-left {
+      display:table;
+      margin: 0 1rem 1rem 0;
+
+      figcaption {
+        display: table-caption;
+        caption-side: bottom;
+        text-align: center;
+      }
+    }
+
+    &.media--view-mode-large {
+      width: 100%;
+    }
+    // Responsive large video with containers that are 100% wide until a breakpoint.
+    @each $breakpoint, $container-max-width in $container-max-widths {
+      // Generate media query if needed.
+      @include media-breakpoint-up($breakpoint) {
+        &.media--view-mode-large {
+          min-width: $container-max-width;
+          max-width: $container-max-width;
+
+          .varbase-video-player {
+            video,
+            iframe {
+              min-width: $container-max-width;
+              max-width: $container-max-width;
+            }
+          }
+        }
+      }
+    }
+
+    // Responsive medium video with containers that are 50% wide until a breakpoint.
+    @each $breakpoint, $container-max-width in $container-max-widths {
+      // Generate media query if needed.
+      @include media-breakpoint-up($breakpoint) {
+        &.media--view-mode-medium {
+          min-width: math.div($container-max-width,$grid-columns) * 6;
+          max-width: math.div($container-max-width,$grid-columns) * 6;
+
+          .varbase-video-player {
+            video,
+            iframe {
+              min-width: math.div($container-max-width,$grid-columns) * 6;
+              max-width: math.div($container-max-width,$grid-columns) * 6;
+            }
+          }
+        }
+      }
+    }
+
+    // Responsive small video with containers that are 25% wide until a breakpoint.
+    @each $breakpoint, $container-max-width in $container-max-widths {
+      // Generate media query if needed.
+      @include media-breakpoint-up($breakpoint) {
+        &.media--view-mode-small {
+          min-width: math.div($container-max-width,$grid-columns) * 3;
+          max-width: math.div($container-max-width,$grid-columns) * 3;
+
+          .varbase-video-player {
+            video,
+            iframe {
+              min-width: math.div($container-max-width,$grid-columns) * 3;
+              max-width: math.div($container-max-width,$grid-columns) * 3;
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  &.media--type-image {
+
+    &.media--view-mode-large {
+      width: 100%;
+    }
+    // Responsive large image with containers that are 100% wide until a breakpoint.
+    @each $breakpoint, $container-max-width in $container-max-widths {
+      // Generate media query if needed.
+      @include media-breakpoint-up($breakpoint) {
+        &.media--view-mode-large {
+          max-width: $container-max-width;
+        }
+      }
+    }
+
+    &.media--view-mode-medium {
+      width: 50%;
+    }
+    // Responsive medium image with containers that are 50% wide until a breakpoint.
+    @each $breakpoint, $container-max-width in $container-max-widths {
+      // Generate media query if needed.
+      @include media-breakpoint-up($breakpoint) {
+        &.media--view-mode-medium {
+          min-width: math.div($container-max-width,$grid-columns) * 6;
+        }
+      }
+    }
+
+    &.media--view-mode-small {
+      width: 25%;
+    }
+    // Responsive small image with containers that are 25% wide until a breakpoint.
+    @each $breakpoint, $container-max-width in $container-max-widths {
+      // Generate media query if needed.
+      @include media-breakpoint-up($breakpoint) {
+        &.media--view-mode-small {
+          min-width: math.div($container-max-width,$grid-columns) * 3;
+        }
+      }
+    }
+  }
+
+  &.media--type-remote-video
+  &.media--bundle--image {
+    .blazy img {
+      width: auto;
+      height: auto;
+    }
+  }
+}
