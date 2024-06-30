@@ -19,11 +19,11 @@ if [[ -z "$DEPLOY_BRANCH" ]]; then
   DEPLOY_BRANCH="$CI_BRANCH"
 fi
 
-if [[ -z "$BACKUP_SCRIPT_PATH" ]]; then
-  BACKUP_SCRIPT_PATH="$SCRIPT_DIR/remote/backup"
-fi
+# if [[ -z "$BACKUP_SCRIPT_PATH" ]]; then
+#   BACKUP_SCRIPT_PATH="$SCRIPT_DIR/remote/backup"
+# fi
 if [[ -z "$DEPLOY_SCRIPT_PATH" ]]; then
-  DEPLOY_SCRIPT_PATH="$SCRIPT_DIR/remote/remote_deploy"
+  DEPLOY_SCRIPT_PATH="$( dirname $( dirname $SCRIPT_DIR ) )/vendor/foukitchens/pots/scripts/general/remote/remote_deploy"
 fi
 if [[ -z "$REMOTE_BACKUP_DIRECTORY" ]]; then
   REMOTE_BACKUP_DIRECTORY="$REMOTE_PROJECT_ROOT/backups"
