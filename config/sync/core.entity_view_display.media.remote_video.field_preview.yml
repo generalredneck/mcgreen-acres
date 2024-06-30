@@ -26,6 +26,8 @@ content:
     settings:
       image_link: ''
       image_style: field_preview
+      image_loading:
+        attribute: lazy
     third_party_settings:
       ds:
         ft:
@@ -50,6 +52,8 @@ content:
     settings:
       image_link: ''
       image_style: field_preview
+      image_loading:
+        attribute: lazy
     third_party_settings:
       ds:
         ft:

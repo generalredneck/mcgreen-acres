@@ -3,7 +3,7 @@ type: theme
 description: 'Custom theme for McGreen Acres website'
 package: McGreen Acres
 core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10 || ^11
 libraries:
   - mcgreen_acres_theme/global-styling
   - mcgreen_acres_theme/global-scripts

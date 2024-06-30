@@ -3,7 +3,7 @@ recipe: drupal8
 config:
   webroot: web
   xdebug: true
-  php: "7.4"
+  php: "8.1"
   composer_version: 2
 tooling:
   drush:

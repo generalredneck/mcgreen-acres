@@ -1,9 +1,0 @@
-send: 0
-listen: false
-target_address: 'http://live-evercurrent-clone.pantheonsite.io'
-key: ''
-status: 1
-interval: '0'
-_core:
-  default_config_hash: exrIIsNf76twA5SJSV9vWwBpW1bKN0wNXlxRgGfRbNw
-override: 0

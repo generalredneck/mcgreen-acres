@@ -83,6 +83,7 @@ display:
           batch: true
           batch_size: 50
           form_step: true
+          ajax_loader: false
           buttons: false
           action_title: Action
           clear_on_exposed: false
@@ -143,6 +144,8 @@ display:
           settings:
             image_link: ''
             image_style: thumbnail
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -207,6 +210,8 @@ display:
           settings:
             image_link: ''
             image_style: thumbnail
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -271,6 +276,8 @@ display:
           settings:
             image_link: ''
             image_style: ''
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -727,7 +734,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               name:
                 plugin_id: default
@@ -736,7 +745,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               bundle:
                 plugin_id: default
@@ -745,7 +756,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               langcode:
                 plugin_id: default
@@ -754,7 +767,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               created:
                 plugin_id: bef_datepicker
@@ -763,7 +778,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               created_1:
                 plugin_id: bef_datepicker
@@ -772,7 +789,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
       access:
         type: perm
@@ -1325,6 +1344,8 @@ display:
           settings:
             image_link: ''
             image_style: medium
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true

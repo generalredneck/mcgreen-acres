@@ -47,6 +47,8 @@ content:
     settings:
       image_link: ''
       image_style: d03_traditional
+      image_loading:
+        attribute: lazy
     third_party_settings:
       ds:
         ft:
@@ -92,6 +94,8 @@ content:
     settings:
       image_link: ''
       image_style: d03_traditional
+      image_loading:
+        attribute: lazy
     third_party_settings:
       ds:
         ft:

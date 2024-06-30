@@ -198,7 +198,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               name:
                 plugin_id: default
@@ -207,7 +209,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               bundle:
                 plugin_id: default
@@ -216,7 +220,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               langcode:
                 plugin_id: default
@@ -225,7 +231,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               created:
                 plugin_id: bef_datepicker
@@ -234,7 +242,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
               created_1:
                 plugin_id: bef_datepicker
@@ -243,7 +253,9 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
+                  collapsible_disable_automatic_open: false
                   is_secondary: false
       access:
         type: perm
@@ -820,6 +832,7 @@ display:
           batch: true
           batch_size: 50
           form_step: true
+          ajax_loader: false
           buttons: false
           action_title: Action
           clear_on_exposed: false
@@ -1067,6 +1080,16 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+      sorts:
+        created:
+          expose:
+            field_identifier: created
+        name:
+          expose:
+            field_identifier: name
+        name_1:
+          expose:
+            field_identifier: name_1
       filters:
         status:
           id: status
@@ -1722,6 +1745,16 @@ display:
         type: perm
         options:
           perm: 'view media'
+      sorts:
+        created:
+          expose:
+            field_identifier: created
+        name:
+          expose:
+            field_identifier: name
+        name_1:
+          expose:
+            field_identifier: name_1
       arguments:
         bundle:
           id: bundle
@@ -2155,6 +2188,8 @@ display:
           settings:
             image_link: ''
             image_style: media_library
+            image_loading:
+              attribute: lazy
         name:
           id: name
           table: media_field_data
@@ -2197,6 +2232,16 @@ display:
         type: perm
         options:
           perm: 'view media'
+      sorts:
+        created:
+          expose:
+            field_identifier: created
+        name:
+          expose:
+            field_identifier: name
+        name_1:
+          expose:
+            field_identifier: name_1
       arguments:
         bundle:
           id: bundle

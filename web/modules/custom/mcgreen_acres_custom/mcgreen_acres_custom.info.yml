@@ -2,5 +2,5 @@ name: 'McGreen Acres Custom'
 type: module
 description: 'Custom functionality for McGreen Acres site.'
 core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10 || ^11
 package: 'McGreen Acres'

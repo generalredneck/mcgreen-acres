@@ -739,8 +739,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
               bundle:
                 plugin_id: default
                 advanced:
@@ -748,8 +750,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
       access:
         type: perm
         options:
@@ -1353,8 +1357,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
       access:
         type: perm
         options:
@@ -1846,8 +1852,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
       access:
         type: perm
         options:
@@ -2419,8 +2427,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
               bundle_1:
                 plugin_id: default
                 advanced:
@@ -2428,8 +2438,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
       access:
         type: perm
         options:
@@ -3053,8 +3065,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
               bundle:
                 plugin_id: default
                 advanced:
@@ -3062,8 +3076,10 @@ display:
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
                   collapsible: false
                   is_secondary: false
+                  collapsible_disable_automatic_open: false
       access:
         type: perm
         options:

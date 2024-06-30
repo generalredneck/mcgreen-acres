@@ -50,6 +50,8 @@ content:
     settings:
       image_link: ''
       image_style: ''
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
@@ -79,3 +81,4 @@ content:
     region: content
 hidden:
   field_media_in_library: true
+  search_api_excerpt: true

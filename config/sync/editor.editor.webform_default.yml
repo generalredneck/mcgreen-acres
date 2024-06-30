@@ -1,14 +1,12 @@
-uuid: 97ab5a71-5b4e-4ad6-a045-00e18fdc8337
+uuid: 140f9f20-38e1-49f7-a2b8-9efb6cee1e08
 langcode: en
 status: true
 dependencies:
   config:
-    - filter.format.basic_html
+    - filter.format.webform_default
   module:
     - ckeditor
-_core:
-  default_config_hash: AqlPmO16LvJI4D0Ih6u4GFQIzqr5OnLgAUSjcUGWk2g
-format: basic_html
+format: webform_default
 editor: ckeditor
 settings:
   toolbar:
@@ -17,9 +15,16 @@ settings:
         -
           name: Formatting
           items:
+            - Format
             - Bold
             - Italic
-            - Styles
+            - Superscript
+            - Subscript
+        -
+          name: Media
+          items:
+            - SpecialChar
+            - ImceImage
         -
           name: Linking
           items:
@@ -28,29 +33,21 @@ settings:
         -
           name: Lists
           items:
-            - BulletedList
             - NumberedList
+            - BulletedList
         -
-          name: Media
+          name: Indentation
           items:
-            - Blockquote
-            - media
+            - Outdent
+            - Indent
         -
           name: 'Block Formatting'
           items:
-            - Format
+            - Blockquote
         -
           name: Tools
           items:
             - Source
-  plugins:
-    stylescombo:
-      styles: ''
-image_upload:
-  status: true
-  scheme: public
-  directory: inline-images
-  max_size: ''
-  max_dimensions:
-    width: null
-    height: null
+            - Maximize
+  plugins: {  }
+image_upload: {  }
