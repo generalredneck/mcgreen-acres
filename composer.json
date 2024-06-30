@@ -131,7 +131,6 @@
         ],
         "build-assets": "echo No assets to build",
         "lint": [
-            "./node_modules/.bin/eslint ./",
             "find web/modules/custom web/themes/custom \\( -iname  '*.php' -o -iname '*.inc' -o -iname '*.module' -o -iname '*.install'-o -iname '*.theme' \\) '!' -path '*/node_modules/*' -print0 | xargs -0 -n1 -P8 php -l"
         ],
         "code-sniff": [
