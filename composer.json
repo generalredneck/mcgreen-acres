@@ -50,6 +50,7 @@
         "drupal/xmlsitemap": "^1.0@alpha",
         "drush/drush": "^11 || ^12 || ^13",
         "enyo/dropzone": "^5.8",
+        "fourkitchens/pots": "general-deploy-dev",
         "npm-asset/blazy": "^1.6.0",
         "oomphinc/composer-installers-extender": "^2.0",
         "vlucas/phpdotenv": "^4.0",

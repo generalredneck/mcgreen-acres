@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3821ae6e75eb90f4d7f71c4d2b265409",
+    "content-hash": "1ba6211b3cbed107c268311c0397d4af",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7361,6 +7361,41 @@
             "time": "2023-06-20T07:10:35+00:00"
         },
         {
+            "name": "fourkitchens/pots",
+            "version": "dev-general-deploy",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fourkitchens/pots.git",
+                "reference": "612e979c7a9271eba5d0416154a66d0b29ecc600"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/612e979c7a9271eba5d0416154a66d0b29ecc600",
+                "reference": "612e979c7a9271eba5d0416154a66d0b29ecc600",
+                "shasum": ""
+            },
+            "conflict": {
+                "fourkitchens/project_ci": "*"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Allan Chappell",
+                    "email": "allan@fourkitchens.com"
+                }
+            ],
+            "description": "Push On To Site. Scripts to help aid in deployment for Drupal sites.",
+            "support": {
+                "issues": "https://github.com/fourkitchens/pots/issues",
+                "source": "https://github.com/fourkitchens/pots/tree/general-deploy"
+            },
+            "time": "2024-01-29T21:00:20+00:00"
+        },
+        {
             "name": "grasmash/expander",
             "version": "2.0.3",
             "source": {
@@ -12601,6 +12636,7 @@
         "drupal/realname": 10,
         "drupal/simple_block": 10,
         "drupal/xmlsitemap": 15,
+        "fourkitchens/pots": 20,
         "drupal/stage_file_proxy": 10
     },
     "prefer-stable": true,
