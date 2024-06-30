@@ -224,14 +224,6 @@ jobs:
             else
               ./vendor/fourkitchens/pots/scripts/build/php
             fi
-      - run:
-          name: run theme build step
-          command: |
-            if [ -f "./.circleci/scripts/build/theme" ]; then
-              ./.circleci/scripts/build/theme
-            else
-              ./vendor/fourkitchens/pots/scripts/build/theme
-            fi
       - persist_to_workspace:
           root: .
           paths: *persisting_dirs
@@ -425,7 +417,7 @@ node-install-packages-parameters: &node-install-packages-parameters
     description: Cache your node packages automatically for faster install times.
     type: boolean
 orbs:
-  node: circleci/node@5.1.0
+  # node: circleci/node@5.1.0
   php: circleci/php@1.1.0
 commands:
   install-project-dependency-managers:
@@ -447,32 +439,32 @@ commands:
           keys:
             - nvm-v2-{{ checksum ".nvmrc" }}
             - nvm-v2-
-      - node/install:
-          install-yarn: << parameters.install-yarn >>
-          node-install-dir: << parameters.node-install-dir >>
-          node-version: << parameters.node-version >>
-          yarn-version: << parameters.yarn-version >>
+      # - node/install:
+      #     install-yarn: << parameters.install-yarn >>
+      #     node-install-dir: << parameters.node-install-dir >>
+      #     node-version: << parameters.node-version >>
+      #     yarn-version: << parameters.yarn-version >>
       - save_cache:
           key: nvm-v2-{{ checksum ".nvmrc" }}
           paths:
             - ~/.nvm
-      - run: node --version
+      # - run: node --version
   install-project-dependencies:
     description: install both npm and composer dependencies
     parameters:
       <<: *node-install-packages-parameters
     steps:
       - php/install-packages
-      - node/install-packages:
-          app-dir: << parameters.node-app-dir >>
-          cache-only-lockfile: << parameters.node-cache-only-lockfile >>
-          cache-path: << parameters.node-cache-path >>
-          cache-version: << parameters.node-cache-version >>
-          check-cache: << parameters.node-check-cache >>
-          include-branch-in-cache-key: << parameters.node-include-branch-in-cache-key >>
-          override-ci-command: << parameters.node-override-ci-command >>
-          pkg-manager: << parameters.node-pkg-manager >>
-          with-cache: << parameters.node-with-cache >>
+      # - node/install-packages:
+      #     app-dir: << parameters.node-app-dir >>
+      #     cache-only-lockfile: << parameters.node-cache-only-lockfile >>
+      #     cache-path: << parameters.node-cache-path >>
+      #     cache-version: << parameters.node-cache-version >>
+      #     check-cache: << parameters.node-check-cache >>
+      #     include-branch-in-cache-key: << parameters.node-include-branch-in-cache-key >>
+      #     override-ci-command: << parameters.node-override-ci-command >>
+      #     pkg-manager: << parameters.node-pkg-manager >>
+      #     with-cache: << parameters.node-with-cache >>
   install-rsync:
     description: install rsync
     steps:
