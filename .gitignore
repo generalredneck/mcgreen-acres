@@ -8,7 +8,7 @@
 /web/profiles/contrib/
 /web/libraries/
 
-######## ACQUIA IGNORE BELOW THIS LINE ########
+# :::::::::::::::::::::: cut ::::::::::::::::::::::
 # Ignore sensitive information
 /web/sites/*/settings.local.php
 
