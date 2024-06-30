@@ -13,7 +13,6 @@ module:
   breakpoint: 0
   checklistapi: 0
   ckeditor: 0
-  color: 0
   config: 0
   contact: 0
   contextual: 0
@@ -77,8 +76,7 @@ module:
   paragraphs_previewer: 0
   path: 0
   path_alias: 0
-  quickedit: 0
-  rdf: 0
+  phpass: 0
   realname: 0
   redirect: 0
   responsive_image: 0
@@ -118,9 +116,8 @@ module:
   varbase_bootstrap_paragraphs: 12
   standard: 1000
 theme:
-  stable: 0
-  bartik: 0
   seven: 0
   mcgreen_acres_theme: 0
   claro: 0
+  stable9: 0
 profile: standard

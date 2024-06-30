@@ -698,6 +698,7 @@ display:
             offset: false
             offset_label: 'Skip first'
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: bef
         options:
@@ -1316,6 +1317,7 @@ display:
             offset: false
             offset_label: 'Skip first'
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: bef
         options:
@@ -1811,6 +1813,7 @@ display:
             offset: false
             offset_label: 'Skip first'
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: bef
         options:
@@ -2386,6 +2389,7 @@ display:
             offset: false
             offset_label: 'Skip first'
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: bef
         options:
@@ -3024,6 +3028,7 @@ display:
             offset: false
             offset_label: 'Skip first'
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: bef
         options:

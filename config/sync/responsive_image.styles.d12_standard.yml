@@ -15,8 +15,8 @@ label: 'Display 12 responsive standard 16:9'
 image_style_mappings:
   -
     image_mapping_type: image_style
-    image_mapping: d08_standard
-    breakpoint_id: varbase_media.screen-sm-max
+    image_mapping: d12_standard
+    breakpoint_id: varbase_media.screen-lg-min
     multiplier: 1x
   -
     image_mapping_type: image_style
@@ -25,8 +25,8 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: d12_standard
-    breakpoint_id: varbase_media.screen-lg-min
+    image_mapping: d08_standard
+    breakpoint_id: varbase_media.screen-sm-max
     multiplier: 1x
 breakpoint_group: varbase_media
 fallback_image_style: d08_standard

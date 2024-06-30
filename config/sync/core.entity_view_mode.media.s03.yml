@@ -8,5 +8,6 @@ _core:
   default_config_hash: l6c41OJeRO9HXoKS5T5sDXjQUt3s0nD0999poX0TzCY
 id: media.s03
 label: 'Size 03 auto'
+description: ''
 targetEntityType: media
 cache: true

@@ -8,5 +8,6 @@ _core:
   default_config_hash: sZ8qjZTgnBHewJM4YLHSQUiWo4rpA0MiUyPh5bOQAwk
 id: media.medium
 label: 'Medium (1/2 of width)'
+description: ''
 targetEntityType: media
 cache: true

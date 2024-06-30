@@ -8,5 +8,6 @@ _core:
   default_config_hash: m24BntgZzG6EMfgkI06ODnNRvHHenKGW-9g5Qru2NIg
 id: media.se2e
 label: 'Size Edge-to-Edge auto'
+description: ''
 targetEntityType: media
 cache: true

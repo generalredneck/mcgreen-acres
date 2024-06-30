@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - blazy
     - editor
     - entity_embed
 _core:
@@ -12,6 +11,18 @@ name: 'Full HTML'
 format: full_html
 weight: -8
 filters:
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: 11
+    settings: {  }
+  entity_embed:
+    id: entity_embed
+    provider: entity_embed
+    status: true
+    weight: 100
+    settings: {  }
   filter_align:
     id: filter_align
     provider: filter
@@ -24,18 +35,6 @@ filters:
     status: true
     weight: 9
     settings: {  }
-  filter_htmlcorrector:
-    id: filter_htmlcorrector
-    provider: filter
-    status: true
-    weight: 10
-    settings: {  }
-  editor_file_reference:
-    id: editor_file_reference
-    provider: editor
-    status: true
-    weight: 11
-    settings: {  }
   filter_html:
     id: filter_html
     provider: filter
@@ -45,20 +44,15 @@ filters:
       allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <h1> <pre> <drupal-entity data-entity-type data-entity-uuid data-entity-embed-display data-entity-embed-display-settings data-align data-caption data-embed-button data-langcode alt title>'
       filter_html_help: true
       filter_html_nofollow: false
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
     status: true
-    weight: 100
+    weight: 10
     settings: {  }
-  blazy_filter:
-    id: blazy_filter
-    provider: blazy
-    status: false
-    weight: 3
-    settings:
-      media_switch: ''
-      filter_tags:
-        img: img
-        iframe: iframe
-      use_data_uri: '0'
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: 12
+    settings: {  }

@@ -11,7 +11,7 @@ label: Blog
 logic: or
 conditions:
   d5e1a55a-e37e-4697-8ad8-18cd4cd1254c:
-    id: node_type
+    id: 'entity_bundle:node'
     negate: false
     uuid: d5e1a55a-e37e-4697-8ad8-18cd4cd1254c
     context_mapping:

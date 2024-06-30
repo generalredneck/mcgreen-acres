@@ -12,7 +12,6 @@ tags:
   referrer: unsafe-url
   geo_position: '32.69345223660298, -96.50738602150476'
   title: '[current-page:title] | [site:name]'
-  content_language: en-US
   rights: 'Copyright ©[date:html_year] McGreen Acres. All rights reserved.'
   shortlink: '[current-page:url:unaliased]'
   canonical_url: '[current-page:url:absolute]'
@@ -40,4 +39,3 @@ tags:
   twitter_cards_site: '@McGreenAcres'
   twitter_cards_type: summary
   twitter_cards_site_id: '1147598700446965760'
-  twitter_cards_page_url: '[current-page:url:absolute]'

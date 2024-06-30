@@ -6,5 +6,6 @@ dependencies:
     - user
 id: user.au
 label: 'Author Message Box'
+description: ''
 targetEntityType: user
 cache: true

@@ -8,5 +8,6 @@ _core:
   default_config_hash: O_9-05HJZRwp944Fg-DeTtxJ6mF9e2IKbXPX9Bx_Pxg
 id: media.s10_traditional
 label: 'Size 10 traditional 4:3'
+description: ''
 targetEntityType: media
 cache: true

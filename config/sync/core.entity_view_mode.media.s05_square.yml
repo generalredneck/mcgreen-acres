@@ -8,5 +8,6 @@ _core:
   default_config_hash: ZSdXwUr-BJfyRuo7x3zYS6_Bq0jnA9xyu6bYoISNBWM
 id: media.s05_square
 label: 'Size 05 square 1:1'
+description: ''
 targetEntityType: media
 cache: true

@@ -8,5 +8,6 @@ _core:
   default_config_hash: 6J3icT8NohqRfGs1Yy8WqYU-sIYMndaqS4DZ7HLx7E0
 id: media.s07_standard
 label: 'Size 07 standard 16:9'
+description: ''
 targetEntityType: media
 cache: true
