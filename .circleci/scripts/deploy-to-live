@@ -4,7 +4,7 @@ set -eo pipefail
 
 mkdir -p ~/.ssh
 printf "Host *\nForwardAgent yes" >> ~/.ssh/config
-DRUSH_CMD='"/opt/alt/php81/usr/bin/php ./vendor/bin/drush"'
+DRUSH_CMD='./vendor/bin/drush'
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 if [[ -z "$DOCROOT" ]]; then
