@@ -41,7 +41,7 @@
         "drupal/core-composer-scaffold": "^10.3",
         "drupal/ctools": "^4.1",
         "drupal/diff": "^1.7@RC",
-        "drupal/disqus": "^2.0.1@alpha",
+        "drupal/disqus": "^2.0.x-dev",
         "drupal/easy_breadcrumb": "^2.0.7",
         "drupal/google_analytics": "^4.0.2",
         "drupal/honeypot": "^2.1.3",

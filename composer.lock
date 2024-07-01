@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "341dd2b8e2708d6400d78ffded445add",
+    "content-hash": "8abaa9e2a73bcad68e7e2449c738d9c2",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2354,17 +2354,11 @@
         },
         {
             "name": "drupal/disqus",
-            "version": "2.0.1-alpha6",
+            "version": "dev-2.0.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/disqus.git",
-                "reference": "2.0.1-alpha6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/disqus-2.0.1-alpha6.zip",
-                "reference": "2.0.1-alpha6",
-                "shasum": "818ea51937d2619a522338d9f4c5ad6f4812b59b"
+                "reference": "43dffecd607a1471579d7aad936665045b29b3da"
             },
             "require": {
                 "disqus/disqus-php": "^1.0",
@@ -2372,12 +2366,15 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.0.x": "2.0.x-dev"
+                },
                 "drupal": {
-                    "version": "2.0.1-alpha6",
-                    "datestamp": "1679647060",
+                    "version": "2.0.1-alpha6+5-dev",
+                    "datestamp": "1717098384",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -12545,7 +12542,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/diff": 5,
-        "drupal/disqus": 15,
+        "drupal/disqus": 20,
         "drupal/realname": 10,
         "drupal/simple_block": 10,
         "drupal/xmlsitemap": 15,
