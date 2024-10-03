@@ -1,0 +1,13 @@
+# Prevent Drupal bootstrap on existing files. (drimage)
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{REQUEST_URI} \/drimage\/(\d+)\/(\d+)\/\d+\/([^\-]+)\/sites\/default\/files\/(.*)$
+  RewriteCond sites/default/files/styles/drimage_$1_$2_$3/public/$4 -F
+  RewriteRule ^.*drimage\/(\d+)\/(\d+)\/\d+\/([^\-]+)\/sites\/default\/files\/(.*)$ %{REQUEST_SCHEME}://%{HTTP_HOST}/sites/default/files/styles/drimage_$1_$2_$3/public/$4 [L,R=302]
+  RewriteCond %{REQUEST_URI} \/drimage\/(\d+)\/(\d+)\/\d+\/\-\/sites\/default\/files\/(.*)$
+  RewriteCond sites/default/files/styles/drimage_focal_$1_$2/public/$3 -F
+  RewriteRule ^.*drimage\/(\d+)\/(\d+)\/\d+\/-\/sites\/default\/files\/(.*)$ %{REQUEST_SCHEME}://%{HTTP_HOST}/sites/default/files/styles/drimage_focal_$1_$2/public/$3 [L,R=302]
+  RewriteCond %{REQUEST_URI} \/drimage\/(\d+)\/(\d+)\/\d+\/\-\/sites\/default\/files\/(.*)$
+  RewriteCond sites/default/files/styles/drimage_$1_$2/public/$3 -F
+  RewriteRule ^.*drimage\/(\d+)\/(\d+)\/\d+\/-\/sites\/default\/files\/(.*)$ %{REQUEST_SCHEME}://%{HTTP_HOST}/sites/default/files/styles/drimage_$1_$2/public/$3 [L,R=302]
+</IfModule>

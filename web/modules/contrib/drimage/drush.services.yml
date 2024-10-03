@@ -1,0 +1,7 @@
+services:
+  drimage.image_style_delete_commands:
+    class: Drupal\drimage\Commands\ImageStyleDeleteCommands
+    arguments:
+      - '@drimage.image_style_repository'
+    tags:
+      -  { name: drush.command }
