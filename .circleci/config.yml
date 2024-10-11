@@ -22,7 +22,7 @@ parameters:
     default: "general"
   docroot:
     description: "Where composer installs drupal."
-    default: "web"
+    default: "public_html"
     type: string
   artifact_workspace:
     description: "Where the build stores the built artifact temporarily."
