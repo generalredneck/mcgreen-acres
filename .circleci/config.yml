@@ -282,7 +282,7 @@ jobs:
       - run:
           name: Create Site Alias file
           command: |
-            if ! [[ -s "drush/sites/self.site.yml"]] && ! [[ -z "$SITE_ALIASES" ]]; then
+            if [ ! -s "drush/sites/self.site.yml" ] && [ ! -z "$SITE_ALIASES" ]; then
               mkdir -p drush/sites
               echo "$SITE_ALIASES" | base64 --decode > drush/sites/self.site.yml
             fi
