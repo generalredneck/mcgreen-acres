@@ -283,8 +283,9 @@ jobs:
           name: Create Site Alias file
           command: |
             if [[ ! -s "drush/sites/self.site.yml"]] && [[ ! -z "$SITE_ALIASES" ]]; then
-            mkdir -p drush/sites
-            echo "$SITE_ALIASES" | base64 --decode > drush/sites/self.site.yml
+              mkdir -p drush/sites
+              echo "$SITE_ALIASES" | base64 --decode > drush/sites/self.site.yml
+            fi
       - run:
           name: Deploy to live
           command: |
