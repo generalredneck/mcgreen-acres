@@ -33,6 +33,7 @@ parameters:
 # Change these if the list below needs different folders. Directory names are
 # relative to the project root.
 persisting_dirs: &persisting_dirs
+  - web
   - << pipeline.parameters.docroot >>
   - public_html
   - vendor
