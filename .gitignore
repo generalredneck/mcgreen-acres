@@ -9,6 +9,12 @@
 /web/libraries/
 
 # :::::::::::::::::::::: cut ::::::::::::::::::::::
+
+# Ignore backup directory on production
+backups
+*.sql
+*.sql.gz
+
 # Ignore sensitive information
 /web/sites/*/settings.local.php
 
