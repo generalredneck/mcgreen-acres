@@ -73,6 +73,25 @@ env: &env
 
   # TERMINUS_TOKEN: The Pantheon machine token
 
+  ############################
+  # GENERIC HOSTING SPECIFIC SETTINGS
+  ############################
+
+  # The directory the project is checked out into. This is not the webroot, but
+  # instead the top level of the project. This is recommended to be put in
+  # Circle's Env variables interface to avoid divulging production server
+  # configuration data in code.
+  #
+  # No Default
+  #
+  # REMOTE_PROJECT_ROOT: /var/www/mysite.com
+
+  # The SSH command used to access the live server. This can infact be set
+  #
+  # No Default
+  #
+  # SSH_COMMAND_LIVE
+
   ########################
   # OPTIONAL CONFIGURATION
   ########################
@@ -260,6 +279,12 @@ jobs:
             else
               ./vendor/fourkitchens/pots/scripts/set-environment
             fi
+      - run:
+          name: Create Site Alias file
+          command: |
+            if [[ ! -s "drush/sites/self.site.yml"]] && [[ ! -z "$SITE_ALIASES" ]]; then
+            mkdir -p drush/sites
+            echo "$SITE_ALIASES" | base64 --decode > drush/sites/self.site.yml
       - run:
           name: Deploy to live
           command: |
