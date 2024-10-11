@@ -270,15 +270,8 @@ jobs:
   deploy_to_live_general:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          name: setup-environment-vars
-          command: |
-            if [ -f "./.circleci/scripts/set-environment" ]; then
-              ./.circleci/scripts/set-environment
-            else
-              ./vendor/fourkitchens/pots/scripts/set-environment
-            fi
+      - restore-project:
+          workspace_root: << pipeline.parameters.artifact_workspace >>
       - run:
           name: Create Site Alias file
           command: |
