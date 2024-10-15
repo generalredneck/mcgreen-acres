@@ -7121,12 +7121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fourkitchens/pots.git",
-                "reference": "9b16835d36c2578f02f08fc9b0a507f4ae41f124"
+                "reference": "a3f5958552251eb946b3b1e00c07a734559052ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/9b16835d36c2578f02f08fc9b0a507f4ae41f124",
-                "reference": "9b16835d36c2578f02f08fc9b0a507f4ae41f124",
+                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/a3f5958552251eb946b3b1e00c07a734559052ca",
+                "reference": "a3f5958552251eb946b3b1e00c07a734559052ca",
                 "shasum": ""
             },
             "conflict": {
@@ -7148,7 +7148,7 @@
                 "issues": "https://github.com/fourkitchens/pots/issues",
                 "source": "https://github.com/fourkitchens/pots/tree/general-deploy"
             },
-            "time": "2024-10-11T22:47:33+00:00"
+            "time": "2024-10-15T18:59:50+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -12545,14 +12545,14 @@
         "drupal/disqus": 20,
         "drupal/realname": 10,
         "drupal/simple_block": 10,
+        "drupal/stage_file_proxy": 10,
         "drupal/xmlsitemap": 15,
-        "fourkitchens/pots": 20,
-        "drupal/stage_file_proxy": 10
+        "fourkitchens/pots": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
+    "platform": {},
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.1"
     },
