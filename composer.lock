@@ -7121,12 +7121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fourkitchens/pots.git",
-                "reference": "96e0fae81fcc7c11c0f5b38b855fff74557c4828"
+                "reference": "b619d80a7eeb933484be67dea8d34eba90ed65bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/96e0fae81fcc7c11c0f5b38b855fff74557c4828",
-                "reference": "96e0fae81fcc7c11c0f5b38b855fff74557c4828",
+                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/b619d80a7eeb933484be67dea8d34eba90ed65bf",
+                "reference": "b619d80a7eeb933484be67dea8d34eba90ed65bf",
                 "shasum": ""
             },
             "conflict": {
@@ -7148,7 +7148,7 @@
                 "issues": "https://github.com/fourkitchens/pots/issues",
                 "source": "https://github.com/fourkitchens/pots/tree/general-deploy"
             },
-            "time": "2024-10-15T19:54:13+00:00"
+            "time": "2024-10-15T20:34:31+00:00"
         },
         {
             "name": "graham-campbell/result-type",
