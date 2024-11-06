@@ -1,0 +1,40 @@
+drimage.settings:
+  type: config_object
+  label: 'Drimage settings'
+  mapping:
+    threshold:
+      type: integer
+      label: 'Minimum difference per image style'
+    ratio_distortion:
+      type: integer
+      label: 'Maximum allowed ratio distortion'
+    upscale:
+      type: integer
+      label: 'Minimum image style width'
+    downscale:
+      type: integer
+      label: 'Maximum image style width'
+    multiplier:
+      type: integer
+      label: 'Enable device pixel ratio detection'
+    lazy_offset:
+      type: integer
+      label: 'Lazyloader offeset'
+    core_webp:
+      type: boolean
+      label: 'Support for webp through Core'
+    imageapi_optimize_webp:
+      type: boolean
+      label: 'Support for webp through the imageapi_optimize_webp module'
+    automated_crop:
+      type: string
+      label: 'Support for automated_crop module'
+    fallback_style:
+      type: string
+      label: 'Fallback Image Style'
+    cache_max_age:
+      type: integer
+      label: 'Cache maximum age'
+    legacy_lazyload:
+      type: boolean
+      label: 'Use drimage JS lazyloader'
