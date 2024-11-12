@@ -1,0 +1,12 @@
+type: module
+name: 'Simple Block'
+description: 'Title/content custom blocks stored as config entities'
+core_version_requirement: ^9 || ^10
+dependencies:
+  - drupal:block
+  - drupal:filter
+
+# Information added by Drupal.org packaging script on 2024-02-22
+version: '8.x-1.6'
+project: 'simple_block'
+datestamp: 1708604817
