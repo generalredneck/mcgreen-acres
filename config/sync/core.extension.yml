@@ -52,6 +52,8 @@ module:
   jquery_ui_touch_punch: 0
   layout_discovery: 0
   link: 0
+  maillog: 0
+  mailsystem: 0
   maxlength: 0
   mcgreen_acres_custom: 0
   media: 0
