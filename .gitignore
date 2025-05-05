@@ -11,6 +11,7 @@
 # :::::::::::::::::::::: cut ::::::::::::::::::::::
 
 # Ignore backup directory on production
+private
 backups
 *.sql
 *.sql.gz

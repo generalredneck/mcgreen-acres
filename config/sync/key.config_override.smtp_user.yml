@@ -1,0 +1,14 @@
+uuid: 4129e2b7-ed78-4af4-8637-4998bf38d74d
+langcode: en
+status: true
+dependencies:
+  config:
+    - key.key.smtp_user
+    - symfony_mailer.mailer_transport.smtp
+id: smtp_user
+label: 'SMTP User'
+config_type: mailer_transport
+config_prefix: symfony_mailer.mailer_transport
+config_name: smtp
+config_item: configuration.user
+key_id: smtp_user

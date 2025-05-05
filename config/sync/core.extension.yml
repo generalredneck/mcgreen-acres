@@ -50,10 +50,10 @@ module:
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
+  key: 0
   layout_discovery: 0
   link: 0
   maillog: 0
-  mailsystem: 0
   maxlength: 0
   mcgreen_acres_custom: 0
   media: 0
@@ -89,6 +89,7 @@ module:
   seo_checklist: 0
   shortcut: 0
   simple_block: 0
+  symfony_mailer: 0
   system: 0
   taxonomy: 0
   text: 0

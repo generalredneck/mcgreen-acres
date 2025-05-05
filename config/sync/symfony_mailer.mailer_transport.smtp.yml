@@ -1,0 +1,18 @@
+uuid: 96b07c62-1fe2-46bb-b63f-a7d6ee47016c
+langcode: en
+status: true
+dependencies: {  }
+id: smtp
+label: SMTP
+plugin: smtp
+configuration:
+  user: null
+  pass: null
+  host: smtp.hostinger.com
+  port: 587
+  query:
+    verify_peer: true
+    local_domain: ''
+    restart_threshold: null
+    restart_threshold_sleep: null
+    ping_threshold: null
