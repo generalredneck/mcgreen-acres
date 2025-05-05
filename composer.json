@@ -57,6 +57,7 @@
         "drupal/seo_checklist": "^5.2",
         "drupal/seven": "^1.0",
         "drupal/simple_block": "^1.6@beta",
+        "drupal/symfony_mailer": "^1.5",
         "drupal/twig_tweak": "^3.3",
         "drupal/upgrade_status": "^4.3.2",
         "drupal/varbase_bootstrap_paragraphs": "^10.0.9",
