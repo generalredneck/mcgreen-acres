@@ -62,6 +62,7 @@
         "drupal/twig_tweak": "^3.3",
         "drupal/upgrade_status": "^4.3.2",
         "drupal/varbase_bootstrap_paragraphs": "^10.0.9",
+        "drupal/webform_mailchimp": "^5.11",
         "drupal/xmlsitemap": "^1.5@alpha",
         "drush/drush": " ^11 || ^12.5.2 || ^13",
         "enyo/dropzone": "^5.9.3",
@@ -99,7 +100,8 @@
                 "web-root": "web/"
             },
             "file-mapping": {
-                "[web-root]/sites/development.services.yml": false
+                "[web-root]/sites/development.services.yml": false,
+                "[web-root]/.htaccess": false
             }
 
         },

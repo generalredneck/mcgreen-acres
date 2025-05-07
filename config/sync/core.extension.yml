@@ -53,6 +53,7 @@ module:
   key: 0
   layout_discovery: 0
   link: 0
+  mailchimp: 0
   maillog: 0
   maxlength: 0
   mcgreen_acres_custom: 0
@@ -106,6 +107,7 @@ module:
   views_ui: 0
   viewsreference: 0
   webform: 0
+  webform_mailchimp: 0
   webp: 0
   xmlsitemap_custom: 0
   ds: 1
