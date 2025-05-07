@@ -763,16 +763,7 @@ $settings['entity_update_batch_size'] = 50;
  */
 $settings['entity_update_backup'] = TRUE;
 
-/**
- * Load local development override configuration, if available.
- *
- * Use settings.local.php to override variables on secondary (staging,
- * development, etc) installations of this site. Typically used to disable
- * caching, JavaScript/CSS compression, re-routing of outgoing emails, and
- * other things that should not happen on development and testing sites.
- *
- * Keep this code block at the end of this file to take full effect.
- */
+
 
 $environment = 'local';
 if (DRUPAL_ROOT == '/var/www/mcgreenacr/web') {
@@ -803,6 +794,59 @@ $settings['trusted_host_patterns'] = [
    '^.*\.mcgreenacres(bees)?\.com$',
    '^mcgreenacres(bees)?\.com$',
 ];
+
+// Get rid of the thousands of attempted WP hacks from the logs.
+if (
+  php_sapi_name() != 'cli'
+  && !empty($_SERVER["REQUEST_URI"])
+  && ($request_9 = substr($_SERVER["REQUEST_URI"], 0, 9))
+  && in_array($request_9, [
+    '/wp-conte',
+    '/wp-admin',
+    '/wp-login',
+    '/wp-post.',
+    '/wp-inclu',
+  ])
+) {
+  header($_SERVER["SERVER_PROTOCOL"] . " 418 I'm a teapot");
+  echo 'I\'m a teapot.';
+  exit();
+}
+
+// Filter out other specific requests.
+$deny_list = [
+  '/\.aspx$/i',
+  '/\.asp$/i',
+  '/\.jsp$/i',
+  '/login\.json$/i',
+  '/episerver\.*/i',
+  '/^(?!.*(update).*$).*\.php$/i',
+  '/.*systopice.*/i',
+  '/\.well-known.*/i',
+];
+foreach ($deny_list as $pattern) {
+  if (
+    php_sapi_name() != 'cli'
+    && !empty($_SERVER["REQUEST_URI"])
+    && preg_match($pattern, $_SERVER["REQUEST_URI"])
+  ) {
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    echo 'Page not found';
+    exit();
+  }
+}
+
+
+/**
+ * Load local development override configuration, if available.
+ *
+ * Use settings.local.php to override variables on secondary (staging,
+ * development, etc) installations of this site. Typically used to disable
+ * caching, JavaScript/CSS compression, re-routing of outgoing emails, and
+ * other things that should not happen on development and testing sites.
+ *
+ * Keep this code block at the end of this file to take full effect.
+ */
 
  if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
    include $app_root . '/' . $site_path . '/settings.local.php';
