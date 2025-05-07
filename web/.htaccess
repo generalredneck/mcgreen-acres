@@ -60,10 +60,6 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
-  # block http 1.0
-  RewriteCond %{THE_REQUEST} ^(POST|GET) .*\ HTTP/1\.[0]
-  RewriteRule . - [F,L]
-
   # force Https
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
