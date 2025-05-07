@@ -78,8 +78,8 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
   $variables['force_container'] = FALSE;
   $current_path = \Drupal::service('path.current')->getPath();
   $container_paths = [
-    '/contact',
-    '/contact/*',
+    '/webform',
+    '/webform/*',
     '/user/*',
   ];
   if (\Drupal::service('path.matcher')->matchPath($current_path, implode("\n", $container_paths))) {
