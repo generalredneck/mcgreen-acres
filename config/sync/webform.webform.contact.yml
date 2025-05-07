@@ -2,6 +2,8 @@ uuid: 1f6cf9da-1e64-4d0e-ab48-0357b80a4b97
 langcode: en
 status: open
 dependencies:
+  module:
+    - webform_mailchimp
   enforced:
     module:
       - webform
@@ -17,12 +19,17 @@ id: contact
 title: Contact
 description: 'Basic email contact webform.'
 categories: {  }
-elements: |
-  name:
-    '#title': 'Your Name'
+elements: |-
+  fname:
+    '#title': 'First Name'
     '#type': textfield
     '#required': true
     '#default_value': '[current-user:display-name]'
+  lname:
+    '#title': 'Last Name'
+    '#type': textfield
+    '#required': true
+    '#default_value': ''
   email:
     '#title': 'Your Email'
     '#type': email
@@ -226,18 +233,33 @@ access:
     users: {  }
     permissions: {  }
 handlers:
-  email_confirmation:
-    id: email
-    handler_id: email_confirmation
-    label: 'Email confirmation'
+  mailchimp:
+    id: mailchimp
+    handler_id: mailchimp
+    label: MailChimp
     notes: ''
     status: true
     conditions: {  }
-    weight: 1
+    weight: 2
+    settings:
+      list: e31f5f79c4
+      email: email
+      double_optin: false
+      mergevars: "FNAME: '[webform_submission:values:fname]'\r\nLNAME: '[webform_submission:values:lname]'"
+      interest_groups: {  }
+      control: ''
+  notification_email:
+    id: email
+    handler_id: notification_email
+    label: 'Notification Email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 3
     settings:
       states:
         - completed
-      to_mail: '[current-user:mail]'
+      to_mail: _default
       to_options: {  }
       bcc_mail: ''
       bcc_options: {  }
@@ -250,45 +272,8 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      subject: '[webform_submission:values:subject:raw]'
-      body: '[webform_submission:values:message:value]'
-      excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      exclude_attachments: false
-      html: true
-      attachments: false
-      twig: false
-      theme_name: ''
-      parameters: {  }
-      debug: false
-  email_notification:
-    id: email
-    handler_id: email_notification
-    label: 'Email notification'
-    notes: ''
-    status: true
-    conditions: {  }
-    weight: 1
-    settings:
-      states:
-        - completed
-      to_mail: _default
-      to_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      cc_mail: ''
-      cc_options: {  }
-      from_mail: '[webform_submission:values:email:raw]'
-      from_options: {  }
-      from_name: '[webform_submission:values:name:raw]'
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      subject: '[webform_submission:values:subject:raw]'
-      body: '[webform_submission:values:message:value]'
+      subject: _default
+      body: _default
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

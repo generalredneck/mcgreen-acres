@@ -1,0 +1,11 @@
+api_key: ''
+domain: mcgreenacres.com
+use_oauth: true
+api_timeout: 3
+cron: false
+batch_limit: 1
+enable_connected: false
+connected_id: null
+connected_paths: null
+webhook_hash: null
+optin_check_email_msg: ''

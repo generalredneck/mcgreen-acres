@@ -1,0 +1,14 @@
+uuid: 33f4c8db-9d91-4b56-86b7-94a0f1fbd164
+langcode: en
+status: true
+dependencies:
+  config:
+    - key.key.mailchimp_webhook_hash
+    - mailchimp.settings
+id: mailchimp_webhook_hash
+label: 'Mailchimp Webhook Hash'
+config_type: system.simple
+config_prefix: ''
+config_name: mailchimp.settings
+config_item: webhook_hash
+key_id: mailchimp_webhook_hash

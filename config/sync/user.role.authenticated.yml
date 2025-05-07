@@ -17,7 +17,6 @@ dependencies:
     - taxonomy.vocabulary.blog_topics
     - taxonomy.vocabulary.tags
   module:
-    - contact
     - disqus
     - dropzonejs
     - entity_browser
@@ -49,7 +48,6 @@ permissions:
   - 'access media overview'
   - 'access media_browser entity browser pages'
   - 'access shortcuts'
-  - 'access site-wide contact form'
   - 'access taxonomy overview'
   - 'access toolbar'
   - 'access user profiles'
