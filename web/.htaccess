@@ -60,6 +60,15 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+  # block http 1.0
+  RewriteCond %{THE_REQUEST} ^(POST|GET) .*\ HTTP/1\.[0]
+  RewriteRule . - [F,L]
+
+  # force Https
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
@@ -183,6 +192,7 @@ AddEncoding gzip svgz
   Header always set X-Content-Type-Options nosniff
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
+  Header always set Strict-Transport-Security "max-age=3153600"
 </IfModule>
 
 <Limit GET HEAD POST>

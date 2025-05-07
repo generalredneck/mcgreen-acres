@@ -775,7 +775,7 @@ $config['evercurrent.admin_config']['send'] = FALSE;
 if ($environment == 'live') {
   if (php_sapi_name() != "cli") {
     if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != 'mcgreenacres.com') {
-      $newurl = 'http://mcgreenacres.com/'. $_SERVER['REQUEST_URI'];
+      $newurl = 'https://mcgreenacres.com/'. $_SERVER['REQUEST_URI'];
       header('HTTP/1.0 301 Moved Permanently');
       header("Location: $newurl");
       exit;
