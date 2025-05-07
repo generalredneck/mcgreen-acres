@@ -823,6 +823,7 @@ $deny_list = [
   '/^(?!.*(update).*$).*\.php$/i',
   '/.*systopice.*/i',
   '/\.well-known.*/i',
+  '/\.env/i'
 ];
 foreach ($deny_list as $pattern) {
   if (
