@@ -11462,3 +11462,14 @@ ul{
 /********************************************************
 39. Responsive CSS End
 *******************************************************/
+
+.mce_inline_error {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
