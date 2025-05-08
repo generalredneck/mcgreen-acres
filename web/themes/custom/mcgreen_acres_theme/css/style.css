@@ -7345,18 +7345,27 @@ ul{
 .form_block{
   margin-bottom: 30px;
 }
-.form_block .form_field{
+.form_block label {
+  display: block;
+}
+.form_block input{
   height: 50px;
   width: 100%;
   border-radius: 5px;
   padding: 0px 30px;
   border: 1px solid #ebebeb;
   outline: none;
+  clear: both;
 }
-.form_block textarea.form_field{
+.form_block textarea{
+  margin: 0 auto;
   min-height: 170px;
+  width: 100%;
   padding-top: 15px;
-  resize: none;
+  clear: both;
+}
+.form_block input.form-submit {
+  width: auto;
 }
 /********************************************************
 26. Blog Single Page end
@@ -7364,6 +7373,9 @@ ul{
 /********************************************************
 27. Contact Page Start
 *******************************************************/
+.form_block .form-actions {
+  width: 100%
+}
 .contact_blocks_wrapper{
   background-color: #ffffff;
   padding-top: 125px;
