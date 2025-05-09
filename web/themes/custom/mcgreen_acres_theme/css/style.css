@@ -77,9 +77,6 @@ a, a:hover, a:focus{
   margin: 0;
 }
 ul{
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 .container{
   max-width: 1200px;
@@ -284,6 +281,18 @@ ul{
 .clv_right_header .clv_menu .clv_menu_nav{
   padding: 0px 20px;
   padding-right: 10px;
+}
+#block-views-block-blog-categories-category-block ul,
+#block-views-block-archive-block-1 ul,
+#block-mainnavigation ul,
+#block-mcgreenacresaddress ul,
+.breadcrumb_block ul,
+.clv_menu ul,
+nav ul,
+ul.links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 .clv_right_header .clv_menu .clv_menu_nav > ul > li {
   display: inline-block;
