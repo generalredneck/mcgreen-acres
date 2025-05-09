@@ -121,6 +121,9 @@
             "drush/Commands/contrib/{$name}": ["type:drupal-drush"]
         },
         "patches": {
+            "drupal/webform_mailchimp": {
+                "Add Tags": "https://www.drupal.org/files/issues/2023-12-06/add_configurable_tags-3406527-1.patch"
+            }
         }
     },
     "conflict": {

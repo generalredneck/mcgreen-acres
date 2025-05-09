@@ -248,6 +248,7 @@ handlers:
       mergevars: "FNAME: '[webform_submission:values:fname]'\r\nLNAME: '[webform_submission:values:lname]'"
       interest_groups: {  }
       control: ''
+      tags: ContactUs
   notification_email:
     id: email
     handler_id: notification_email
