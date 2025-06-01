@@ -1,0 +1,317 @@
+uuid: 2dd01960-8531-431a-806d-64d9f51a15bc
+langcode: en
+status: closed
+dependencies: {  }
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: holiday_meat_bird_survey
+title: 'Holiday Meat Bird Interest Survey'
+description: ''
+categories: {  }
+elements: |-
+  intro:
+    '#type': webform_markup
+    '#markup': |-
+      <p class="lead">We're planning ahead for the holidays and want to know who’s interested in pasture-raised chickens or turkeys for meat. Your answers help us decide how many to raise and what kind.</p>
+
+      <p class="lead"><em>This survey is anonymous — no names or commitments required. Just helping us plan ahead!</em></p>
+  horizontal_rule:
+    '#type': webform_horizontal_rule
+  question_1:
+    '#type': radios
+    '#title': '1. Are you interested in buying pasture-raised meat birds for the holidays?'
+    '#options':
+      chickens: 'Yes – Chickens'
+      turkeys: 'Yes – Turkeys'
+      both: 'Yes – Both'
+      neither: 'No'
+    '#required': true
+  question_2:
+    '#type': radios
+    '#title': '2. Would you be interested in a hands-on class where you learn how to process your own bird?'
+    '#description': '<p><em>We can’t legally process birds for resale ourselves, but we can teach you how to do it yourself during a class.</em></p>'
+    '#description_display': before
+    '#options':
+      'yes': 'Yes – I’d love to learn'
+      maybe: 'Maybe – depends on timing'
+      'no': 'No – I’d rather do it on my own'
+      'no - need a butcher': 'No – I only want a processed bird'
+  question_3:
+    '#type': radios
+    '#title': '3. What type of bird do you prefer for meat?'
+    '#options':
+      heritage: 'Heritage breeds (slower-growing, more flavorful)'
+      broad-breasted: 'Broad-breasted (faster-growing, more meat yield)'
+      either: 'I’m open to either'
+      not-sure: 'Not sure – I’d like help choosing'
+  question_4:
+    '#type': checkboxes
+    '#title': '4. Do feed choices matter to you?'
+    '#options':
+      organic: 'Yes – I want organic feed'
+      non-gmo: 'Yes – I want non-GMO feed'
+      corn-soy-free: 'Yes – I want corn-free and soy-free'
+      conventional: 'No – Conventional feed is fine'
+      'not sure': "I'm not sure"
+  question_5:
+    '#type': radios
+    '#title': '5. How many chickens would you be interested in?'
+    '#options':
+      1: '1'
+      2-3: 2-3
+      4-5: 4-5
+      6+: 6+
+      depends: 'Depends on availability and price'
+  question_6:
+    '#type': radios
+    '#title': '6. How many turkeys would you be interested in?'
+    '#options':
+      1: '1'
+      2-3: 2-3
+      4-5: 4-5
+      6+: 6+
+      depends: 'Depends on availability and price'
+  question_7:
+    '#type': webform_checkboxes_other
+    '#title': '7. When would you want your birds ready?'
+    '#options':
+      thanksgiving: 'Early November (before Thanksgiving)'
+      christmas: 'Mid-December (before Christmas)'
+  question_8:
+    '#type': radios
+    '#title': '8. What price range would you realistically expect for a pasture-raised chicken?'
+    '#description': '<p><em>We’re not asking for a commitment — this just helps us know what’s worth raising!</em></p>'
+    '#description_display': before
+    '#options':
+      '<$20': '$20 or less'
+      $21-$30: $21-$30
+      $31–$40: $31–$40
+      '>$40': 'I’d pay $40+ for a high-quality bird'
+  question_9:
+    '#type': radios
+    '#title': '9. What price range would you realistically expect for a pasture-raised turkey?'
+    '#options':
+      '<$50': '$50 or less'
+      $50–$75: $50–$75
+      $76–$100: $76–$100
+      '>$100': "I'd pay $100+ for a pasture-raised turkey"
+  container:
+    '#type': container
+    '#attributes':
+      class:
+        - form_block
+    question_10:
+      '#type': textarea
+      '#title': '10. Anything else we should know?'
+      '#description': '<legend>10. Anything else we should know?</legend>'
+      '#title_display': none
+      '#description_display': before
+    subscribe:
+      '#type': email
+      '#title': 'Want an update when these birds are available?'
+      '#description': |-
+        <p>&nbsp;</p>
+        <legend>Want an update when these birds are available?</legend>
+
+        <p>Drop your email here if you do, otherwise your response will be completely anonymous.</p>
+
+        <p><em>Totally optional!</em></p>
+      '#title_display': none
+      '#description_display': before
+      '#placeholder': 'email address'
+    actions:
+      '#type': webform_actions
+      '#title': 'Submit button(s)'
+      '#submit__attributes':
+        class:
+          - btn
+          - mt-2
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: source_entity_webform
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: '<p>The survey period has ended. Feel free to subscribe to our newsletter to hear about the findings from this survey.</p>'
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: modal
+  confirmation_url: ''
+  confirmation_title: 'Thank you!'
+  confirmation_message: '<p>Thank you! Your feedback is extremely valuable to us. It helps us decide what to introduce to our family as well as to yall. Always feel free to call, text, or email if you want to know more or provide us with your thoughts.</p>'
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers: {  }
+variants: {  }
