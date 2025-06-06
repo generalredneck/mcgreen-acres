@@ -147,6 +147,19 @@ function mcgreen_acres_theme_preprocess_node(array &$variables) {
   if ($variables['node']->type == 'article' && $variables['node']->view_mode == 'teaser') {
     $variables['content']['links']['#attributes']['class'][] = 'clearfix';
   }
+  // Construct an Entity Query for nodes.
+  $result = \Drupal::entityQuery('node')
+    ->condition('field_tags', '22')
+    ->condition('nid', $variables['node']->id())
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($result)) {
+    // Entities that reference the target entity exist.
+    $variables['cta'] = 'mcgreen_acres_theme_webform_herd_share_wait_list';
+  } else {
+    // No entities reference the target entity through this field.
+  }
 }
 
 /**

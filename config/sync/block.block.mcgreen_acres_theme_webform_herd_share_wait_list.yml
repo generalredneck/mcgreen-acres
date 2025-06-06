@@ -1,0 +1,42 @@
+uuid: b0e92ec6-8a2c-4de2-9974-b83eeac68334
+langcode: en
+status: false
+dependencies:
+  config:
+    - webform.webform.herd_share_wait_list
+  module:
+    - block_class
+    - block_visibility_groups
+    - term_condition
+    - webform
+  theme:
+    - mcgreen_acres_theme
+third_party_settings:
+  block_class:
+    classes: 'modal fade'
+id: mcgreen_acres_theme_webform_herd_share_wait_list
+theme: mcgreen_acres_theme
+region: content
+weight: -7
+provider: null
+plugin: webform_block
+settings:
+  id: webform_herd_share_wait_list_block
+  label: 'Herd Share Wait List'
+  label_display: '0'
+  provider: webform
+  webform_id: herd_share_wait_list
+  default_data: ''
+  redirect: false
+  lazy: false
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  term:
+    id: term
+    negate: false
+    context_mapping: {  }
+    term_uuids:
+      - dae9d393-1599-40ea-b701-7586862e5de3

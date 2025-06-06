@@ -1,7 +1,9 @@
 uuid: 4ef37d6a-3717-42d9-9f7d-4a776869f389
 langcode: en
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - webform_mailchimp
 weight: 0
 open: null
 close: null
@@ -13,19 +15,43 @@ title: 'Herd Share Wait List'
 description: ''
 categories: {  }
 elements: |-
-  contact_information:
-    '#type': webform_contact
-    '#title': 'Contact Information'
-    '#name__required': true
-    '#company__access': false
-    '#email__required': true
-    '#phone__required': true
-    '#address__access': false
-    '#address_2__access': false
-    '#city__access': false
-    '#state_province__access': false
-    '#postal_code__access': false
-    '#country__access': false
+  markup:
+    '#type': webform_markup
+    '#markup': |-
+      <h2><strong>Join the wait list for the herd share!</strong></h2>
+
+      <p>We will contact people on a first come first serve basis.</p>
+  fname:
+    '#title': 'First Name'
+    '#type': textfield
+    '#required': true
+    '#default_value': '[current-user:display-name]'
+  lname:
+    '#title': 'Last Name'
+    '#type': textfield
+    '#required': true
+    '#default_value': ''
+  email:
+    '#title': 'Your Email'
+    '#type': email
+    '#required': true
+    '#default_value': '[current-user:mail]'
+  phone:
+    '#type': tel
+    '#title': Phone
+  number_of_half_gallons_you_are_interested_in:
+    '#type': number
+    '#title': 'Number of Half Gallons you are interested in'
+    '#default_value': '1'
+    '#min': 1
+    '#max': 6
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#submit__attributes':
+      class:
+        - btn
+        - mt-2
 css: ''
 javascript: ''
 settings:
@@ -132,10 +158,10 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: page
-  confirmation_url: ''
+  confirmation_type: url_message
+  confirmation_url: /blog/cattle/what-is-a-herd-share
   confirmation_title: ''
-  confirmation_message: ''
+  confirmation_message: '<p>Thank you for your interest. We will get hold of you when a space opens up and you are at the top of the list.</p>'
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
@@ -211,5 +237,58 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  email:
+    id: email
+    handler_id: email
+    label: Email
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: mcgreenacres@gmail.com
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: _default
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      parameters: {  }
+      debug: false
+  mailchimp:
+    id: mailchimp
+    handler_id: mailchimp
+    label: MailChimp
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      list: e31f5f79c4
+      email: email
+      double_optin: false
+      mergevars: "FNAME: '[webform_submission:values:fname]'\r\nLNAME: '[webform_submission:values:lname]'\r\nPHONE: '[webform_submission:values:phone]'"
+      interest_groups: {  }
+      control: ''
+      tags: HerdShareWaitList
 variants: {  }

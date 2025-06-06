@@ -28,7 +28,9 @@ settings:
   depth: 1
   expand_all_items: false
   parent: 'main:'
+  render_parent: false
   suggestion: main
+  hide_on_nonactive: false
 visibility:
   condition_group:
     id: condition_group

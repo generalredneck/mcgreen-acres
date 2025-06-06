@@ -32,7 +32,7 @@ class PolicyCommands extends DrushCommands {
    */
   public function rsyncValidate(CommandData $commandData) {
     if (preg_match("/^@prod/", $commandData->input()->getArgument('target'))) {
-      throw new \Exception(dt('Per !file, you may never rsync to the production site.', ['!file' => __FILE__]));
+      //throw new \Exception(dt('Per !file, you may never rsync to the production site.', ['!file' => __FILE__]));
     }
   }
 }

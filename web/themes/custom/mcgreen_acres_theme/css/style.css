@@ -7376,6 +7376,10 @@ ul.links {
 .form_block input.form-submit {
   width: auto;
 }
+.modal-content .form_block .col-lg-8 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
 /********************************************************
 26. Blog Single Page end
 *******************************************************/

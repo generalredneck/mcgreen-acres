@@ -31,6 +31,9 @@
 				</div>
 			</div>
 		{% endif %}
+		{% if view_mode == 'full'  and cta %}
+			{{ drupal_entity('block', cta, check_access=false) }}
+		{% endif %}
 		<div{{ content_attributes }}>
 			{{ content|without('field_disqus_comment','field_images', 'field_topic', 'links') }}
 		</div>

@@ -8,6 +8,7 @@ module:
   better_exposed_filters: 0
   blazy: 0
   block: 0
+  block_class: 0
   block_content: 0
   block_visibility_groups: 0
   breakpoint: 0
@@ -92,6 +93,7 @@ module:
   symfony_mailer: 0
   system: 0
   taxonomy: 0
+  term_condition: 0
   text: 0
   token: 0
   toolbar: 0
