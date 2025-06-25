@@ -1,0 +1,20 @@
+uuid: 6c0d0636-67fd-4f7f-84e2-98ae8d530d17
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.pdf.field_media_file
+    - media.type.pdf
+id: media.pdf.media_library
+targetEntityType: media
+bundle: pdf
+mode: media_library
+content: {  }
+hidden:
+  created: true
+  field_media_file: true
+  name: true
+  path: true
+  status: true
+  uid: true

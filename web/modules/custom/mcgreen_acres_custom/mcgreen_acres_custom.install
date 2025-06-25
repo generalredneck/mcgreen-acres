@@ -1,0 +1,15 @@
+<?php
+function mcgreen_acres_custom_10001() {
+  $query = \Drupal::database()->select('path_alias', 'pa')
+    ->fields('pa', ['alias']);
+  $query->addExpression('count(alias)');
+  $query->groupBy('alias');
+  $query->having('COUNT(alias) >= :matches', [':matches' => 2]);
+  $results = $query->execute()->fetchAll(\PDO::FETCH_COLUMN);
+  \Drupal::logger('my_module')->notice('Enqueuing duplicate path aliases for cleanup');
+  foreach ($results as $alias) {
+    $queue = \Drupal::queue('my_module_delete_duplicate_path_aliases');
+    $queue->createItem($alias);
+  }
+  return t('Update 10001 completed successfully.');
+}

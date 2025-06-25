@@ -10,7 +10,19 @@
         }
     ],
     "repositories": [
-      {
+        {
+            "type": "package",
+            "package": {
+                "name": "mozilla/pdf.js",
+                "version": "5.1.91",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/mozilla/pdf.js/releases/download/v5.1.91/pdfjs-5.1.91-dist.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
             "type": "package",
             "package": {
                 "name": "enyo/dropzone",
@@ -53,6 +65,7 @@
         "drupal/mailsystem": "^4.5",
         "drupal/menu_block": "^1.11",
         "drupal/pathauto": "^1.12",
+        "drupal/pdf": "^1.2",
         "drupal/realname": "^2.0@beta",
         "drupal/redirect": "^1.9",
         "drupal/scheduler": "^1.5",
@@ -71,6 +84,7 @@
         "drush/drush": " ^11 || ^12.5.2 || ^13",
         "enyo/dropzone": "^5.9.3",
         "fourkitchens/pots": "general-deploy-dev",
+        "mozilla/pdf.js": "^5.1",
         "npm-asset/blazy": "^1.8.2",
         "oomphinc/composer-installers-extender": "^2.0.1",
         "vlucas/phpdotenv": "^5.6"
@@ -107,21 +121,33 @@
                 "[web-root]/sites/development.services.yml": false,
                 "[web-root]/.htaccess": false
             }
-
         },
-        "installer-types": ["npm-asset", "bower-asset"],
+        "installer-types": [
+            "npm-asset",
+            "bower-asset"
+        ],
         "installer-paths": {
-            "web/core": ["type:drupal-core"],
+            "web/core": [
+                "type:drupal-core"
+            ],
             "web/libraries/{$name}": [
                 "type:drupal-library",
                 "vendor:bower-asset",
                 "vendor:npm-asset",
                 "enyo/dropzone"
             ],
-            "web/modules/contrib/{$name}": ["type:drupal-module"],
-            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/Commands/contrib/{$name}": ["type:drupal-drush"]
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "web/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "web/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ]
         },
         "patches": {
             "drupal/bootstrap_basic_image_gallery": {
@@ -141,7 +167,9 @@
         "classmap": [
             "scripts/composer/ScriptHandler.php"
         ],
-        "files": ["load.environment.php"]
+        "files": [
+            "load.environment.php"
+        ]
     },
     "scripts": {
         "pre-install-cmd": [
