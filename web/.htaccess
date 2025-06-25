@@ -21,6 +21,7 @@ DirectoryIndex index.php index.html index.htm
 # Add correct encoding for SVGZ.
 AddType image/svg+xml svg svgz
 AddEncoding gzip svgz
+AddType text/javascript .mjs
 
 # Most of the following PHP settings cannot be changed at runtime. See
 # sites/default/default.settings.php and
