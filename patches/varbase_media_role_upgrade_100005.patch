@@ -1,0 +1,21 @@
+diff --git a/recipes/updates/varbase_media_update_100005/recipe.yml b/recipes/updates/varbase_media_update_100005/recipe.yml
+index a59d97e..b575daf 100644
+--- a/recipes/updates/varbase_media_update_100005/recipe.yml
++++ b/recipes/updates/varbase_media_update_100005/recipe.yml
+@@ -3,15 +3,6 @@ description: 'Issue #3470979: Grant Access to Entity Usage Statistics for Site A
+ type: update
+ config:
+   actions:
+-    user.role.editor:
+-      grantPermissions:
+-        - 'access entity usage statistics'
+-    user.role.content_admin:
+-      grantPermissions:
+-        - 'access entity usage statistics'
+-    user.role.seo_admin:
+-      grantPermissions:
+-        - 'access entity usage statistics'
+-    user.role.site_admin:
++    user.role.administrator:
+       grantPermissions:
+         - 'access entity usage statistics'
