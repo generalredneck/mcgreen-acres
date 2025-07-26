@@ -1,0 +1,27 @@
+uuid: 5262650f-2e0a-404c-9839-45932214ee1e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.ebook.field_media_file_1
+    - media.type.ebook
+id: media.ebook.media_library
+targetEntityType: media
+bundle: ebook
+mode: media_library
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_media_file_1: true
+  path: true
+  status: true
+  uid: true

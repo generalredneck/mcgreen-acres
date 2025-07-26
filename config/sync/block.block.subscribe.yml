@@ -1,6 +1,6 @@
 uuid: ff3f4482-bef0-41d8-bcbb-a64e5a2984bb
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - simple_block.simple_block.newsletter_footer

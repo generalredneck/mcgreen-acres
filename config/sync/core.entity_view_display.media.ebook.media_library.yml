@@ -1,0 +1,33 @@
+uuid: 0d6e8120-089d-47d5-8145-913c91b7d487
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.ebook.field_media_file_1
+    - image.style.medium
+    - media.type.ebook
+  module:
+    - image
+id: media.ebook.media_library
+targetEntityType: media
+bundle: ebook
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_media_file_1: true
+  name: true
+  search_api_excerpt: true
+  uid: true

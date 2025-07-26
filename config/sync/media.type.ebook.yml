@@ -1,0 +1,13 @@
+uuid: 62f5d62a-de38-4d90-b3c8-03e0a7f934d0
+langcode: en
+status: true
+dependencies: {  }
+id: ebook
+label: Ebook
+description: ''
+source: file
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: field_media_file_1
+field_map: {  }
