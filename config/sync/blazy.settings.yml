@@ -1,7 +1,6 @@
 admin_css: true
 one_pixel: true
 placeholder: ''
-responsive_image: true
 blazy:
   loadInvisible: false
   offset: 100
@@ -12,3 +11,4 @@ io:
   rootMargin: 0px
   threshold: '0'
   disconnect: false
+max_region_count: 0

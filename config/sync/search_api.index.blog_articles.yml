@@ -3,13 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.search_index
     - field.storage.node.field_tags
     - field.storage.node.field_topic
     - search_api.server.localhost
-    - core.entity_view_mode.node.search_index
   module:
     - node
-    - search_api
 id: blog_articles
 name: 'Blog Articles'
 description: ''
