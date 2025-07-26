@@ -1862,6 +1862,17 @@ ul.links {
   width: 100%;
   position: relative;
 }
+
+.clv_newsletter_wrapper .newsletter_field .newsletter_field_block > input[type="text"]{
+  width: 100%;
+  height: 50px;
+  padding: 0px 20px;
+  padding-right: 180px;
+  border-radius: 30px;
+  margin-bottom: 5px;
+  border: none;
+  outline: none;
+}
 .clv_newsletter_wrapper .newsletter_field .newsletter_field_block > input[type="email"]{
   width: 100%;
   height: 50px;
@@ -1871,9 +1882,8 @@ ul.links {
   border: none;
   outline: none;
 }
-.clv_newsletter_wrapper .newsletter_field .newsletter_field_block > input[type="submit"]{
+.clv_newsletter_wrapper .newsletter_field .newsletter_field_block  input[type="submit"]{
   position: absolute;
-  top: 0;
   right: 0;
   bottom: 0;
   height: 50px;
@@ -1923,6 +1933,12 @@ ul.links {
 .clv_footer_wrapper .footer_block .footer_heading{
   margin-bottom: 20px;
   position: relative;
+}
+.clv_footer_wrapper  h2{
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: #ffffff;
 }
 .clv_footer_wrapper .footer_block .footer_heading > h4{
   font-size: 22px;
@@ -11340,7 +11356,7 @@ ul.links {
   .coffee_test_slide{
     padding: 100px 30px 73px;
   }
-  .clv_newsletter_wrapper .newsletter_field .newsletter_field_block > input{
+  .clv_newsletter_wrapper .newsletter_field .newsletter_field_block input{
     padding: 0px 25px;
   }
   .clv_newsletter_wrapper .newsletter_field .newsletter_field_block > a{

@@ -1,0 +1,32 @@
+uuid: e6399427-b982-4ae7-bee1-c00e62f59146
+langcode: en
+status: true
+dependencies:
+  config:
+    - webform.webform.newsletter
+  module:
+    - block_class
+    - block_visibility_groups
+    - webform
+  theme:
+    - mcgreen_acres_theme
+id: mcgreen_acres_theme_webform
+theme: mcgreen_acres_theme
+region: content
+weight: 0
+provider: null
+plugin: webform_block
+settings:
+  id: webform_block
+  label: 'Subscribe Newsletter'
+  label_display: '0'
+  provider: webform
+  webform_id: newsletter
+  default_data: ''
+  redirect: false
+  lazy: false
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''

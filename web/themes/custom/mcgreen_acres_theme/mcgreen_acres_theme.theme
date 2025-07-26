@@ -230,3 +230,13 @@ function mcgreen_acres_theme_preprocess_links__node(array &$variables) {
   }
 
 }
+
+function mcgreen_acres_theme_form_alter(&$form, &$form_state, $id) {
+  if (!empty($form['#webform_id']) && $form['#webform_id'] === 'newsletter' && !empty($form['#entity_type']) && $form['#entity_type'] === 'webform_submission') {
+    $elements_type = $form['elements']['#type'] ?? NULL;
+    $elements_tag = $form['elements']['#tag'] ?? NULL;
+    if ($elements_type === 'html_tag' && $elements_tag === 'div') {
+      unset ($form['elements']['#type'], $form['elements']['#tag']);
+    }
+  }
+}
