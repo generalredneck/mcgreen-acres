@@ -156,6 +156,9 @@
             ]
         },
         "patches": {
+            "drupal/block_visibility_groups": {
+                "3503194": "https://git.drupalcode.org/project/block_visibility_groups/-/merge_requests/26.diff"
+            },
             "drupal/bootstrap_basic_image_gallery": {
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
             },
