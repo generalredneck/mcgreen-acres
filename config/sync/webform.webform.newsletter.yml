@@ -40,6 +40,10 @@ elements: |-
       class:
         - newsletter_field_block
     '#required': true
+  submission_location:
+    '#type': ip_geo
+    '#title': 'Submission Location'
+    '#value': '[city], [region], [region_code]'
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'

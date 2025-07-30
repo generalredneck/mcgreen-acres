@@ -45,6 +45,10 @@ elements: |-
     '#default_value': '1'
     '#min': 1
     '#max': 6
+  submission_location:
+    '#type': ip_geo
+    '#title': 'Submission Location'
+    '#value': '[city], [region], [region_code]'
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
