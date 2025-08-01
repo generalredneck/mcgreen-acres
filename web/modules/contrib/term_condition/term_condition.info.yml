@@ -1,0 +1,12 @@
+name: Term Condition
+type: module
+description: Provides a Condition plugin which checks to see if a node references a particular taxonomy term.
+core_version_requirement: ^9 || ^10 || ^11
+package: Other
+dependencies:
+  - drupal:taxonomy
+
+# Information added by Drupal.org packaging script on 2025-04-08
+version: '2.0.4'
+project: 'term_condition'
+datestamp: 1744101845
