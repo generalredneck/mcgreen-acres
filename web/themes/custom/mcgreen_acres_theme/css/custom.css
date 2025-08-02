@@ -28,9 +28,12 @@ a:hover {
   padding: 42px 0px 35px;
 }
 .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
-  left: 25%;
-  width: 70%;
-  padding-left: 30px;
+  justify-content: flex-end;
+  padding-right: 190px;
+}
+.index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li:last-child > a {
+  padding-right: 15px;
+  border-right: 1px solid #ececec;
 }
 .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a:hover {
   text-decoration: none;
@@ -39,10 +42,25 @@ a:hover {
 @media (max-width: 991px) {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
     left: auto;
+    padding-right: 20px;
   }
   .clv_right_header .clv_menu .clv_menu_nav {
     background-color: rgb(0,93,40);
   }
+}
+
+.clv_right_header .clv_menu .cart_nav > ul > li > a > svg > path{
+  fill: #000000;
+}
+
+.clv_right_header .clv_menu .cart_nav > ul > li > a > svg {
+  width: 18px;
+  height: 20px;
+}
+
+.clv_right_header .clv_menu .cart_nav ul > li > a.cart_toggle > span{
+  background-color: #20A12E;
+  color: #ffffff;
 }
 
 .address_block .agri_social_links {

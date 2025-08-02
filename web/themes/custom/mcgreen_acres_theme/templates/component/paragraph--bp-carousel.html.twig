@@ -113,7 +113,7 @@ view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   {% if paragraph_title and paragraph_title_status %}<h2 class="text-center">{% apply spaceless %}{{- paragraph_title|striptags -}}{% endapply %}</h2>{% endif %}
   {{ title_suffix }}
   {% if add_container %}<div class="container">{% endif %}
-    <div class="row">
+    <div>
       <div class="{{- VBP.bp_width.value -}}">
         <ol class="carousel-indicators">
           {% for key, item in content.bp_slide_content %}

@@ -2113,15 +2113,6 @@ ul.links {
 .index_v2.clv_main_wrapper .clv_right_header > .clv_menu > .cart_nav > ul > li{
   position: relative;
 }
-.index_v2.clv_main_wrapper .clv_right_header > .clv_menu > .cart_nav > ul > li:first-child:after{
-  content: "";
-  border-right: 1px solid #ececec;
-  position: absolute;
-  right: -15px;
-  top: 0;
-  bottom: 0;
-  display: block;
-}
 .index_v2.clv_main_wrapper .clv_right_header > .clv_menu > .appointment_btn{
   position: absolute;
   top: 0;
