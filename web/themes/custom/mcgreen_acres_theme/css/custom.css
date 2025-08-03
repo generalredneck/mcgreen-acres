@@ -5,6 +5,11 @@ a:hover {
   color: #3C7043;
   text-decoration: underline;
 }
+figure {
+  text-align: center;
+  font-size: smaller;
+  font-style: italic;
+}
 .clv_main_wrapper .clv_header .clv_left_header {
   padding: 10px 0px;
   text-align: center;
