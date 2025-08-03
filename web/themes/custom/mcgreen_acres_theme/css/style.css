@@ -9353,7 +9353,6 @@ ul.links {
 @media (max-width: 1200px) {
   .clv_right_header .clv_address .address_block span.addr_icon{
     margin-right: 8px;
-    float: none;
   }
   .clv_right_header .clv_address .address_block{
     text-align: center;
