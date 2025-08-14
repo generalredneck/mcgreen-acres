@@ -18,9 +18,9 @@ Assigned to: Theme Forest
             }
             /*-------------- Cultivation Functions Calling ---------------------------------------------------
             ------------------------------------------------------------------------------------------------*/
+            this.CartBox();
             /*this.RTL();
             this.SearchBox();
-            this.CartBox();
             this.BannerSlider();
             this.TestimonialSlider();
             this.ShopSlider();
