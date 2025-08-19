@@ -10556,8 +10556,6 @@ ul.links {
     height: 30px;
   }
   .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box, .index_v3 .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box{
-    right: 50%;
-    transform: translateX(50%);
     min-width: 320px;
   }
   .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box > a{
