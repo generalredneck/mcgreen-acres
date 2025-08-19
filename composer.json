@@ -55,12 +55,12 @@
         "drupal/core-composer-scaffold": "^10.3",
         "drupal/ctools": "^4.1",
         "drupal/diff": "^1.7@RC",
-        "drupal/disqus": "^2.0.x-dev",
+        "drupal/disqus": "^2.0.2",
         "drupal/easy_breadcrumb": "^2.0.7",
         "drupal/entity_embed": "^1.7",
         "drupal/file_delete": "^3.0",
         "drupal/google_analytics": "^4.0.2",
-        "drupal/honeypot": "~2.1.3",
+        "drupal/honeypot": "^2.2",
         "drupal/jquery_ui": "^1.7",
         "drupal/jquery_ui_datepicker": "^2.1",
         "drupal/jquery_ui_slider": "^2.1",
@@ -73,7 +73,7 @@
         "drupal/pdf": "^1.2",
         "drupal/realname": "^2.0@beta",
         "drupal/redirect": "^1.9",
-        "drupal/scheduler": "^1.5",
+        "drupal/scheduler": "^2.1",
         "drupal/schema_metatag": "^3.0.1",
         "drupal/search_api": "^1.35",
         "drupal/seo_checklist": "^5.2",
@@ -84,34 +84,34 @@
         "drupal/twig_tweak": "^3.3",
         "drupal/upgrade_status": "^4.3",
         "drupal/varbase_bootstrap_paragraphs": "^10.0.9",
+        "drupal/webform": "^6.3@beta",
         "drupal/webform_ip_geo": "^1.0",
         "drupal/webform_mailchimp": "^5.11",
-        "drupal/xmlsitemap": "^1.5@alpha",
-        "drush/drush": " ^11 || ^12.5.2 || ^13",
+        "drupal/xmlsitemap": "^2.0",
+        "drush/drush": "^13",
         "enyo/dropzone": "^5.9.3",
         "fourkitchens/pots": "general-deploy-dev",
+        "mglaman/composer-drupal-lenient": "^1.0",
         "mozilla/pdf.js": "^5.1",
         "npm-asset/blazy": "^1.8.2",
         "oomphinc/composer-installers-extender": "^2.0.1",
         "thinkshout/mailchimp-api-php": "^3.0",
         "vlucas/phpdotenv": "^5.6"
     },
-    "require-dev": {
-        "drupal/stage_file_proxy": "^1.4@beta"
-    },
     "config": {
         "sort-packages": true,
         "platform-check": false,
         "platform": {
-            "php": "8.1"
+            "php": "8.4"
         },
         "allow-plugins": {
             "composer/installers": true,
             "cweagans/composer-patches": true,
-            "oomphinc/composer-installers-extender": true,
             "drupal/console-extend-plugin": true,
-            "drupal/drupal-library-installer-plugin": true,
             "drupal/core-composer-scaffold": true,
+            "drupal/drupal-library-installer-plugin": true,
+            "mglaman/composer-drupal-lenient": true,
+            "oomphinc/composer-installers-extender": true,
             "zaporylie/composer-drupal-optimizations": true
         }
     },
@@ -163,12 +163,24 @@
             "drupal/bootstrap_basic_image_gallery": {
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
             },
+            "drupal/pdf": {
+                "drupal 11": "patches/pdf-3433888-11-mr5.patch"
+            },
             "drupal/varbase_media": {
                 "Role upgrade fix": "patches/varbase_media_role_upgrade_100005.patch"
+            },
+            "drupal/webform_ip_geo": {
+                "drupal 11": "patches/webform_ip_geo-3435648-5-mr4.patch"
             },
             "drupal/webform_mailchimp": {
                 "Add Tags": "https://www.drupal.org/files/issues/2023-12-06/add_configurable_tags-3406527-1.patch"
             }
+        },
+        "drupal-lenient": {
+            "allowed-list": [
+                "drupal/pdf",
+                "drupal/webform_ip_geo"
+            ]
         }
     },
     "conflict": {

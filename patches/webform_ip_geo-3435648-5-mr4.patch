@@ -1,0 +1,39 @@
+diff --git a/modules/webform_ip_geo_ipapi_co/webform_ip_geo_ipapi_co.info.yml b/modules/webform_ip_geo_ipapi_co/webform_ip_geo_ipapi_co.info.yml
+index 374d2ab702300cf663e089be0485ba5feb0368d5..99a2dd1c417f7a725c05185bac28a4ab62899a5b 100644
+--- a/modules/webform_ip_geo_ipapi_co/webform_ip_geo_ipapi_co.info.yml
++++ b/modules/webform_ip_geo_ipapi_co/webform_ip_geo_ipapi_co.info.yml
+@@ -1,7 +1,7 @@
+ name: 'Webform IP Geo: ipapi.co'
+ type: module
+ description: 'API provider for Webform IP Geo module'
+-core_version_requirement: ^8 || ^9 || ^10
++core_version_requirement: ^10.1 || ^11
+ package: 'Webform'
+ dependencies:
+   - webform_ip_geo:webform_ip_geo
+diff --git a/src/Plugin/WebformIpGeoPluginBase.php b/src/Plugin/WebformIpGeoPluginBase.php
+index c0fd038d79c42cc2571cce3ee11e522c39969991..7048059b42d0f36db94afd763401c296dbfa5ed5 100644
+--- a/src/Plugin/WebformIpGeoPluginBase.php
++++ b/src/Plugin/WebformIpGeoPluginBase.php
+@@ -25,7 +25,7 @@ abstract class WebformIpGeoPluginBase extends PluginBase implements WebformIpGeo
+       return json_decode($request->getBody()->getContents(), TRUE);
+     }
+     catch (RequestException $exception) {
+-      watchdog_exception('webform_ip_geo', $exception);
++      \Drupal\Component\Utility\DeprecationHelper::backwardsCompatibleCall(\Drupal::VERSION, '10.1.0', fn() => \Drupal\Core\Utility\Error::logException(\Drupal::logger('webform_ip_geo'), $exception), fn() => watchdog_exception('webform_ip_geo', $exception));
+     }
+ 
+     return [];
+diff --git a/webform_ip_geo.info.yml b/webform_ip_geo.info.yml
+index e7f126425a63565740bdb0f6e2ae0fb2903b1a39..e16e4e1ba24ab97e60e27070c4c295f7b14c8606 100644
+--- a/webform_ip_geo.info.yml
++++ b/webform_ip_geo.info.yml
+@@ -1,7 +1,7 @@
+ name: 'Webform IP Geo'
+ type: module
+ description: 'Retrieves GEO data from the IP of a webform submission.'
+-core_version_requirement: ^8 || ^9 || ^10
++core_version_requirement: ^10.1 || ^11
+ package: 'Webform'
+ configure: webform_ip_geo.settings_form
+ dependencies:

@@ -13,7 +13,7 @@ module:
   block_visibility_groups: 0
   breakpoint: 0
   checklistapi: 0
-  ckeditor: 0
+  ckeditor5: 0
   config: 0
   contextual: 0
   crop: 0
@@ -56,7 +56,6 @@ module:
   link: 0
   mailchimp: 0
   mailer_transport: 0
-  maillog: 0
   maxlength: 0
   mcgreen_acres_custom: 0
   media: 0
@@ -100,7 +99,6 @@ module:
   text: 0
   token: 0
   toolbar: 0
-  tour: 0
   twig_tweak: 0
   update: 0
   upgrade_status: 0
@@ -130,7 +128,6 @@ module:
   varbase_bootstrap_paragraphs: 12
   standard: 1000
 theme:
-  seven: 0
   mcgreen_acres_theme: 0
   claro: 0
   stable9: 0

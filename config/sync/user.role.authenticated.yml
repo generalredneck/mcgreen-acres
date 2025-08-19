@@ -3,6 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - entity_browser.browser.editor_media_browser
+    - entity_browser.browser.image_browser
+    - entity_browser.browser.media_browser
+    - entity_browser.browser.video_browser
     - filter.format.basic_html
     - filter.format.full_html
     - filter.format.restricted_html
