@@ -163,6 +163,9 @@
             "drupal/bootstrap_basic_image_gallery": {
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
             },
+            "drupal/disqus": {
+                "php 8.4": "patches/disqus-3542113-2.patch"
+            },
             "drupal/pdf": {
                 "drupal 11": "patches/pdf-3433888-11-mr5.patch"
             },
@@ -170,6 +173,7 @@
                 "Role upgrade fix": "patches/varbase_media_role_upgrade_100005.patch"
             },
             "drupal/webform_ip_geo": {
+                "php 8.4": "patches/webform_ip_geo-3542116-3-MR5.patch",
                 "drupal 11": "patches/webform_ip_geo-3435648-5-mr4.patch"
             },
             "drupal/webform_mailchimp": {

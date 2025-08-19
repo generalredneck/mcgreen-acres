@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/WebformElement/WebformIpGeo.php b/src/Plugin/WebformElement/WebformIpGeo.php
+index 1142819f2b7f389ea2318d8f883281ef77c31052..e73aaf09a037e0ccfb2809b00a5ba294b4746cf2 100644
+--- a/src/Plugin/WebformElement/WebformIpGeo.php
++++ b/src/Plugin/WebformElement/WebformIpGeo.php
+@@ -55,7 +55,7 @@ class WebformIpGeo extends TextBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function replaceTokens(array &$element, EntityInterface $webform_submission = NULL) {
++  public function replaceTokens(array &$element, ?EntityInterface $webform_submission = NULL) {
+     if ($webform_submission instanceof WebformSubmissionInterface && $webform_submission->isNew()) {
+       $apiProvider = $this->getApiProvider();
+       if ($apiProvider) {
