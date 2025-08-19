@@ -1,0 +1,12 @@
+name: Media Entity Twitter
+description: 'Media Entity Twitter provider.'
+type: module
+package: Media
+core_version_requirement: ^10.2 || ^11
+dependencies:
+  - drupal:media
+
+# Information added by Drupal.org packaging script on 2024-10-30
+version: '8.x-2.10'
+project: 'media_entity_twitter'
+datestamp: 1730300164

@@ -1,0 +1,152 @@
+<?php
+
+/**
+ * @file
+ * DrImage core functions.
+ */
+
+use Drupal\Core\Config\ConfigImporter;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\crop\CropTypeInterface;
+use Drupal\drimage\Controller\ImageStyleListBuilder;
+use Drupal\drimage\Controller\ImageStyleWithPipelineListBuilder;
+use Drupal\imageapi_optimize\ImageAPIOptimizePipelineInterface;
+
+/**
+ * Implements hook_help().
+ */
+function drimage_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'drimage.image':
+      return '<p>' . t('For a full description of the module, visit the project page: https://drupal.org/project/drimage') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function drimage_theme() {
+  return [
+    'drimage_formatter' => [
+      'variables' => [
+        'item' => NULL,
+        'item_attributes' => NULL,
+        'image_style' => NULL,
+        'core_webp' => NULL,
+        'imageapi_optimize_webp' => NULL,
+        'url' => NULL,
+        'alt' => NULL,
+        'title' => NULL,
+        'width' => NULL,
+        'height' => NULL,
+        'data' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function drimage_entity_type_alter(array &$entity_types): void {
+  if (isset($entity_types['imageapi_optimize_pipeline'])) {
+    $entity_types['image_style']->setListBuilderClass(ImageStyleWithPipelineListBuilder::class);
+  } else {
+    $entity_types['image_style']->setListBuilderClass(ImageStyleListBuilder::class);
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Moves drimage_entity_type_alter to the back, to override the imageapi_optimize override if present.
+ */
+function drimage_module_implements_alter(array &$implementations, string $hook): void {
+  if ($hook == 'entity_type_alter') {
+    $group = $implementations['drimage'];
+    unset($implementations['drimage']);
+    $implementations['drimage'] = $group;
+  }
+}
+
+/**
+ * Implements hook_modules_uninstalled().
+ */
+function drimage_modules_uninstalled(array $modules, bool $isSyncing): void {
+  if ($isSyncing) {
+    // Let's deal with this in drimage_config_import_steps_alter().
+    return;
+  }
+
+  $modulesToCheck = ['image_widget_crop', 'automated_crop', 'focal_point'];
+  if (array_intersect($modulesToCheck, $modules)) {
+    \Drupal::service('drimage.image_style_repository')
+      ->deleteAll();
+  }
+}
+
+/**
+ * Implements hook_modules_installed().
+ */
+function drimage_modules_installed(array $modules, bool $isSyncing): void {
+  if ($isSyncing) {
+    // Let's deal with this in drimage_config_import_steps_alter().
+    return;
+  }
+
+  $modulesToCheck = ['image_widget_crop', 'automated_crop', 'focal_point'];
+  if (array_intersect($modulesToCheck, $modules)) {
+    \Drupal::service('drimage.image_style_repository')
+      ->deleteAll();
+  }
+}
+
+/**
+ * Implements hook_config_import_steps_alter().
+ *
+ * Delete all drimage image styles after certain modules are (un)installed.
+ */
+function drimage_config_import_steps_alter(array &$syncSteps, ConfigImporter $configImporter): void {
+  $modulesToCheck = ['image_widget_crop', 'automated_crop', 'focal_point'];
+  $uninstalledModules = $configImporter->getExtensionChangelist('module', 'uninstall');
+  $installedModules = $configImporter->getExtensionChangelist('module', 'install');
+
+  if (array_intersect($modulesToCheck, $uninstalledModules) || array_intersect($modulesToCheck, $installedModules)) {
+    $syncSteps[] = '_drimage_config_import_delete_image_styles';
+  }
+}
+
+/**
+ * Helper function to delete all drimage image styles.
+ */
+function _drimage_config_import_delete_image_styles(array &$context, ConfigImporter $configImporter): void {
+  \Drupal::service('drimage.image_style_repository')
+    ->deleteAll();
+  $context['finished'] = 1;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Delete all drimage image styles if the default pipeline is updated.
+ */
+function drimage_imageapi_optimize_pipeline_update(ImageAPIOptimizePipelineInterface $entity): void {
+  $config = \Drupal::config('imageapi_optimize.settings');
+
+  if ($config->get('default_pipeline') !== $entity->id()) {
+    return;
+  }
+
+  \Drupal::service('drimage.image_style_repository')
+    ->deleteAll();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Delete all drimage image styles related to a crop type if it is updated.
+ */
+function drimage_crop_type_update(CropTypeInterface $entity): void {
+  \Drupal::service('drimage.image_style_repository')
+    ->deleteByCropType($entity);
+}

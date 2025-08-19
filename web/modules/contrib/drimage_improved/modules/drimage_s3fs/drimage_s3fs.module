@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Drimage S3fs module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function drimage_s3fs_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.drimage_s3fs':
+      return '<p>' . t('A module that integrates S3FS for storing images on Amazon S3.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function drimage_s3fs_theme() {
+  return [
+    'drimage_s3_formatter' => [
+      'variables' => [
+        'item' => NULL,
+        'item_attributes' => NULL,
+        'image_style' => NULL,
+        'core_webp' => NULL,
+        'imageapi_optimize_webp' => NULL,
+        'url' => NULL,
+        'alt' => NULL,
+        'width' => NULL,
+        'height' => NULL,
+        'data' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function drimage_s3fs_library_info_alter(&$libraries, $extension) {
+  if ($extension === 'ckeditor5') {
+    $libraries['internal.drupal.ckeditor5.media']['dependencies'][] = 'drimage_s3fs/drimage_s3fs';
+  }
+}

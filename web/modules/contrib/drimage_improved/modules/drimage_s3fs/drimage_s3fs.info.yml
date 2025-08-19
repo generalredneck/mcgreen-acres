@@ -1,0 +1,13 @@
+name: 'Drimage S3fs'
+type: module
+description: 'A module that integrates S3FS for storing images on Amazon S3.'
+core_version_requirement: ^10 || ^11
+package: Media
+dependencies:
+  - s3fs:s3fs
+  - drimage_improved:drimage_improved
+
+# Information added by Drupal.org packaging script on 2025-07-22
+version: '1.0.8'
+project: 'drimage_improved'
+datestamp: 1753172228

@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a dynamic responsive image
+ *
+ * Available variables:
+ * - url: An optional URL the image can be linked to.
+ * - width: The original width of the image.
+ * - height: The original height of the image.
+ * - alt: The alt text for the image.
+ * - item_attributes: attributes for the wrapper
+ * - data: json encoded drimage data object
+ *
+ * @see template_preprocess_drimage_formatter()
+ *
+ * @ingroup themeable
+ */
+#}
+{% set dummy_image = "data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg'%20width='" ~ width ~ "'%20height='" ~ height ~ "'%20viewBox='0%200%20" ~ width ~ "%20" ~ height ~"'%20%3E%3C/svg%3E" %}
+{{ attach_library('drimage/drimage') }}
+<div {{ item_attributes }} data-drimage="{{ data|json_encode }}">
+  {# Prevent spaces in the link by glueing a and picture element together. #}
+  {% if url %}
+  <a href="{{ url }}"><picture>
+  {% else %}
+  <picture>
+  {% endif %}
+
+  {% if core_webp or imageapi_optimize_webp %}
+    <source data-format="webp" srcset="{{ dummy_image }}" type="image/webp">
+  {% endif %}
+    <img src="{{ dummy_image }}" width="{{ width }}" height="{{ height }}" alt="{{ alt }}" {% if title %}title="{{ title }}"{% endif %} />
+
+  {% if url %}
+  </picture></a>
+  {% else %}
+  </picture>
+  {% endif %}
+</div>
+<noscript>
+  <img src="{{ data.original_source }}" alt="{{ alt }}"{% if title %} title="{{ title }}"{% endif %} width="{{ data.original_width }}" height="{{ data.original_height }}">
+</noscript>
