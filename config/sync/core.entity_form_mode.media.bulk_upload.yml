@@ -6,6 +6,6 @@ dependencies:
     - media
 id: media.bulk_upload
 label: 'Bulk upload'
-description: ''
+description: null
 targetEntityType: media
 cache: true

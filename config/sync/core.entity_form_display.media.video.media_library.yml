@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.media.media_library
+    - field.field.media.video.field_media_cover_image
+    - field.field.media.video.field_media_in_library
     - field.field.media.video.field_media_video_file
     - media.type.video
 _core:
@@ -15,8 +17,13 @@ mode: media_library
 content: {  }
 hidden:
   created: true
+  field_media_cover_image: true
+  field_media_in_library: true
   field_media_video_file: true
   name: true
   path: true
+  publish_on: true
+  scheduler_settings: true
   status: true
   uid: true
+  unpublish_on: true

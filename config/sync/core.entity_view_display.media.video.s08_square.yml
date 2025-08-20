@@ -112,6 +112,7 @@ content:
       muted: false
       width: 800
       height: 800
+      playsinline: false
     third_party_settings:
       ds:
         ft:

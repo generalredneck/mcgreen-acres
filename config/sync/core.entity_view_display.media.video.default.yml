@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.media.video.field_media_cover_image
+    - field.field.media.video.field_media_in_library
     - field.field.media.video.field_media_video_file
     - media.type.video
   module:
@@ -25,11 +27,15 @@ content:
       muted: false
       width: 640
       height: 480
+      playsinline: false
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
   created: true
+  field_media_cover_image: true
+  field_media_in_library: true
   name: true
+  search_api_excerpt: true
   thumbnail: true
   uid: true

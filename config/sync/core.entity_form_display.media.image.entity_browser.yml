@@ -52,5 +52,8 @@ content:
 hidden:
   created: true
   path: true
+  publish_on: true
+  scheduler_settings: true
   translation: true
   uid: true
+  unpublish_on: true
