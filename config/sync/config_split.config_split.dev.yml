@@ -1,0 +1,17 @@
+uuid: f77640f4-203f-4f6e-8ab8-882462601e1c
+langcode: en
+status: false
+dependencies: {  }
+id: dev
+label: Dev
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/splits/dev
+module: {  }
+theme: {  }
+complete_list: {  }
+partial_list:
+  - symfony_mailer.settings

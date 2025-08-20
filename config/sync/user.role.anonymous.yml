@@ -5,6 +5,8 @@ dependencies:
   config:
     - filter.format.restricted_html
   module:
+    - commerce_checkout
+    - commerce_product
     - disqus
     - filter
     - media
@@ -16,8 +18,10 @@ label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
+  - 'access checkout'
   - 'access content'
   - 'access user profiles'
   - 'use text format restricted_html'
+  - 'view commerce_product'
   - 'view disqus comments'
   - 'view media'

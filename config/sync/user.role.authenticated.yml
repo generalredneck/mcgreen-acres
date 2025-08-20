@@ -21,6 +21,10 @@ dependencies:
     - taxonomy.vocabulary.blog_topics
     - taxonomy.vocabulary.tags
   module:
+    - commerce_checkout
+    - commerce_order
+    - commerce_payment
+    - commerce_product
     - disqus
     - dropzonejs
     - entity_browser
@@ -44,6 +48,7 @@ label: 'Authenticated user'
 weight: 1
 is_admin: false
 permissions:
+  - 'access checkout'
   - 'access content'
   - 'access content overview'
   - 'access editor_media_browser entity browser pages'
@@ -106,6 +111,7 @@ permissions:
   - 'edit own video media'
   - 'edit terms in blog_topics'
   - 'edit terms in tags'
+  - 'manage own commerce_payment_method'
   - 'opt-in or out of google analytics tracking'
   - 'revert article revisions'
   - 'revert page revisions'
@@ -118,8 +124,10 @@ permissions:
   - 'view all revisions'
   - 'view any paragraphs previewer'
   - 'view article revisions'
+  - 'view commerce_product'
   - 'view disqus comments'
   - 'view media'
+  - 'view own commerce_order'
   - 'view own unpublished content'
   - 'view own unpublished media'
   - 'view page revisions'

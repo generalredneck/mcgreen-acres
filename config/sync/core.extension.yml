@@ -1,6 +1,7 @@
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
+  address: 0
   admin_toolbar: 0
   advanced_text_formatter: 0
   antibot: 0
@@ -14,7 +15,18 @@ module:
   breakpoint: 0
   checklistapi: 0
   ckeditor5: 0
+  commerce: 0
+  commerce_cart: 0
+  commerce_checkout: 0
+  commerce_log: 0
+  commerce_number_pattern: 0
+  commerce_order: 0
+  commerce_payment: 0
+  commerce_price: 0
+  commerce_product: 0
+  commerce_store: 0
   config: 0
+  config_split: 0
   contextual: 0
   crop: 0
   ctools: 0
@@ -28,6 +40,7 @@ module:
   easy_breadcrumb: 0
   editor: 0
   embed: 0
+  entity: 0
   entity_browser: 0
   entity_browser_enhanced: 0
   entity_browser_entity_form: 0
@@ -82,7 +95,9 @@ module:
   path_alias: 0
   pdf: 0
   phpass: 0
+  profile: 0
   realname: 0
+  recipe_tracker: 0
   redirect: 0
   responsive_image: 0
   scheduler: 0
@@ -92,6 +107,7 @@ module:
   seo_checklist: 0
   shortcut: 0
   simple_block: 0
+  state_machine: 0
   symfony_mailer: 0
   system: 0
   taxonomy: 0
