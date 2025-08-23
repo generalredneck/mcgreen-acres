@@ -145,6 +145,12 @@
             "drupal/core": [
                 "tests",
                 "profiles/demo_umami"
+            ],
+            "drupal/commerce_stripe": [
+                "tests"
+            ],
+            "stripe/stripe": [
+                "README.md"
             ]
         },
         "installer-types": [
