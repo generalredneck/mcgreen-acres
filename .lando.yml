@@ -18,3 +18,10 @@ tooling:
   drush:
     service: appserver
     cmd: "drush --root=/app/web --uri=http://mcgreen-acres.lndo.site"
+  build:
+    service: appserver
+    cmd:
+      - composer install
+      - /app/vendor/bin/drush sql-drop -y
+      - /app/vendor/bin/drush sql-sync @prod @self -y
+      - /app/vendor/fourkitchens/pots/scripts/general/remote/drush-commands "" "/app/vendor/bin/drush --root=/app/web --uri=http://mcgreen-acres.lndo.site" "YES"
