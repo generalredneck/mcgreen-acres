@@ -145,7 +145,7 @@
             "drupal/core": [
                 "tests",
                 "profiles/demo_umami"
-            ],
+            ]
         },
         "installer-types": [
             "npm-asset",
