@@ -65,6 +65,7 @@
         "drupal/config_split": "^2.0",
         "drupal/core": "^11.0",
         "drupal/core-composer-scaffold": "^11.0",
+        "drupal/core-vendor-hardening": "^11.2",
         "drupal/ctools": "^4.1",
         "drupal/diff": "^1.7@RC",
         "drupal/disqus": "^2.0.2",
@@ -119,6 +120,7 @@
             "cweagans/composer-patches": true,
             "drupal/console-extend-plugin": true,
             "drupal/core-composer-scaffold": true,
+            "drupal/core-vendor-hardening": true,
             "drupal/drupal-library-installer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
             "oomphinc/composer-installers-extender": true,
@@ -138,6 +140,12 @@
                 "[web-root]/sites/development.services.yml": false,
                 "[web-root]/.htaccess": false
             }
+        },
+        "drupal-core-vendor-hardening": {
+            "drupal/core": [
+                "tests",
+                "profiles/demo_umami"
+            ],
         },
         "installer-types": [
             "npm-asset",
