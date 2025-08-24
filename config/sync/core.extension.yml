@@ -45,8 +45,8 @@ module:
   ctools: 0
   datetime: 0
   datetime_range: 0
-  default_content: 0
   dblog: 0
+  default_content: 0
   diff: 0
   disqus: 0
   dropzonejs: 0
@@ -79,6 +79,7 @@ module:
   image_delta_formatter: 0
   inline_entity_form: 0
   interval: 0
+  jquery_downgrade: 0
   jquery_ui: 0
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0

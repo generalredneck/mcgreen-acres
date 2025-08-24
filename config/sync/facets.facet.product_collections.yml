@@ -11,14 +11,23 @@ _core:
   default_config_hash: zLmC7og-cKFfNPVtPWYGxCg9wguZc-R2Wtrj3MviYmY
 id: product_collections
 name: 'Product Collections'
-url_alias: product_collections
 weight: 0
 min_count: 1
 missing: false
 missing_label: others
-show_only_one_result: false
-field_identifier: product_collections
+url_alias: product_collections
 facet_source_id: 'search_api:views_page__product_catalog__catalog_page'
+field_identifier: product_collections
+query_operator: or
+hard_limit: 0
+exclude: false
+use_hierarchy: true
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: false
 widget:
   type: checkbox
   config:
@@ -30,17 +39,13 @@ widget:
     soft_limit_settings:
       show_less_label: 'Show less'
       show_more_label: 'Show more'
-query_operator: or
-use_hierarchy: true
-keep_hierarchy_parents_active: false
-hierarchy:
-  type: taxonomy
-  config: {  }
-expand_hierarchy: false
-enable_parent_when_child_gets_disabled: false
-hard_limit: 0
-exclude: false
+empty_behavior:
+  behavior: text
+  text_format: plain_text
+  text: 'No categories available for this search criteria.'
 only_visible_when_facet_source_is_visible: true
+show_only_one_result: false
+show_title: false
 processor_configs:
   display_value_widget_order:
     processor_id: display_value_widget_order
@@ -64,8 +69,3 @@ processor_configs:
       pre_query: 50
       build: 15
     settings: {  }
-empty_behavior:
-  behavior: text
-  text_format: plain_text
-  text: 'No categories available for this search criteria.'
-show_title: false
