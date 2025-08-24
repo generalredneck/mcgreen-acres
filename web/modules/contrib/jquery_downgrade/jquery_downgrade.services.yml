@@ -1,0 +1,6 @@
+services:
+  Drupal\jquery_downgrade\Hook\JQueryDowngradeHooks:
+    class: Drupal\jquery_downgrade\Hook\JQueryDowngradeHooks
+    arguments: ['@config.factory', '@theme.manager']
+    autowire: true
+
