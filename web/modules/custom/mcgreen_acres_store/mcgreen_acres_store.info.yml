@@ -1,0 +1,20 @@
+name: 'mcgreen_acres_store'
+type: module
+description: 'custom store stuff'
+package: McGreen Acres
+core_version_requirement: ^10 || ^11
+dependencies:
+  - default_content:default_content
+default_content:
+  commerce_product:
+    - 13a07289-7e1f-4384-a6cc-aa6a10da1980
+  commerce_product_variation:
+    - 7870f6a8-f957-48bc-8e88-cc47c2a87ab6
+  commerce_store:
+    - 17b1ec36-d8b5-4971-869c-64db3869c2a2
+  taxonomy_term:
+    - c5e33e12-1e6b-4c94-aba6-b6601a5ff5ad
+    - 9a62aa44-9cb3-4135-a48d-7c853496c56d
+    - 2cd807b4-0e8b-4639-b9bc-713a19f8b263
+    - 6b941578-6dba-460a-b52d-f6cfe6629792
+    - 5cfa9277-8908-40cc-932e-846f16853369
