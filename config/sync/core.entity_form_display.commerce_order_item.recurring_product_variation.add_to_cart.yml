@@ -1,0 +1,41 @@
+uuid: b28318eb-f1e9-470c-b8cd-7275848971af
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_item_type.recurring_product_variation
+    - core.entity_form_mode.commerce_order_item.add_to_cart
+    - field.field.commerce_order_item.recurring_product_variation.billing_period
+    - field.field.commerce_order_item.recurring_product_variation.subscription
+  module:
+    - commerce_order
+    - commerce_product
+id: commerce_order_item.recurring_product_variation.add_to_cart
+targetEntityType: commerce_order_item
+bundle: recurring_product_variation
+mode: add_to_cart
+content:
+  purchased_entity:
+    type: commerce_product_variation_title
+    weight: -1
+    region: content
+    settings:
+      label_display: true
+      label_text: 'Please select'
+      hide_single: true
+    third_party_settings: {  }
+  quantity:
+    type: commerce_quantity
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+      step: '1'
+    third_party_settings: {  }
+hidden:
+  adjustments: true
+  billing_period: true
+  created: true
+  subscription: true
+  total_price: true
+  unit_price: true

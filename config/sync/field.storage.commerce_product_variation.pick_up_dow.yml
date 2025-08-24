@@ -1,0 +1,30 @@
+uuid: e681a122-0dad-4e55-bf05-63e6d13ff131
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_product
+    - options
+id: commerce_product_variation.pick_up_dow
+field_name: pick_up_dow
+entity_type: commerce_product_variation
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 0
+      label: Sunday
+    -
+      value: 3
+      label: Wednesday
+    -
+      value: 6
+      label: Saturday
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

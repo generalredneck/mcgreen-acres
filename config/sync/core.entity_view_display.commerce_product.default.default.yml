@@ -1,10 +1,14 @@
-uuid: a8bc6034-8aea-415f-adbe-fa1681fb5b68
+uuid: e64b15e3-737e-4ee2-906e-2e45882ffc70
 langcode: en
 status: true
 dependencies:
   config:
     - commerce_product.commerce_product_type.default
     - field.field.commerce_product.default.body
+    - field.field.commerce_product.default.images
+    - field.field.commerce_product.default.product_brand
+    - field.field.commerce_product.default.product_collections
+    - field.field.commerce_product.default.product_tags
   module:
     - commerce_product
     - text
@@ -17,31 +21,33 @@ mode: default
 content:
   body:
     type: text_default
-    weight: 0
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
     region: content
   title:
-    label: hidden
     type: string
-    weight: -5
-    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: -5
+    region: content
   variations:
     type: commerce_add_to_cart
-    weight: 1
     label: hidden
     settings:
-      default_quantity: '1'
       combine: true
-      show_quantity: false
     third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   created: true
+  images: true
+  product_brand: true
+  product_collections: true
+  product_tags: true
   search_api_excerpt: true
   stores: true
   uid: true

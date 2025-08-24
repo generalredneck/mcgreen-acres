@@ -1,4 +1,4 @@
-uuid: 9d1be9c8-145f-424c-a881-463a73ea54b2
+uuid: 9a2866bd-6467-40be-86c3-524a3d7c22dc
 langcode: en
 status: true
 dependencies: {  }
@@ -6,7 +6,7 @@ _core:
   default_config_hash: 3vA4FKQ1Qu8B1R8UdGPnmMfJrYO6Y6uMqeNgDgXxods
 id: default
 label: Default
-orderItemType: default
-generateTitle: true
 traits: {  }
 locked: false
+orderItemType: default
+generateTitle: true

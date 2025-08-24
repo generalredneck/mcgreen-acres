@@ -1,0 +1,7 @@
+_core:
+  default_config_hash: qg0dc2zDnW4SVK5o7ze-PS_edVTvG4TTe7IQPUQRKZ4
+nr_days_range: '7'
+nr_days_from: '0'
+checkout_flows:
+  default: default
+  shipping: shipping

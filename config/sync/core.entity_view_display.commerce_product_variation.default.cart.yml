@@ -1,4 +1,4 @@
-uuid: 76e7ab99-59ab-4866-98b5-e2f1bfb6f2f4
+uuid: bf122fcd-90df-4c47-bce4-d775a0ba2193
 langcode: en
 status: true
 dependencies:
@@ -19,21 +19,21 @@ bundle: default
 mode: cart
 content:
   list_price:
-    label: above
     type: commerce_price_default
-    weight: -1
-    region: content
+    label: above
     settings:
       strip_trailing_zeroes: false
       currency_display: symbol
     third_party_settings: {  }
+    weight: -1
+    region: content
   product_id:
     type: entity_reference_label
-    weight: 0
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   price: true

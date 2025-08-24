@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa70eb25ff7b70959e662205215e471d",
+    "content-hash": "320b5af445a4a4923d923a315770c1c6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3612,6 +3612,83 @@
             }
         },
         {
+            "name": "drupal/default_content",
+            "version": "2.0.0-alpha3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/default_content.git",
+                "reference": "2.0.0-alpha3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/default_content-2.0.0-alpha3.zip",
+                "reference": "2.0.0-alpha3",
+                "shasum": "fdd90c70bd91896835f6ba5ec42c260c1a144a2b"
+            },
+            "require": {
+                "drupal/core": "^9.1 || ^10 || ^11"
+            },
+            "require-dev": {
+                "drupal/hal": "^1 || ^2",
+                "drupal/paragraphs": "^1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0-alpha3",
+                    "datestamp": "1724492420",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9 || ^10 || ^11 || ^12"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "andypost",
+                    "homepage": "https://www.drupal.org/user/118908"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
+                    "name": "berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "jibran",
+                    "homepage": "https://www.drupal.org/user/1198144"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                }
+            ],
+            "description": "Imports default content when a module is enabled",
+            "homepage": "https://www.drupal.org/project/default_content",
+            "support": {
+                "source": "https://git.drupalcode.org/project/default_content"
+            }
+        },
+        {
             "name": "drupal/diff",
             "version": "1.9.0",
             "source": {
@@ -4928,6 +5005,157 @@
             }
         },
         {
+            "name": "drupal/facets",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/facets.git",
+                "reference": "3.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/facets-3.0.0.zip",
+                "reference": "3.0.0",
+                "shasum": "9fa44774d43aa065989cdf26b3992fa4029ae63e"
+            },
+            "require": {
+                "drupal/core": "^10.1 || ^11"
+            },
+            "conflict": {
+                "drupal/core": "<10.1.0",
+                "drupal/search_api": "<1.14"
+            },
+            "require-dev": {
+                "drupal/better_exposed_filters": "~7.0",
+                "drupal/jquery_ui_slider": "~2.1",
+                "drupal/jquery_ui_touch_punch": "~1.1",
+                "drupal/search_api": "1.x-dev"
+            },
+            "suggest": {
+                "drupal/better_exposed_filters": "Required for AJAX support for facets rendered as views exposed filters",
+                "drupal/jquery_ui_slider": "Required for the 'Facets Range Widget' module to work",
+                "drupal/jquery_ui_touch_punch": "Required for the 'Facets Range Widget' module to work"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.0.0",
+                    "datestamp": "1735915197",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "See all contributors",
+                    "homepage": "https://www.drupal.org/node/2348769/committers"
+                },
+                {
+                    "name": "drunken monkey",
+                    "homepage": "https://www.drupal.org/user/205582"
+                },
+                {
+                    "name": "mkalkbrenner",
+                    "homepage": "https://www.drupal.org/user/124705"
+                },
+                {
+                    "name": "nick_vh",
+                    "homepage": "https://www.drupal.org/user/122682"
+                },
+                {
+                    "name": "strykaizer",
+                    "homepage": "https://www.drupal.org/user/462700"
+                }
+            ],
+            "description": "The Facet module allows site builders to easily create and manage faceted search interfaces.",
+            "homepage": "https://www.drupal.org/project/facets",
+            "support": {
+                "source": "https://git.drupalcode.org/project/facets.git",
+                "issues": "https://www.drupal.org/project/issues/facets",
+                "irc": "irc://irc.freenode.org/drupal-search-api"
+            }
+        },
+        {
+            "name": "drupal/facets_pretty_paths",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/facets_pretty_paths.git",
+                "reference": "2.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/facets_pretty_paths-2.0.3.zip",
+                "reference": "2.0.3",
+                "shasum": "c894ba28c9044ed8d37b349e6ab5d517efca4617"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/facets": "^2 || ^3",
+                "drupal/pathauto": "^1"
+            },
+            "require-dev": {
+                "drupal/search_api": "^1.29"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.3",
+                    "datestamp": "1727110224",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\facets_pretty_paths\\": "./src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Drupal\\Tests\\facets_pretty_paths\\": "./tests/src"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "All contributors",
+                    "homepage": "https://www.drupal.org/node/2625160/committers"
+                },
+                {
+                    "name": "phenaproxima",
+                    "homepage": "https://www.drupal.org/user/205645"
+                },
+                {
+                    "name": "strykaizer",
+                    "homepage": "https://www.drupal.org/user/462700"
+                },
+                {
+                    "name": "upchuk",
+                    "homepage": "https://www.drupal.org/user/1885838"
+                }
+            ],
+            "description": "Pretty paths for Facets.",
+            "homepage": "https://www.drupal.org/project/facets_pretty_paths",
+            "keywords": [
+                "drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/facets_pretty_paths"
+            }
+        },
+        {
             "name": "drupal/field_group",
             "version": "4.0.0",
             "source": {
@@ -5301,6 +5529,58 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/honeypot",
                 "issues": "https://www.drupal.org/project/issues/honeypot"
+            }
+        },
+        {
+            "name": "drupal/image_delta_formatter",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/image_delta_formatter.git",
+                "reference": "8.x-1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/image_delta_formatter-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "6ec48166cb04eda57915dbe28f97fa32c1e77b75"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.3",
+                    "datestamp": "1738516937",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "fgm",
+                    "homepage": "https://www.drupal.org/user/27985"
+                },
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                }
+            ],
+            "description": "Provides a formatter that displays a specific delta of a multi-value image or media field.",
+            "homepage": "https://www.drupal.org/project/image_delta_formatter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/image_delta_formatter"
             }
         },
         {
@@ -15605,6 +15885,7 @@
         "drupal/commerce_recurring": 5,
         "drupal/commerce_stock": 10,
         "drupal/commerce_timeslots": 20,
+        "drupal/default_content": 15,
         "drupal/diff": 5,
         "drupal/realname": 10,
         "drupal/simple_block": 10,

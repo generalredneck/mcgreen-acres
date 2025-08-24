@@ -1,0 +1,131 @@
+uuid: 7ce8eff2-04b0-4e7d-9249-ee6817a612aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.commerce_subscription.customer
+  module:
+    - commerce_recurring
+    - options
+_core:
+  default_config_hash: A4vTherGn_DL3Not_8_sMju9rtk2t41b4e0lz_AosQc
+id: commerce_subscription.product_variation.customer
+targetEntityType: commerce_subscription
+bundle: product_variation
+mode: customer
+content:
+  changed:
+    type: timestamp
+    label: hidden
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+      tooltip:
+        date_format: long
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  ends:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  next_renewal:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  orders:
+    type: subscription_orders
+    label: hidden
+    settings:
+      view: commerce_subscription_orders_customer
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  payment_method:
+    type: entity_reference_entity_view
+    label: inline
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  renewed:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  starts:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  state:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  trial_ends:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  trial_starts:
+    type: timestamp
+    label: inline
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  billing_schedule: true
+  created: true
+  initial_order: true
+  purchased_entity: true
+  quantity: true
+  scheduled_changes: true
+  search_api_excerpt: true
+  store_id: true
+  title: true
+  uid: true
+  unit_price: true
