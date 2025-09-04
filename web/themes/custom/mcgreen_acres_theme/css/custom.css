@@ -376,3 +376,122 @@ figure {
   width: 100%;
   height: 100%;
 }
+
+.g-0, .no-gutters,
+.gx-0 {
+  --beo-gutter-x: 0;
+}
+
+.g-0, .no-gutters,
+.gy-0 {
+  --beo-gutter-y: 0;
+}
+
+.g-1,
+.gx-1 {
+  --beo-gutter-x: 0.25rem;
+}
+
+.g-1,
+.gy-1 {
+  --beo-gutter-y: 0.25rem;
+}
+
+.g-2,
+.gx-2 {
+  --beo-gutter-x: 0.5rem;
+}
+
+.g-2,
+.gy-2 {
+  --beo-gutter-y: 0.5rem;
+}
+
+.g-3,
+.gx-3 {
+  --beo-gutter-x: 1rem;
+}
+
+.g-3,
+.gy-3 {
+  --beo-gutter-y: 1rem;
+}
+
+.g-4,
+.gx-4 {
+  --beo-gutter-x: 1.5rem;
+}
+
+.g-4,
+.gy-4 {
+  --beo-gutter-y: 1.5rem;
+}
+
+.g-5,
+.gx-5 {
+  --beo-gutter-x: 3rem;
+}
+
+.g-5,
+.gy-5 {
+  --beo-gutter-y: 3rem;
+}
+
+.g-6,
+.gx-6 {
+  --beo-gutter-x: 4.5rem;
+}
+
+.g-6,
+.gy-6 {
+  --beo-gutter-y: 4.5rem;
+}
+
+.fs-1 {
+  font-size: calc(1.375rem + 1.5vw) !important;
+}
+
+.fs-2 {
+  font-size: calc(1.325rem + 0.9vw) !important;
+}
+
+.fs-3 {
+  font-size: calc(1.3rem + 0.6vw) !important;
+}
+
+.fs-4 {
+  font-size: calc(1.275rem + 0.3vw) !important;
+}
+
+.fs-5 {
+  font-size: 1.25rem !important;
+}
+
+.fs-6 {
+  font-size: 1rem !important;
+}
+
+.fs-md {
+  font-size: 1.125rem !important;
+}
+
+.fs-sm {
+  font-size: 0.875rem !important;
+}
+@media (min-width: 1200px) {
+  .fs-1 {
+    font-size: 2.5rem !important;
+  }
+
+  .fs-2 {
+    font-size: 2rem !important;
+  }
+
+  .fs-3 {
+    font-size: 1.75rem !important;
+  }
+
+  .fs-4 {
+    font-size: 1.5rem !important;
+  }
+}
