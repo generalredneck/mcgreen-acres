@@ -348,8 +348,11 @@ display:
       defaults:
         cache: false
       display_description: ''
-      display_extenders: {  }
-      path: products
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: product
       menu:
         type: normal
         title: Catalog
