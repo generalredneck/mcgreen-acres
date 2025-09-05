@@ -1,0 +1,5 @@
+jquery_downgrade.settings:
+  title: 'jQuery Downgrade'
+  description: 'Configure jQuery 3 replacement settings.'
+  parent: system.admin_config_development
+  route_name: jquery_downgrade.settings

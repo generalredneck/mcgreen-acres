@@ -1,0 +1,13 @@
+webform_ip_geo.settings:
+  type: config_object
+  label: 'Webform IP Geo Settings'
+  mapping:
+    api_provider:
+      type: string
+      label: 'API provider key'
+    debug_mode:
+      type: boolean
+      label: 'Use debug IP instead of submission IP'
+    debug_ip:
+      type: string
+      label: 'The debug IP'
