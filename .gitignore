@@ -33,3 +33,4 @@ backups
 /.env
 
 .lando.local.yml
+.vscode
