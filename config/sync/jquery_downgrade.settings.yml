@@ -1,0 +1,5 @@
+node_ids: {  }
+view_routes: {  }
+enable_theme_downgrade: 1
+downgrade_themes:
+  mcgreen_acres_theme: mcgreen_acres_theme

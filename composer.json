@@ -60,6 +60,7 @@
         "drupal/file_delete": "^3.0",
         "drupal/google_analytics": "^4.0.2",
         "drupal/honeypot": "^2.2",
+        "drupal/jquery_downgrade": "^1.0",
         "drupal/jquery_ui": "^1.7",
         "drupal/jquery_ui_datepicker": "^2.1",
         "drupal/jquery_ui_slider": "^2.1",
@@ -109,7 +110,8 @@
             "drupal/drupal-library-installer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
             "oomphinc/composer-installers-extender": true,
-            "zaporylie/composer-drupal-optimizations": true
+            "zaporylie/composer-drupal-optimizations": true,
+            "drupal/core-vendor-hardening": true
         }
     },
     "extra": {
