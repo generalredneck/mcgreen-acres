@@ -1,0 +1,208 @@
+_meta:
+  version: '1.0'
+  entity_type: commerce_product
+  uuid: 13a07289-7e1f-4384-a6cc-aa6a10da1980
+  bundle: physical
+  default_langcode: en
+  depends:
+    17b1ec36-d8b5-4971-869c-64db3869c2a2: commerce_store
+    7870f6a8-f957-48bc-8e88-cc47c2a87ab6: commerce_product_variation
+    c5e33e12-1e6b-4c94-aba6-b6601a5ff5ad: taxonomy_term
+default:
+  uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  stores:
+    -
+      entity: 17b1ec36-d8b5-4971-869c-64db3869c2a2
+  title:
+    -
+      value: 'Chicken Eggs'
+  variations:
+    -
+      entity: 7870f6a8-f957-48bc-8e88-cc47c2a87ab6
+  default_variation:
+    -
+      entity: 7870f6a8-f957-48bc-8e88-cc47c2a87ab6
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  created:
+    -
+      value: 1756070266
+  metatag:
+    -
+      tag: meta
+      attributes:
+        name: title
+        content: '| McGreen Acres'
+    -
+      tag: meta
+      attributes:
+        name: geo.position
+        content: '32.69345223660298, -96.50738602150476'
+    -
+      tag: meta
+      attributes:
+        name: geo.placename
+        content: 'McGeen Acres'
+    -
+      tag: meta
+      attributes:
+        name: geo.region
+        content: US-TX
+    -
+      tag: meta
+      attributes:
+        name: icbm
+        content: '32.69345223660298, -96.50738602150476'
+    -
+      tag: link
+      attributes:
+        rel: shortlink
+        href: 'http://mcgreen-acres.lndo.site/node/1'
+    -
+      tag: link
+      attributes:
+        rel: canonical
+        href: 'http://mcgreen-acres.lndo.site/home-page'
+    -
+      tag: meta
+      attributes:
+        name: rights
+        content: 'Copyright ©2025 McGreen Acres. All rights reserved.'
+    -
+      tag: meta
+      attributes:
+        name: referrer
+        content: unsafe-url
+    -
+      tag: meta
+      attributes:
+        property: 'og:site_name'
+        content: 'McGreen Acres'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image'
+        content: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image:type'
+        content: image/png
+    -
+      tag: meta
+      attributes:
+        property: 'og:image:width'
+        content: '2162'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image:height'
+        content: '1550'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image:alt'
+        content: 'McGreen Acres Logo'
+    -
+      tag: meta
+      attributes:
+        property: 'place:location:latitude'
+        content: '32.69345223660298'
+    -
+      tag: meta
+      attributes:
+        property: 'place:location:longitude'
+        content: '-96.50738602150476'
+    -
+      tag: meta
+      attributes:
+        property: 'og:street_address'
+        content: '9650 FM740'
+    -
+      tag: meta
+      attributes:
+        property: 'og:locality'
+        content: Forney
+    -
+      tag: meta
+      attributes:
+        property: 'og:region'
+        content: Texas
+    -
+      tag: meta
+      attributes:
+        property: 'og:postal_code'
+        content: '75126'
+    -
+      tag: meta
+      attributes:
+        property: 'og:country_name'
+        content: 'United States'
+    -
+      tag: meta
+      attributes:
+        property: 'og:email'
+        content: mcgreenacres@gmail.com
+    -
+      tag: meta
+      attributes:
+        property: 'og:phone_number'
+        content: 1-469-248-5703
+    -
+      tag: meta
+      attributes:
+        property: 'og:locale'
+        content: en_US
+    -
+      tag: meta
+      attributes:
+        property: 'pin:media'
+        content: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+    -
+      tag: meta
+      attributes:
+        property: 'pin:url'
+        content: 'http://mcgreen-acres.lndo.site/home-page'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:card'
+        content: summary
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:site'
+        content: '@McGreenAcres'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:site:id'
+        content: '1147598700446965760'
+    -
+      tag: link
+      attributes:
+        rel: alternate
+        hreflang: x-default
+        href: 'http://mcgreen-acres.lndo.site/home-page'
+    -
+      tag: link
+      attributes:
+        rel: alternate
+        hreflang: en
+        href: 'http://mcgreen-acres.lndo.site/home-page'
+  body:
+    -
+      value: '<p>Eggs from our chickens, whom are free to graze on our property. They get a healthy diet of Organic, Non-GMO, Corn free, and Soy free feed. Mostly brown or blue. They are clean and in new cartons made of recycle paper pulp.</p><p>Herd Share Members, Be sure to use your Promo Code!</p>'
+      format: basic_html
+      summary: ''
+  product_collections:
+    -
+      entity: c5e33e12-1e6b-4c94-aba6-b6601a5ff5ad

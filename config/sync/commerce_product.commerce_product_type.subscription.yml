@@ -1,0 +1,15 @@
+uuid: 287859b6-bda0-442e-9df2-7432d392beed
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 79BzftvP94F9GkByPmPufVpUDlQfA2HKsLCWTCF71Uo
+id: subscription
+label: Subscription
+traits: {  }
+locked: false
+description: ''
+variationTypes:
+  - subscription
+multipleVariations: true
+injectVariationFields: true

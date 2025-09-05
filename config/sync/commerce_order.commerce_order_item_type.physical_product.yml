@@ -1,0 +1,17 @@
+uuid: 876fd60e-71e2-40b2-9d08-a65b478dafd5
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_tax
+third_party_settings:
+  commerce_tax:
+    taxable_type: physical_goods
+_core:
+  default_config_hash: nTwd_oR0LuhGRHx-ID5s2dyXOp08L9rGTRFW0YCnHLE
+id: physical_product
+label: 'Physical (Product variation)'
+traits: {  }
+locked: false
+purchasableEntityType: commerce_product_variation
+orderType: default

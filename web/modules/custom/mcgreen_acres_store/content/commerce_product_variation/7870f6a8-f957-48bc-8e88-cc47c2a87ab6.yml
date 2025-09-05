@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: commerce_product_variation
+  uuid: 7870f6a8-f957-48bc-8e88-cc47c2a87ab6
+  bundle: physical
+  default_langcode: en
+  depends:
+    13a07289-7e1f-4384-a6cc-aa6a10da1980: commerce_product
+default:
+  uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  product_id:
+    -
+      entity: 13a07289-7e1f-4384-a6cc-aa6a10da1980
+  sku:
+    -
+      value: '1'
+  title:
+    -
+      value: '1 Dozen'
+  price:
+    -
+      number: '10.000000'
+      currency_code: USD
+      formatted: $10.00
+  created:
+    -
+      value: 1756070351
+  commerce_stock_always_in_stock:
+    -
+      value: false
+  stock:
+    -
+      value: 0.0
+  weight:
+    -
+      number: '1.000000'
+      unit: ct

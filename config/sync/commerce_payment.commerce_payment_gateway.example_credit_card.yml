@@ -1,0 +1,21 @@
+uuid: e1811105-2523-4d69-be49-da677510a031
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_payment_example
+_core:
+  default_config_hash: o0lxb2YTWTYPDDKiqEPZBMd65OUbQyv54Py0YylDm54
+id: example_credit_card
+label: 'Example credit card'
+weight: null
+plugin: example_onsite
+configuration:
+  display_label: Example
+  mode: test
+  payment_method_types:
+    - credit_card
+  collect_billing_information: true
+  api_key: '1234567890'
+conditions: {  }
+conditionOperator: AND
