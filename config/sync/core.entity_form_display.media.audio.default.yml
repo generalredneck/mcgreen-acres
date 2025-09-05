@@ -55,3 +55,5 @@ content:
 hidden:
   field_media_in_library: true
   name: true
+  publish_on: true
+  unpublish_on: true

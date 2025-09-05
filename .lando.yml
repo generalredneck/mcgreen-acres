@@ -1,10 +1,19 @@
 name: mcgreen-acres
-recipe: drupal8
+recipe: drupal11
 config:
+  database: mariadb:11.4
   webroot: web
   xdebug: true
-  php: "8.1"
+  php: "8.4"
   composer_version: 2
+services:
+  mail:
+    type: mailhog
+    hogfrom:
+      - appserver
+proxy:
+  mail:
+    - mail-mcgreen-acres.lndo.site
 tooling:
   drush:
     service: appserver

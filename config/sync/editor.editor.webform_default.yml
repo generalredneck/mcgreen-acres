@@ -1,54 +1,50 @@
-uuid: 140f9f20-38e1-49f7-a2b8-9efb6cee1e08
+uuid: 8dbaa468-5862-4880-9594-4e0fc62c5049
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.webform_default
   module:
-    - ckeditor
+    - ckeditor5
 format: webform_default
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Format
-            - Bold
-            - Italic
-            - Superscript
-            - Subscript
-        -
-          name: Media
-          items:
-            - SpecialChar
-            - ImceImage
-        -
-          name: Linking
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - NumberedList
-            - BulletedList
-        -
-          name: Indentation
-          items:
-            - Outdent
-            - Indent
-        -
-          name: 'Block Formatting'
-          items:
-            - Blockquote
-        -
-          name: Tools
-          items:
-            - Source
-            - Maximize
-  plugins: {  }
+    items:
+      - heading
+      - '|'
+      - bold
+      - italic
+      - subscript
+      - superscript
+      - '|'
+      - specialCharacters
+      - '|'
+      - numberedList
+      - bulletedList
+      - '|'
+      - link
+      - '|'
+      - indent
+      - outdent
+      - '|'
+      - blockQuote
+      - '|'
+      - sourceEditing
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_list:
+      properties:
+        reversed: true
+        startIndex: true
+      multiBlock: true
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
 image_upload:
   status: false

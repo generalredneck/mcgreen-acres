@@ -1,0 +1,84 @@
+diff --git a/src/GroupEvaluator.php b/src/GroupEvaluator.php
+index 0a1f98b82863c60fad868206307e1124f6368b8e..81a9e72fd20a93c90c99630e67d84dc74c5a9031 100644
+--- a/src/GroupEvaluator.php
++++ b/src/GroupEvaluator.php
+@@ -90,12 +90,23 @@ class GroupEvaluator implements GroupEvaluatorInterface {
+           $contexts = $this->contextRepository->getRuntimeContexts(array_values($condition->getContextMapping()));
+
+           // Skip when any of the contexts is not set.
++          $missingContextData = FALSE;
+           foreach ($contexts as $context) {
+             if ($context->getContextData()->getValue() === NULL) {
+-              return FALSE;
++              if ($logic == 'and') {
++                return FALSE;
++              }
++              else {
++                $missingContextData = TRUE;
++                break;
++              }
+             }
+           }
+
++          if ($missingContextData) {
++            continue;
++          }
++
+           $this->contextHandler->applyContextMapping($condition, $contexts);
+           $have_1_testable_condition = TRUE;
+         }
+diff --git a/tests/src/Functional/VisibilityTest.php b/tests/src/Functional/VisibilityTest.php
+index 39858721ebfd97d0f7f798b14b165fba338f30f2..1136c0c90265f4e5341603d2ede29e562e9e9b81 100644
+--- a/tests/src/Functional/VisibilityTest.php
++++ b/tests/src/Functional/VisibilityTest.php
+@@ -117,8 +117,11 @@ class VisibilityTest extends BlockVisibilityGroupsTestBase {
+     // Operator AND (by default).
+     $group = $this->createGroup([
+       [
+-        'id' => 'request_path',
+-        'pages' => '/user/*',
++        'id' => 'entity_bundle:node',
++        'bundles' => ['page' => 'page'],
++        'context_mapping' => [
++          'node' => '@node.node_route_context:node',
++        ],
+         'negate' => FALSE,
+       ],
+       [
+@@ -134,15 +137,13 @@ class VisibilityTest extends BlockVisibilityGroupsTestBase {
+     $page_node = $this->drupalCreateNode();
+
+     // Block is rendered when expected.
+-    $this->drupalGet('user');
++    $this->drupalGet($page_node->toUrl());
+     $this->assertPageTextContains($block->label());
+
+     // Block is not rendered when expected not to.
+-    $this->drupalGet($page_node->toUrl());
+-    $this->assertSession()->pageTextNotContains($block->label());
+-    $this->drupalLogout();
+     $this->drupalGet('user');
+     $this->assertSession()->pageTextNotContains($block->label());
++    $this->drupalLogout();
+     $this->drupalGet($page_node->toUrl());
+     $this->assertSession()->pageTextNotContains($block->label());
+
+@@ -151,17 +152,15 @@ class VisibilityTest extends BlockVisibilityGroupsTestBase {
+     $group->save();
+
+     // Block is rendered when expected.
+-    $this->drupalGet('user');
+-    $this->assertPageTextContains($block->label());
+-    $this->drupalLogin($this->blockVisibilityGroupsUser);
+     $this->drupalGet($page_node->toUrl());
+     $this->assertPageTextContains($block->label());
++    $this->drupalLogin($this->blockVisibilityGroupsUser);
+     $this->drupalGet('user');
+     $this->assertPageTextContains($block->label());
+
+     // Block is not rendered when expected not to.
+     $this->drupalLogout();
+-    $this->drupalGet($page_node->toUrl());
++    $this->drupalGet('user');
+     $this->assertSession()->pageTextNotContains($block->label());
+   }

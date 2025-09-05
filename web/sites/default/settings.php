@@ -763,33 +763,12 @@ $settings['entity_update_batch_size'] = 50;
  */
 $settings['entity_update_backup'] = TRUE;
 
-
-
 $environment = 'local';
 if (DRUPAL_ROOT == '/var/www/mcgreenacr/web') {
   $environment = 'live';
 }
-
-$config['evercurrent.admin_config']['send'] = FALSE;
-
-if ($environment == 'live') {
-  if (php_sapi_name() != "cli") {
-    if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != 'mcgreenacres.com') {
-      $newurl = 'https://mcgreenacres.com/'. $_SERVER['REQUEST_URI'];
-      header('HTTP/1.0 301 Moved Permanently');
-      header("Location: $newurl");
-      exit;
-    }
-  }
-  $config['evercurrent.admin_config']['send'] = TRUE;
-  $config['evercurrent.admin_config']['target_address'] = 'https://live-evercurrent-clone.pantheonsite.io';
-  $settings['evercurrent_environment_url'] = 'https://mcgreenacres.com';
-  $settings['evercurrent_environment_token'] = '5dc821ea0e4d42aa4e4c7cf495874466';
-}
-
 $settings['config_sync_directory'] = '../config/sync';
 $settings['file_private_path'] = $app_root . '/../private';
-
 $settings['trusted_host_patterns'] = [
    '^.*\.mcgreenacres(bees)?\.com$',
    '^mcgreenacres(bees)?\.com$',
@@ -835,6 +814,28 @@ foreach ($deny_list as $pattern) {
     echo 'Page not found';
     exit();
   }
+}
+
+// Redirect to canonical https enabled live url.
+if ($environment == 'live') {
+  if (php_sapi_name() != "cli") {
+    if (!empty($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] != 'mcgreenacres.com') {
+      $newurl = 'https://mcgreenacres.com/'. $_SERVER['REQUEST_URI'];
+      header('HTTP/1.0 301 Moved Permanently');
+      header("Location: $newurl");
+      exit;
+    }
+  }
+}
+
+if ($environment == 'local') {
+  $config['symfony_mailer.mailer_transport.smtp']['configuration']['port']="1025";
+  $config['symfony_mailer.mailer_transport.smtp']['configuration']['host']="mail";
+  $config['symfony_mailer.mailer_transport.smtp']['configuration']['user']="";
+  $config['symfony_mailer.mailer_transport.smtp']['configuration']['pass']="";
+  $config['symfony_mailer.mailer_transport.smtp']['configuration']['query']['query_peer']=true;
+  $settings['trusted_host_patterns'][] = '.*';
+  $config['stage_file_proxy.settings']['origin'] = 'https://mcgreenacres.com';  // no trailing slash
 }
 
 

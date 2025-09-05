@@ -65,3 +65,5 @@ hidden:
   field_media_in_library: true
   field_provider: true
   name: true
+  publish_on: true
+  unpublish_on: true

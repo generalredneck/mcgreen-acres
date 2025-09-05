@@ -1,3 +1,4 @@
+uuid: null
 langcode: en
 status: true
 dependencies:
@@ -38,4 +39,7 @@ hidden:
   created: true
   name: true
   path: true
+  publish_on: true
+  scheduler_settings: true
   uid: true
+  unpublish_on: true
