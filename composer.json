@@ -133,7 +133,8 @@
             "drupal/drupal-library-installer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
             "oomphinc/composer-installers-extender": true,
-            "zaporylie/composer-drupal-optimizations": true
+            "zaporylie/composer-drupal-optimizations": true,
+            "drupal/core-vendor-hardening": true
         }
     },
     "extra": {
