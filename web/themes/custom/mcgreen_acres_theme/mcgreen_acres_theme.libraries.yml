@@ -29,3 +29,14 @@ global-scripts:
     js/range.js: {}
   dependencies:
     - core/jquery
+
+# Product teasers
+product-teaser.belgrade:
+  css:
+    theme:
+      css/components/product-teaser/belgrade.css: {}
+
+product-teaser.zoom:
+  css:
+    theme:
+      css/components/product-teaser/zoom.css: {}

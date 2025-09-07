@@ -8,10 +8,11 @@ dependencies:
     - field.field.commerce_product.physical.images
     - field.field.commerce_product.physical.product_collections
     - field.field.commerce_product.physical.product_tags
-    - field.field.commerce_product_variation.physical.stock
+    - image.style.d01
+    - image.style.d05
   module:
+    - bootstrap_basic_image_gallery
     - commerce_product
-    - image
     - text
 _core:
   default_config_hash: pmSqQG23xo0ghpw4ppxHahYyYEbqCBvRpAb6PKGOS0A
@@ -28,11 +29,16 @@ content:
     weight: 2
     region: content
   images:
-    type: image
+    type: bootstrap_basic_image_gallery_formatter
     label: hidden
     settings:
-      image_link: ''
-      image_style: ''
+      image_style: d05
+      thumbnails_per_row: '3'
+      thumbnail_image_style: d01
+      modal_image_style: ''
+      carousel_interval: '5000'
+      lazyload: '1'
+      carousel_autorotate: 0
     third_party_settings: {  }
     weight: 1
     region: content

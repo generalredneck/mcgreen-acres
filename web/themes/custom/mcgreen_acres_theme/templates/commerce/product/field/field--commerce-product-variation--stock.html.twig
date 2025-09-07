@@ -36,59 +36,21 @@
  * @see template_preprocess_field()
  */
 #}
-{{ attach_library('mcgreen_acres_theme/product.images') }}
-
 {%
   set title_classes = [
     label_display == 'visually_hidden' ? 'visually-hidden',
+    'form-label',
   ]
 %}
-
-{% set image_item_classes = 'image-item col-3 col-md-2' %}
-
-{% if label_hidden %}
-  {% if multiple %}
-    <div {{ attributes|without('data-quickedit-field-id') }}>
-      <div class="product-image">
-        {{ items.0.content }}
-      </div>
-      {% if items|length > 1 %}
-        <div class="image-list mt-4 row g-2">
-          {% for item in items %}
-            <div class="{{ image_item_classes }} {% if loop.first %}active{% endif %}">
-              <div {{ item.attributes.addClass(['ratio', 'ratio-1x1']) }}>{{ item.content }}</div>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    </div>
-  {% else %}
+{{ drupal_breakpoint() }}
+<div{{ attributes.addClass('form-item') }}>
+  {% if not multiple %}
     {% for item in items %}
-      {{ item.content }}
+      {% if item.content['#value'] == 0 %}
+        <div {{ item.attributes.addClass(['text-danger', 'font-weight-bold']) }}>Out of stock</div>
+      {% else %}
+        <span{{ title_attributes.addClass(title_classes) }}>{{ label }}: </span><span{{ item.attributes.addClass('stock-amount') }}>{{ item.content }}</span>
+      {% endif %}
     {% endfor %}
   {% endif %}
-{% else %}
-  <div{{ attributes }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-    {% if multiple %}
-      <div {{ attributes|without('data-quickedit-field-id') }}>
-        <div class="product-image">
-          {{ items.0.content }}
-        </div>
-        {% if items|length > 1 %}
-          <div class="image-list mt-4 row g-2">
-            {% for item in items %}
-              <div class="{{ image_item_classes }} {% if loop.first %}active{% endif %}">
-                <div {{ item.attributes.addClass(['ratio', 'ratio-1x1']) }}>{{ item.content }}</div>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div>
-    {% else %}
-      {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
-      {% endfor %}
-    {% endif %}
-  </div>
-{% endif %}
+</div>

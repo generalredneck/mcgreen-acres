@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c76ac10a74f575fa9d9cd102c49ebbc1",
+    "content-hash": "bebe0c56953f7dd5e39f869ae5652213",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2183,6 +2183,32 @@
                 "source": "https://git.drupalcode.org/project/block_visibility_groups",
                 "issues": "https://www.drupal.org/project/issues/block_visibility_groups"
             }
+        },
+        {
+            "name": "drupal/bootstrap_basic_image_gallery",
+            "version": "dev-project-update-bot-only",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/issue/bootstrap_basic_image_gallery-3429041.git",
+                "reference": "581e15b67758c40f887967d31958ce91ac3331ed"
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Moberly",
+                    "homepage": "https://www.drupal.org/u/danielmoberly",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Bootstrap Basic Image Gallery Module",
+            "homepage": "https://www.drupal.org/project/bootstrap_basic_image_gallery",
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/bootstrap_basic_image_gallery"
+            },
+            "time": "2024-03-16T16:51:08+00:00"
         },
         {
             "name": "drupal/checklistapi",
@@ -15934,6 +15960,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "drupal/bootstrap_basic_image_gallery": 20,
         "drupal/commerce_fee": 20,
         "drupal/commerce_recurring": 5,
         "drupal/commerce_stock": 10,

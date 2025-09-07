@@ -13,6 +13,7 @@ module:
   block_class: 0
   block_content: 0
   block_visibility_groups: 0
+  bootstrap_basic_image_gallery: 0
   breakpoint: 0
   checklistapi: 0
   ckeditor5: 0
