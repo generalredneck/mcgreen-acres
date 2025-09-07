@@ -5,7 +5,6 @@ dependencies:
   config:
     - webform.webform.newsletter
   module:
-    - block_class
     - block_visibility_groups
     - webform
   theme:
@@ -13,7 +12,7 @@ dependencies:
 id: mcgreen_acres_theme_webform
 theme: mcgreen_acres_theme
 region: content
-weight: 0
+weight: -8
 provider: null
 plugin: webform_block
 settings:

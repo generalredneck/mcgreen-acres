@@ -2,7 +2,7 @@ global-styling:
   version: 1.0
   css:
     theme:
-      css/bootstrap.min.css: {}
+      css/bootstrap.css: {}
       css/font.css: {}
       css/font-awesome.min.css: {}
       css/swiper.min.css: {}

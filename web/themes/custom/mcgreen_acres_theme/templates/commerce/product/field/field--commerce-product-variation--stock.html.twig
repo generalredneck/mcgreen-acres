@@ -42,14 +42,20 @@
     'form-label',
   ]
 %}
+{% set label = 'left in stock!' %}
+{% set stock_level_classes = ['font-weight-bold'] %}
 {{ drupal_breakpoint() }}
 <div{{ attributes.addClass('form-item') }}>
   {% if not multiple %}
     {% for item in items %}
-      {% if item.content['#value'] == 0 %}
+      {% if item.content['#value'] <= 0 %}
         <div {{ item.attributes.addClass(['text-danger', 'font-weight-bold']) }}>Out of stock</div>
       {% else %}
-        <span{{ title_attributes.addClass(title_classes) }}>{{ label }}: </span><span{{ item.attributes.addClass('stock-amount') }}>{{ item.content }}</span>
+        {% if item.content['#value'] < 5 %}
+          {% set label = 'left in stock' %}
+          {% set stock_level_classes = ['text-danger', 'font-weight-bold'] %}
+        {% endif %}
+        <span{{ title_attributes.addClass(title_classes|merge(stock_level_classes))}}><span{{item.attributes.addClass('stock-amount')}}>{{ item.content }}</span> {{ label }}</span>
       {% endif %}
     {% endfor %}
   {% endif %}

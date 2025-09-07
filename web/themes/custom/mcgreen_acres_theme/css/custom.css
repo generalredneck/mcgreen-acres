@@ -184,6 +184,11 @@ figure {
 :root {
   --primary: #1fa12e;
 }
+
+.bg-primary {
+  background-color: #1fa12e !important;
+}
+
 .btn {
   border-radius: 1rem;
 }
@@ -191,6 +196,19 @@ figure {
 .btn-primary {
   background-color: #1fa12e;
   border-color: #1fa12e;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #23272b;
+  border-color: #1d2124;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  color: #fff;
+  background-color: #23272b;
+  border-color: #1d2124;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
 }
 
 .btn-lg {
@@ -555,4 +573,12 @@ figure {
   .fs-4 {
     font-size: 1.5rem !important;
   }
+}
+.bootstrap-basic-image-gallery .main-image img {
+  width: 100%;
+  height: auto;
+}
+.bootstrap-basic-image-gallery .modal .carousel .item img {
+  width: 100%;
+  height: auto;
 }

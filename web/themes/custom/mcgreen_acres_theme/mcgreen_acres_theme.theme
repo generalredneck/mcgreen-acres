@@ -90,6 +90,7 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
     '/webform',
     '/webform/*',
     '/user/*',
+    '/product/*',
   ];
   if (!empty($variables['node']) && empty($variables['is_front']) && $variables['node']->bundle() == 'page') {
     $variables['force_container'] = TRUE;

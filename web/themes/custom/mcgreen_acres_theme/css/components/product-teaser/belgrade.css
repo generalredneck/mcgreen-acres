@@ -3,6 +3,7 @@
 }
 .product-image img {
   width: 100%;
+  height: auto;
   transition: opacity 0.2s ease;
 }
 .product-hover {
@@ -22,6 +23,9 @@
 }
 .product-title a {
   color: var(--beo-body-color);
+}
+.product-title h1 {
+  font-size: 1.2rem;;
 }
 .product:hover .product-image img {
   opacity: 0.4;
