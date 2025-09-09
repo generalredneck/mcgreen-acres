@@ -1,0 +1,28 @@
+uuid: 5b6c44f2-ed2a-4da8-b5bd-b612d2cb9d88
+langcode: en
+status: true
+dependencies: {  }
+id: commerce_product
+label: Product
+tags:
+  abstract: '[commerce_product:body:summary]'
+  canonical_url: '[commerce_product:url]'
+  description: '[commerce_product:body:summary]'
+  image_src: '[commerce_product:images:0:d09_standard:url]'
+  og_description: '[commerce_product:body:summary]'
+  og_image: '[commerce_product:images:0:d09_standard:url]'
+  og_image_alt: '[commerce_product:images:0:d09_standard:alt]'
+  og_image_height: '[commerce_product:images:0:d09_standard:height]'
+  og_image_type: '[commerce_product:images:0:d09_standard:mimetype]'
+  og_image_url: '[commerce_product:images:0:d09_standard:url]'
+  og_image_width: '[commerce_product:images:0:d09_standard:width]'
+  og_title: '[commerce_product:title] | [site:name]'
+  og_type: article
+  og_url: '[commerce_product:url]'
+  pinterest_description: '[commerce_product:body:summary]'
+  pinterest_media: '[commerce_product:images:0:d09_standard:url]'
+  pinterest_url: '[commerce_product:url]'
+  title: '[commerce_product:title] | [site:name]'
+  twitter_cards_description: '[commerce_product:body:summary]'
+  twitter_cards_image: '[commerce_product:images:0:d09_standard:url]'
+  twitter_cards_title: '[commerce_product:title] | [site:name]'
