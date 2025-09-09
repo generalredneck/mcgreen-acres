@@ -239,6 +239,10 @@ figure {
   }
 }
 
+/** Remove when commerce feature is complete **/
+.cart_nav {
+  display: none;
+}
 .clv_right_header .clv_menu .cart_nav > ul > li > a > svg > path{
   fill: #000000;
 }
