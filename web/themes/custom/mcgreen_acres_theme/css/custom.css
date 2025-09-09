@@ -240,8 +240,8 @@ figure {
 }
 
 /** Remove when commerce feature is complete **/
-.cart_nav {
-  display: none;
+.cart_nav .cart_toggle, .cart_nav .user_toggle{
+  display: none !important;
 }
 .clv_right_header .clv_menu .cart_nav > ul > li > a > svg > path{
   fill: #000000;
