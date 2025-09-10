@@ -26,7 +26,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Catalog
+      title: Products
       fields:
         body:
           id: body
@@ -355,9 +355,10 @@ display:
       path: product
       menu:
         type: normal
-        title: Catalog
+        title: Products
         description: ''
-        weight: 0
+        weight: -47
+        enabled: true
         expanded: false
         menu_name: main
         parent: ''
