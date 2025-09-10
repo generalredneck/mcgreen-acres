@@ -304,34 +304,8 @@ figure {
 
 /* Bootstrap overrides */
 
-:root {
-  --primary: #1fa12e;
-}
-
-.bg-primary {
-  background-color: #1fa12e !important;
-}
-
 .btn {
   border-radius: 1rem;
-}
-
-.btn-primary {
-  background-color: #1fa12e;
-  border-color: #1fa12e;
-}
-
-.btn-primary:hover {
-  color: #fff;
-  background-color: #23272b;
-  border-color: #1d2124;
-}
-
-.btn-primary:focus, .btn-primary.focus {
-  color: #fff;
-  background-color: #23272b;
-  border-color: #1d2124;
-  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
 }
 
 .btn-lg {
@@ -852,8 +826,6 @@ figure {
   --beo-nav-link-color: currentcolor;
   --beo-nav-link-hover-color: var(--beo-link-hover-color);
   --beo-nav-link-disabled-color: var(--beo-secondary-color);
-  display: flex;
-  flex-wrap: wrap;
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
