@@ -35,6 +35,12 @@ tags:
   pinterest_url: '[current-page:url:absolute]'
   referrer: unsafe-url
   rights: 'Copyright ©[date:html_year] McGreen Acres. All rights reserved.'
+  schema_web_site_id: '[site:url]'
+  schema_web_site_in_language: en-us
+  schema_web_site_name: 'McGreen Acres'
+  schema_web_site_publisher: 'a:4:{s:5:"@type";s:13:"LocalBusiness";s:3:"@id";s:10:"[site:url]";s:4:"name";s:17:"McGreen Acres LLC";s:4:"logo";a:4:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:52:"[site:url]themes/custom/mcgreen_acres_theme/logo.png";s:5:"width";s:4:"2162";s:6:"height";s:4:"1550";}}'
+  schema_web_site_type: WebSite
+  schema_web_site_url: '[site:url]'
   shortlink: '[current-page:url:unaliased]'
   title: '[current-page:title] | [site:name]'
   twitter_cards_site: '@McGreenAcres'
