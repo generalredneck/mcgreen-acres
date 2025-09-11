@@ -16,7 +16,7 @@ tags:
   hreflang_xdefault: '[current-page:url:absolute]'
   icbm: '32.516050,-96.869732'
   og_country_name: 'United States'
-  og_email: mcgreenacres@gmail.com
+  og_email: info@mcgreenacres.com
   og_image: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
   og_image_alt: 'McGreen Acres Logo'
   og_image_height: '1550'
@@ -33,12 +33,23 @@ tags:
   og_street_address: '2414 Westmoreland Rd'
   pinterest_media: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
   pinterest_url: '[current-page:url:absolute]'
+  profile_first_name: Alla
   referrer: unsafe-url
   rights: 'Copyright ©[date:html_year] McGreen Acres. All rights reserved.'
+  schema_organization_address: 'a:6:{s:5:"@type";s:13:"PostalAddress";s:13:"streetAddress";s:20:"2414 Westmoreland Rd";s:15:"addressLocality";s:7:"Red Oak";s:13:"addressRegion";s:2:"TX";s:10:"postalCode";s:5:"75154";s:14:"addressCountry";s:3:"USA";}'
+  schema_organization_brand: 'a:5:{s:5:"@type";s:5:"Brand";s:3:"@id";s:10:"[site:url]";s:4:"name";s:13:"McGreen Acres";s:3:"url";s:10:"[site-url]";s:4:"logo";a:4:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:52:"[site:url]themes/custom/mcgreen_acres_theme/logo.png";s:5:"width";s:4:"2162";s:6:"height";s:4:"1550";}}'
+  schema_organization_description: 'Locally owned business, focused on naturally producing products like honey, eggs, poultry, pork, and milk.'
+  schema_organization_geo: 'a:2:{s:5:"@type";s:14:"GeoCoordinates";s:8:"latitude";s:20:"32.516050,-96.869732";}'
+  schema_organization_id: '[site:url]'
+  schema_organization_name: 'McGreen Acres LLC'
+  schema_organization_same_as: 'https://www.facebook.com/McGreenAcres'
+  schema_organization_telephone: 1-469-248-5703
+  schema_organization_type: LocalBusiness
+  schema_organization_url: '[site:url]'
   schema_web_site_id: '[site:url]'
   schema_web_site_in_language: en-us
   schema_web_site_name: 'McGreen Acres'
-  schema_web_site_publisher: 'a:4:{s:5:"@type";s:13:"LocalBusiness";s:3:"@id";s:10:"[site:url]";s:4:"name";s:17:"McGreen Acres LLC";s:4:"logo";a:4:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:52:"[site:url]themes/custom/mcgreen_acres_theme/logo.png";s:5:"width";s:4:"2162";s:6:"height";s:4:"1550";}}'
+  schema_web_site_publisher: 'a:5:{s:5:"@type";s:13:"LocalBusiness";s:3:"@id";s:10:"[site:url]";s:4:"name";s:17:"McGreen Acres LLC";s:3:"url";s:10:"[site:url]";s:4:"logo";a:4:{s:5:"@type";s:11:"ImageObject";s:3:"url";s:52:"[site:url]themes/custom/mcgreen_acres_theme/logo.png";s:5:"width";s:4:"2162";s:6:"height";s:4:"1550";}}'
   schema_web_site_type: WebSite
   schema_web_site_url: '[site:url]'
   shortlink: '[current-page:url:unaliased]'
