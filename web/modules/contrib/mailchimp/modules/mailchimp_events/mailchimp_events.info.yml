@@ -1,0 +1,13 @@
+name: 'Mailchimp Events'
+type: module
+description: 'Create events for Mailchimp''s Behavioral Targeting.'
+core_version_requirement: ^10 || ^11
+package: 'Mailchimp'
+dependencies:
+  - mailchimp:mailchimp_lists
+configure: entity.mailchimp_event.collection
+
+# Information added by Drupal.org packaging script on 2025-07-25
+version: '3.0.2'
+project: 'mailchimp'
+datestamp: 1753452278

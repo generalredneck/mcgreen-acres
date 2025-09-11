@@ -1,0 +1,9 @@
+webform_ip_geo.settings_form:
+  path: '/admin/config/services/webform_ip_geo'
+  defaults:
+    _form: '\Drupal\webform_ip_geo\Form\SettingsForm'
+    _title: 'Webform IP Geo'
+  requirements:
+    _permission: 'access webform_ip_geo configuration'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,26 @@
+services:
+  path_processor.drimage:
+    class: Drupal\drimage\PathProcessor\PathProcessorImageStyles
+    arguments: [ '@stream_wrapper_manager' ]
+    tags:
+      - { name: path_processor_inbound, priority: 299 }
+
+  drimage.image_style_repository:
+    class: Drupal\drimage\ImageStyleRepository
+    arguments:
+      - '@entity_type.manager'
+
+  drimage.config_subscriber:
+    class: Drupal\drimage\EventSubscriber\ConfigSubscriber
+    arguments:
+      - '@drimage.image_style_repository'
+    tags:
+      - { name: event_subscriber }
+
+  drimage.path_processor_redirect_subscriber:
+    class: Drupal\drimage\EventSubscriber\DrimagePathProcessorRedirectSubscriber
+    arguments:
+      - '@path_processor_manager'
+      - '@config.factory'
+    tags:
+      - { name: event_subscriber }
