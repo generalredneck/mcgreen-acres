@@ -2790,28 +2790,17 @@ ul.links {
   align-items: center;
   margin-right: 20px;
 }
-.blog_section .blog_user .user_name > img{
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
+.blog_section .blog_user .user_name  img{
+  width: 100px;
+  height: 100px;
+  border-radius: 25%;
 }
-.blog_section .blog_user .user_name > a{
+.blog_section .blog_user .user_name  a{
   font-size: 15px;
   text-transform: capitalize;
   margin-left: 20px;
   display: inline-block;
   position: relative;
-}
-.blog_section .blog_user .user_name > a:before{
-  content: "";
-  display: block;
-  width: 5px;
-  height: 1px;
-  background-color: #757575;
-  position: absolute;
-  top: 50%;
-  left: -10px;
-  transform: translateY(-50%);
 }
 .blog_section .blog_user .comment_block span{
   color: #fec007;

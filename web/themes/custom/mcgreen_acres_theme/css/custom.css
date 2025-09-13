@@ -190,6 +190,12 @@ figure {
   display: block;
   padding: 0;
 }
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .clv_main_wrapper .clv_header .clv_left_header {
   padding: 10px 0px;
   text-align: center;
@@ -317,7 +323,9 @@ figure {
 }
 /* Carousel */
 
+
 .featured-cta {
+  z-index: 1;
   background-color: #3d3d3d;
 }
 .featured-cta .col-12 {
@@ -847,3 +855,16 @@ figure {
 .facet-item .facet-item label {
   font-size: 0.875rem;
 }
+
+.pager__items {
+  clear: both;
+  text-align: center;
+}
+.pager__item {
+  display: inline;
+  padding: 0.5em;
+}
+.pager__item.is-active {
+  font-weight: bold;
+}
+
