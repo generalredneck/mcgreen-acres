@@ -18,6 +18,7 @@ backups
 
 # Ignore sensitive information
 /web/sites/*/settings.local.php
+/web/sites/*/live.txt
 
 # Ignore Drupal's file directory
 /web/sites/*/files/

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6910268164aae0144ed9c4a6c4bc5c3d",
+    "content-hash": "6bcd6b58b965b3b147dd434f27df771a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6465,6 +6465,77 @@
             "homepage": "https://www.drupal.org/project/length_indicator",
             "support": {
                 "source": "https://git.drupalcode.org/project/length_indicator"
+            }
+        },
+        {
+            "name": "drupal/logging_alerts",
+            "version": "2.1.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/logging_alerts.git",
+                "reference": "2.1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/logging_alerts-2.1.0-beta1.zip",
+                "reference": "2.1.0-beta1",
+                "shasum": "f2b4ab982992702244111a1d15f651f1fae767f6"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.0-beta1",
+                    "datestamp": "1732980500",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "abu-zakham",
+                    "homepage": "https://www.drupal.org/user/2836067"
+                },
+                {
+                    "name": "Bastlynn",
+                    "homepage": "https://www.drupal.org/user/275249"
+                },
+                {
+                    "name": "dave reid",
+                    "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "kbahey",
+                    "homepage": "https://www.drupal.org/user/4063"
+                },
+                {
+                    "name": "maciej.zgadzaj",
+                    "homepage": "https://www.drupal.org/user/271491"
+                },
+                {
+                    "name": "piyuesh23",
+                    "homepage": "https://www.drupal.org/user/1116218"
+                },
+                {
+                    "name": "poker10",
+                    "homepage": "https://www.drupal.org/user/272316"
+                },
+                {
+                    "name": "wafaa",
+                    "homepage": "https://www.drupal.org/user/50133"
+                }
+            ],
+            "homepage": "https://www.drupal.org/project/logging_alerts",
+            "support": {
+                "source": "https://git.drupalcode.org/project/logging_alerts"
             }
         },
         {
@@ -16025,12 +16096,12 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/bootstrap_basic_image_gallery": 20,
-        "drupal/commerce_fee": 20,
         "drupal/commerce_recurring": 5,
         "drupal/commerce_stock": 10,
         "drupal/commerce_timeslots": 20,
         "drupal/default_content": 15,
         "drupal/diff": 5,
+        "drupal/logging_alerts": 10,
         "drupal/realname": 10,
         "drupal/simple_block": 10,
         "drupal/webform": 10,
@@ -16038,10 +16109,10 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
+    "platform": {},
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -764,9 +764,9 @@ $settings['entity_update_batch_size'] = 50;
 $settings['entity_update_backup'] = TRUE;
 
 $environment = 'local';
-if (DRUPAL_ROOT == '/var/www/mcgreenacr/web') {
-  $environment = 'live';
-}
+ if (file_exists($app_root . '/' . $site_path . '/live.txt')) {
+   $environment = 'live';
+ }
 $settings['config_sync_directory'] = '../config/sync';
 $settings['file_private_path'] = $app_root . '/../private';
 $settings['trusted_host_patterns'] = [
