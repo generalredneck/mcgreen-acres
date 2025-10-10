@@ -33,7 +33,7 @@ tags:
   og_street_address: '2414 Westmoreland Rd'
   pinterest_media: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
   pinterest_url: '[current-page:url:absolute]'
-  profile_first_name: Alla
+  profile_first_name: Allan
   referrer: unsafe-url
   rights: 'Copyright ©[date:html_year] McGreen Acres. All rights reserved.'
   schema_organization_address: 'a:6:{s:5:"@type";s:13:"PostalAddress";s:13:"streetAddress";s:20:"2414 Westmoreland Rd";s:15:"addressLocality";s:7:"Red Oak";s:13:"addressRegion";s:2:"TX";s:10:"postalCode";s:5:"75154";s:14:"addressCountry";s:3:"USA";}'
