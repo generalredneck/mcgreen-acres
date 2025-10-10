@@ -43,6 +43,10 @@
             "url": "https://git.drupalcode.org/issue/commerce_timeslots-3401757.git"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/generalredneck/pots.git"
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6bcd6b58b965b3b147dd434f27df771a",
+    "content-hash": "9ad43d93dfd47232a22ba72cdd2d5519",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -10098,12 +10098,12 @@
             "version": "dev-general-deploy",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fourkitchens/pots.git",
+                "url": "https://github.com/generalredneck/pots.git",
                 "reference": "043f303e38385677628765f46c91f549070aba80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fourkitchens/pots/zipball/043f303e38385677628765f46c91f549070aba80",
+                "url": "https://api.github.com/repos/generalredneck/pots/zipball/043f303e38385677628765f46c91f549070aba80",
                 "reference": "043f303e38385677628765f46c91f549070aba80",
                 "shasum": ""
             },
@@ -10111,7 +10111,6 @@
                 "fourkitchens/project_ci": "*"
             },
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0-or-later"
             ],
@@ -10123,8 +10122,7 @@
             ],
             "description": "Push On To Site. Scripts to help aid in deployment for Drupal sites.",
             "support": {
-                "issues": "https://github.com/fourkitchens/pots/issues",
-                "source": "https://github.com/fourkitchens/pots/tree/general-deploy"
+                "source": "https://github.com/generalredneck/pots/tree/general-deploy"
             },
             "time": "2024-10-16T22:18:37+00:00"
         },
