@@ -1,36 +1,46 @@
 _meta:
   version: '1.0'
-  entity_type: taxonomy_term
-  uuid: 9a62aa44-9cb3-4135-a48d-7c853496c56d
-  bundle: product_collections
+  entity_type: commerce_product
+  uuid: 8d66f141-4b15-4413-84fd-d84cd1754cf6
+  bundle: subscription
   default_langcode: en
+  depends:
+    17b1ec36-d8b5-4971-869c-64db3869c2a2: commerce_store
+    ffa1b19b-63fb-48c3-b335-0e7d964e0c0d: commerce_product_variation
+    0439cdb3-3fde-4e6c-b9aa-06bc2c4ef044: file
 default:
+  uid:
+    -
+      target_id: 1
   status:
     -
       value: true
-  name:
+  stores:
     -
-      value: Livestock
-  weight:
+      entity: 17b1ec36-d8b5-4971-869c-64db3869c2a2
+  title:
     -
-      value: 0
-  parent:
+      value: 'Herd Share'
+  variations:
     -
-      target_id: 0
-  revision_translation_affected:
+      entity: ffa1b19b-63fb-48c3-b335-0e7d964e0c0d
+  default_variation:
     -
-      value: true
+      entity: ffa1b19b-63fb-48c3-b335-0e7d964e0c0d
+  path:
+    -
+      alias: ''
+      langcode: en
+      pathauto: 0
+  created:
+    -
+      value: 1760215405
   metatag:
     -
       tag: meta
       attributes:
         name: title
-        content: 'Livestock | McGreen Acres'
-    -
-      tag: meta
-      attributes:
-        name: keywords
-        content: Livestock
+        content: 'Herd Share | McGreen Acres'
     -
       tag: meta
       attributes:
@@ -60,7 +70,12 @@ default:
       tag: link
       attributes:
         rel: canonical
-        href: 'http://mcgreen-acres.lndo.site/taxonomy/term/25'
+        href: /product/23
+    -
+      tag: link
+      attributes:
+        rel: image_src
+        href: 'http://mcgreen-acres.lndo.site/sites/default/files/styles/d09_standard/public/2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg?h=c74750f6&itok=DiwBbDWl'
     -
       tag: meta
       attributes:
@@ -79,33 +94,43 @@ default:
     -
       tag: meta
       attributes:
+        property: 'og:type'
+        content: article
+    -
+      tag: meta
+      attributes:
+        property: 'og:url'
+        content: 'http://mcgreen-acres.lndo.site/product/23'
+    -
+      tag: meta
+      attributes:
         property: 'og:title'
-        content: 'Livestock | McGreen Acres'
+        content: 'Herd Share | McGreen Acres'
     -
       tag: meta
       attributes:
         property: 'og:image'
-        content: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+        content: 'http://mcgreen-acres.lndo.site/sites/default/files/styles/d09_standard/public/2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg?h=c74750f6&itok=DiwBbDWl'
+    -
+      tag: meta
+      attributes:
+        property: 'og:image:url'
+        content: 'http://mcgreen-acres.lndo.site/sites/default/files/styles/d09_standard/public/2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg?h=c74750f6&itok=DiwBbDWl'
     -
       tag: meta
       attributes:
         property: 'og:image:type'
-        content: image/png
+        content: image/jpeg
     -
       tag: meta
       attributes:
         property: 'og:image:width'
-        content: '2162'
+        content: '900'
     -
       tag: meta
       attributes:
         property: 'og:image:height'
-        content: '1550'
-    -
-      tag: meta
-      attributes:
-        property: 'og:image:alt'
-        content: 'McGreen Acres Logo'
+        content: '507'
     -
       tag: meta
       attributes:
@@ -170,12 +195,12 @@ default:
       tag: meta
       attributes:
         property: 'pin:media'
-        content: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+        content: 'http://mcgreen-acres.lndo.site/sites/default/files/styles/d09_standard/public/2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg?h=c74750f6&itok=DiwBbDWl'
     -
       tag: meta
       attributes:
         property: 'pin:url'
-        content: 'http://mcgreen-acres.lndo.site/home-page'
+        content: /product/23
     -
       tag: meta
       attributes:
@@ -185,7 +210,7 @@ default:
       tag: meta
       attributes:
         name: 'twitter:title'
-        content: 'Livestock | McGreen Acres'
+        content: 'Herd Share | McGreen Acres'
     -
       tag: meta
       attributes:
@@ -196,6 +221,11 @@ default:
       attributes:
         name: 'twitter:site:id'
         content: '1147598700446965760'
+    -
+      tag: meta
+      attributes:
+        name: 'twitter:image'
+        content: 'http://mcgreen-acres.lndo.site/sites/default/files/styles/d09_standard/public/2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg?h=c74750f6&itok=DiwBbDWl'
     -
       tag: meta
       attributes:
@@ -289,6 +319,93 @@ default:
       tag: meta
       attributes:
         name: '@type'
+        content: IndividualProduct
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: '@id'
+        content: /product/23
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: name
+        content: 'Herd Share'
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: url
+        content: /product/23
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: description
+        content: "Buy in to our cow herd to get milk weekly. \_An overview of the program is at https://mcgreenacres.com/blog/cattle/what-is-a-herd-share. Before starting, we will go over the program with you and sign paperwork if you would like to participate. \_Additional $17.50 one time buy in required per share (which will be returned to you when you leave the herd share).Most customers sign up for 2 shares to get a gallon per week.We are very small scale and do not offer milk products sold outside of the herd share."
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: image
+        content:
+          '@type': ImageObject
+          representativeOfPage: 'True'
+          url: 'http://mcgreen-acres.lndo.site/sites/default/files/styles/d09_standard/public/2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg?h=c74750f6&itok=DiwBbDWl'
+          width: '900'
+          height: '507'
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: offers
+        content:
+          '@type': Offer
+          '@id': /product/23
+          price: '32.500000'
+          priceCurrency: USD
+          url: /product/23
+          itemCondition: 'https://schema.org/NewCondition'
+          availability: 'https://schema.org/InStock'
+          eligibleRegion:
+            '@type': Country
+            name: USA
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: sku
+        content: '1001'
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: brand
+        content:
+          '@type': Brand
+          '@id': 'http://mcgreen-acres.lndo.site//brand'
+          name: 'McGreen Acres LLC'
+          url: 'http://mcgreen-acres.lndo.site/'
+          logo:
+            '@type': ImageObject
+            url: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+            width: '2162'
+            height: '1550'
+        group: schema_product
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: '@type'
         content: WebSite
         group: schema_web_site
         schema_metatag: true
@@ -348,8 +465,15 @@ default:
         rel: alternate
         hreflang: en
         href: 'http://mcgreen-acres.lndo.site/home-page'
-  path:
+  body:
     -
-      alias: ''
-      langcode: en
-      pathauto: 0
+      value: '<p>Buy in to our cow herd to get milk weekly. &nbsp;An overview of the program is at https://mcgreenacres.com/blog/cattle/what-is-a-herd-share. Before starting, we will go over the program with you and sign paperwork if you would like to participate. &nbsp;Additional $17.50 one time buy in required per share (which will be returned to you when you leave the herd share).<br>Most customers sign up for 2 shares to get a gallon per week.</p><p>We are very small scale and do not offer milk products sold outside of the herd share.</p>'
+      format: basic_html
+      summary: ''
+  images:
+    -
+      entity: 0439cdb3-3fde-4e6c-b9aa-06bc2c4ef044
+      alt: Cow
+      title: ''
+      width: 1200
+      height: 675

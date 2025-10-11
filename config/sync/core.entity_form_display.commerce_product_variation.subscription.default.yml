@@ -5,7 +5,6 @@ dependencies:
   config:
     - commerce_product.commerce_product_variation_type.subscription
     - field.field.commerce_product_variation.subscription.billing_schedule
-    - field.field.commerce_product_variation.subscription.pick_up_dow
     - field.field.commerce_product_variation.subscription.subscription_type
   module:
     - commerce
@@ -31,12 +30,6 @@ content:
   list_price:
     type: commerce_list_price
     weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pick_up_dow:
-    type: options_select
-    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

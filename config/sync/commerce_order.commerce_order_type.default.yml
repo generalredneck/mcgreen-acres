@@ -1,7 +1,21 @@
 uuid: 4342ca97-ede9-4b0a-8fd1-c237e160122a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - commerce_cart
+    - commerce_checkout
+    - commerce_shipping
+third_party_settings:
+  commerce_cart:
+    cart_block_view: commerce_cart_block
+    cart_form_view: commerce_cart_form
+    cart_expiration: {  }
+    enable_cart_message: true
+  commerce_checkout:
+    checkout_flow: default
+  commerce_shipping:
+    shipment_type: ''
 _core:
   default_config_hash: kYapI397yx2zFJGyDEs85Hyqgfc9jhmzxqPZMl2Fqhk
 id: default
@@ -13,5 +27,5 @@ numberPattern: order_default
 refresh_mode: customer
 refresh_frequency: 300
 sendReceipt: true
-receiptBcc: ''
+receiptBcc: mcgreenacres@gmail.com
 receiptSubject: ''

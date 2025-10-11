@@ -39,7 +39,6 @@ module:
   commerce_stock_ui: 0
   commerce_store: 0
   commerce_tax: 0
-  commerce_timeslots: 0
   config: 0
   config_split: 0
   contextual: 0

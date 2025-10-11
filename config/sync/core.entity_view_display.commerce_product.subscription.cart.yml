@@ -1,44 +1,32 @@
-uuid: df441ec3-450f-4566-afd9-f1b2a39fb209
+uuid: df441ec3-450f-4566-afd9-f1b2a39fb208
 langcode: en
 status: true
 dependencies:
   config:
     - commerce_product.commerce_product_type.subscription
+    - core.entity_view_mode.commerce_product.cart
     - field.field.commerce_product.subscription.body
     - field.field.commerce_product.subscription.images
     - field.field.commerce_product.subscription.product_collections
     - field.field.commerce_product.subscription.product_tags
-    - image.style.d01
-    - image.style.d05
+    - image.style.d01_square
   module:
-    - bootstrap_basic_image_gallery
-    - commerce_product
-    - text
+    - image
 _core:
   default_config_hash: pmSqQG23xo0ghpw4ppxHahYyYEbqCBvRpAb6PKGOS0A
-id: commerce_product.subscription.default
+id: commerce_product.subscription.cart
 targetEntityType: commerce_product
 bundle: subscription
-mode: default
+mode: cart
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
   images:
-    type: bootstrap_basic_image_gallery_formatter
+    type: image
     label: hidden
     settings:
-      image_style: d05
-      thumbnails_per_row: '3'
-      thumbnail_image_style: d01
-      modal_image_style: ''
-      carousel_interval: '5000'
-      lazyload: '1'
-      carousel_autorotate: 0
+      image_link: ''
+      image_style: d01_square
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 1
     region: content
@@ -50,18 +38,12 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  variations:
-    type: commerce_add_to_cart
-    label: hidden
-    settings:
-      combine: true
-    third_party_settings: {  }
-    weight: 3
-    region: content
 hidden:
+  body: true
   created: true
   product_collections: true
   product_tags: true
   search_api_excerpt: true
   stores: true
   uid: true
+  variations: true

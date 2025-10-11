@@ -1,0 +1,48 @@
+_meta:
+  version: '1.0'
+  entity_type: commerce_fee
+  uuid: d123b32d-37a8-4cca-a0d0-0a655db3c5c6
+  default_langcode: en
+  depends:
+    17b1ec36-d8b5-4971-869c-64db3869c2a2: commerce_store
+default:
+  name:
+    -
+      value: 'Herd Share Buy-in Fee'
+  display_name:
+    -
+      value: 'Herd Share Buy In'
+  description:
+    -
+      value: 'This is a one time buy in to the herd share. The buy in fee works like a deposit and will be returned when McGreen Acres buys back the share when you leave.'
+  order_types:
+    -
+      target_id: default
+    -
+      target_id: recurring
+  stores:
+    -
+      entity: 17b1ec36-d8b5-4971-869c-64db3869c2a2
+  plugin:
+    -
+      target_plugin_id: order_item_fixed_amount
+      target_plugin_configuration:
+        conditions:
+          -
+            plugin: order_item_product
+            configuration:
+              products:
+                -
+                  product: 8d66f141-4b15-4413-84fd-d84cd1754cf6
+        amount:
+          number: '17.50'
+          currency_code: USD
+  condition_operator:
+    -
+      value: AND
+  start_date:
+    -
+      value: '2025-10-11T16:41:52'
+  status:
+    -
+      value: true

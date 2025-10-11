@@ -3,7 +3,20 @@ langcode: en
 status: true
 dependencies:
   module:
+    - commerce_cart
+    - commerce_checkout
     - commerce_recurring
+    - commerce_shipping
+third_party_settings:
+  commerce_cart:
+    cart_block_view: commerce_cart_block
+    cart_form_view: commerce_cart_form
+    cart_expiration: {  }
+    enable_cart_message: true
+  commerce_checkout:
+    checkout_flow: subscription
+  commerce_shipping:
+    shipment_type: ''
 _core:
   default_config_hash: alBtcl93cZUqOuWKBA9ltV1C-XnMEvXgiagdjOkpj2Y
 id: recurring
@@ -14,6 +27,6 @@ workflow: order_recurring
 numberPattern: null
 refresh_mode: customer
 refresh_frequency: 300
-sendReceipt: false
-receiptBcc: ''
+sendReceipt: true
+receiptBcc: mcgreenacres@gmail.com
 receiptSubject: ''

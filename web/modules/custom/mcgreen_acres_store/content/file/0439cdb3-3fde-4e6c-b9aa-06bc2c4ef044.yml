@@ -1,0 +1,27 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 0439cdb3-3fde-4e6c-b9aa-06bc2c4ef044
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg
+  uri:
+    -
+      value: 'public://2025-10/ec6266414067fe5a4ea4aeacd6eec67f6354792b_1200x800.jpg'
+  filemime:
+    -
+      value: image/jpeg
+  filesize:
+    -
+      value: 138781
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1760215517

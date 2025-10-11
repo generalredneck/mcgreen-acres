@@ -5,7 +5,6 @@ dependencies:
   config:
     - commerce_product.commerce_product_variation_type.subscription
     - field.field.commerce_product_variation.subscription.billing_schedule
-    - field.field.commerce_product_variation.subscription.pick_up_dow
     - field.field.commerce_product_variation.subscription.subscription_type
   module:
     - commerce_price
@@ -34,7 +33,6 @@ content:
     region: content
 hidden:
   billing_schedule: true
-  pick_up_dow: true
   product_id: true
   search_api_excerpt: true
   sku: true

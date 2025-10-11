@@ -35,7 +35,7 @@ default:
       tag: meta
       attributes:
         name: geo.position
-        content: '32.69345223660298, -96.50738602150476'
+        content: '32.516050,-96.869732'
     -
       tag: meta
       attributes:
@@ -50,7 +50,7 @@ default:
       tag: meta
       attributes:
         name: icbm
-        content: '32.69345223660298, -96.50738602150476'
+        content: '32.516050,-96.869732'
     -
       tag: link
       attributes:
@@ -110,22 +110,22 @@ default:
       tag: meta
       attributes:
         property: 'place:location:latitude'
-        content: '32.69345223660298'
+        content: '32.516050'
     -
       tag: meta
       attributes:
         property: 'place:location:longitude'
-        content: '-96.50738602150476'
+        content: '-96.869732'
     -
       tag: meta
       attributes:
         property: 'og:street_address'
-        content: '9650 FM740'
+        content: '2414 Westmoreland Rd'
     -
       tag: meta
       attributes:
         property: 'og:locality'
-        content: Forney
+        content: 'Red Oak'
     -
       tag: meta
       attributes:
@@ -135,7 +135,7 @@ default:
       tag: meta
       attributes:
         property: 'og:postal_code'
-        content: '75126'
+        content: '75154'
     -
       tag: meta
       attributes:
@@ -145,7 +145,7 @@ default:
       tag: meta
       attributes:
         property: 'og:email'
-        content: mcgreenacres@gmail.com
+        content: info@mcgreenacres.com
     -
       tag: meta
       attributes:
@@ -156,6 +156,16 @@ default:
       attributes:
         property: 'og:locale'
         content: en_US
+    -
+      tag: meta
+      attributes:
+        property: 'article:publisher'
+        content: 'https://www.facebook.com/McGreenAcres/'
+    -
+      tag: meta
+      attributes:
+        property: 'profile:first_name'
+        content: Allan
     -
       tag: meta
       attributes:
@@ -186,6 +196,146 @@ default:
       attributes:
         name: 'twitter:site:id'
         content: '1147598700446965760'
+    -
+      tag: meta
+      attributes:
+        name: '@type'
+        content: LocalBusiness
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: '@id'
+        content: 'http://mcgreen-acres.lndo.site/'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: name
+        content: 'McGreen Acres LLC'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: url
+        content: 'http://mcgreen-acres.lndo.site/'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: description
+        content: 'Locally owned business, focused on naturally producing products like honey, eggs, poultry, pork, and milk.'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: sameAs
+        content: 'https://www.facebook.com/McGreenAcres'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: telephone
+        content: 1-469-248-5703
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: address
+        content:
+          '@type': PostalAddress
+          streetAddress: '2414 Westmoreland Rd'
+          addressLocality: 'Red Oak'
+          addressRegion: TX
+          postalCode: '75154'
+          addressCountry: USA
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: brand
+        content:
+          '@type': Brand
+          '@id': 'http://mcgreen-acres.lndo.site/'
+          name: 'McGreen Acres'
+          url: '[site-url]'
+          logo:
+            '@type': ImageObject
+            url: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+            width: '2162'
+            height: '1550'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: geo
+        content:
+          '@type': GeoCoordinates
+          latitude:
+            - '32.516050'
+            - '-96.869732'
+        group: schema_organization
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: '@type'
+        content: WebSite
+        group: schema_web_site
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: '@id'
+        content: 'http://mcgreen-acres.lndo.site/'
+        group: schema_web_site
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: name
+        content: 'McGreen Acres'
+        group: schema_web_site
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: url
+        content: 'http://mcgreen-acres.lndo.site/'
+        group: schema_web_site
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: publisher
+        content:
+          '@type': LocalBusiness
+          '@id': 'http://mcgreen-acres.lndo.site/'
+          name: 'McGreen Acres LLC'
+          url: 'http://mcgreen-acres.lndo.site/'
+          logo:
+            '@type': ImageObject
+            url: 'http://mcgreen-acres.lndo.site/themes/custom/mcgreen_acres_theme/logo.png'
+            width: '2162'
+            height: '1550'
+        group: schema_web_site
+        schema_metatag: true
+    -
+      tag: meta
+      attributes:
+        name: inLanguage
+        content: en-us
+        group: schema_web_site
+        schema_metatag: true
     -
       tag: link
       attributes:

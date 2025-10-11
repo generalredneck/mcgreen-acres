@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: commerce_product_variation
+  uuid: ffa1b19b-63fb-48c3-b335-0e7d964e0c0d
+  bundle: subscription
+  default_langcode: en
+  depends:
+    8d66f141-4b15-4413-84fd-d84cd1754cf6: commerce_product
+default:
+  uid:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  product_id:
+    -
+      entity: 8d66f141-4b15-4413-84fd-d84cd1754cf6
+  sku:
+    -
+      value: '1001'
+  title:
+    -
+      value: '1 share'
+  price:
+    -
+      number: '32.500000'
+      currency_code: USD
+      formatted: $32.50
+  created:
+    -
+      value: 1760215640
+  commerce_stock_always_in_stock:
+    -
+      value: false
+  billing_schedule:
+    -
+      target_id: herd_share_monthly
+  subscription_type:
+    -
+      target_plugin_id: product_variation
+      target_plugin_configuration: {  }

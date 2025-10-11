@@ -6,38 +6,32 @@ dependencies:
     - commerce_product.commerce_product_variation_type.subscription
     - core.entity_view_mode.commerce_product_variation.cart
     - field.field.commerce_product_variation.subscription.billing_schedule
-    - field.field.commerce_product_variation.subscription.pick_up_dow
     - field.field.commerce_product_variation.subscription.subscription_type
-  module:
-    - commerce_price
 id: commerce_product_variation.subscription.cart
 targetEntityType: commerce_product_variation
 bundle: subscription
 mode: cart
 content:
-  list_price:
-    type: commerce_price_default
-    label: above
+  product_id:
+    type: entity_reference_label
+    label: hidden
     settings:
-      strip_trailing_zeroes: false
-      currency_display: symbol
+      link: true
     third_party_settings: {  }
     weight: 0
     region: content
-  price:
-    type: commerce_price_default
-    label: above
+  title:
+    type: string
+    label: hidden
     settings:
-      strip_trailing_zeroes: false
-      currency_display: symbol
+      link_to_entity: false
     third_party_settings: {  }
     weight: 1
     region: content
 hidden:
   billing_schedule: true
-  pick_up_dow: true
-  product_id: true
+  list_price: true
+  price: true
   search_api_excerpt: true
   sku: true
   subscription_type: true
-  title: true
