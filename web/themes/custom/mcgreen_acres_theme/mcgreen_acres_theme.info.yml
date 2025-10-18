@@ -16,6 +16,7 @@ regions:
   breadcrumb:         'Breadcrumb'
   highlighted:        'Highlighted'
   help:               'Help'
+  cart:               'Cart'
   content:            'Content'
   sidebar_first:      'Left Sidebar'
   sidebar_second:     'Right Sidebar'

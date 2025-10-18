@@ -13,10 +13,11 @@ bundle: subscription
 mode: cart
 content:
   product_id:
-    type: entity_reference_label
+    type: entity_reference_entity_view
     label: hidden
     settings:
-      link: true
+      view_mode: cart
+      link: false
     third_party_settings: {  }
     weight: 0
     region: content

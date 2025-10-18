@@ -91,6 +91,8 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
     '/webform/*',
     '/user/*',
     '/product/*',
+    '/checkout/*',
+    '/cart',
   ];
   if (!empty($variables['node']) && empty($variables['is_front']) && $variables['node']->bundle() == 'page') {
     $variables['force_container'] = TRUE;
@@ -133,14 +135,6 @@ function mcgreen_acres_theme_preprocess_block(array &$variables) {
 
 }
 
-/**
- * Implements hook_theme_suggestions_field_alter().
- */
-function mcgreen_acres_theme_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  /*$element = $variables['element'];
-  $suggestions[] = 'field__' . $element['#view_mode'];
-  $suggestions[] = 'field__' . $element['#view_mode'] . '__' . $element['#field_name'];*/
-}
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for commerce_product templates.
@@ -161,6 +155,10 @@ function mcgreen_acres_theme_theme_suggestions_commerce_product_alter(array &$su
         break;
     }
   }
+}
+
+function mcgreen_acres_theme_preprocess_commerce_product(array &$variables) {
+  $stuff=1;
 }
 
 /**

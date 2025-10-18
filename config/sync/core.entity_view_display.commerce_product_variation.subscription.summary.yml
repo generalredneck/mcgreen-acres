@@ -7,42 +7,31 @@ dependencies:
     - core.entity_view_mode.commerce_product_variation.summary
     - field.field.commerce_product_variation.subscription.billing_schedule
     - field.field.commerce_product_variation.subscription.subscription_type
-  module:
-    - commerce_price
 id: commerce_product_variation.subscription.summary
 targetEntityType: commerce_product_variation
 bundle: subscription
 mode: summary
 content:
-  list_price:
-    type: commerce_price_default
-    label: above
+  product_id:
+    type: entity_reference_label
+    label: hidden
     settings:
-      strip_trailing_zeroes: false
-      currency_display: symbol
+      link: true
     third_party_settings: {  }
     weight: 0
     region: content
-  price:
-    type: commerce_price_default
-    label: above
-    settings:
-      strip_trailing_zeroes: false
-      currency_display: symbol
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  sku:
+  title:
     type: string
-    label: inline
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: -1
+    weight: 1
     region: content
 hidden:
   billing_schedule: true
-  product_id: true
+  list_price: true
+  price: true
   search_api_excerpt: true
+  sku: true
   subscription_type: true
-  title: true

@@ -864,3 +864,8 @@ figure {
   font-weight: bold;
 }
 
+.cart-block--contents__items {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 500px;
+}

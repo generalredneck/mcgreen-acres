@@ -1,0 +1,27 @@
+uuid: 84430c5c-b05b-4b99-8d51-9dbfe0a6a72f
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_visibility_groups
+    - commerce_cart
+  theme:
+    - mcgreen_acres_theme
+id: mcgreen_acres_theme_cart
+theme: mcgreen_acres_theme
+region: cart
+weight: -10
+provider: null
+plugin: commerce_cart
+settings:
+  id: commerce_cart
+  label: Cart
+  label_display: '0'
+  provider: commerce_cart
+  dropdown: true
+  show_if_empty: true
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
