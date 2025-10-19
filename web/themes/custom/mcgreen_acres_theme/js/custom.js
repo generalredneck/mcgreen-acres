@@ -1050,8 +1050,6 @@ $(window).on('load', function(){
 			gutter: 0
 		}
 	});
-	/*Nice Select*/
-	$('select').niceSelect();
 
 });
 })(jQuery);
