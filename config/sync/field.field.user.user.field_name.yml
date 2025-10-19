@@ -10,7 +10,7 @@ id: user.user.field_name
 field_name: field_name
 entity_type: user
 bundle: user
-label: Name
+label: 'First Name'
 description: 'The name you want to go by on the website. Different from your username which only you know.'
 required: true
 translatable: false

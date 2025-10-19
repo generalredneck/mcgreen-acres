@@ -118,6 +118,7 @@ module:
   path: 0
   path_alias: 0
   pdf: 0
+  phone_number: 0
   phpass: 0
   physical: 0
   profile: 0

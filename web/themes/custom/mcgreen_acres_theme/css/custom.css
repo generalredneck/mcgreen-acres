@@ -898,3 +898,8 @@ figure {
     margin: 0;
   }
 }
+.phone-number-field .local-number {
+    width: 100%;
+    height: auto;
+    border-width: 1px;
+}

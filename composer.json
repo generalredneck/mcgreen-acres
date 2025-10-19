@@ -99,6 +99,7 @@
         "drupal/menu_block": "^1.11",
         "drupal/pathauto": "^1.12",
         "drupal/pdf": "^1.2",
+        "drupal/phone_number": "^2.0@alpha",
         "drupal/realname": "^2.0@beta",
         "drupal/redirect": "^1.9",
         "drupal/scheduler": "^2.1",
