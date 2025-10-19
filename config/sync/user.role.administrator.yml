@@ -1,11 +1,18 @@
 uuid: f13784ae-d82c-43cb-9b31-2faa8e414110
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - field_permissions
 _core:
   default_config_hash: Om6FEO7vZZMkPIbVvfxtdkWerQ2PvQM4sWUd6Q3ZnfI
 id: administrator
 label: Administrator
 weight: -7
 is_admin: true
-permissions: {  }
+permissions:
+  - 'create user_picture'
+  - 'edit own user_picture'
+  - 'edit user_picture'
+  - 'view own user_picture'
+  - 'view user_picture'

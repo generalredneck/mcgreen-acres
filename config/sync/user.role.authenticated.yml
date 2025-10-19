@@ -20,6 +20,7 @@ dependencies:
     - disqus
     - dropzonejs
     - entity_browser
+    - field_permissions
     - file
     - filter
     - google_analytics
@@ -54,8 +55,12 @@ permissions:
   - 'use text format webform_default'
   - 'view commerce_product'
   - 'view disqus comments'
+  - 'view field_author_description'
   - 'view media'
   - 'view own commerce_order'
   - 'view own commerce_subscription'
   - 'view own customer profile'
+  - 'view own field_author_description'
   - 'view own profile'
+  - 'view own user_picture'
+  - 'view user_picture'

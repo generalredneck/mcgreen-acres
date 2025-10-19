@@ -888,3 +888,13 @@ figure {
   overflow-y: auto;
   max-height: 500px;
 }
+
+/* fix user pages */
+.layout-container {
+    margin: 0;
+}
+@media screen and (min-width: 38em) {
+  .layout-container {
+    margin: 0;
+  }
+}

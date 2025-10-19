@@ -8,6 +8,7 @@ dependencies:
     - commerce_checkout
     - commerce_product
     - disqus
+    - field_permissions
     - filter
     - media
     - system
@@ -24,4 +25,8 @@ permissions:
   - 'use text format restricted_html'
   - 'view commerce_product'
   - 'view disqus comments'
+  - 'view field_author_description'
   - 'view media'
+  - 'view own field_author_description'
+  - 'view own user_picture'
+  - 'view user_picture'

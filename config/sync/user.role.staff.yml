@@ -36,6 +36,7 @@ dependencies:
     - commerce_stock_ui
     - commerce_store
     - contextual
+    - field_permissions
     - file
     - file_delete
     - filter
@@ -148,6 +149,7 @@ permissions:
   - 'create default commerce_product'
   - 'create default commerce_stock_location'
   - 'create ebook media'
+  - 'create field_author_description'
   - 'create file media'
   - 'create image media'
   - 'create media'
@@ -163,6 +165,7 @@ permissions:
   - 'create terms in product_tags'
   - 'create terms in tags'
   - 'create url aliases'
+  - 'create user_picture'
   - 'create video media'
   - 'create webform'
   - 'delete all revisions'
@@ -254,14 +257,17 @@ permissions:
   - 'edit any video media'
   - 'edit any webform'
   - 'edit any webform submission'
+  - 'edit field_author_description'
   - 'edit own article content'
   - 'edit own audio media'
   - 'edit own ebook media'
+  - 'edit own field_author_description'
   - 'edit own file media'
   - 'edit own image media'
   - 'edit own page content'
   - 'edit own pdf media'
   - 'edit own remote_video media'
+  - 'edit own user_picture'
   - 'edit own video media'
   - 'edit own webform'
   - 'edit own webform submission'
@@ -269,6 +275,7 @@ permissions:
   - 'edit terms in product_collections'
   - 'edit terms in product_tags'
   - 'edit terms in tags'
+  - 'edit user_picture'
   - 'edit webform assets'
   - 'edit webform source'
   - 'edit webform twig'
