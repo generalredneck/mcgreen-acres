@@ -25,6 +25,7 @@ dependencies:
     - commerce_order
     - commerce_payment
     - commerce_product
+    - commerce_recurring
     - disqus
     - dropzonejs
     - entity_browser
@@ -36,6 +37,7 @@ dependencies:
     - paragraphs
     - paragraphs_previewer
     - path
+    - profile
     - redirect
     - shortcut
     - system
@@ -68,6 +70,7 @@ permissions:
   - 'administer url aliases'
   - 'create article content'
   - 'create audio media'
+  - 'create customer profile'
   - 'create file media'
   - 'create image media'
   - 'create media'
@@ -85,6 +88,7 @@ permissions:
   - 'delete media'
   - 'delete own article content'
   - 'delete own audio media'
+  - 'delete own customer profile'
   - 'delete own file media'
   - 'delete own files'
   - 'delete own image media'
@@ -116,6 +120,7 @@ permissions:
   - 'revert article revisions'
   - 'revert page revisions'
   - 'update media'
+  - 'update own customer profile'
   - 'use text format basic_html'
   - 'use text format full_html'
   - 'use text format restricted_html'
@@ -128,6 +133,9 @@ permissions:
   - 'view disqus comments'
   - 'view media'
   - 'view own commerce_order'
+  - 'view own commerce_subscription'
+  - 'view own customer profile'
+  - 'view own profile'
   - 'view own unpublished content'
   - 'view own unpublished media'
   - 'view page revisions'

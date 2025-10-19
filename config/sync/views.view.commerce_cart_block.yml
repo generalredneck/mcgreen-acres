@@ -244,7 +244,20 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'Nothing in the cart.'
+            format: basic_html
+          tokenize: false
       sorts:
         order_item_id:
           id: order_item_id

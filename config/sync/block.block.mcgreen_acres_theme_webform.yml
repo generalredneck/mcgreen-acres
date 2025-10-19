@@ -5,7 +5,9 @@ dependencies:
   config:
     - webform.webform.newsletter
   module:
+    - block_class
     - block_visibility_groups
+    - system
     - webform
   theme:
     - mcgreen_acres_theme
@@ -29,3 +31,7 @@ visibility:
     id: condition_group
     negate: false
     block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/user/*\r\n/cart\r\n/cart/*\r\n/checkout/*"

@@ -1,4 +1,4 @@
-    <?php
+<?php
 
     /**
      * Implements hook_theme_suggestions_field_alter().
