@@ -6,12 +6,13 @@ dependencies:
     - commerce_payment
     - commerce_promotion
     - commerce_shipping
+    - commerce_stripe
 label: Subscription
 id: subscription
 plugin: multistep_default
 configuration:
   display_checkout_progress: true
-  display_checkout_progress_breadcrumb_links: false
+  display_checkout_progress_breadcrumb_links: true
   display_sidebar_checkout_complete: false
   guest_order_assign: true
   guest_new_account: true
@@ -88,3 +89,11 @@ configuration:
       wrapper_element: fieldset
       auto_recalculate: true
       require_shipping_profile: true
+    stripe_review:
+      display_label: null
+      step: review
+      weight: 10
+      wrapper_element: container
+      button_id: edit-actions-next
+      auto_submit_review_form: false
+      setup_future_usage: ''

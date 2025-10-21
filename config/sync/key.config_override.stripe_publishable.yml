@@ -1,0 +1,14 @@
+uuid: ab07616a-1b19-4542-9194-3a48fa0bd0e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_payment.commerce_payment_gateway.stripe_card
+    - key.key.stripe_publishable_key
+id: stripe_publishable
+label: 'Stripe Publishable'
+config_type: commerce_payment_gateway
+config_prefix: commerce_payment.commerce_payment_gateway
+config_name: stripe_card
+config_item: configuration.publishable_key
+key_id: stripe_publishable_key

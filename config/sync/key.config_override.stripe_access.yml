@@ -1,0 +1,14 @@
+uuid: f426872a-cce4-4480-96d1-f44cddbbb0cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_payment.commerce_payment_gateway.stripe_card
+    - key.key.stripe_access_token
+id: stripe_access
+label: 'Stripe Access'
+config_type: commerce_payment_gateway
+config_prefix: commerce_payment.commerce_payment_gateway
+config_name: stripe_card
+config_item: configuration.access_token
+key_id: stripe_access_token

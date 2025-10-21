@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   module:
-    - commerce_prorater_stepped_proportional
+    - mcgreen_acres_store
 id: herd_share_monthly
 label: 'Herd Share Monthly'
 displayLabel: 'Herd Share Monthly'
 billingType: prepaid
-combineSubscriptions: false
+combineSubscriptions: true
 retrySchedule:
   - 1
   - 3
@@ -22,9 +22,9 @@ configuration:
     unit: month
   start_month: 1
   start_day: 1
-prorater: stepped_proportional
+prorater: seven_day_step
 proraterConfiguration:
-  steps: 4
+  steps: 3
   step_interval:
     period: week
     interval: 1

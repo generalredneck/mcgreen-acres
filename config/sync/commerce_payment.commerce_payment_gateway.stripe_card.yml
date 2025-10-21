@@ -1,0 +1,24 @@
+uuid: 4b610776-35d5-4cd2-9a93-096ac100b785
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_stripe
+id: stripe_card
+label: 'Credit Card'
+weight: null
+plugin: stripe
+configuration:
+  display_label: 'Stripe Card Element'
+  mode: test
+  payment_method_types:
+    - credit_card
+  collect_billing_information: true
+  authentication_method: stripe_connect
+  access_token: null
+  stripe_user_id: acct_1SJzX8PUoTEGbLcN
+  publishable_key: null
+  secret_key: ''
+  enable_credit_card_icons: true
+conditions: {  }
+conditionOperator: AND

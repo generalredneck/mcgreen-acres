@@ -4,5 +4,4 @@ default_transport: smtp
 override:
   user: 3
   update: 3
-  contact_form: 3
-  contact: 3
+  commerce_order_type: 3

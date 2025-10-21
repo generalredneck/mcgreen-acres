@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.storage.commerce_product.body
-    - field.storage.commerce_product.product_brand
     - field.storage.commerce_product.product_collections
     - search_api.server.localhost
   module:
@@ -40,14 +39,6 @@ field_settings:
     dependencies:
       module:
         - commerce_product
-  product_brand:
-    label: 'Product Brand'
-    datasource_id: 'entity:commerce_product'
-    property_path: product_brand
-    type: integer
-    dependencies:
-      config:
-        - field.storage.commerce_product.product_brand
   product_collections:
     label: 'Product Collections'
     datasource_id: 'entity:commerce_product'
@@ -76,6 +67,7 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  custom_value: {  }
   entity_type: {  }
   language_with_fallback: {  }
   rendered_item: {  }

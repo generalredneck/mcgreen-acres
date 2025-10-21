@@ -32,6 +32,9 @@ content:
     region: content
 hidden:
   commerce_variation_cart_form: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   list_price: true
   price: true
   search_api_excerpt: true

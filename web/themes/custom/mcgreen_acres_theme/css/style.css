@@ -55,8 +55,8 @@ Purchase:
   padding: 0;
   margin: 0;
   font-family: 'Lato', sans-serif;
-  color: #555555;
-  font-size:15px;
+  color: #222222;
+  font-size: 16px;
   line-height:1.5;
   font-weight: 400;
   overflow-x: hidden;
@@ -9708,9 +9708,6 @@ ul.links {
   .clv_about_wrapper .about_content{
     padding: 0;
   }
-  .clv_section {
-    padding: 60px 0px;
-  }
   .about_farm_wrapper .about_content .about_heading h2{
     font-size: 32px;
   }
@@ -9803,6 +9800,7 @@ ul.links {
     padding: 0;
   }
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a{
+    font-size: 20px;
     color: #ffffff;
   }
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a:hover{

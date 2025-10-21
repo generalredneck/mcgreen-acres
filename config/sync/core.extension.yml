@@ -20,6 +20,7 @@ module:
   commerce: 0
   commerce_cart: 0
   commerce_checkout: 0
+  commerce_checkout_link: 0
   commerce_fee: 0
   commerce_log: 0
   commerce_number_pattern: 0
@@ -38,6 +39,7 @@ module:
   commerce_stock_local: 0
   commerce_stock_ui: 0
   commerce_store: 0
+  commerce_stripe: 0
   commerce_tax: 0
   config: 0
   config_split: 0
@@ -90,6 +92,8 @@ module:
   key: 0
   layout_discovery: 0
   link: 0
+  link_attributes: 0
+  link_attributes_menu_link_content: 0
   mailchimp: 0
   mailer_transport: 0
   maxlength: 0
