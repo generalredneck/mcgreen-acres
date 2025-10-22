@@ -93,6 +93,7 @@
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
         "drupal/key": "^1.20",
+        "drupal/link_attributes": "^2.1",
         "drupal/logging_alerts": "^2.1@beta",
         "drupal/mailsystem": "^4.5",
         "drupal/menu_block": "^1.11",

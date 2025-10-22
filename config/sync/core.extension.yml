@@ -90,6 +90,8 @@ module:
   key: 0
   layout_discovery: 0
   link: 0
+  link_attributes: 0
+  link_attributes_menu_link_content: 0
   mailchimp: 0
   mailer_transport: 0
   maxlength: 0
