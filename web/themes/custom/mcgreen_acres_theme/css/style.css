@@ -56,7 +56,7 @@ Purchase:
   margin: 0;
   font-family: 'Lato', sans-serif;
   color: #555555;
-  font-size:15px;
+  font-size: 16px;
   line-height:1.5;
   font-weight: 400;
   overflow-x: hidden;
@@ -9796,6 +9796,7 @@ ul.links {
     padding: 0;
   }
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a{
+    font-size: 20px;
     color: #ffffff;
   }
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a:hover{
