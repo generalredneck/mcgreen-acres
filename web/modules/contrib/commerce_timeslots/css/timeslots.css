@@ -1,0 +1,16 @@
+/* Hide date pickers for google chrome browser */
+input.timeslots-date[type="date"]::-webkit-input-placeholder {
+  visibility: hidden !important;
+}
+
+input.timeslots-date::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+#ui-datepicker-div {
+  background-color: white !important;
+}
+
+#ui-datepicker-div table td {
+  height: auto;
+}
