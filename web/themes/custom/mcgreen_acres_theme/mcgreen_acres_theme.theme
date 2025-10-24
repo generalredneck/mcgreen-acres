@@ -171,9 +171,15 @@ function mcgreen_acres_theme_preprocess_node(array &$variables) {
   if ($variables['node']->type == 'article' && $variables['node']->view_mode == 'teaser') {
     $variables['content']['links']['#attributes']['class'][] = 'clearfix';
   }
+  $query = \Drupal::entityQuery('node');
+  $or_group = $query->orConditionGroup()
+    // Add a condition to the group: the field_tags must be 22.
+    ->condition('field_tags', 22)
+    // Add another condition to the group: the node ID must be 17.
+    ->condition('nid', 17);
+
   // Construct an Entity Query for nodes.
-  $result = \Drupal::entityQuery('node')
-    ->condition('field_tags', '22')
+  $result = $query->condition($or_group)
     ->condition('nid', $variables['node']->id())
     ->accessCheck(FALSE)
     ->execute();
