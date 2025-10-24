@@ -328,6 +328,10 @@ figure {
 .background-style {
   background-position: center;
 }
+
+.alert {
+  margin-top: 35px;
+}
 /* Carousel */
 
 
