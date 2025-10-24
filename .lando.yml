@@ -8,8 +8,8 @@ config:
   composer_version: 2
 services:
   mail:
-    type: mailhog
-    hogfrom:
+    type: mailpit
+    mailFrom:
       - appserver
 proxy:
   mail:

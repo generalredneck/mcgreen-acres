@@ -263,6 +263,12 @@ figure {
   }
 }
 
+@media (max-width: 1199px) {
+  .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
+    padding-right: 185px;
+  }
+}
+
 .clv_right_header .clv_menu .cart_nav > ul > li > a > svg > path{
   fill: #000000;
 }
