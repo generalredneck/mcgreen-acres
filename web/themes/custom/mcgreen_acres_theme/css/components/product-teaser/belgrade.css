@@ -28,7 +28,7 @@
   font-size: 1.2rem;;
 }
 .product:hover .product-image img {
-  opacity: 0.4;
+  opacity: 0.8;
 }
 .product:hover .product-info {
   padding: 0 1rem;

@@ -1,0 +1,11 @@
+<?php
+function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state, $form_id) {
+  foreach ($form['remove_button'] as &$item) {
+    if (is_array($item) && $item['#type'] == 'submit') {
+      $item['#type'] = 'image_button';
+      $item['#src'] = '/themes/custom/mcgreen_acres_theme/icons/trash.svg';
+      $item['#alt'] = 'Remove';
+      unset($item['#value']);
+    }
+  }
+}

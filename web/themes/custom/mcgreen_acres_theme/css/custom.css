@@ -153,9 +153,6 @@ figure {
   font-weight: 400;
   line-height: 1.5;
   color: #272727;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -248,6 +245,12 @@ figure {
   text-decoration: none;
 }
 
+@media (max-width: 1199px) {
+  .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
+    padding-right: 185px;
+  }
+}
+
 @media (max-width: 991px) {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
     left: auto;
@@ -260,12 +263,6 @@ figure {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li:last-child > a {
     border-right: none;
     padding-right: 0;
-  }
-}
-
-@media (max-width: 1199px) {
-  .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
-    padding-right: 185px;
   }
 }
 
@@ -578,6 +575,14 @@ figure {
   .container {
     padding-right: 5px;
     padding-left: 5px;
+  }
+  .view-commerce-cart-form table {
+    font-size: .6rem;
+  }
+
+  .view-commerce-cart-form table div.images img {
+    width: 50px;
+    height: auto;
   }
 }
 
@@ -912,4 +917,10 @@ figure {
     width: 100%;
     height: auto;
     border-width: 1px;
+}
+th.views-field-remove-button {
+  font-size: 0;
+}
+.delete-order-item {
+  width: 2em;
 }

@@ -44,7 +44,6 @@
 %}
 {% set label = 'left in stock!' %}
 {% set stock_level_classes = ['font-weight-bold'] %}
-{{ drupal_breakpoint() }}
 <div{{ attributes.addClass('form-item') }}>
   {% if not multiple %}
     {% for item in items %}

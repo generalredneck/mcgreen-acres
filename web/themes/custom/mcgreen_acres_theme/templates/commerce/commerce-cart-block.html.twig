@@ -9,7 +9,17 @@
     <div class="cart_section">
       <div class="fw-bold mb-3">{{ 'Items'|t }} / {{ count_text }}</div>
       <div class="cart-block--contents__items">
+      {% if count == 0 %}
+        <div class="text-align-center ">
+          {{ 'Your shopping cart is empty.'|t }}
+          <br />
+          <a href="/product" class="btn btn-primary mt-4">
+            {{ 'Go Shopping'|t }}
+          </a>
+        </div>
+      {% else %}
         {{ content }}
+      {% endif %}
       </div>
       <div class="cart-block--contents__links mt-3">
         {% for link in links %}

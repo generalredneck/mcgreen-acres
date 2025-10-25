@@ -1,0 +1,6 @@
+services:
+  mcgreen_acres_store.checkout_completion_subscriber:
+    class: Drupal\mcgreen_acres_store\EventSubscriber\CheckoutCompletionSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: ['@entity_type.manager']

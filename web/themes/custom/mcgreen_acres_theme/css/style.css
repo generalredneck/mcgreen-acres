@@ -533,12 +533,14 @@ ul.links {
   background-color: #ffffff;
 }
 .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box > .cart_section table td {
-  padding: 0;
+  padding-top: 5px;
 }
 .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box > .cart_section table .views-field-purchased-entity img {
   float: left;
   width: 30px;
   height: 30px;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box > a{
   display: flex;
