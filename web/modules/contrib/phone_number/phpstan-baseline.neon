@@ -1,0 +1,86 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\Field\\\\FieldType\\\\SmsPhoneNumberItem\\:\\:\\$country\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/Plugin/Field/FieldType/SmsPhoneNumberItem.php
+
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\Field\\\\FieldType\\\\SmsPhoneNumberItem\\:\\:\\$local_number\\.$#"
+			count: 2
+			path: modules/sms_phone_number/src/Plugin/Field/FieldType/SmsPhoneNumberItem.php
+
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\Field\\\\FieldType\\\\SmsPhoneNumberItem\\:\\:\\$tfa\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/Plugin/Field/FieldType/SmsPhoneNumberItem.php
+
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\Field\\\\FieldType\\\\SmsPhoneNumberItem\\:\\:\\$value\\.$#"
+			count: 2
+			path: modules/sms_phone_number/src/Plugin/Field/FieldType/SmsPhoneNumberItem.php
+
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\Field\\\\FieldType\\\\SmsPhoneNumberItem\\:\\:\\$verified\\.$#"
+			count: 3
+			path: modules/sms_phone_number/src/Plugin/Field/FieldType/SmsPhoneNumberItem.php
+
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\TfaValidation\\\\SmsPhoneNumberTfa\\:\\:\\$context\\.$#"
+			count: 4
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Access to an undefined property Drupal\\\\sms_phone_number\\\\Plugin\\\\TfaValidation\\\\SmsPhoneNumberTfa\\:\\:\\$verificationToken\\.$#"
+			count: 3
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\sms_phone_number\\\\Plugin\\\\TfaValidation\\\\SmsPhoneNumberTfa\\:\\:t\\(\\)\\.$#"
+			count: 9
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Caught class Drupal\\\\sms_phone_number\\\\Plugin\\\\TfaValidation\\\\Exception not found\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Instantiated class Drupal\\\\sms_phone_number\\\\Plugin\\\\TfaValidation\\\\Exception not found\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Undefined variable\\: \\$context$#"
+			count: 3
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Variable \\$context in empty\\(\\) is never defined\\.$#"
+			count: 4
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^\\\\Drupal calls should be avoided in classes, use dependency injection instead$#"
+			count: 1
+			path: modules/sms_phone_number/src/Plugin/TfaValidation/SmsPhoneNumberTfa.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\sms_phone_number\\\\SmsPhoneNumberUtil\\:\\:csrfToken\\(\\)\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/SmsPhoneNumberUtil.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\sms_phone_number\\\\SmsPhoneNumberUtil\\:\\:database\\(\\)\\.$#"
+			count: 2
+			path: modules/sms_phone_number/src/SmsPhoneNumberUtil.php
+
+		-
+			message: "#^Call to an undefined method Drupal\\\\sms_phone_number\\\\SmsPhoneNumberUtil\\:\\:load\\(\\)\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/SmsPhoneNumberUtil.php
+
+		-
+			message: "#^Method Drupal\\\\phone_number\\\\PhoneNumberUtil\\:\\:__construct\\(\\) invoked with 5 parameters, 4 required\\.$#"
+			count: 1
+			path: modules/sms_phone_number/src/SmsPhoneNumberUtil.php

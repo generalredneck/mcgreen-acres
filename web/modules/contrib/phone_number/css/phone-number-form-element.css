@@ -1,0 +1,110 @@
+.phone-number-field div.form-item {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+div.phone-number-field div.form-item {
+  vertical-align: bottom;
+}
+
+.phone-number-field .form-type-textfield input {
+  width: 150px;
+}
+
+.phone-number-field .local-number,
+.phone-number-field .extension {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  height: 30px;
+  margin: 0;
+  border-width: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Hide up/down arrows on numeric extension field. */
+.phone-number-field .extension {
+  appearance: textfield;
+}
+
+/* Hide up/down arrows on numeric extension field in webkit browsers. */
+.phone-number-field .extension::-webkit-outer-spin-button,
+.phone-number-field .extension::-webkit-inner-spin-button {
+  appearance: none;
+}
+
+.phone-number-field .phone-number-flag {
+  display: inline-block;
+  box-sizing: border-box;
+  height: 11px;
+  margin: 10px 5px 10px 10px;
+  padding: 9px 0 0;
+  padding-left: 16px;
+  vertical-align: bottom;
+  background-color: transparent;
+  background-image: url("../images/flags.png");
+  background-repeat: no-repeat;
+  background-position: 16px -11px;
+}
+
+.phone-number-field .country-select {
+  position: relative;
+  display: inline-block;
+  height: 30px;
+  vertical-align: bottom;
+  border-bottom: 1px solid #ccc;
+}
+
+.phone-number-field .country-select .prefix {
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: 40px;
+  text-align: center;
+  vertical-align: bottom;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 30px;
+}
+
+.phone-number-field .country-select .prefix:first-child {
+  min-width: 60px;
+  margin-left: 10px;
+}
+
+.form-item-fields-field-phone-number-settings-edit-form-settings-countries
+  select {
+  min-height: 150px;
+}
+
+.phone-number-field .country-select select {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-width: 100%;
+  opacity: 0;
+}
+
+.phone-number-field .country-select .arrow {
+  top: 50%;
+  right: 1px;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 13px 10px 13px 5px;
+  vertical-align: bottom;
+  border-top: 4px solid #555;
+  border-right: 3px solid transparent;
+  border-left: 3px solid transparent;
+}
+
+.phone-number-field .form-text {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  vertical-align: bottom;
+}
+.phone-number-field .description {
+  margin: 5px 0;
+}

@@ -1,0 +1,7 @@
+name: Commerce Checkout Link
+description: Makes it possible to share a link to an order with a user
+core_version_requirement: ^9.1 || ^10 || ^11
+type: module
+dependencies:
+  - commerce:commerce_order
+  - commerce:commerce_cart
