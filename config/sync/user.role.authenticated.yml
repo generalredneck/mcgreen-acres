@@ -48,6 +48,7 @@ permissions:
   - 'dropzone upload files'
   - 'manage own commerce_payment_method'
   - 'opt-in or out of google analytics tracking'
+  - 'update own commerce_subscription'
   - 'update own customer profile'
   - 'use text format basic_html'
   - 'use text format full_html'

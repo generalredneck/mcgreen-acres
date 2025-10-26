@@ -372,8 +372,7 @@ ul.links {
   display: inline-block;
   position: relative;
   margin-left: 10px;
-  padding: 19px 0px;
-  padding-left: 14px;
+  padding-left: 10px;
 }
 .clv_right_header > .clv_menu > .cart_nav > ul > li:last-child:before{
   content: "";

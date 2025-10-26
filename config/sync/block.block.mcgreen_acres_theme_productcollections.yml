@@ -13,7 +13,7 @@ dependencies:
 id: mcgreen_acres_theme_productcollections
 theme: mcgreen_acres_theme
 region: sidebar_first
-weight: -10
+weight: -9
 provider: null
 plugin: 'facet_block:product_collections'
 settings:

@@ -29,4 +29,4 @@ refresh_mode: customer
 refresh_frequency: 300
 sendReceipt: true
 receiptBcc: mcgreenacres@gmail.com
-receiptSubject: 'Your subscription at McGreen Acres has been paid! Order #[commerce_order:order_number]'
+receiptSubject: 'Your subscription at McGreen Acres is being renewed! Order #[commerce_order:order_number]'

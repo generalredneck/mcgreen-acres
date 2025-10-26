@@ -14,14 +14,6 @@ default_content:
   commerce_product_variation:
     - 7870f6a8-f957-48bc-8e88-cc47c2a87ab6
     - ffa1b19b-63fb-48c3-b335-0e7d964e0c0d
-  commerce_store:
-    - 17b1ec36-d8b5-4971-869c-64db3869c2a2
   file:
     - 0439cdb3-3fde-4e6c-b9aa-06bc2c4ef044
     - eedaa045-3f49-4099-a5fa-28d5f8fd42f1
-  taxonomy_term:
-    - c5e33e12-1e6b-4c94-aba6-b6601a5ff5ad
-    - 9a62aa44-9cb3-4135-a48d-7c853496c56d
-    - 2cd807b4-0e8b-4639-b9bc-713a19f8b263
-    - 6b941578-6dba-460a-b52d-f6cfe6629792
-    - 5cfa9277-8908-40cc-932e-846f16853369

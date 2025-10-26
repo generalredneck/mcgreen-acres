@@ -1,0 +1,19 @@
+uuid: 82f40eb0-7e4a-457e-ac19-5971e3db01ed
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: V_g2NRZBOiF0ahU7429ulG8tmTfrzs72oeDoNmKRJBo
+id: commerce_email
+label: 'Commerce Email'
+backend: database
+backend_configuration:
+  lease_time: 300
+processor: cron
+processing_time: 180
+locked: false
+stop_when_empty: true
+threshold:
+  type: 0
+  limit: 0
+  state: all

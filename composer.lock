@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fed4cc30431acd9fbc5d7434bfe8264b",
+    "content-hash": "97bb800e0e781ebac08e63e008fb4786",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2548,6 +2548,72 @@
             "homepage": "https://www.drupal.org/project/commerce_checkout_link",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce_checkout_link"
+            }
+        },
+        {
+            "name": "drupal/commerce_email",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/commerce_email.git",
+                "reference": "8.x-1.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/commerce_email-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "140d4351a3e9982591d9edffade646ed49ca8fac"
+            },
+            "require": {
+                "drupal/commerce": "^2.0 || ^3.0",
+                "drupal/core": "^9.3 || ^10 || ^11",
+                "drupal/token": "*"
+            },
+            "require-dev": {
+                "drupal/advancedqueue": "^1.0",
+                "drupal/commerce_recurring": "^1.0@rc"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.7",
+                    "datestamp": "1758129291",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
+                    "name": "paul.linney",
+                    "homepage": "https://www.drupal.org/user/928636"
+                },
+                {
+                    "name": "rinasek",
+                    "homepage": "https://www.drupal.org/user/1245514"
+                },
+                {
+                    "name": "rszrama",
+                    "homepage": "https://www.drupal.org/user/49344"
+                },
+                {
+                    "name": "vmarchuk",
+                    "homepage": "https://www.drupal.org/user/306425"
+                }
+            ],
+            "description": "Provides a UI for defining emails to send in response to various Drupal Commerce events.",
+            "homepage": "https://www.drupal.org/project/commerce_email",
+            "support": {
+                "source": "https://git.drupalcode.org/project/commerce_email"
             }
         },
         {
@@ -9400,6 +9466,61 @@
             "homepage": "http://drupal.org/project/upgrade_status",
             "support": {
                 "source": "https://git.drupalcode.org/project/upgrade_status"
+            }
+        },
+        {
+            "name": "drupal/user_csv_import",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/user_csv_import.git",
+                "reference": "2.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/user_csv_import-2.0.3.zip",
+                "reference": "2.0.3",
+                "shasum": "40ae8fa07c3b3aba3dc859ea836224bf07f25db3"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10 || ^11 || ^12"
+            },
+            "require-dev": {
+                "drupal/roleassign": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.3",
+                    "datestamp": "1680894733",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "eahonet",
+                    "homepage": "https://www.drupal.org/user/3546806"
+                },
+                {
+                    "name": "gisle",
+                    "homepage": "https://www.drupal.org/user/409554"
+                },
+                {
+                    "name": "mcfdez87",
+                    "homepage": "https://www.drupal.org/user/2445390"
+                }
+            ],
+            "description": "User import module",
+            "homepage": "https://www.drupal.org/project/user_csv_import",
+            "support": {
+                "source": "https://git.drupalcode.org/project/user_csv_import"
             }
         },
         {

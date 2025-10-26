@@ -64,6 +64,7 @@
         "drupal/block_visibility_groups": "^2.0.1",
         "drupal/bootstrap_basic_image_gallery": "dev-project-update-bot-only",
         "drupal/commerce_checkout_link": "^1.4",
+        "drupal/commerce_email": "^1.7",
         "drupal/commerce_fee": "^1.1",
         "drupal/commerce_invoice": "^2.2",
         "drupal/commerce_prorater_stepped_proportional": "^2.0",
@@ -114,6 +115,7 @@
         "drupal/term_condition": "^2.0",
         "drupal/twig_tweak": "^3.3",
         "drupal/upgrade_status": "^4.3",
+        "drupal/user_csv_import": "^2.0",
         "drupal/varbase_bootstrap_paragraphs": "^10.0.9",
         "drupal/webform": "^6.3@beta",
         "drupal/webform_ip_geo": "^1.0",
@@ -221,6 +223,9 @@
             "drupal/pdf": {
                 "drupal 11": "patches/pdf-3433888-11-mr5.patch"
             },
+            "drupal/user_csv_import": {
+                "drupal 11": "https://www.drupal.org/files/issues/2025-10-15/user_csv_import_D11.patch"
+            },
             "drupal/varbase_media": {
                 "Role upgrade fix": "patches/varbase_media_role_upgrade_100005.patch"
             },
@@ -236,7 +241,8 @@
             "allowed-list": [
                 "drupal/pdf",
                 "drupal/commerce_prorater_stepped_proportional",
-                "drupal/webform_ip_geo"
+                "drupal/webform_ip_geo",
+                "drupal/user_csv_import"
             ]
         }
     },

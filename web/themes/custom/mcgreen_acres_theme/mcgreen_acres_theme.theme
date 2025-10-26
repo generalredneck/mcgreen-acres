@@ -100,6 +100,19 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
   if (\Drupal::service('path.matcher')->matchPath($current_path, implode("\n", $container_paths))) {
     $variables['force_container'] = TRUE;
   }
+  $current_user = \Drupal::currentUser();
+  if ($current_user->isAuthenticated()) {
+    /** @var \Drupal\user\Entity\User **/
+    $user = \Drupal::entityTypeManager()->getStorage('user')->load($current_user->id());
+
+    // Add the user ID to the variables array.
+    $variables['user_id'] = $user->id();
+
+    // Add the user name to the variables array.
+    $variables['user_name'] = $user->getDisplayName();
+    $variables['user_initials'] = substr($variables['user_name'], 0, 1);
+  }
+
 }
 
 /**
@@ -239,7 +252,15 @@ function mcgreen_acres_theme_theme_suggestions_details_alter(array &$suggestions
  */
 function mcgreen_acres_theme_preprocess_menu_local_task(array &$variables) {
   $variables['element']['#link']['url']->setOption('attributes', ['class'=>'nav-link']);
-  $variables['element']['#link']['url']->setOption('attributes', ['class'=>'nav-link']);
+}
+
+function mcgreen_acres_theme_preprocess_menu(&$variables) {
+  // To target a specific menu (e.g., main menu):
+  if ($variables['menu_name'] == 'account') {
+    foreach ($variables['items'] as $key => &$item) {
+      $item['url']->setOption('attributes', ['class' => ['nav-link']]);
+    }
+  }
 }
 
 /**

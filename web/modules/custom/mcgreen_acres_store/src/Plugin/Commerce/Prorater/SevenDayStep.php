@@ -132,7 +132,7 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
     // Get the number of full or partial steps remaining.
     // E.g., if we are in step 2 of 4, there are 3 steps remaining: the rest
     // of step 2, then steps 3 and 4.
-    $remaining_steps = $total_step_count - $step_count + 1;
+    $remaining_steps = $total_step_count - $step_count;
 
     // Multiple the price by the ratio of remaining steps to total steps.
     $ratio = Calculator::divide($remaining_steps, $total_step_count);

@@ -21,6 +21,7 @@ module:
   commerce_cart: 0
   commerce_checkout: 0
   commerce_checkout_link: 0
+  commerce_email: 0
   commerce_fee: 0
   commerce_log: 0
   commerce_number_pattern: 0

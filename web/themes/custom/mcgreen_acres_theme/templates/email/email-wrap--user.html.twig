@@ -1,0 +1,82 @@
+{#
+/**
+ * @file
+ * Default theme implementation for Symfony Email wrapper.
+ *
+ * Variables:
+ * - body: Email body content.
+ * - is_html: True if generating HTML output, false for plain text.
+ * - subject: Email subject.
+ * - type: Email type.
+ * - sub_type: Email sub-type.
+ * - attributes: HTML attributes for the top-level email element.
+ *
+ * @see template_preprocess_email_wrap()
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+    'email-type-' ~ type|clean_class,
+    'email-sub-type-' ~ sub_type|clean_class,
+  ]
+%}
+
+{% set site_name = 'McGreen Acres' %}
+{% set site_address = url('<front>') %}
+{% set support_email = 'info@mcgreenacres.com' %}
+
+{% if is_html %}
+<html>
+<body>
+<div{{ attributes.addClass(classes) }}>
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f4f4f5;">
+    <tr>
+      <td align="center" style="padding:24px;">
+        <!-- Email container -->
+        <table role="presentation" cellpadding="0" cellspacing="0" width="600" class="container" style="width:600px; max-width:600px; background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="padding:20px 24px; background-color:#ffffff; text-align:center; width:100%;">
+              <img src="{{ site_address }}/themes/custom/mcgreen_acres_theme/logo.png" alt="McGreen Acres Logo" width="100" style="border:0; display:inline-block; max-width:195px; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 24px 18px 24px; color:#505050; font-size:16px; line-height:22px;">
+              <p style="margin:0;">
+              <!-- main content area -->
+                {{ body }}
+              </p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="padding:18px 24px; background-color:#F4F9FF; color:#707070; font-size:13px; line-height:18px; text-align:center;">
+              <p style="margin:0 0 8px 0;">
+                McGreen Acres LLC 2414 Westmoreland Rd Red Oak, TX 75154-5816 USA
+              </p>
+              <p style="margin:0 0 8px 0;">
+                <a href="{{ site_address }}" style="color:#707070; text-decoration:underline;">{{ site_address }}</a>
+              </p>
+              <p style="margin:0 0 8px 0;">
+                 (469) 248-5703
+              </p>
+              <p style="margin:0 0 8px 0;">Copyright (C) {{ "now"|date('Y') }} McGreen Acres LLC. All rights reserved.</p>
+
+              <p style="margin:0;">If you have questions, reply to this email or contact us at <a href="mailto:{{support_email}}" style="color:#707070; text-decoration:underline;">{{support_email}}</a>.</p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- end container -->
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
+{% else %}
+{{ body }}
+{% endif %}
