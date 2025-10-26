@@ -4,3 +4,7 @@ services:
     tags:
       - { name: event_subscriber }
     arguments: ['@entity_type.manager']
+  mcgreen_acres_store.subscription_cancellation_subscriber:
+    class: Drupal\mcgreen_acres_store\EventSubscriber\SubscriptionCancellationSubscriber
+    tags:
+      - { name: event_subscriber }

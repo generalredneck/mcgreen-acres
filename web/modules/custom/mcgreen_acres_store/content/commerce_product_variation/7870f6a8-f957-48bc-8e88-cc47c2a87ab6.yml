@@ -21,7 +21,7 @@ default:
       value: '1'
   title:
     -
-      value: '1 Dozen'
+      value: 'Chicken Eggs - Dozen'
   price:
     -
       number: '10.000000'

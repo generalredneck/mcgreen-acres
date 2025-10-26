@@ -12,7 +12,7 @@ default:
       target_id: 1
   status:
     -
-      value: true
+      value: false
   product_id:
     -
       entity: 8d66f141-4b15-4413-84fd-d84cd1754cf6
@@ -21,7 +21,7 @@ default:
       value: '1001'
   title:
     -
-      value: '1 share'
+      value: '1/2 gal milk share'
   price:
     -
       number: '32.500000'

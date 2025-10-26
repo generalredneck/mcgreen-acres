@@ -1,4 +1,7 @@
 <?php
+
+use Drupal\Core\Render\Markup;
+
 function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state, $form_id) {
   foreach ($form['remove_button'] as &$item) {
     if (is_array($item) && $item['#type'] == 'submit') {
@@ -7,5 +10,42 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
       $item['#alt'] = 'Remove';
       unset($item['#value']);
     }
+  }
+}
+
+function mcgreen_acres_store_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'commerce_subscription_product_variation_cancel_form') {
+    if (isset($form['cancel_option']['#options'])) {
+      // Define the cancellation policy text.
+      $cancellation_policy_text = '<p><strong>Cancellation Policy:</strong> You are canceling your subscription at the end of the current billing cycle. Per the herd share agreement, you are required to give written notice of cancellation. Upon cancellation here, reach out to us to arrange the offboarding of your share.</p>';
+
+      // Add a new `#markup` element to the form array.
+      // The weight property ensures the markup appears at the top.
+      $form['cancellation_policy'] = [
+        '#type' => 'markup',
+        '#markup' => $cancellation_policy_text,
+        '#weight' => -100, // Use a negative weight to place it at the top of the form.
+      ];
+      // Remove the 'now' option from the list of radio buttons.
+      unset($form['cancel_option']['#options']['now']);
+    }
+    if (isset($form['actions']['submit']['#value']) ) {
+      $subscription = $form_state->getFormObject()->getEntity();
+      if ($subscription->hasScheduledChange('state', 'canceled')) {
+        unset($form['actions']['submit']);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function mcgreen_acres_store_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'subscription_cancel_scheduled':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = Markup::create($params['body']);
+      break;
   }
 }

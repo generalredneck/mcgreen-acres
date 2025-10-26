@@ -214,6 +214,10 @@
             "drupal/commerce_prorater_stepped_proportional": {
                 "d11": "https://www.drupal.org/files/issues/2024-07-21/commerce_prorater_stepped_proportional.2.x-dev.rector.patch"
             },
+            "drupal/commerce_recurring": {
+                "#3187215: Recurring orders show the wrong dates": "https://www.drupal.org/files/issues/2025-06-17/commerce_recurring-prepaid-billing-period-display.patch",
+                "#3215021: Customer Cancel Order Form": "https://www.drupal.org/files/issues/2025-10-26/3215021-fix-customer-cancel-redirect-7.patch"
+            },
             "drupal/default_content": {
                 "reimport": "https://git.drupalcode.org/project/default_content/-/merge_requests/45.diff"
             },
