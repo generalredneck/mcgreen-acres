@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * The Commerce Time Slots .module file.
+ */
+
+use Drupal\commerce_timeslots\Interfaces\TimeSlotDayCapacityInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function commerce_timeslots_entity_presave(EntityInterface $entity) {
+  if ($entity instanceof TimeSlotDayCapacityInterface) {
+    // Get current time, then calculate the time zone offset.
+    $current = \Drupal::service('datetime.time')->getCurrentTime();
+    $current_date = DrupalDateTime::createFromTimestamp($current);
+    $offset = $current_date->getOffset();
+
+    // Build new range dates including offset number of seconds, so, we store
+    // the exact date from the form input.
+    $value = \Drupal::service('date.formatter')
+      ->format(
+        strtotime($entity->interval->value) + $offset,
+        'custom',
+        'Y-m-d\TH:i:s'
+      );
+
+    $end = \Drupal::service('date.formatter')
+      ->format(
+        strtotime($entity->interval->end_value) + $offset,
+        'custom',
+        'Y-m-d\TH:i:s'
+      );
+
+    // Update interval values with correct date values.
+    $entity->set('interval', ['value' => $value, 'end_value' => $end]);
+  }
+}
+
+/**
+ * Prepares variables for order templates.
+ *
+ * Default template: commerce-order.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing rendered fields.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function commerce_timeslots_preprocess_commerce_order(array &$variables) {
+  /** @var Drupal\commerce_order\Entity\OrderInterface $order */
+  $order = $variables['elements']['#commerce_order'];
+
+  if (!empty($order->getData('time_slot'))) {
+    // Get the selected time slot from the pane.
+    $order_time_slot = $order->getData('time_slot');
+    $time_slot_config = $order_time_slot['time_slot']['wrapper'];
+
+    $date = $time_slot_config['date'];
+    $time = $time_slot_config['time'];
+    // Convert the data into a more readable way.
+    $time_slot_formated = \Drupal::service('commerce_timeslots.timeslots')
+      ->getTimeSlotToArray($time, $date);
+
+    // Add a new param for "Other" order section.
+    $variables['additional_order_fields']['time_slot'] = [
+      '#markup' => t(
+        'Selected time slot: @date, @time',
+        [
+          '@date' => $time_slot_formated['date'],
+          '@time' => $time_slot_formated['time'],
+        ],
+      ),
+    ];
+  }
+}

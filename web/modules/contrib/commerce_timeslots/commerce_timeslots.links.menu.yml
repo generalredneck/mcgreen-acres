@@ -1,0 +1,16 @@
+commerce_timeslots.timeslot_settings:
+  title: 'Time Slot - Settings'
+  description: 'Configure Time Slot entity'
+  route_name: commerce_timeslots.timeslot_settings
+  parent: commerce_timeslots.configuration
+
+commerce_timeslots.configuration:
+  title: 'Time Slots'
+  route_name: 'commerce_timeslots.configuration'
+  parent: 'commerce.configuration'
+
+entity.commerce_timeslot.collection:
+  title: 'Time slots'
+  route_name: entity.commerce_timeslot.collection
+  parent: commerce.admin_commerce
+  description: 'Manage your time slots.'
