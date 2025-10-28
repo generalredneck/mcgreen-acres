@@ -1,0 +1,27 @@
+uuid: 117556a1-b64e-43a3-bd9b-0c357e575e10
+langcode: en
+status: false
+dependencies:
+  config:
+    - simple_block.simple_block.herd_share_open
+  module:
+    - block_visibility_groups
+    - simple_block
+  theme:
+    - mcgreen_acres_theme
+id: mcgreen_acres_theme_theherdshareisopen
+theme: mcgreen_acres_theme
+region: content
+weight: 0
+provider: null
+plugin: 'simple_block:herd_share_open'
+settings:
+  id: 'simple_block:herd_share_open'
+  label: 'The Herd Share is Open'
+  label_display: '0'
+  provider: simple_block
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''

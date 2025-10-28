@@ -1,0 +1,11 @@
+uuid: 94a9cbd5-649c-4eb6-923b-61954978875a
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+id: herd_share_open
+title: 'The Herd Share is Open'
+content:
+  value: '<div class="alert alert-success text-center" role="alert"><p class="h3">Our herd share program is open!</p><p>Give your family unprocessed, nutrient-rich milk straight from the source.</p><p><a class="btn btn-primary" href="/product/23" role="button">Join the Herd Share</a></p></div>'
+  format: full_html

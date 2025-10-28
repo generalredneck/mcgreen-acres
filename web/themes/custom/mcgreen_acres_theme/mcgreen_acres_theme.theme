@@ -197,7 +197,7 @@ function mcgreen_acres_theme_preprocess_node(array &$variables) {
 
   if (!empty($result)) {
     // Entities that reference the target entity exist.
-    $variables['cta'] = 'mcgreen_acres_theme_webform_herd_share_wait_list';
+    $variables['cta'] = 'mcgreen_acres_theme_theherdshareisopen';
   } else {
     // No entities reference the target entity through this field.
   }
