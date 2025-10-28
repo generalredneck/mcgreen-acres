@@ -1,4 +1,4 @@
 <?php
 
-header("Location: https://grownby.app/farms/mcgreen-acres-llc/shop", true, 301);
+header("Location: https://mcgreenacres.com/product", true, 301);
 die();
