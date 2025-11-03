@@ -78,6 +78,7 @@
         "drupal/core": "^11.0",
         "drupal/core-composer-scaffold": "^11.0",
         "drupal/core-vendor-hardening": "^11.2",
+        "drupal/crawler_rate_limit": "^3.1",
         "drupal/ctools": "^4.1",
         "drupal/default_content": "^2.0@alpha",
         "drupal/diff": "^1.7@RC",

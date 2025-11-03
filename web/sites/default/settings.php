@@ -763,6 +763,11 @@ $settings['entity_update_batch_size'] = 50;
  */
 $settings['entity_update_backup'] = TRUE;
 
+
+ if (file_exists($app_root . '/' . $site_path . '/settings.rate-limit.php')) {
+   include $app_root . '/' . $site_path . '/settings.rate-limit.php';
+ }
+
 $environment = 'local';
  if (file_exists($app_root . '/' . $site_path . '/live.txt')) {
    $environment = 'live';

@@ -45,6 +45,7 @@ module:
   config: 0
   config_split: 0
   contextual: 0
+  crawler_rate_limit: 0
   crop: 0
   ctools: 0
   datetime: 0
