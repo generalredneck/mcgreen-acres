@@ -94,7 +94,7 @@ $settings['crawler_rate_limit.settings']['regular_traffic_asn'] = [
   // via GeoIP Update or cron.
   // @see https://dev.maxmind.com/geoip/updating-databases
   // Note that the database path is also required by ASN blocking feature.
-  'database' => $app_root . '/private/geoip2/GeoLite2-ASN.mmdb',
+  'database' => $app_root . '/../private/geoip2/GeoLite2-ASN.mmdb',
 ];
 
 /**
