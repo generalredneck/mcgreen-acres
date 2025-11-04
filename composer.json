@@ -126,6 +126,7 @@
         "drush/drush": "^13",
         "enyo/dropzone": "^5.9.3",
         "fourkitchens/pots": "general-deploy-dev",
+        "geoip2/geoip2": "^3.2",
         "mglaman/composer-drupal-lenient": "^1.0",
         "mozilla/pdf.js": "^5.1",
         "npm-asset/blazy": "^1.8.2",
