@@ -107,6 +107,7 @@
         "drupal/phone_number": "^2.0@alpha",
         "drupal/realname": "^2.0@beta",
         "drupal/redirect": "^1.9",
+        "drupal/responsive_favicons": "^4.0",
         "drupal/scheduler": "^2.1",
         "drupal/schema_metatag": "^3.0.1",
         "drupal/search_api": "^1.35",

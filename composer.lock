@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9804203dea523b03c89025e710ad641",
+    "content-hash": "3fb601734e9cb306958ccfe284b34ced",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8672,6 +8672,60 @@
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
                 "source": "https://git.drupalcode.org/project/redirect"
+            }
+        },
+        {
+            "name": "drupal/responsive_favicons",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/responsive_favicons.git",
+                "reference": "4.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/responsive_favicons-4.0.0.zip",
+                "reference": "4.0.0",
+                "shasum": "75cb90b1bba79bff12cd6d9fa946bf9689b84adf"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "4.0.0",
+                    "datestamp": "1757414231",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "mably",
+                    "homepage": "https://www.drupal.org/user/3375160"
+                },
+                {
+                    "name": "wiifm",
+                    "homepage": "https://www.drupal.org/user/358731"
+                }
+            ],
+            "description": "Add responsive favicons to your site based on the code from http://realfavicongenerator.net/",
+            "homepage": "https://www.drupal.org/project/responsive_favicons",
+            "keywords": [
+                "Drupal",
+                "Favicon",
+                "realfavicongenerator"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/responsive_favicons",
+                "issues": "https://www.drupal.org/project/issues/responsive_favicons"
             }
         },
         {

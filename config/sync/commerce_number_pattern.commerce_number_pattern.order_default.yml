@@ -13,6 +13,6 @@ targetEntityType: commerce_order
 plugin: infinite
 configuration:
   pattern: '[pattern:number]'
-  initial_number: 1
+  initial_number: 1234
   padding: 0
   per_store_sequence: true
