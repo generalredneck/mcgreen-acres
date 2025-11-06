@@ -1891,10 +1891,7 @@ ul.links {
   outline: none;
 }
 .clv_newsletter_wrapper .newsletter_field .newsletter_field_block  input[type="submit"]{
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  height: 50px;
+  width: 100%;
   line-height: 50px;
   padding: 0px 40px;
   border-radius: 30px;
