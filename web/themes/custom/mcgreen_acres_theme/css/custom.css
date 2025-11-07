@@ -244,6 +244,12 @@ figure {
 .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a:hover {
   text-decoration: none;
 }
+.index_v2 .we-can-help-block .clv_section{
+  padding: 20px 0;
+}
+.index_v2 .we-can-help-block .clv_section .feature_block{
+  min-height: 610px;
+}
 
 @media (max-width: 1199px) {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
@@ -397,6 +403,11 @@ figure {
 .clv_newsletter_wrapper {
   margin-top: 50px;
   margin-bottom: -50px;
+}
+
+.homepage-signup .clv_newsletter_wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 /* Footer */

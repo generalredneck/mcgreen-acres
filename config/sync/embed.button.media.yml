@@ -6,6 +6,59 @@ dependencies:
     - core.entity_view_mode.media.large
     - core.entity_view_mode.media.medium
     - core.entity_view_mode.media.original
+    - core.entity_view_mode.media.s01
+    - core.entity_view_mode.media.s01_square
+    - core.entity_view_mode.media.s01_standard
+    - core.entity_view_mode.media.s01_traditional
+    - core.entity_view_mode.media.s02
+    - core.entity_view_mode.media.s02_square
+    - core.entity_view_mode.media.s02_standard
+    - core.entity_view_mode.media.s02_traditional
+    - core.entity_view_mode.media.s03
+    - core.entity_view_mode.media.s03_square
+    - core.entity_view_mode.media.s03_standard
+    - core.entity_view_mode.media.s03_traditional
+    - core.entity_view_mode.media.s04
+    - core.entity_view_mode.media.s04_square
+    - core.entity_view_mode.media.s04_standard
+    - core.entity_view_mode.media.s04_traditional
+    - core.entity_view_mode.media.s05
+    - core.entity_view_mode.media.s05_square
+    - core.entity_view_mode.media.s05_standard
+    - core.entity_view_mode.media.s05_traditional
+    - core.entity_view_mode.media.s06
+    - core.entity_view_mode.media.s06_square
+    - core.entity_view_mode.media.s06_standard
+    - core.entity_view_mode.media.s06_traditional
+    - core.entity_view_mode.media.s07
+    - core.entity_view_mode.media.s07_square
+    - core.entity_view_mode.media.s07_standard
+    - core.entity_view_mode.media.s07_traditional
+    - core.entity_view_mode.media.s08
+    - core.entity_view_mode.media.s08_square
+    - core.entity_view_mode.media.s08_standard
+    - core.entity_view_mode.media.s08_traditional
+    - core.entity_view_mode.media.s09
+    - core.entity_view_mode.media.s09_square
+    - core.entity_view_mode.media.s09_standard
+    - core.entity_view_mode.media.s09_traditional
+    - core.entity_view_mode.media.s10
+    - core.entity_view_mode.media.s10_square
+    - core.entity_view_mode.media.s10_standard
+    - core.entity_view_mode.media.s10_traditional
+    - core.entity_view_mode.media.s11
+    - core.entity_view_mode.media.s11_square
+    - core.entity_view_mode.media.s11_standard
+    - core.entity_view_mode.media.s11_traditional
+    - core.entity_view_mode.media.s12
+    - core.entity_view_mode.media.s12_square
+    - core.entity_view_mode.media.s12_standard
+    - core.entity_view_mode.media.s12_traditional
+    - core.entity_view_mode.media.se2e
+    - core.entity_view_mode.media.se2e_4_1
+    - core.entity_view_mode.media.se2e_square
+    - core.entity_view_mode.media.se2e_standard
+    - core.entity_view_mode.media.se2e_traditional
     - core.entity_view_mode.media.small
     - entity_browser.browser.editor_media_browser
     - media.type.audio
@@ -33,9 +86,66 @@ type_settings:
     - 'view_mode:media.large'
     - 'view_mode:media.medium'
     - 'view_mode:media.original'
+    - 'view_mode:media.s01'
+    - 'view_mode:media.s01_square'
+    - 'view_mode:media.s01_standard'
+    - 'view_mode:media.s01_traditional'
+    - 'view_mode:media.s02'
+    - 'view_mode:media.s02_square'
+    - 'view_mode:media.s02_standard'
+    - 'view_mode:media.s02_traditional'
+    - 'view_mode:media.s03'
+    - 'view_mode:media.s03_square'
+    - 'view_mode:media.s03_standard'
+    - 'view_mode:media.s03_traditional'
+    - 'view_mode:media.s04'
+    - 'view_mode:media.s04_square'
+    - 'view_mode:media.s04_standard'
+    - 'view_mode:media.s04_traditional'
+    - 'view_mode:media.s05'
+    - 'view_mode:media.s05_square'
+    - 'view_mode:media.s05_standard'
+    - 'view_mode:media.s05_traditional'
+    - 'view_mode:media.s06'
+    - 'view_mode:media.s06_square'
+    - 'view_mode:media.s06_standard'
+    - 'view_mode:media.s06_traditional'
+    - 'view_mode:media.s07'
+    - 'view_mode:media.s07_square'
+    - 'view_mode:media.s07_standard'
+    - 'view_mode:media.s07_traditional'
+    - 'view_mode:media.s08'
+    - 'view_mode:media.s08_square'
+    - 'view_mode:media.s08_standard'
+    - 'view_mode:media.s08_traditional'
+    - 'view_mode:media.s09'
+    - 'view_mode:media.s09_square'
+    - 'view_mode:media.s09_standard'
+    - 'view_mode:media.s09_traditional'
+    - 'view_mode:media.s10'
+    - 'view_mode:media.s10_square'
+    - 'view_mode:media.s10_standard'
+    - 'view_mode:media.s10_traditional'
+    - 'view_mode:media.s11'
+    - 'view_mode:media.s11_square'
+    - 'view_mode:media.s11_standard'
+    - 'view_mode:media.s11_traditional'
+    - 'view_mode:media.s12'
+    - 'view_mode:media.s12_square'
+    - 'view_mode:media.s12_standard'
+    - 'view_mode:media.s12_traditional'
+    - 'view_mode:media.se2e'
+    - 'view_mode:media.se2e_4_1'
+    - 'view_mode:media.se2e_square'
+    - 'view_mode:media.se2e_standard'
+    - 'view_mode:media.se2e_traditional'
     - 'view_mode:media.small'
   entity_browser: editor_media_browser
   entity_browser_settings:
+    display_review: false
+  inline_entity_form: false
+  inline_entity_form_settings:
+    entity_form_display: default
     display_review: false
 icon:
   uri: 'public://embed_buttons/embed-media.svg'
