@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - webform.webform.dairy_newsletter
+    - webform.webform.newsletter
   module:
     - block_class
     - block_visibility_groups
@@ -22,7 +22,7 @@ settings:
   label: 'Subscribe Newsletter'
   label_display: '0'
   provider: webform
-  webform_id: dairy_newsletter
+  webform_id: newsletter
   default_data: ''
   redirect: false
   lazy: false

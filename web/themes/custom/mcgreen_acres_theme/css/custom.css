@@ -250,6 +250,14 @@ figure {
 .index_v2 .we-can-help-block .clv_section .feature_block{
   min-height: 610px;
 }
+.index_v2 .real-food  {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 17px 1px rgba(0, 0, 0, 0.06);
+    padding: 52px 0px 47px;
+    margin: 30px 10px;
+    text-align: center;
+}
 
 @media (max-width: 1199px) {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
@@ -364,6 +372,11 @@ figure {
 .carousel-caption {
   background-color: rgba(0,0,0,.7);
 }
+
+.featured-cta .carousel-caption {
+  bottom: 25%;
+}
+
 .carousel-item .container {
   padding-left: 0;
   padding-right: 0;
@@ -594,6 +607,9 @@ figure {
   .view-commerce-cart-form table div.images img {
     width: 50px;
     height: auto;
+  }
+  .featured-cta .carousel-caption {
+    bottom: 20px;
   }
 }
 
