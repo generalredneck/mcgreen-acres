@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - webform.webform.newsletter
+    - webform.webform.dairy_newsletter
   module:
     - block_class
     - block_visibility_groups
@@ -22,7 +22,7 @@ settings:
   label: 'Subscribe Newsletter'
   label_display: '0'
   provider: webform
-  webform_id: newsletter
+  webform_id: dairy_newsletter
   default_data: ''
   redirect: false
   lazy: false
@@ -35,3 +35,11 @@ visibility:
     id: request_path
     negate: true
     pages: "/user/*\r\n/cart\r\n/cart/*\r\n/checkout/*"
+  webform:
+    id: webform
+    negate: true
+    context_mapping:
+      webform: '@webform.webform_route_context:webform'
+    webforms:
+      dairy_newsletter: dairy_newsletter
+      newsletter: newsletter
