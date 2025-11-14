@@ -69,6 +69,7 @@ module:
   entity_embed: 0
   entity_reference_revisions: 0
   facebook_pixel: 0
+  facebook_pixel_commerce: 0
   facets: 0
   facets_pretty_paths: 0
   field: 0

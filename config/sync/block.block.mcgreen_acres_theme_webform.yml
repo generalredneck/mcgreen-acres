@@ -5,7 +5,6 @@ dependencies:
   config:
     - webform.webform.dairy_newsletter
   module:
-    - block_class
     - block_visibility_groups
     - system
     - webform

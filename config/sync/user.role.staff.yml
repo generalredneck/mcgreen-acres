@@ -129,6 +129,7 @@ permissions:
   - 'administer users'
   - 'administer webform'
   - 'administer webform element access'
+  - 'administer webform overview'
   - 'administer webform submission'
   - 'administer webform templates'
   - 'bulk generate commerce_promotion_coupon'
