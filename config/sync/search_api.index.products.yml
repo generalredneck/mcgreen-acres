@@ -8,6 +8,7 @@ dependencies:
     - search_api.server.localhost
   module:
     - commerce_product
+    - mcgreen_acres_store
 _core:
   default_config_hash: 4Voe7XEClIjhAslEyLOv-bJ5r_039SWkeuc78TPibMQ
 id: products
@@ -31,6 +32,10 @@ field_settings:
     dependencies:
       module:
         - commerce_product
+  out_of_stock:
+    label: 'Out of Stock'
+    property_path: out_of_stock
+    type: boolean
   price:
     label: 'Default variation » Price » Number'
     datasource_id: 'entity:commerce_product'
@@ -78,6 +83,7 @@ processor_settings:
   custom_value: {  }
   entity_type: {  }
   language_with_fallback: {  }
+  out_of_stock_field_processor: {  }
   rendered_item: {  }
 tracker_settings:
   default:
