@@ -22,7 +22,7 @@ class UserAccessCheck implements AccessInterface {
    */
   public function access(AccountInterface $account, $user) {
 
-    // Check if admin has "Administer users" permission
+    // Check if admin has "Administer users" permission.
     return AccessResult::allowedIfHasPermission($account, 'administer users')
         // Check if current user id = visited user id.
       ->orIf(AccessResult::allowedIf($user == $account->id()));

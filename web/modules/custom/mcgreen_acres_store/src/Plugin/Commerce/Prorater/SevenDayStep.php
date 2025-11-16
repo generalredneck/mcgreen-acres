@@ -2,7 +2,6 @@
 
 namespace Drupal\mcgreen_acres_store\Plugin\Commerce\Prorater;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\commerce_order\Entity\OrderItemInterface;
 use Drupal\commerce_price\Calculator;
@@ -44,7 +43,7 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    RounderInterface $rounder
+    RounderInterface $rounder,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
@@ -117,9 +116,8 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
     do {
       $step_start_date->add($step_interval);
       $step_count++;
-    }
-    // Adding the step interval for the final step will actually take us to a
-    // date past the period, since it will take us to the start of the next
+    } // Adding the step interval for the final step will actually take us to a
+    // Date past the period, since it will take us to the start of the next
     // one. Therefore, we have to also check we don't go past the total step
     // count.
     while (!$partial_period->contains($step_start_date) && $step_count < $total_step_count);
@@ -143,10 +141,10 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
     return $price;
   }
 
-
   /**
    * Gets a DateInterval object for this plugin's step configuration.
-   *``
+   * ``
+   *
    * @return \DateInterval
    *   The DateInterval object representing the configured interval.
    */
@@ -158,7 +156,7 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
     $interval_plugin_id = $interval_configuration['period'];
 
     // Create a DateInterval that represents the interval.
-    // TODO: This can be removed when https://www.drupal.org/node/2900435 lands.
+    // @todo This can be removed when https://www.drupal.org/node/2900435 lands.
     $interval_plugin_definition = \Drupal::service('plugin.manager.interval.intervals')->getDefinition($interval_plugin_id);
     $value = $interval_configuration['interval'] * $interval_plugin_definition['multiplier'];
     $date_interval = \DateInterval::createFromDateString($value . ' ' . $interval_plugin_definition['php']);

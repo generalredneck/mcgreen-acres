@@ -2,11 +2,7 @@
 
 namespace Drupal\mcgreen_acres_store\EventSubscriber;
 
-use Drupal\commerce_recurring\Entity\Subscription;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Entity\EntityTypeEvent;
-use Drupal\Core\Entity\EntityTypeEvents;
-use Drupal\commerce_recurring\Entity\SubscriptionInterface;
 use Drupal\commerce_recurring\Event\RecurringEvents;
 use Drupal\commerce_recurring\Event\SubscriptionEvent;
 
@@ -28,7 +24,7 @@ class SubscriptionCancellationSubscriber implements EventSubscriberInterface {
    * Called when a commerce_subscription entity is updated.
    *
    * @param \Drupal\commerce_recurring\Event\SubscriptionEvent $event
-   * The entity event object.
+   *   The entity event object.
    */
   public function onSubscriptionCancel(SubscriptionEvent $event) {
 
@@ -41,14 +37,16 @@ class SubscriptionCancellationSubscriber implements EventSubscriberInterface {
 
     if ($subscription->hasScheduledChange('state', 'canceled') && !$original_subscription->hasScheduledChange('state', 'canceled')) {
       $module = 'mcgreen_acres_store';
-      $key = 'subscription_cancel_scheduled'; // Corresponds to the key in hook_mail().
+      // Corresponds to the key in hook_mail().
+      $key = 'subscription_cancel_scheduled';
       $to = 'info@mcgreenacres.com';
       $langcode = \Drupal::languageManager()->getDefaultLanguage()->getId();
       $params = [
         'subject' => 'Subscription Cancellation Scheduled',
         'body' => 'A subscription has been scheduled for cancellation by ' . $subscription->getCustomer()->getDisplayName(),
       ];
-      $send = TRUE; // Set to FALSE to only format the email without sending.
+      // Set to FALSE to only format the email without sending.
+      $send = TRUE;
 
       \Drupal::service('plugin.manager.mail')->mail($module, $key, $to, $langcode, $params, NULL, $send);
       \Drupal::logger('mcgreen_acres_store')->info('Subscription @id canceled', [

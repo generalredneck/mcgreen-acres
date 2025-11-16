@@ -75,8 +75,11 @@ class OutOfStockFieldProcessor extends ProcessorPluginBase {
     }
   }
 
+  /**
+   *
+   */
   public function preprocessIndexItems(array $items) {
-    foreach($items as $item) {
+    foreach ($items as $item) {
       $this->addFieldValues($item);
     }
   }

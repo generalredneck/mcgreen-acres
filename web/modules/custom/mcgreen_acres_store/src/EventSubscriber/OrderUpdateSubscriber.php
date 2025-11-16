@@ -1,12 +1,16 @@
 <?php
+
 namespace Drupal\mcgreen_acres_store\EventSubscriber;
 
+use Drupal\commerce_product\Entity\ProductVariationInterface;
 use Drupal\commerce_checkout\Event\CheckoutEvents;
 use Drupal\commerce_order\Event\OrderEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class OrderUpdateSubscriber implements EventSubscriberInterface
-{
+/**
+ *
+ */
+class OrderUpdateSubscriber implements EventSubscriberInterface {
 
   /**
    * {@inheritdoc}
@@ -27,9 +31,10 @@ class OrderUpdateSubscriber implements EventSubscriberInterface
     $order = $event->getOrder();
     foreach ($order->getItems() as $orderItem) {
       $purchasedEntity = $orderItem->getPurchasedEntity();
-      if ($purchasedEntity instanceof \Drupal\commerce_product\Entity\ProductVariationInterface) {
+      if ($purchasedEntity instanceof ProductVariationInterface) {
         $purchasedEntity->save();
       }
     }
   }
+
 }

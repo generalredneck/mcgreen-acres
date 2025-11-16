@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * @file
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 
+/**
+ *
+ */
 function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state, $form_id) {
   foreach ($form['remove_button'] as &$item) {
     if (is_array($item) && $item['#type'] == 'submit') {
@@ -13,7 +22,10 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
   }
 }
 
-function mcgreen_acres_store_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+/**
+ *
+ */
+function mcgreen_acres_store_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id === 'commerce_subscription_product_variation_cancel_form') {
     if (isset($form['cancel_option']['#options'])) {
       // Define the cancellation policy text.
@@ -24,12 +36,13 @@ function mcgreen_acres_store_form_alter(&$form, \Drupal\Core\Form\FormStateInter
       $form['cancellation_policy'] = [
         '#type' => 'markup',
         '#markup' => $cancellation_policy_text,
-        '#weight' => -100, // Use a negative weight to place it at the top of the form.
+      // Use a negative weight to place it at the top of the form.
+        '#weight' => -100,
       ];
       // Remove the 'now' option from the list of radio buttons.
       unset($form['cancel_option']['#options']['now']);
     }
-    if (isset($form['actions']['submit']['#value']) ) {
+    if (isset($form['actions']['submit']['#value'])) {
       $subscription = $form_state->getFormObject()->getEntity();
       if ($subscription->hasScheduledChange('state', 'canceled')) {
         unset($form['actions']['submit']);
@@ -50,14 +63,17 @@ function mcgreen_acres_store_mail($key, &$message, $params) {
   }
 }
 
-function mcgreen_acres_store_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
+/**
+ *
+ */
+function mcgreen_acres_store_entity_update(EntityInterface $entity) {
   mcgreen_acres_store_entity_insert($entity);
 }
 
 /**
  * Implements hook_entity_insert().
  */
-function mcgreen_acres_store_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
   if ($entity->getEntityTypeId() === 'commerce_product_variation') {
     /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntityTrackingManager $tracking_manager */
     $search_api_tracking_manager = \Drupal::service('search_api.entity_datasource.tracking_manager');
@@ -67,7 +83,7 @@ function mcgreen_acres_store_entity_insert(Drupal\Core\Entity\EntityInterface $e
     foreach ($indexes as $index) {
       if (!empty($indexes)) {
         $index->trackItemsUpdated($product->getEntityTypeId(), [$product->id() . ':' . $product->language()->getId()]);
-        foreach($index->getDatasourceIds() as $datasource_id) {
+        foreach ($index->getDatasourceIds() as $datasource_id) {
           $index->indexItems(-1, $datasource_id);
         }
       }
