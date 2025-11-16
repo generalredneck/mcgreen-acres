@@ -49,3 +49,28 @@ function mcgreen_acres_store_mail($key, &$message, $params) {
       break;
   }
 }
+
+function mcgreen_acres_store_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
+  mcgreen_acres_store_entity_insert($entity);
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function mcgreen_acres_store_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() === 'commerce_product_variation') {
+    /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntityTrackingManager $tracking_manager */
+    $search_api_tracking_manager = \Drupal::service('search_api.entity_datasource.tracking_manager');
+    $product = $entity->get('product_id')->entity;
+    $search_api_tracking_manager->trackEntityChange($product);
+    $indexes = $search_api_tracking_manager->getIndexesForEntity($product);
+    foreach ($indexes as $index) {
+      if (!empty($indexes)) {
+        $index->trackItemsUpdated($product->getEntityTypeId(), [$product->id() . ':' . $product->language()->getId()]);
+        foreach($index->getDatasourceIds() as $datasource_id) {
+          $index->indexItems(-1, $datasource_id);
+        }
+      }
+    }
+  }
+}

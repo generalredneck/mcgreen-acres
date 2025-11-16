@@ -8,3 +8,8 @@ services:
     class: Drupal\mcgreen_acres_store\EventSubscriber\SubscriptionCancellationSubscriber
     tags:
       - { name: event_subscriber }
+  mcgreen_acres_store.order_update_subscriber:
+    class: Drupal\mcgreen_acres_store\EventSubscriber\OrderUpdateSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: ['@entity_type.manager']

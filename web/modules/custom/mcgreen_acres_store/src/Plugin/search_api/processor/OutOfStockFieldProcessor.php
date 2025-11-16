@@ -16,6 +16,7 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *   description = @Translation("Adds an out of stock flag for product variations to the Search API index."),
  *   stages = {
  *     "add_properties" = 0,
+ *     "preprocess_index" = 0,
  *   },
  * )
  */
@@ -71,6 +72,12 @@ class OutOfStockFieldProcessor extends ProcessorPluginBase {
       foreach ($fields as $field) {
         $field->addValue($is_out_of_stock);
       }
+    }
+  }
+
+  public function preprocessIndexItems(array $items) {
+    foreach($items as $item) {
+      $this->addFieldValues($item);
     }
   }
 
