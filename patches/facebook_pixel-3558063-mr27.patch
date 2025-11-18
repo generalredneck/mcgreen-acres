@@ -1,0 +1,26 @@
+diff --git a/modules/facebook_pixel_commerce/src/FacebookCommerce.php b/modules/facebook_pixel_commerce/src/FacebookCommerce.php
+index eefbf556afbb121598e478f0c431c95d2f3e77df..a50445017a1b0ac0c96d8e83ae7ac3aafad85389 100644
+--- a/modules/facebook_pixel_commerce/src/FacebookCommerce.php
++++ b/modules/facebook_pixel_commerce/src/FacebookCommerce.php
+@@ -89,7 +89,7 @@ class FacebookCommerce implements FacebookCommerceInterface {
+     }
+ 
+     $purchased_entity = $order_item->getPurchasedEntity();
+-    $sku = $purchased_entity instanceof ProductVariationInterface ? $purchased_entity->getSku() : NULL; 
++    $sku = $purchased_entity instanceof ProductVariationInterface ? $purchased_entity->getSku() : NULL;
+     $unitPrice = $order_item->getUnitPrice();
+     $data = [
+       // "0" needs to be a string as "getNumber()" returns a string as well:
+diff --git a/modules/facebook_pixel_commerce/src/Plugin/Commerce/CheckoutPane/FacebookCheckout.php b/modules/facebook_pixel_commerce/src/Plugin/Commerce/CheckoutPane/FacebookCheckout.php
+index 8d048428f7341a4bedc7b00ad88b6c1d3da047c4..0d49408e1d29211452ffcf66a867f4efc18be6eb 100644
+--- a/modules/facebook_pixel_commerce/src/Plugin/Commerce/CheckoutPane/FacebookCheckout.php
++++ b/modules/facebook_pixel_commerce/src/Plugin/Commerce/CheckoutPane/FacebookCheckout.php
+@@ -78,7 +78,7 @@ class FacebookCheckout extends CheckoutPaneBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, CheckoutFlowInterface $checkout_flow = NULL) {
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?CheckoutFlowInterface $checkout_flow = NULL) {
+     return new static(
+       $configuration,
+       $plugin_id,
