@@ -1,0 +1,22 @@
+{#
+  Renders an existing block inside a Bootstrap 4 modal.
+#}
+
+<div class="modal fade" id="newsletterModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Join Our Newsletter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        {{ content }}
+      </div>
+
+    </div>
+  </div>
+</div>

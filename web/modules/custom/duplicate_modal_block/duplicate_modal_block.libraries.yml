@@ -1,0 +1,12 @@
+modal_js:
+  js:
+    js/modal-popup.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/jquery
+    - core/drupalSettings
+modal_styles:
+  css:
+    theme:
+      css/modal-styles.css: {}

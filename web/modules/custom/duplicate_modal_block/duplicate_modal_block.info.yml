@@ -1,0 +1,5 @@
+name: Duplicate Modal Block
+type: module
+description: Renders an existing block inside a Bootstrap modal.
+core_version_requirement: ^10 || ^11
+package: Custom
