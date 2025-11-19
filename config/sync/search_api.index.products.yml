@@ -83,7 +83,9 @@ processor_settings:
   custom_value: {  }
   entity_type: {  }
   language_with_fallback: {  }
-  out_of_stock_field_processor: {  }
+  out_of_stock_field_processor:
+    weights:
+      preprocess_index: 0
   rendered_item: {  }
 tracker_settings:
   default:

@@ -426,8 +426,12 @@ display:
     position: 1
     display_options:
       cache:
-        type: search_api_tag
-        options: {  }
+        type: search_api_time_tag
+        options:
+          results_lifespan: 60
+          results_lifespan_custom: 0
+          output_lifespan: 60
+          output_lifespan_custom: 0
       defaults:
         cache: false
       display_description: ''
@@ -449,13 +453,11 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - 'facets_filter:f'
         - 'languages:language_interface'
         - url
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
       tags:
-        - 'config:facets.facet.product_collections'
         - 'config:search_api.index.products'
         - 'search_api_list:products'

@@ -12,7 +12,7 @@ dependencies:
 id: hangout
 theme: mcgreen_acres_theme
 region: footer3
-weight: 0
+weight: -11
 provider: null
 plugin: 'simple_block:footer_social'
 settings:

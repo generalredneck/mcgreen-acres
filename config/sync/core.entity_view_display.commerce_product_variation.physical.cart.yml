@@ -7,6 +7,8 @@ dependencies:
     - core.entity_view_mode.commerce_product_variation.cart
     - field.field.commerce_product_variation.physical.stock
     - field.field.commerce_product_variation.physical.weight
+  module:
+    - commerce_better_product_variation_label
 _core:
   default_config_hash: YQ_35Qk21GzEgX1KmzQ5oL2oA_fsgQTXDZCbXELH-1E
 id: commerce_product_variation.physical.cart
@@ -24,7 +26,7 @@ content:
     weight: 0
     region: content
   title:
-    type: string
+    type: commerce_better_product_variation_label_string
     label: hidden
     settings:
       link_to_entity: false

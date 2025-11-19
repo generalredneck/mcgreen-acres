@@ -7,6 +7,8 @@ dependencies:
     - core.entity_view_mode.commerce_product_variation.cart
     - field.field.commerce_product_variation.subscription.billing_schedule
     - field.field.commerce_product_variation.subscription.subscription_type
+  module:
+    - commerce_better_product_variation_label
 id: commerce_product_variation.subscription.cart
 targetEntityType: commerce_product_variation
 bundle: subscription
@@ -22,9 +24,10 @@ content:
     weight: 0
     region: content
   title:
-    type: string
+    type: commerce_better_product_variation_label_string
     label: hidden
     settings:
+      link: '1'
       link_to_entity: false
     third_party_settings: {  }
     weight: 1

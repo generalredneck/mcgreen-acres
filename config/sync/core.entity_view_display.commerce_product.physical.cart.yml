@@ -9,32 +9,27 @@ dependencies:
     - field.field.commerce_product.physical.images
     - field.field.commerce_product.physical.product_collections
     - field.field.commerce_product.physical.product_tags
-    - image.style.d01_square
+    - responsive_image.styles.d01_square
   module:
-    - image
+    - image_delta_formatter
 id: commerce_product.physical.cart
 targetEntityType: commerce_product
 bundle: physical
 mode: cart
 content:
   images:
-    type: image
+    type: responsive_image_delta_formatter
     label: hidden
     settings:
+      deltas:
+        - 0
+      responsive_image_style: d01_square
       image_link: ''
-      image_style: d01_square
       image_loading:
         attribute: lazy
+      deltas_reversed: 0
     third_party_settings: {  }
     weight: 0
-    region: content
-  title:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: true
-    third_party_settings: {  }
-    weight: 1
     region: content
 hidden:
   body: true
@@ -46,5 +41,6 @@ hidden:
   product_tags: true
   search_api_excerpt: true
   stores: true
+  title: true
   uid: true
   variations: true

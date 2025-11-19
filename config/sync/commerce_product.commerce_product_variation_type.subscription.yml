@@ -1,7 +1,13 @@
 uuid: 70147c58-5f08-4b41-ad18-9d81ba2e61e0
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - commerce_better_product_variation_label
+third_party_settings:
+  commerce_better_product_variation_label:
+    product_label_prefix: true
+    product_label_prefix_separator: ' - '
 id: subscription
 label: Subscription
 traits:

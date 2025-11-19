@@ -1,7 +1,13 @@
 uuid: 9bd8e69d-d8be-4e33-a8cc-d51ff9ec7a34
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - commerce_better_product_variation_label
+third_party_settings:
+  commerce_better_product_variation_label:
+    product_label_prefix: true
+    product_label_prefix_separator: ' - '
 _core:
   default_config_hash: bdWN0bTEbHmonSaxYn47TLe1snVQ1cUirlDXH3Yb-jw
 id: physical

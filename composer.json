@@ -63,6 +63,7 @@
         "drupal/block_class": "^4.0",
         "drupal/block_visibility_groups": "^2.0.1",
         "drupal/bootstrap_basic_image_gallery": "dev-project-update-bot-only",
+        "drupal/commerce_better_product_variation_label": "^1.0@beta",
         "drupal/commerce_checkout_link": "^1.4",
         "drupal/commerce_email": "^1.7",
         "drupal/commerce_fee": "^1.1",
@@ -215,6 +216,9 @@
             },
             "drupal/bootstrap_basic_image_gallery": {
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
+            },
+            "drupal/commerce_better_product_variation_label": {
+                "field formatter": "patches/commerce_better_product_variation_label-field_formatter.patch"
             },
             "drupal/commerce_prorater_stepped_proportional": {
                 "d11": "https://www.drupal.org/files/issues/2024-07-21/commerce_prorater_stepped_proportional.2.x-dev.rector.patch"

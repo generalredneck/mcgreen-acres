@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e9799df7292c0d5ff150a2ed8496e50",
+    "content-hash": "a34ea27b8da933fd2f102683dc6f74cd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2598,6 +2598,68 @@
             "homepage": "https://drupal.org/project/commerce",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce"
+            }
+        },
+        {
+            "name": "drupal/commerce_better_product_variation_label",
+            "version": "1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/commerce_better_product_variation_label.git",
+                "reference": "1.0.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/commerce_better_product_variation_label-1.0.0-beta2.zip",
+                "reference": "1.0.0-beta2",
+                "shasum": "c6b2ebb56aa4bb327c556a0ec846129645383457"
+            },
+            "require": {
+                "drupal/commerce": "^2 || ^3",
+                "drupal/commerce_product": "*",
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-beta2",
+                    "datestamp": "1733225775",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
+                    "name": "grevil",
+                    "homepage": "https://www.drupal.org/user/3668491"
+                },
+                {
+                    "name": "lrwebks",
+                    "homepage": "https://www.drupal.org/user/3771806"
+                },
+                {
+                    "name": "thomas.frobieter",
+                    "homepage": "https://www.drupal.org/user/409335"
+                }
+            ],
+            "description": "Provides improvements for Drupal Commerce Product Variation labels / titles.",
+            "homepage": "https://www.drupal.org/project/commerce_better_product_variation_label",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/commerce_better_product_variation_label",
+                "issues": "https://www.drupal.org/project/issues/commerce_better_product_variation_label"
             }
         },
         {
@@ -18312,6 +18374,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/bootstrap_basic_image_gallery": 20,
+        "drupal/commerce_better_product_variation_label": 10,
         "drupal/commerce_recurring": 5,
         "drupal/commerce_stock": 10,
         "drupal/commerce_timeslots": 20,
@@ -18331,5 +18394,5 @@
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
