@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implements hook_help().
+ */
+function juicer_capture_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  return '';
+}

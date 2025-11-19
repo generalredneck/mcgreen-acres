@@ -1,0 +1,5 @@
+name: Juicer Capture
+type: module
+description: Capture Juicer.io markup and cache it.
+core_version_requirement: ^11
+package: Custom
