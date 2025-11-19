@@ -1,0 +1,74 @@
+diff --git a/field_permissions.module b/field_permissions.module
+index 8705697d37bfe4169c0cdab7e9d4e2fdfddf3969..c2215a03d0a21251c19abc22590241d73e82bff9 100644
+--- a/field_permissions.module
++++ b/field_permissions.module
+@@ -31,7 +31,7 @@ function field_permissions_help($route_name, RouteMatchInterface $route_match) {
+ /**
+  * Implements hook_entity_field_access().
+  */
+-function field_permissions_entity_field_access($operation, FieldDefinitionInterface $field_definition, $account, FieldItemListInterface $items = NULL) {
++function field_permissions_entity_field_access($operation, FieldDefinitionInterface $field_definition, $account, ?FieldItemListInterface $items = NULL) {
+   $context = ($operation == 'view') ? 'view' : 'form';
+   if (!$field_definition->isDisplayConfigurable($context) || empty($items) || !is_a($field_definition->getFieldStorageDefinition(), '\Drupal\field\FieldStorageConfigInterface')) {
+     return AccessResult::neutral();
+diff --git a/src/Plugin/FieldPermissionType/Base.php b/src/Plugin/FieldPermissionType/Base.php
+index 32534fe28f07b8a6fecd0107e86ee6a5581d64c8..90c8b2ed5130514438d297eabc3a291723f3e578 100644
+--- a/src/Plugin/FieldPermissionType/Base.php
++++ b/src/Plugin/FieldPermissionType/Base.php
+@@ -44,7 +44,7 @@ abstract class Base extends PluginBase implements FieldPermissionTypeInterface,
+    * @param \Drupal\field_permissions\FieldPermissionsServiceInterface|null $field_permissions_service
+    *   Field permissions service.
+    */
+-  public function __construct(array $configuration, $plugin_id, $plugin_definition, FieldStorageConfigInterface $field_storage, FieldPermissionsServiceInterface $field_permissions_service = NULL) {
++  public function __construct(array $configuration, $plugin_id, $plugin_definition, FieldStorageConfigInterface $field_storage, ?FieldPermissionsServiceInterface $field_permissions_service = NULL) {
+     parent::__construct($configuration, $plugin_id, $plugin_definition);
+     $this->fieldStorage = $field_storage;
+     if ($field_permissions_service === NULL) {
+@@ -60,7 +60,7 @@ abstract class Base extends PluginBase implements FieldPermissionTypeInterface,
+   /**
+    * {@inheritdoc}
+    */
+-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, FieldStorageConfigInterface $field_storage = NULL) {
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?FieldStorageConfigInterface $field_storage = NULL) {
+     return new static(
+       $configuration,
+       $plugin_id,
+diff --git a/src/Plugin/FieldPermissionType/Manager.php b/src/Plugin/FieldPermissionType/Manager.php
+index d8387cad7bf6487ef104775eba4e33ad9a0ae9ca..7919557b88d899d38a7a23db09ce510e3399fb60 100644
+--- a/src/Plugin/FieldPermissionType/Manager.php
++++ b/src/Plugin/FieldPermissionType/Manager.php
+@@ -49,7 +49,7 @@ class Manager extends DefaultPluginManager {
+    * @throws \Drupal\Component\Plugin\Exception\PluginException
+    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+    */
+-  public function createInstance($plugin_id, array $configuration = [], FieldStorageDefinitionInterface $field_storage = NULL) {
++  public function createInstance($plugin_id, array $configuration = [], ?FieldStorageDefinitionInterface $field_storage = NULL) {
+     $plugin_definition = $this->getDefinition($plugin_id);
+     $plugin_class = DefaultFactory::getPluginClass($plugin_id, $plugin_definition);
+     // If the plugin provides a factory method, pass the container to it.
+diff --git a/tests/src/Functional/FieldPermissionsFieldConfigEditFormTest.php b/tests/src/Functional/FieldPermissionsFieldConfigEditFormTest.php
+index c002dc933c78824fed5843da1817f9a4aa42cbaa..3f94625926ff318b90b31b4a31faca6e60f5f53e 100644
+--- a/tests/src/Functional/FieldPermissionsFieldConfigEditFormTest.php
++++ b/tests/src/Functional/FieldPermissionsFieldConfigEditFormTest.php
+@@ -30,7 +30,7 @@ class FieldPermissionsFieldConfigEditFormTest extends NodeTestBase {
+   /**
+    * Tests that plugins can opt-out for a given field.
+    *
+-   * @covers \Drupal\field_permissions\Plugin\FieldPermissionTypeInterface::appliesToField
++   * @covers \Drupal\field_permissions\Plugin\FieldPermissionType\Base::appliesToField
+    */
+   public function testAppliesToField(): void {
+     $assert = $this->assertSession();
+diff --git a/tests/src/Kernel/Plugin/FieldPermissionType/ManagerTest.php b/tests/src/Kernel/Plugin/FieldPermissionType/ManagerTest.php
+index 094e528c732ea5e20f044639a7242e647ec9020a..3add60d065d0f699ae4c82222b45cfefef0c689f 100644
+--- a/tests/src/Kernel/Plugin/FieldPermissionType/ManagerTest.php
++++ b/tests/src/Kernel/Plugin/FieldPermissionType/ManagerTest.php
+@@ -101,7 +101,7 @@ class ManagerTest extends KernelTestBase {
+   /**
+    * Tests FieldPermissionTypeInterface::appliesToField().
+    *
+-   * @covers \Drupal\field_permissions\Plugin\FieldPermissionTypeInterface::appliesToField
++   * @covers \Drupal\field_permissions\Plugin\FieldPermissionType\Base::appliesToField
+    */
+   public function testAppliesToField(): void {
+     $state = $this->container->get('state');
