@@ -986,3 +986,6 @@ th.views-field-remove-button {
 .delete-order-item {
   width: 2em;
 }
+.js .dropbutton-multiple {
+  padding-right: 0px !important;
+}

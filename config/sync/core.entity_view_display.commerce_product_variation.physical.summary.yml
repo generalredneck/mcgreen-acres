@@ -30,7 +30,7 @@ content:
     type: commerce_better_product_variation_label_string
     label: hidden
     settings:
-      link: 0
+      link: '1'
       link_to_entity: false
     third_party_settings: {  }
     weight: 0

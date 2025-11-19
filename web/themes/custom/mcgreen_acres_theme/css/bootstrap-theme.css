@@ -1,0 +1,337 @@
+/**
+ * Visual styles for tabs.
+ */
+
+div.tabs {
+  margin: 1em 0;
+}
+ul.tabs {
+  margin: 0 0 0.5em;
+  padding: 0;
+  list-style: none;
+}
+.tabs > li {
+  display: inline-block;
+  margin-right: 0.3em; /* LTR */
+}
+[dir="rtl"] .tabs > li {
+  margin-right: 0;
+  margin-left: 0.3em;
+}
+.tabs a {
+  display: block;
+  padding: 0.2em 1em;
+  text-decoration: none;
+}
+.tabs a.is-active {
+  background-color: #eee;
+}
+.tabs a:focus,
+.tabs a:hover {
+  background-color: #f5f5f5;
+}
+
+/**
+ * Styles for link buttons and action links.
+ */
+
+.action-links {
+  margin: 1em 0;
+  padding: 0;
+  list-style: none;
+}
+[dir="rtl"] .action-links {
+  /* This is required to win over specificity of [dir="rtl"] ul */
+  margin-right: 0;
+}
+.action-links li {
+  display: inline-block;
+  margin: 0 0.3em;
+}
+.action-links li:first-child {
+  margin-left: 0; /* LTR */
+}
+[dir="rtl"] .action-links li:first-child {
+  margin-right: 0;
+  margin-left: 0.3em;
+}
+.button-action {
+  display: inline-block;
+  padding: 0.2em 0.5em 0.3em;
+  text-decoration: none;
+  line-height: 160%;
+}
+.button-action:before {
+  margin-left: -0.1em; /* LTR */
+  padding-right: 0.2em; /* LTR */
+  content: "+";
+  font-weight: 900;
+}
+[dir="rtl"] .button-action:before {
+  margin-right: -0.1em;
+  margin-left: 0;
+  padding-right: 0;
+  padding-left: 0.2em;
+}
+
+/**
+ * Visual styles for links.
+ */
+
+ul.inline,
+ul.links.inline {
+  display: inline;
+  padding-left: 0; /* LTR */
+}
+[dir="rtl"] ul.inline,
+[dir="rtl"] ul.links.inline {
+  padding-right: 0;
+  padding-left: 15px;
+}
+ul.inline li {
+  display: inline;
+  padding: 0 0.5em;
+  list-style-type: none;
+}
+ul.links a.is-active {
+  color: #000;
+}
+
+/**
+ * Style another element as a link.
+ */
+
+button.link {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  font-size: 1em;
+}
+label button.link {
+  font-weight: bold;
+}
+
+/**
+ * Visual styles for menu.
+ */
+
+ul.menu {
+  margin-left: 1em; /* LTR */
+  padding: 0;
+  list-style: none outside;
+  text-align: left; /* LTR */
+}
+[dir="rtl"] ul.menu {
+  margin-right: 1em;
+  margin-left: 0;
+  text-align: right;
+}
+.menu-item--expanded {
+  list-style-type: circle;
+  list-style-image: url(../../images/menu-expanded.png);
+}
+.menu-item--collapsed {
+  list-style-type: disc;
+  list-style-image: url(../../images/menu-collapsed.png); /* LTR */
+}
+[dir="rtl"] .menu-item--collapsed {
+  list-style-image: url(../../images/menu-collapsed-rtl.png);
+}
+.menu-item {
+  margin: 0;
+  padding-top: 0.2em;
+}
+ul.menu a.is-active {
+  color: #000;
+}
+
+/**
+ * Theme styling for user module.
+ */
+
+/* Visual styling for the Password strength indicator */
+.password-strength__meter {
+  margin-top: 0.5em;
+  background-color: #ebeae4;
+}
+.password-strength__indicator {
+  -webkit-transition: width 0.5s ease-out;
+  transition: width 0.5s ease-out;
+  background-color: #77b259;
+}
+.password-strength__indicator.is-weak {
+  background-color: #e62600;
+}
+.password-strength__indicator.is-fair {
+  background-color: #e09600;
+}
+.password-strength__indicator.is-good {
+  background-color: #0074bd;
+}
+.password-strength__indicator.is-strong {
+  background-color: #77b259;
+}
+
+.password-confirm,
+.password-field,
+.password-strength,
+.password-confirm-match,
+.password-confirm-message {
+  width: 55%;
+}
+
+.password-suggestions {
+  max-width: 34.7em;
+  margin: 0.7em 0;
+  padding: 0.2em 0.5em;
+  border: 1px solid #b4b4b4;
+}
+.password-suggestions ul {
+  margin-bottom: 0;
+}
+
+.confirm-parent,
+.password-parent {
+  clear: left; /* LTR */
+  overflow: hidden;
+  max-width: 33em;
+  margin: 0;
+}
+[dir="rtl"] .confirm-parent,
+[dir="rtl"] .password-parent {
+  clear: right;
+}
+
+/**
+ * Visual styles for table drag.
+ */
+
+tr.drag {
+  background-color: #fffff0;
+}
+tr.drag-previous {
+  background-color: #ffd;
+}
+body div.tabledrag-changed-warning {
+  margin-bottom: 0.5em;
+}
+/**
+ * Table select behavior.
+ *
+ * @see tableselect.js
+ */
+
+tr.selected td {
+  background: #ffc;
+}
+td.checkbox,
+th.checkbox {
+  text-align: center;
+}
+[dir="rtl"] td.checkbox,
+[dir="rtl"] th.checkbox {
+  /* This is required to win over specificity of [dir="rtl"] td */
+  text-align: center;
+}
+/* Styling for the status indicator of the passwords match test.  */
+.password-confirm .ok {
+  color: #325e1c;
+  font-weight: bold;
+}
+.password-confirm .error {
+  color: #a51b00;
+  font-weight: bold;
+}
+/**
+ * @file
+ * Table sort indicator.
+ */
+
+th.is-active img {
+  display: inline;
+}
+td.is-active {
+  background-color: #ddd;
+}
+
+
+/**
+ * General styles for dropbuttons.
+ */
+.js .dropbutton-widget {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+.js .dropbutton-widget:hover {
+  border-color: #b8b8b8;
+}
+.dropbutton .dropbutton-action > * {
+  padding: 0.1em 0.5em;
+  white-space: nowrap;
+}
+.dropbutton .secondary-action {
+  border-top: 1px solid #e8e8e8;
+}
+.dropbutton-multiple .dropbutton {
+  border-right: 1px solid #e8e8e8; /* LTR */
+}
+[dir="rtl"] .dropbutton-multiple .dropbutton {
+  border-right: 0 none;
+  border-left: 1px solid #e8e8e8;
+}
+.dropbutton-multiple .dropbutton .dropbutton-action > * {
+  margin-right: 0.25em; /* LTR */
+}
+[dir="rtl"] .dropbutton-multiple .dropbutton .dropbutton-action > * {
+  margin-right: 0;
+  margin-left: 0.25em;
+}
+
+/**
+ * @file
+ * Visual styles for exposed filters.
+ */
+
+.exposed-filters .filters {
+  float: left; /* LTR */
+  margin-right: 1em; /* LTR */
+}
+[dir="rtl"] .exposed-filters .filters {
+  float: right;
+  margin-right: 0;
+  margin-left: 1em;
+}
+.exposed-filters .form-item {
+  margin: 0 0 0.1em 0;
+  padding: 0;
+}
+.exposed-filters .form-item label {
+  float: left; /* LTR */
+  width: 10em;
+  font-weight: normal;
+}
+[dir="rtl"] .exposed-filters .form-item label {
+  float: right;
+}
+.exposed-filters .form-select {
+  width: 14em;
+}
+/* Current filters */
+.exposed-filters .current-filters {
+  margin-bottom: 1em;
+}
+.exposed-filters .current-filters .placeholder {
+  font-weight: bold;
+  font-style: normal;
+}
+.exposed-filters .additional-filters {
+  float: left; /* LTR */
+  margin-right: 1em; /* LTR */
+}
+[dir="rtl"] .exposed-filters .additional-filters {
+  float: right;
+  margin-right: 0;
+  margin-left: 1em;
+}

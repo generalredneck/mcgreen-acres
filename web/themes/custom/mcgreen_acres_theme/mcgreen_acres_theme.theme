@@ -5,10 +5,11 @@
  * Functions to support theming in the mcgreen_acres_theme theme.
  */
 
+use Drupal\file\Entity\File;
+use Drupal\Core\Render\Element;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\commerce_product\Entity\ProductInterface;
-use Drupal\file\Entity\File;
-use Drupal\image\Entity\ImageStyle;
 use Drupal\layout_builder\Entity\LayoutEntityDisplayInterface;
 
 // * Include all files from the includes directory.
@@ -248,10 +249,42 @@ function mcgreen_acres_theme_theme_suggestions_details_alter(array &$suggestions
 }
 
 /**
+ * Implements hook_preprocess_menu_local_tasks().
+ */
+function mcgreen_acres_theme_preprocess_menu_local_tasks(array &$variables) {
+
+  foreach (Element::children($variables['primary']) as $key) {
+    $variables['primary'][$key]['#level'] = 'primary';
+  }
+  foreach (Element::children($variables['secondary']) as $key) {
+    $variables['secondary'][$key]['#level'] = 'secondary';
+  }
+}
+
+/**
  * Implements hook_preprocess_menu_local_task().
  */
 function mcgreen_acres_theme_preprocess_menu_local_task(array &$variables) {
-  $variables['element']['#link']['url']->setOption('attributes', ['class'=>'nav-link']);
+  $variables['element']['#link']['url']->setOption('attributes', ['class' => 'nav-link']);
+
+  // Ensure is-active class is set when the tab is active. The generic active
+  // link handler applies stricter comparison rules than what is necessary for
+  // tabs.
+  if (isset($variables['is_active']) && $variables['is_active'] === TRUE) {
+    $variables['link']['#options']['attributes']['class'][] = 'active is-active';
+  }
+  else {
+    $variables['link']['#options']['attributes']['class'][] = 'nav-link';
+  }
+
+  if (isset($variables['element']['#level'])) {
+    $variables['level'] = $variables['element']['#level'];
+  }
+}
+
+function mcgreen_acres_theme_preprocess_menu_local_action(array &$variables) {
+  $variables['link']['#options']['attributes']['class'][] = 'btn';
+  $variables['link']['#options']['attributes']['class'][] = 'btn-primary';
 }
 
 function mcgreen_acres_theme_preprocess_menu(&$variables) {
@@ -295,5 +328,27 @@ function _mcgreen_acres_theme_alter_entity_suggestions(array &$suggestions, Cont
     }
     array_splice($suggestions, 1, 0, $entity_type_id . '__layout__' . $entity->bundle());
     array_splice($suggestions, 1, 0, $entity_type_id . '__layout');
+  }
+}
+
+/**
+ * Implements theme_preprocess_table().
+ */
+function mcgreen_acres_theme_preprocess_table(&$variables) {
+  bootstrap4_covert_classes_string_to_array($variables);
+
+  $variables['attributes']['class'][] = 'table';
+  $variables['attributes']['class'][] = 'table-striped';
+  $variables['attributes']['class'][] = 'table-hover';
+}
+
+/**
+ * Callback to mitigate when class is a string..
+ */
+function bootstrap4_covert_classes_string_to_array(&$variables) {
+  if (isset($variables['attributes']['class']) && is_string($variables['attributes']['class'])) {
+    $class = $variables['attributes']['class'];
+    $variables['attributes']['class'] = [];
+    $variables['attributes']['class'][] = $class;
   }
 }

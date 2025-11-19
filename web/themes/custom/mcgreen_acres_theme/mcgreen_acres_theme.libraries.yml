@@ -12,6 +12,7 @@ global-styling:
       css/settings.css: {}
       css/range.css: {}
       css/nice-select.css: {}
+      css/bootstrap-theme.css: {}
       css/style.css: {}
       css/custom.css: {}
       //fonts.googleapis.com/css?family=Kaushan+Script&display=swap: {type: external}
@@ -27,6 +28,7 @@ global-scripts:
     js/isotope.min.js: {}
     js/nice-select.min.js: {}
     js/range.js: {}
+    js/nav-tabs.js: {}
   dependencies:
     - core/jquery
 
