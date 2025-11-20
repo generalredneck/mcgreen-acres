@@ -2,7 +2,6 @@ juicer_capture.store:
   path: '/juicer-capture/store'
   defaults:
     _controller: '\Drupal\juicer_capture\Controller\JuicerCaptureController::store'
-  requirements:
-    _csrf_token: 'TRUE'
-    _access: 'TRUE'
   methods: [POST]
+  requirements:
+    _permission: 'access content'

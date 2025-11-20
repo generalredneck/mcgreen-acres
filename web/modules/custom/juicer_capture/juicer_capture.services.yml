@@ -1,8 +1,12 @@
 services:
   cache.juicer_capture:
-    class: Drupal\Core\Cache\DatabaseBackend
-    arguments: ['juicer_capture', '@database', '@cache_tags.invalidator', '@serialization.phpserialize']
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['juicer_capture']
 
   juicer_capture.controller:
     class: Drupal\juicer_capture\Controller\JuicerCaptureController
-    arguments: ['@cache.juicer_capture']
+    arguments:
+      $cache: '@cache.juicer_capture'

@@ -3,6 +3,7 @@
 namespace Drupal\juicer_capture\Plugin\Block;
 
 use Drupal\Core\Url;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -35,10 +36,13 @@ class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInte
   public function build()
   {
     $cached = $this->cache->get('juicer_capture.cached_feed');
+    $token = \Drupal::service('csrf_token')->get('juicer_capture_post');
+    $session = \Drupal::request()->getSession();
+    $session->set('juicer_capture_csrf_token', $token);
     if ($cached && !empty($cached->data)) {
       return [
         '#type' => 'markup',
-        '#markup' => '<div id="juicer-capture-block-wrapper">' . $cached->data . '</div>',
+        '#markup' => Markup::create('<div id="juicer-capture-block-wrapper">' . $cached->data . '</div>'),
         '#cache' => [
           'max-age' => 86400,        // Page & block can be cached for 1 day
           'tags' => ['juicer_capture'],
@@ -56,11 +60,12 @@ HTML;
     return [
       '#type' => 'markup',
       '#markup' => '<div id="juicer-capture-block-wrapper">' . $markup . '</div>',
+      '#allowed_tags' => ['script', 'link', 'ul', 'li', 'div', 'h1', 'a'],
       '#cache' => [
         'max-age' => 0,              // Capturing mode → dynamic → no caching
       ],
       '#attached' => [
-        'library' => ['juicer_capture/juicer_capture'],
+        'library' => ['juicer_capture/capture'],
         'drupalSettings' => [
           'juicerCapture' => [
             'capture' => TRUE,

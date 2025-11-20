@@ -15,16 +15,30 @@ class JuicerCaptureController extends ControllerBase {
     $this->cache = $cache;
   }
 
-  public function store(Request $request) {
-    $data = json_decode($request->getContent(), TRUE);
+  public static function create($container) {
+    return new static(
+      $container->get('cache.juicer_capture')
+    );
+  }
 
-    if (empty($data['content'])) {
+  public function store(Request $request) {
+    $content = $request->getContent();
+    $data = json_decode($content, TRUE);
+
+    $session = \Drupal::request()->getSession();
+    $token = $session->get('juicer_capture_csrf_token');
+    $session->remove('juicer_capture_csrf_token');
+    if ($token !== $data['token']) {
+      return new JsonResponse(['error' => 'Invalid CSRF token'], 403);
+    }
+
+    if (empty($data['html'])) {
       return new JsonResponse(['error' => 'Missing content'], 400);
     }
 
     $this->cache->set(
       'juicer_capture.cached_feed',
-      $data['content'],
+      $data['html'],
       time() + 86400
     );
 
