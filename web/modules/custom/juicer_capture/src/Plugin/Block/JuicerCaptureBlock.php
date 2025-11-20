@@ -49,18 +49,17 @@ class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInte
         ],
       ];
     }
-
+    /*$markup = file_get_contents(__DIR__ . '/../../../McGreenAcres feed - Juicer Social-desktop.html');*/
     $markup = <<<HTML
 <script src="https://assets.juicer.io/embed.js" type="text/javascript"></script>
 <link href="https://assets.juicer.io/embed.css" media="all" rel="stylesheet" type="text/css" />
-<ul class="juicer-feed" data-feed-id="mcgreenacres" data-per="6" data-pages="1">
+<ul class="juicer-feed" data-feed-id="mcgreenacres" data-per="7" data-pages="1">
   <h1 class="referral"><a href="https://www.juicer.io">Powered by Juicer.io</a></h1>
 </ul>
 HTML;
     return [
       '#type' => 'markup',
-      '#markup' => '<div id="juicer-capture-block-wrapper">' . $markup . '</div>',
-      '#allowed_tags' => ['script', 'link', 'ul', 'li', 'div', 'h1', 'a'],
+      '#markup' => Markup::create('<div id="juicer-capture-block-wrapper">' . $markup . '</div>'),
       '#cache' => [
         'max-age' => 0,              // Capturing mode → dynamic → no caching
       ],
@@ -71,7 +70,7 @@ HTML;
             'capture' => TRUE,
             'endpoint' => Url::fromRoute('juicer_capture.store')->toString(),
             'selector' => '#juicer-capture-block-wrapper',
-            'token' => $token
+            'token' => $token,
           ],
         ],
       ],

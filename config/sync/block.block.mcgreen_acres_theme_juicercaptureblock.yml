@@ -1,0 +1,34 @@
+uuid: b6afcfae-d583-4b5b-b674-57d82544f2ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_class
+    - block_visibility_groups
+    - juicer_capture
+    - system
+  theme:
+    - mcgreen_acres_theme
+third_party_settings:
+  block_class:
+    classes: 'clv-section col-12 container'
+id: mcgreen_acres_theme_juicercaptureblock
+theme: mcgreen_acres_theme
+region: content
+weight: -8
+provider: null
+plugin: juicer_capture_block
+settings:
+  id: juicer_capture_block
+  label: 'Connect With Us'
+  label_display: visible
+  provider: juicer_capture
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'

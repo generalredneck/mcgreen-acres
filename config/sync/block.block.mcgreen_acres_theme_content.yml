@@ -11,7 +11,7 @@ _core:
 id: mcgreen_acres_theme_content
 theme: mcgreen_acres_theme
 region: content
-weight: -8
+weight: -9
 provider: null
 plugin: system_main_block
 settings:

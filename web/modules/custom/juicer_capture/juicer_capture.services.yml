@@ -9,4 +9,4 @@ services:
   juicer_capture.controller:
     class: Drupal\juicer_capture\Controller\JuicerCaptureController
     arguments:
-      $cache: '@cache.juicer_capture'
+      $cache: ['@cache.juicer_capture']

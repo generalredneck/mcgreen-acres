@@ -10,7 +10,9 @@
       setTimeout(function () {
         var img = once('juicer-capture', 'img[src="https://www.juicer.io/logo-without-text.svg"]', context);
         if (img.length) {
-
+          var items = $(selector).find('li.feed-item').not('.juicer').map(function () {
+            return $(this).prop('outerHTML');
+          }).get();  // ← convert jQuery collection to a plain JS array
           var html = $(selector).html();
           $.ajax({
             url: url,
@@ -19,7 +21,7 @@
               'Content-Type': 'application/json',
               'Accept': 'application/json',
             },
-            data: JSON.stringify({ html: html, token: token }),
+            data: JSON.stringify({ items: items, token: token }),
           });
         }
       }, 2500);
