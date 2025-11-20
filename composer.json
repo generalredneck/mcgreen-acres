@@ -236,6 +236,9 @@
             "drupal/facebook_pixel": {
                 "php 8.4": "patches/facebook_pixel-3558063-mr27.patch"
             },
+            "drupal/field_permissions": {
+                "php 8.4": "patches/field_permissions-3322809-MR40-e37b8f05.patch"
+            },
             "drupal/pdf": {
                 "drupal 11": "patches/pdf-3433888-11-mr5.patch"
             },
