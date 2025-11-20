@@ -1,0 +1,50 @@
+commerce_invoice.commerce_invoice_type.*:
+  type: commerce_config_entity_bundle
+  label: 'Invoice type'
+  mapping:
+    numberPattern:
+      type: string
+      label: 'The number pattern'
+    logo:
+      type: string
+      label: 'The logo file UUID'
+    dueDays:
+      type: integer
+      label: 'Due days'
+    paymentTerms:
+      type: text
+      label: 'Payment terms'
+    footerText:
+      type: text
+      label: 'Footer text'
+    workflow:
+      type: string
+      label: 'Workflow'
+    sendConfirmation:
+      type: boolean
+      label: 'Email the customer a confirmation when an invoice is generated'
+    confirmationBcc:
+      type: string
+      label: 'The confirmation BCC email'
+    privateSubdirectory:
+      type: string
+      label: 'The configured private subdirectory for storing invoice files.'
+
+commerce_order.commerce_order_type.*.third_party.commerce_invoice:
+  type: mapping
+  label: 'Invoice settings'
+  mapping:
+    invoice_type:
+      type: string
+      label: 'Invoice type'
+    order_placed_generation:
+      type: boolean
+      label: 'Order placed generation'
+
+language.content_settings.*.*.third_party.commerce_invoice:
+  type: mapping
+  label: 'Invoice settings'
+  mapping:
+    generate_translations:
+      type: boolean
+      label: 'Generate translations for all the available languages'

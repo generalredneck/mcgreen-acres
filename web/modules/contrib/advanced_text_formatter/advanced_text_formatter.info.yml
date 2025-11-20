@@ -1,0 +1,13 @@
+name: 'Advanced Text Formatter'
+type: module
+description: 'Provides an additional formatter for text field, text area and text format.'
+package: Fields
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+dependencies:
+  - drupal:text
+  - drupal:filter
+
+# Information added by Drupal.org packaging script on 2024-10-01
+version: '3.0.0-rc2'
+project: 'advanced_text_formatter'
+datestamp: 1727826732

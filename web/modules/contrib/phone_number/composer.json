@@ -1,0 +1,26 @@
+{
+    "name": "drupal/phone_number",
+    "description": "A validated phone number field.",
+    "type": "drupal-module",
+    "homepage": "http://drupal.org/project/phone_number",
+    "authors": [
+        {
+            "name": "Christopher Caldwell",
+            "email": "chrisolof@gmail.com",
+            "homepage": "https://www.drupal.org/u/chrisolof",
+            "role": "Maintainer"
+        }
+    ],
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "require": {
+        "drupal/core": "^9.2 || ^10 || ^11",
+        "giggsey/libphonenumber-for-php": "^8.0"
+    },
+    "require-dev": {
+        "drupal/feeds": "^3.0@beta",
+        "drupal/smsframework": "^2.2@RC",
+        "drupal/tfa": "^1.5",
+        "drupal/webform": "^6.2"
+    }
+}

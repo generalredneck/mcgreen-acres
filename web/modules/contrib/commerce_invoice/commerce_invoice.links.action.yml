@@ -1,0 +1,47 @@
+entity.commerce_invoice_type.add_form:
+  route_name: entity.commerce_invoice_type.add_form
+  title: 'Add invoice type'
+  appears_on:
+    - entity.commerce_invoice_type.collection
+
+entity.commerce_order.invoice_add_form:
+  route_name: entity.commerce_order.invoice_add_form
+  route_parameters:
+    commerce_invoice_type: default
+  title: 'Add invoice'
+  appears_on:
+    - entity.commerce_order.canonical
+    - entity.commerce_order.invoices
+
+entity.commerce_order.credit_memo_add_form:
+  route_name: entity.commerce_order.invoice_add_form
+  route_parameters:
+    commerce_invoice_type: credit_memo
+  title: 'Add credit memo'
+  appears_on:
+    - entity.commerce_order.canonical
+    - entity.commerce_order.credit_memos
+
+entity.commerce_invoice.canonical:
+  route_name: entity.commerce_invoice.canonical
+  title: 'Manage this invoice'
+  appears_on:
+    - entity.commerce_invoice.user_view
+
+entity.commerce_invoice.download:
+  route_name: entity.commerce_invoice.download
+  title: 'Download'
+  appears_on:
+    - entity.commerce_invoice.user_view
+
+entity.commerce_invoice.admin_download:
+  route_name: entity.commerce_invoice.download
+  title: 'Download'
+  appears_on:
+    - entity.commerce_invoice.canonical
+
+entity.commerce_invoice.resend_confirmation_form:
+  route_name: entity.commerce_invoice.resend_confirmation_form
+  title: 'Resend confirmation'
+  appears_on:
+    - entity.commerce_invoice.canonical

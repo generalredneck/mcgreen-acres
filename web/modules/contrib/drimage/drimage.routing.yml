@@ -1,0 +1,19 @@
+drimage.image:
+  path: /drimage/{width}/{height}/{fid}/{iwc_id}/{format}
+  defaults:
+    _controller: '\Drupal\drimage\Controller\DrImageController::image'
+  requirements:
+    _permission: 'access content'
+    width: '\d+'
+    height: '\d+'
+    fid: '\d+'
+    iwc_id: '[a-z0-9_-]+'
+    format: '[a-zA-Z0-9_]+'
+
+drimage.settings:
+  path: /admin/config/media/drimage
+  defaults:
+    _form: '\Drupal\drimage\Form\DrimageSettingsForm'
+    _title: 'Drimage settings'
+  requirements:
+    _permission: 'administer image styles'
