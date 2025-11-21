@@ -1,17 +1,19 @@
 uuid: c5d88aae-2447-44ed-b9b6-bcbaeaa151c7
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - focal_point
 _core:
   default_config_hash: xoqFV49hWNz1HKn69KOzB3MFrkjOSopqru5h3r2frPY
 name: product_teaser
 label: 'Product teaser'
 effects:
-  c5938430-7c2d-4d4a-ba1f-57a85b1aeea1:
-    uuid: c5938430-7c2d-4d4a-ba1f-57a85b1aeea1
-    id: image_scale_and_crop
-    weight: 1
+  3e7d33a2-55cc-490a-adcf-04b945a17b2e:
+    uuid: 3e7d33a2-55cc-490a-adcf-04b945a17b2e
+    id: focal_point_scale_and_crop
+    weight: 2
     data:
       width: 600
       height: 600
-      anchor: center-center
+      crop_type: focal_point

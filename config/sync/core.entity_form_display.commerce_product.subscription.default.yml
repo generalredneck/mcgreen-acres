@@ -12,7 +12,7 @@ dependencies:
   module:
     - commerce
     - field_group
-    - image
+    - focal_point
     - path
     - text
 third_party_settings:
@@ -71,12 +71,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   images:
-    type: image_image
+    type: image_focal_point
     weight: 1
     region: content
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
   path:
     type: path
@@ -136,4 +138,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  publish_on: true
+  unpublish_on: true
   variations: true
