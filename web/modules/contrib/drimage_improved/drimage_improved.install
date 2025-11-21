@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * DrImage update functions.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function drimage_improved_install(): void {
+  // Migrate from drimage to drimage_improved.
+  if (\Drupal::service('module_handler')->moduleExists('drimage')) {
+    // Replace the 'drimage' field formatter with 'drimage_improved'.
+    $storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');
+    $displays = $storage->loadMultiple();
+    foreach ($displays as $display) {
+      $components = $display->getComponents();
+      foreach ($components as $name => $component) {
+        if (isset($component['type']) && $component['type'] == 'drimage') {
+          $component['type'] = 'drimage_improved';
+          $display->setComponent($name, $component);
+        }
+      }
+      $display->save();
+    }
+    // Disable the 'drimage' module.
+    \Drupal::service('module_installer')->uninstall(['drimage']);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function drimage_improved_uninstall(): void {
+  \Drupal::service('drimage_improved.image_style_repository')
+    ->deleteAll();
+}
+

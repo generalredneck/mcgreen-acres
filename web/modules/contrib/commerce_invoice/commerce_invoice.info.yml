@@ -1,0 +1,21 @@
+name: Commerce Invoice
+type: module
+description: 'Defines the Invoice entity and associated features.'
+package: Commerce (contrib)
+core_version_requirement: ^10.1 || ^11
+dependencies:
+  - commerce:commerce
+  - commerce:commerce_number_pattern
+  - commerce:commerce_order
+  - commerce:commerce_price
+  - commerce:commerce_store
+  - drupal:file
+  - entity_print:entity_print
+  - profile:profile
+  - state_machine:state_machine
+  - token:token
+
+# Information added by Drupal.org packaging script on 2025-05-05
+version: '8.x-2.2'
+project: 'commerce_invoice'
+datestamp: 1746433048
