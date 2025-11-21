@@ -156,4 +156,5 @@ $settings['crawler_rate_limit.settings']['ip_address_allowlist'] = [];
  */
 $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
   '216071',
+  '24940',
 ];
