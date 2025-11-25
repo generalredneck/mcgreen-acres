@@ -1865,6 +1865,10 @@ ul.links {
   text-transform: capitalize;
   margin-bottom: 14px;
 }
+
+.clv_newsletter_wrapper .newsletter_field p{
+  color: #ffffff;
+}
 .clv_newsletter_wrapper .newsletter_field .newsletter_field_block{
   max-width: 610px;
   width: 100%;
