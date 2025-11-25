@@ -158,4 +158,5 @@ $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
   '216071',
   '24940',
   '46918',
+  '14061',
 ];
