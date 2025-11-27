@@ -6,6 +6,7 @@ dependencies:
     - commerce_product.commerce_product_type.subscription
     - core.entity_view_mode.commerce_product.teaser
     - field.field.commerce_product.subscription.body
+    - field.field.commerce_product.subscription.field_featured
     - field.field.commerce_product.subscription.images
     - field.field.commerce_product.subscription.product_collections
     - field.field.commerce_product.subscription.product_tags
@@ -43,6 +44,7 @@ content:
 hidden:
   body: true
   created: true
+  field_featured: true
   product_collections: true
   product_tags: true
   search_api_excerpt: true

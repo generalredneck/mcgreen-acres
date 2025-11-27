@@ -5,6 +5,7 @@ dependencies:
   config:
     - commerce_product.commerce_product_type.subscription
     - field.field.commerce_product.subscription.body
+    - field.field.commerce_product.subscription.field_featured
     - field.field.commerce_product.subscription.images
     - field.field.commerce_product.subscription.product_collections
     - field.field.commerce_product.subscription.product_tags
@@ -27,6 +28,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_featured:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 4
     region: content
   images:
     type: bootstrap_basic_image_gallery_formatter

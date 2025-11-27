@@ -37,8 +37,14 @@
       {{ svg.getIcon('eye-fill', 34, 34, 'mb-2') }}
       <div class="fs-md">{{ 'View product' }}</div>
     </div>
+    {% if product_entity.field_featured.value %}
+      <div class="featured-flag d-flex flex-column align-items-center justify-content-center position-absolute">
+        {{ 'Featured' }}
+      </div>
+    {% endif %}
     {{- product.images -}}
     {{- product.variation_images -}}
+
   </div>
   <div class="product-info d-flex align-items-center justify-content-between">
     <div class="product-title fw-bold">{{ product.title }}</div>

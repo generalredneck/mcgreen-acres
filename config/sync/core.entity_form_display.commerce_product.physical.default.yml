@@ -5,6 +5,7 @@ dependencies:
   config:
     - commerce_product.commerce_product_type.physical
     - field.field.commerce_product.physical.body
+    - field.field.commerce_product.physical.field_featured
     - field.field.commerce_product.physical.images
     - field.field.commerce_product.physical.product_collections
     - field.field.commerce_product.physical.product_tags
@@ -69,6 +70,13 @@ content:
     weight: 6
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_featured:
+    type: boolean_checkbox
+    weight: 13
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   images:
     type: image_focal_point
