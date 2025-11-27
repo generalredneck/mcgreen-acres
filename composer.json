@@ -243,6 +243,9 @@
             "drupal/pdf": {
                 "drupal 11": "patches/pdf-3433888-11-mr5.patch"
             },
+            "drupal/phone_number": {
+                "php 8.4": "patches/phone_number-3552395-3.patch"
+            },
             "drupal/user_csv_import": {
                 "drupal 11": "https://www.drupal.org/files/issues/2025-10-15/user_csv_import_D11.patch"
             },

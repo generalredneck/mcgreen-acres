@@ -1,0 +1,65 @@
+diff --git a/src/Exception/CountryException.php b/src/Exception/CountryException.php
+index 7d03ec8c6d5dc2c643479918867d1274b586abf5..fcda50ab67032c867a53a5fdbbe0208b2abdb1f5 100644
+--- a/src/Exception/CountryException.php
++++ b/src/Exception/CountryException.php
+@@ -26,7 +26,7 @@ class CountryException extends PhoneNumberException {
+    * @param \Exception $previous
+    *   (optional) The previous exception used for the exception chaining.
+    */
+-  public function __construct($message = "", $country = NULL, $code = 0, \Exception $previous = NULL) {
++  public function __construct($message = "", $country = NULL, $code = 0, ?\Exception $previous = NULL) {
+     parent::__construct($message, $code, $previous);
+ 
+     $this->country = $country;
+diff --git a/src/Exception/TypeException.php b/src/Exception/TypeException.php
+index 5c960384ecbf0dfeb7b5f004d36ea34979cfa18c..31d633214e26af978ce9d2d0e96bbfe0b5eccbca 100644
+--- a/src/Exception/TypeException.php
++++ b/src/Exception/TypeException.php
+@@ -29,7 +29,7 @@ class TypeException extends PhoneNumberException {
+    * @param \Exception $previous
+    *   (optional) The previous exception used for the exception chaining.
+    */
+-  public function __construct($message = "", $type = NULL, $code = 0, \Exception $previous = NULL) {
++  public function __construct($message = "", $type = NULL, $code = 0, ?\Exception $previous = NULL) {
+     parent::__construct($message, $code, $previous);
+ 
+     $this->type = $type;
+diff --git a/src/PhoneNumberUtil.php b/src/PhoneNumberUtil.php
+index 129858b89f0351268b37da7fa9e93ee843381162..466a5eb94dd4d1d29a03cc41400829a6d599a0b3 100644
+--- a/src/PhoneNumberUtil.php
++++ b/src/PhoneNumberUtil.php
+@@ -239,7 +239,7 @@ class PhoneNumberUtil implements PhoneNumberUtilInterface {
+   /**
+    * {@inheritdoc}
+    */
+-  public function getCountryOptions(array $filter = NULL, $show_country_names = FALSE) {
++  public function getCountryOptions(?array $filter = NULL, $show_country_names = FALSE) {
+ 
+     $libUtil = $this->libUtil;
+     $regions = $libUtil->getSupportedRegions();
+diff --git a/src/PhoneNumberUtilInterface.php b/src/PhoneNumberUtilInterface.php
+index bc452645a8d9c984460a6a1e319668cdfda25027..55169ba9544ee41b0980beb918f5c0cebb4a2389 100644
+--- a/src/PhoneNumberUtilInterface.php
++++ b/src/PhoneNumberUtilInterface.php
+@@ -190,7 +190,7 @@ interface PhoneNumberUtilInterface {
+    * @return array
+    *   Array of options, with country code as keys. (Eg. ['IL' => 'IL (+972)'])
+    */
+-  public function getCountryOptions(array $filter = NULL, $show_country_names = FALSE);
++  public function getCountryOptions(?array $filter = NULL, $show_country_names = FALSE);
+ 
+   /**
+    * Get all supported phone number types.
+diff --git a/src/Plugin/WebformElement/PhoneNumber.php b/src/Plugin/WebformElement/PhoneNumber.php
+index e36b52dfca15653f37a4aadecdf1a647c5106cea..44ee2c5c4e42c1fe4671d06903f34626f6bbd748 100755
+--- a/src/Plugin/WebformElement/PhoneNumber.php
++++ b/src/Plugin/WebformElement/PhoneNumber.php
+@@ -240,7 +240,7 @@ class PhoneNumber extends WebformCompositeBase {
+   /**
+    * {@inheritdoc}
+    */
+-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
++  public function prepare(array &$element, ?WebformSubmissionInterface $webform_submission = NULL) {
+     parent::prepare($element, $webform_submission);
+ 
+     $element['#description'] = $this->renderer->render($element['#description']);
