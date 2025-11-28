@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf5f9ab4aff782416d08b0a0a8d36420",
+    "content-hash": "89a4c0adfed482e71ce3dfc4cdc05180",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2706,6 +2706,50 @@
             }
         },
         {
+            "name": "drupal/commerce_checkout",
+            "version": "3.2.0",
+            "require": {
+                "drupal/commerce": "*",
+                "drupal/commerce_cart": "*",
+                "drupal/commerce_order": "*",
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "3.2.0",
+                    "datestamp": "1758806664",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "centarro",
+                    "homepage": "https://www.drupal.org/user/3661446"
+                },
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
+                    "name": "rszrama",
+                    "homepage": "https://www.drupal.org/user/49344"
+                }
+            ],
+            "description": "Provides configurable checkout flows.",
+            "homepage": "https://www.drupal.org/project/commerce",
+            "support": {
+                "source": "https://git.drupalcode.org/project/commerce"
+            }
+        },
+        {
             "name": "drupal/commerce_checkout_link",
             "version": "dev-1.x",
             "source": {
@@ -2746,6 +2790,68 @@
             "homepage": "https://www.drupal.org/project/commerce_checkout_link",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce_checkout_link"
+            }
+        },
+        {
+            "name": "drupal/commerce_custom_checkout_message",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/commerce_custom_checkout_message.git",
+                "reference": "3.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/commerce_custom_checkout_message-3.0.0.zip",
+                "reference": "3.0.0",
+                "shasum": "85c25aa54c95a2b857254374ab6ef62ece98480d"
+            },
+            "require": {
+                "drupal/commerce": "^3",
+                "drupal/commerce_checkout": "*",
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.0.0",
+                    "datestamp": "1724410311",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
+                    "name": "grevil",
+                    "homepage": "https://www.drupal.org/user/3668491"
+                },
+                {
+                    "name": "thomas.frobieter",
+                    "homepage": "https://www.drupal.org/user/409335"
+                },
+                {
+                    "name": "yunke",
+                    "homepage": "https://www.drupal.org/user/3355674"
+                }
+            ],
+            "description": "Provides a custom message panel in the Commerce Checkout Flow",
+            "homepage": "https://www.drupal.org/project/commerce_custom_checkout_message",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/commerce_custom_checkout_message",
+                "issues": "https://www.drupal.org/project/issues/commerce_custom_checkout_message"
             }
         },
         {
