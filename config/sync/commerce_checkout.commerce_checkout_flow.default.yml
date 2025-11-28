@@ -74,7 +74,7 @@ configuration:
       weight: 7
       wrapper_element: null
       message:
-        value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>Call or text us at ‪(469) 248-5703‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
+        value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
         format: full_html
       display_pane_summaries: false
     completion_register:
@@ -83,12 +83,11 @@ configuration:
       weight: 8
       wrapper_element: null
     custom_checkout_message:
-      display_label: null
       step: _sidebar
       weight: 9
       wrapper_element: container
       message:
-        value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>Call or text us at ‪(469) 248-5703‬ so we can set up a pick up time.</p></div>'
+        value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
         format: full_html
     order_summary:
       display_label: null
