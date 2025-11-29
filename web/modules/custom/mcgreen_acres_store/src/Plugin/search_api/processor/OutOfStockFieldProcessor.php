@@ -2,10 +2,13 @@
 
 namespace Drupal\mcgreen_acres_store\Plugin\search_api\processor;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\commerce_stock\StockServiceManager;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Adds a custom computed field to the Search API index.
@@ -20,7 +23,45 @@ use Drupal\search_api\Processor\ProcessorProperty;
  *   },
  * )
  */
-class OutOfStockFieldProcessor extends ProcessorPluginBase {
+class OutOfStockFieldProcessor extends ProcessorPluginBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The stock service manager.
+   *
+   * @var \Drupal\commerce_stock\StockServiceManager
+   */
+  protected $stockServiceManager;
+
+  /**
+   * Constructs an OutOfStockFieldProcessor object.
+   *
+   * @param array $configuration
+   *   The plugin configuration, i.e. an array with configuration values keyed
+   *   by configuration option name. The special key 'context' may be provided
+   *   to the plugin by the plugin manager for convenience.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\commerce_stock\StockServiceManager $stockServiceManager
+   *   The commerce stock service manager.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, StockServiceManager $stockServiceManager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->stockServiceManager = $stockServiceManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('commerce_stock.service_manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -58,7 +99,7 @@ class OutOfStockFieldProcessor extends ProcessorPluginBase {
           && $variation->hasField('stock')
           && !$variation->get('stock')->isEmpty()) {
 
-          $stock_level = $variation->get('stock')->value;
+          $stock_level = $this->stockServiceManager->getStockLevel($variation);
           $out_of_stock_tracker[$key] = ($stock_level <= 0);
         }
         else {
