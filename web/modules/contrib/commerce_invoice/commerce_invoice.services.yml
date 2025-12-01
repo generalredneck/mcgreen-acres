@@ -1,0 +1,79 @@
+services:
+  access_check.invoice_order:
+    class: Drupal\commerce_invoice\Access\InvoiceOrderAccessCheck
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: access_check, applies_to: _invoice_order_access }
+
+  commerce_invoice.entity_print_subscriber:
+    class: Drupal\commerce_invoice\EventSubscriber\EntityPrintSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_invoice.invoice_generator:
+    class: Drupal\commerce_invoice\InvoiceGenerator
+    arguments: ['@database', '@entity_type.manager', '@language_manager', '@module_handler', '@logger.channel.commerce_invoice']
+  Drupal\commerce_invoice\InvoiceGeneratorInterface: '@commerce_invoice.invoice_generator'
+
+  commerce_invoice.invoice_subscriber:
+    class: Drupal\commerce_invoice\EventSubscriber\InvoiceSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_invoice.invoice_total_summary:
+    class: Drupal\commerce_invoice\InvoiceTotalSummary
+    arguments: ['@commerce_order.adjustment_transformer']
+  Drupal\commerce_invoice\InvoiceTotalSummaryInterface: '@commerce_invoice.invoice_total_summary'
+
+  commerce_invoice.order_paid_subscriber:
+    class: Drupal\commerce_invoice\EventSubscriber\OrderPaidSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_invoice.order_placed_subscriber:
+    class: Drupal\commerce_invoice\EventSubscriber\OrderPlacedSubscriber
+    arguments: ['@commerce_invoice.invoice_generator']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_invoice.print_builder:
+    class: Drupal\commerce_invoice\InvoicePrintBuilder
+    arguments: ['@config.factory', '@entity_type.manager', '@entity_print.print_builder', '@entity_print.filename_generator', '@event_dispatcher', '@current_user', '@language.default', '@language_manager']
+
+  commerce_invoice.route_subscriber:
+    class: Drupal\commerce_invoice\EventSubscriber\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_invoice.invoice_file_manager:
+    class: Drupal\commerce_invoice\InvoiceFileManager
+    arguments: ['@entity_type.manager', '@plugin.manager.entity_print.print_engine', '@commerce_invoice.print_builder', '@logger.channel.commerce_invoice']
+  Drupal\commerce_invoice\InvoiceFileManagerInterface: '@commerce_invoice.invoice_file_manager'
+
+  commerce_invoice.invoice_confirmation_subscriber:
+    class: Drupal\commerce_invoice\EventSubscriber\InvoiceConfirmationSubscriber
+    arguments: ['@commerce_invoice.invoice_confirmation_mail', '@commerce_invoice.invoice_file_manager']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_invoice.invoice_confirmation_mail:
+    class: Drupal\commerce_invoice\Mail\InvoiceConfirmationMail
+    arguments: [ '@entity_type.manager', '@commerce.mail_handler', '@commerce_invoice.invoice_total_summary', '@commerce_invoice.invoice_file_manager', '@file_system']
+  Drupal\commerce_invoice\Mail\InvoiceConfirmationMailInterface: '@commerce_invoice.invoice_confirmation_mail'
+
+  commerce_invoice.breadcrumb:
+    class: Drupal\commerce_invoice\InvoiceBreadcrumbBuilder
+    arguments: ['@router.request_context', '@access_manager', '@router', '@path_processor_manager', '@config.factory',  '@title_resolver', '@current_user', '@path.current', '@path.matcher']
+    tags:
+      - { name: breadcrumb_builder, priority: 100 }
+
+  logger.channel.commerce_invoice:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: [ 'commerce_invoice' ]
+
+  commerce_invoice.price_splitter:
+    class: Drupal\commerce_invoice\PriceSplitter
+    arguments: ['@entity_type.manager', '@commerce_price.rounder']
+  Drupal\commerce_invoice\PriceSplitterInterface: '@commerce_invoice.price_splitter'

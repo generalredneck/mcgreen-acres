@@ -1,0 +1,4 @@
+commerce_invoice_admin_comment:
+  category: commerce_invoice
+  label: 'Admin comment'
+  template: '<p><strong>Admin comment:</strong><br /> {{ comment }}</p>'

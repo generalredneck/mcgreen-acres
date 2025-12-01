@@ -1,0 +1,7 @@
+jquery_legacy:
+  version: 3.6.4
+  js:
+    https://code.jquery.com/jquery-3.6.4.min.js: { type: external, weight: -20 }
+  dependencies:
+    - core/drupal
+

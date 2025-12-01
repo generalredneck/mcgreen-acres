@@ -1,0 +1,172 @@
+# Time slots - Entity routes.
+commerce_timeslots.configuration:
+  path: '/admin/commerce/config/timeslots-config'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Timeslots'
+  requirements:
+    _permission: 'access commerce administration pages'
+
+commerce_timeslots.timeslot_settings:
+  path: '/admin/commerce/config/timeslots'
+  defaults:
+    _form: '\Drupal\commerce_timeslots\Form\TimeSlotSettingsForm'
+    _title: 'Time slots - Settings'
+  requirements:
+    _permission: 'administer commerce time slot entity'
+
+# Canonical.
+entity.commerce_timeslot.canonical:
+  path: '/admin/commerce/timeslots/{commerce_timeslot}'
+  defaults:
+    _entity_view: 'commerce_timeslot'
+    _title: 'View time slot'
+  requirements:
+    _entity_access: 'commerce_timeslot.view'
+
+entity.commerce_timeslot.collection:
+  path: '/admin/commerce/timeslots'
+  defaults:
+    _entity_list: 'commerce_timeslot'
+    _title: 'Time slots'
+  requirements:
+    _permission: 'administer commerce timeslot entity'
+
+entity.commerce_timeslot.delete_form:
+  path: '/admin/commerce/timeslots/{commerce_timeslot}/delete'
+  defaults:
+    _entity_form: commerce_timeslot.delete
+    _title: 'Delete time slot entity'
+  requirements:
+    _entity_access: 'commerce_timeslot.delete'
+
+entity.commerce_timeslot.edit_form:
+  path: '/admin/commerce/timeslots/{commerce_timeslot}/edit'
+  defaults:
+    _entity_form: commerce_timeslot.edit
+    _title: 'Edit time slot entity'
+  requirements:
+    _entity_access: 'commerce_timeslot.edit'
+
+entity.commerce_timeslot.add_form:
+  path: '/admin/commerce/timeslots/add'
+  defaults:
+    _entity_form: commerce_timeslot.add
+    _title: 'Add time slot entity'
+  requirements:
+    _entity_create_access: 'commerce_timeslot'
+
+# Canonical.
+entity.commerce_timeslot_day.canonical:
+  path: '/admin/commerce/timeslots/days/{commerce_timeslot_day}'
+  defaults:
+    _entity_view: 'commerce_timeslot_day'
+    _title: 'View time slot day'
+  requirements:
+    _entity_access: 'commerce_timeslot_day.view'
+
+entity.commerce_timeslot_day.collection:
+  path: '/admin/commerce/timeslots/days'
+  defaults:
+    _entity_list: 'commerce_timeslot_day'
+    _title: 'Time slot days'
+  requirements:
+    _permission: 'administer commerce timeslot day entity'
+
+entity.commerce_timeslot_day.delete_form:
+  path: '/admin/commerce/timeslots/days/{commerce_timeslot_day}/delete'
+  defaults:
+    _entity_form: commerce_timeslot_day.delete
+    _title: 'Delete time slot day entity'
+  requirements:
+    _entity_access: 'commerce_timeslot_day.delete'
+
+entity.commerce_timeslot_day.edit_form:
+  path: '/admin/commerce/timeslots/days/{commerce_timeslot_day}/edit'
+  defaults:
+    _entity_form: commerce_timeslot_day.edit
+    _title: 'Edit time slot day entity'
+  requirements:
+    _entity_access: 'commerce_timeslot_day.edit'
+
+entity.commerce_timeslot_day.add_form:
+  path: '/admin/commerce/timeslots/days/add'
+  defaults:
+    _entity_form: commerce_timeslot_day.add
+    _title: 'Add time slot day entity'
+  requirements:
+    _entity_create_access: 'commerce_timeslot_day'
+
+# Canonical.
+entity.commerce_timeslot_day_capacity.canonical:
+  path: '/admin/commerce/timeslots/day-capacities/{commerce_timeslot_day_capacity}'
+  defaults:
+    _entity_view: 'commerce_timeslot_day_capacity'
+    _title: 'View time slot day capacity'
+  requirements:
+    _entity_access: 'commerce_timeslot_day_capacity.view'
+
+entity.commerce_timeslot_day_capacity.collection:
+  path: '/admin/commerce/timeslots/day-capacities'
+  defaults:
+    _entity_list: 'commerce_timeslot_day_capacity'
+    _title: 'Time slot day capacities'
+  requirements:
+    _permission: 'administer commerce timeslot day capacity entity'
+
+entity.commerce_timeslot_day_capacity.delete_form:
+  path: '/admin/commerce/timeslots/day-capacities/{commerce_timeslot_day_capacity}/delete'
+  defaults:
+    _entity_form: commerce_timeslot_day_capacity.delete
+    _title: 'Delete time slot day capacity entity'
+  requirements:
+    _entity_access: 'commerce_timeslot_day_capacity.delete'
+
+entity.commerce_timeslot_day_capacity.edit_form:
+  path: '/admin/commerce/timeslots/day-capacities/{commerce_timeslot_day_capacity}/edit'
+  defaults:
+    _entity_form: commerce_timeslot_day_capacity.edit
+    _title: 'Edit time slot day capacity entity'
+  requirements:
+    _entity_access: 'commerce_timeslot_day_capacity.edit'
+
+entity.commerce_timeslot_day_capacity.add_form:
+  path: '/admin/commerce/timeslots/day-capacities/add'
+  defaults:
+    _entity_form: commerce_timeslot_day_capacity.add
+    _title: 'Add time slot day capacity entity'
+  requirements:
+    _entity_create_access: 'commerce_timeslot_day_capacity'
+
+# Time slot booking entity.
+entity.commerce_timeslot_booking.canonical:
+  path: '/admin/commerce/timeslots/booking/{commerce_timeslot_booking}'
+  defaults:
+    _entity_view: 'commerce_timeslot_booking'
+    _title: 'View time slot booking'
+  requirements:
+    _entity_access: 'commerce_timeslot_booking.view'
+
+entity.commerce_timeslot_booking.collection:
+  path: '/admin/commerce/timeslots/booking'
+  defaults:
+    _entity_list: 'commerce_timeslot_booking'
+    _title: 'Time slot bookings'
+  requirements:
+    _permission: 'administer commerce timeslot bookings'
+
+entity.commerce_timeslot_booking.delete_form:
+  path: '/admin/commerce/timeslots/booking/{commerce_timeslot_booking}/delete'
+  defaults:
+    _entity_form: commerce_timeslot_booking.delete
+    _title: 'Delete time slot booking'
+  requirements:
+    _entity_access: 'commerce_timeslot_booking.delete'
+
+# Ajax route for getting the time slot time frames per a date and time slot.
+commerce_timeslots.get_availability:
+  path: '/ajax/commerce-timeslots/get-availability/{element_name}/{element_id}/{order_id}/{timeslot_id}/{date}'
+  defaults:
+    _controller: '\Drupal\commerce_timeslots\Controller\CommerceTimeslotsController::getAvailability'
+  requirements:
+    _permission: 'access content'

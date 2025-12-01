@@ -1,0 +1,23 @@
+responsive_favicons.settings:
+  type: config_object
+  mapping:
+    path_type:
+      type: string
+      label: 'Path type'
+    path:
+      type: string
+      label: 'Path'
+    tags:
+      type: sequence
+      label: 'Tags'
+      sequence:
+        type: string
+    cache_refresh_suffix:
+      type: integer
+      label: 'Cache refresh suffix'
+    show_missing:
+      type: integer
+      label: 'Display tags even if files are missing'
+    remove_default:
+      type: integer
+      label: 'Remove default Drupal favicon'

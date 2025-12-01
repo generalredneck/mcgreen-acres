@@ -1,0 +1,7 @@
+parameters:
+    ignoreErrors:
+            # We use this all over the place, and it's also recommended by Drupal. In fact, in Drupal core,
+            # this is also ignored and pointed out as a "best practice". So we actually follow Drupal core here:
+            # https://git.drupalcode.org/project/drupal/-/commit/fe307a0#04e36328b14584f865afdf63882e263b82222990_0_26
+            - "#Unsafe usage of new static#"
+    level: 2

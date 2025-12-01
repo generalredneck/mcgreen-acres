@@ -1,0 +1,89 @@
+drimage.settings:
+  type: config_object
+  label: 'Drimage settings'
+  mapping:
+    threshold:
+      type: integer
+      label: 'Minimum difference per image style'
+    ratio_distortion:
+      type: integer
+      label: 'Maximum allowed ratio distortion'
+    upscale:
+      type: integer
+      label: 'Minimum image style width'
+    downscale:
+      type: integer
+      label: 'Maximum image style width'
+    multiplier:
+      type: integer
+      label: 'Enable device pixel ratio detection'
+    lazy_offset:
+      type: integer
+      label: 'Lazyloader offeset'
+    core_webp:
+      type: boolean
+      label: 'Support for webp through Core'
+    imageapi_optimize_webp:
+      type: boolean
+      label: 'Support for webp through the imageapi_optimize_webp module'
+    automated_crop:
+      type: string
+      label: 'Support for automated_crop module'
+    fallback_style:
+      type: string
+      label: 'Fallback Image Style'
+    cache_max_age:
+      type: integer
+      label: 'Cache maximum age'
+    legacy_lazyload:
+      type: boolean
+      label: 'Use drimage JS lazyloader'
+field.formatter.settings.drimage:
+  type: mapping
+  label: 'DRImage field display format settings'
+  mapping:
+    image_link:
+      type: string
+      label: 'Link image to'
+    image_style:
+      type: string
+      label: 'Image style'
+    image_loading:
+      type: mapping
+      label: 'Image loading settings'
+      mapping:
+        attribute:
+          type: string
+          label: 'Loading attribute'
+    # Drimage extension settings.
+    image_handling:
+      type: string
+      label: 'Image handling'
+    aspect_ratio:
+      type: mapping
+      label: 'Aspect ratio'
+      mapping:
+        width:
+          type: integer
+        height:
+          type: integer
+    background:
+      type: mapping
+      label: Background
+      mapping:
+        attachment:
+          type: string
+        position:
+          type: string
+        size:
+          type: string
+    iwc:
+      type: mapping
+      label: 'IWC'
+      mapping:
+        image_style:
+          type: string
+
+# Repeat schema.
+field.formatter.settings.drimage_uri:
+  type: field.formatter.settings.drimage

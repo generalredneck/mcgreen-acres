@@ -1,0 +1,13 @@
+type: module
+name: 'Display Suite Extras'
+description: 'Contains additional features for Display Suite.'
+core_version_requirement: ^10.2 || ^11
+package: 'Display Suite'
+configure: ds.admin_settings
+dependencies:
+  - ds:ds
+
+# Information added by Drupal.org packaging script on 2025-11-07
+version: '8.x-3.31'
+project: 'ds'
+datestamp: 1762509685

@@ -1,0 +1,14 @@
+name: Varbase Media Twitter
+description: Manages default config for Tweet media type.
+type: module
+package: Varbase
+core_version_requirement: ~10.5.0 || ~11.2.0
+dependencies:
+  - varbase_media:varbase_media
+  - media_entity_twitter:media_entity_twitter
+  - varbase_media:entity_browser_generic_embed
+
+# Information added by Drupal.org packaging script on 2025-11-01
+version: '10.0.14'
+project: 'varbase_media'
+datestamp: 1762006066

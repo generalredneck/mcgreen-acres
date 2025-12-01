@@ -1,0 +1,8 @@
+#desired-date-wrp {
+  display: none;
+}
+
+#edit-timeslot-day-ids,
+#edit-timeslot-day-capacity-ids {
+  height: 300px;
+}
