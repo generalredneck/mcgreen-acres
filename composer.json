@@ -65,6 +65,7 @@
         "drupal/bootstrap_basic_image_gallery": "dev-project-update-bot-only",
         "drupal/commerce_better_product_variation_label": "^1.0@beta",
         "drupal/commerce_checkout_link": "^1.4",
+        "drupal/commerce_checkout_order_fields": "^3.0",
         "drupal/commerce_custom_checkout_message": "^3.0",
         "drupal/commerce_email": "^1.7",
         "drupal/commerce_fee": "^1.1",
@@ -248,7 +249,8 @@
                 "drupal 11": "patches/pdf-3433888-11-mr5.patch"
             },
             "drupal/phone_number": {
-                "php 8.4": "patches/phone_number-3552395-3.patch"
+                "php 8.4": "patches/phone_number-3552395-3.patch",
+                "overstyled": "patches/phone_number-3516091-8.patch"
             },
             "drupal/user_csv_import": {
                 "drupal 11": "https://www.drupal.org/files/issues/2025-10-15/user_csv_import_D11.patch"

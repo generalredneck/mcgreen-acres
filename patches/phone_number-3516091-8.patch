@@ -1,0 +1,102 @@
+diff --git a/css/phone-number-form-element.css b/css/phone-number-form-element.css
+index 361d4cdcd43d71d218ddbaefe5460ce8e41774f9..9f578e147985d32d5cc9447e539cd633349790b5 100644
+--- a/css/phone-number-form-element.css
++++ b/css/phone-number-form-element.css
+@@ -4,6 +4,7 @@
+   padding: 0;
+ }
+ div.phone-number-field div.form-item {
++  margin-bottom: 10px;
+   vertical-align: bottom;
+ }
+ 
+@@ -16,10 +17,7 @@ div.phone-number-field div.form-item {
+   position: relative;
+   z-index: 1;
+   box-sizing: border-box;
+-  height: 30px;
+   margin: 0;
+-  border-width: 0;
+-  border-bottom: 1px solid #ccc;
+ }
+ 
+ /* Hide up/down arrows on numeric extension field. */
+@@ -33,14 +31,19 @@ div.phone-number-field div.form-item {
+   appearance: none;
+ }
+ 
++.phone-number-field .phone-number-flag,
++.phone-number-field .country-select .prefix,
++.phone-number-field .country-select .arrow {
++  position: absolute;
++  top: 50%;
++  transform: translateY(-50%);
++}
++
+ .phone-number-field .phone-number-flag {
+-  display: inline-block;
++  left: 10px;
+   box-sizing: border-box;
++  width: 16px;
+   height: 11px;
+-  margin: 10px 5px 10px 10px;
+-  padding: 9px 0 0;
+-  padding-left: 16px;
+-  vertical-align: bottom;
+   background-color: transparent;
+   background-image: url("../images/flags.png");
+   background-repeat: no-repeat;
+@@ -49,21 +52,21 @@ div.phone-number-field div.form-item {
+ 
+ .phone-number-field .country-select {
+   position: relative;
+-  display: inline-block;
+-  height: 30px;
+-  vertical-align: bottom;
++  max-width: 90px;
++  height: auto;
+   border-bottom: 1px solid #ccc;
+ }
+ 
+ .phone-number-field .country-select .prefix {
+-  display: inline-block;
+   box-sizing: border-box;
+   min-width: 40px;
+   text-align: center;
+-  vertical-align: bottom;
+   font-family: Arial, sans-serif;
+   font-size: 12px;
+-  line-height: 30px;
++}
++
++.phone-number-field .country-select:has(.phone-number-flag) .prefix {
++  padding: 0 10px 0 35px;
+ }
+ 
+ .phone-number-field .country-select .prefix:first-child {
+@@ -77,23 +80,15 @@ div.phone-number-field div.form-item {
+ }
+ 
+ .phone-number-field .country-select select {
+-  position: absolute;
+-  top: 0;
+-  right: 0;
+-  bottom: 0;
+-  left: 0;
+   min-width: 100%;
++  margin-top: 0;
+   opacity: 0;
+ }
+ 
+ .phone-number-field .country-select .arrow {
+-  top: 50%;
+-  right: 1px;
+-  display: inline-block;
++  right: 6px;
+   width: 0;
+   height: 0;
+-  margin: 13px 10px 13px 5px;
+-  vertical-align: bottom;
+   border-top: 4px solid #555;
+   border-right: 3px solid transparent;
+   border-left: 3px solid transparent;

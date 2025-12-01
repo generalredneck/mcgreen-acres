@@ -989,3 +989,6 @@ th.views-field-remove-button {
 .js .dropbutton-multiple {
   padding-right: 0px !important;
 }
+.phone-number-field div.form-item {
+  display: block !important;
+}
