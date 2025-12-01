@@ -40,7 +40,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://git.drupalcode.org/issue/commerce_timeslots-3401757.git"
+            "url": "https://git.drupalcode.org/project/commerce_timeslots.git"
         },
         {
             "type": "vcs",
@@ -76,7 +76,7 @@
         "drupal/commerce_reports": "^1.0@RC",
         "drupal/commerce_stock": "^3.0@beta",
         "drupal/commerce_stripe": "^2.0",
-        "drupal/commerce_timeslots": "dev-3401757-date-picker-upgrade",
+        "drupal/commerce_timeslots": "1.0.x-dev",
         "drupal/commerce_variation_bundle": "^1.0",
         "drupal/config_split": "^2.0",
         "drupal/core": "^11.0",

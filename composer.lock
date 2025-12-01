@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9ae1a4a513493b9301ab6e04071207f",
+    "content-hash": "43c9d5ec96a94e366b2a8d1881cbbab7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3837,11 +3837,11 @@
         },
         {
             "name": "drupal/commerce_timeslots",
-            "version": "dev-3401757-date-picker-upgrade",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/issue/commerce_timeslots-3401757.git",
-                "reference": "ba63a2fd53bffb86cbd7f3ef9e8cd771d0d15041"
+                "url": "https://git.drupalcode.org/project/commerce_timeslots.git",
+                "reference": "a24725c11dc7d591529e5a5d890b92fb6f7e501b"
             },
             "require": {
                 "drupal/commerce": "^2.30 || ^3.0",
@@ -3849,6 +3849,7 @@
                 "drupal/jquery_ui_datepicker": "^1.2 || ^2.1",
                 "php": ">=7.3"
             },
+            "default-branch": true,
             "type": "drupal-module",
             "license": [
                 "GPL-2.0-or-later"
@@ -3866,7 +3867,7 @@
                 "issues": "https://drupal.org/project/issues/commerce_timeslots",
                 "source": "https://git.drupalcode.org/project/commerce_timeslots"
             },
-            "time": "2025-05-15T22:43:23+00:00"
+            "time": "2025-05-16T13:55:32+00:00"
         },
         {
             "name": "drupal/commerce_variation_bundle",
