@@ -63,6 +63,7 @@
         "drupal/block_class": "^4.0",
         "drupal/block_visibility_groups": "^2.0.1",
         "drupal/bootstrap_basic_image_gallery": "dev-project-update-bot-only",
+        "drupal/commerce_agree_terms": "^2.0",
         "drupal/commerce_better_product_variation_label": "^1.0@beta",
         "drupal/commerce_checkout_link": "^1.4",
         "drupal/commerce_checkout_order_fields": "^3.0",

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - commerce_agree_terms
     - commerce_custom_checkout_message
     - commerce_payment
     - commerce_promotion
@@ -70,6 +71,7 @@ configuration:
       wrapper_element: container
       capture: true
     completion_message:
+      display_label: null
       step: complete
       weight: 7
       wrapper_element: null
@@ -83,12 +85,22 @@ configuration:
       weight: 8
       wrapper_element: null
     custom_checkout_message:
+      display_label: null
       step: _sidebar
       weight: 9
       wrapper_element: container
       message:
         value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
         format: full_html
+    agree_terms:
+      step: review
+      weight: 10
+      wrapper_element: container
+      link_text: 'Terms and Conditions'
+      prefix_text: 'I agree with the %terms.'
+      invalid_text: 'You must agree with the %terms before continuing'
+      new_window: true
+      nid: '29'
     order_summary:
       display_label: null
       step: _sidebar

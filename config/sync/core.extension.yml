@@ -18,6 +18,7 @@ module:
   checklistapi: 0
   ckeditor5: 0
   commerce: 0
+  commerce_agree_terms: 0
   commerce_better_product_variation_label: 0
   commerce_cart: 0
   commerce_checkout: 0
