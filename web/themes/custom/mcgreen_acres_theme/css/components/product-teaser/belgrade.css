@@ -1,5 +1,6 @@
 .product-image {
   margin-bottom: 2px;
+  min-height: 252px;
 }
 .product-image img {
   width: 100%;
