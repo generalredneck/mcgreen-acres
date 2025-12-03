@@ -4,11 +4,12 @@ maxlength_block_class_field: 255
 field_type: multiple_textfields
 default_case: standard
 block_classes_stored:
-  0: modal
-  1: fade
-  2: clv-section
-  3: col-12
-  6: container
+  - modal
+  - fade
+  - clv-section
+  - col-12
+  - container
+  - navigation
 enable_attributes: true
 enable_auto_complete: true
 qty_classes_per_block: 10

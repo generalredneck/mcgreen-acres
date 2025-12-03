@@ -1,0 +1,11 @@
+uuid: d501e64a-bfd9-4e16-8366-c8e694f2fbdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+id: copyright
+title: Copyright
+content:
+  value: '<div class="clv_copyright_wrapper"><p>Copyright © [current-date:html_year] McGreen Acres LLC. All right reserved.</p></div>'
+  format: full_html

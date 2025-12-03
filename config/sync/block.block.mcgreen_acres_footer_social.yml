@@ -11,8 +11,8 @@ dependencies:
     - mcgreen_acres_theme
 id: mcgreen_acres_footer_social
 theme: mcgreen_acres_theme
-region: footer2
-weight: -6
+region: footer3
+weight: -12
 provider: null
 plugin: 'simple_block:mcgreen_acres_footer_social'
 settings:

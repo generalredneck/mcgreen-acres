@@ -467,10 +467,11 @@ figure {
 .clv_footer_wrapper h2 {
   border-bottom: 1px solid #abcc20;
   margin-bottom: 10px;
+  margin-top: 20px;
   text-align: center;
 }
 
-.clv_footer_wrapper #block-mainnavigation li {
+.clv_footer_wrapper .navigation li {
   padding-left: 36px;
   padding-top: 10px;
 }
