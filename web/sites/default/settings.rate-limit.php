@@ -212,7 +212,6 @@ $settings['crawler_rate_limit.settings']['country_blocklist'] = [
   "IR", // Iran
   "IQ", // Iraq
   "IL", // Israel
-  "JP", // Japan
   "JO", // Jordan
   "KZ", // Kazakhstan
   "KW", // Kuwait
@@ -234,6 +233,7 @@ $settings['crawler_rate_limit.settings']['country_blocklist'] = [
   "SG", // Singapore
   "KR", // South Korea
   "LK", // Sri Lanka
+  "RU", // Russia
   "SY", // Syria
   "TW", // Taiwan
   "TJ", // Tajikistan
