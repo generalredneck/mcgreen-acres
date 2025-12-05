@@ -97,6 +97,11 @@ $settings['crawler_rate_limit.settings']['regular_traffic_asn'] = [
   'database' => $app_root . '/../private/geoip2/GeoLite2-ASN.mmdb',
 ];
 
+$settings['crawler_rate_limit.settings']['regular_traffic_country'] = [
+  'minimum_confidence_threshold' => 50,
+  'database' => $app_root . '/../private/geoip2/GeoLite2-Country.mmdb',
+];
+
 /**
  * Allow specified IP addresses to bypass rate limiting. Optional.
  *
@@ -154,6 +159,7 @@ $settings['crawler_rate_limit.settings']['ip_address_allowlist'] = [];
  * ];
  * @endcode
  */
+
 $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
   '216071',
   '24940',
@@ -161,4 +167,57 @@ $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
   '14061',
   '52449',
   '24560',
+];
+
+$settings['crawler_rate_limit.settings']['country_blocklist'] = [
+  // Asia
+  "AF", // Afghanistan
+  "AM", // Armenia
+  "AZ", // Azerbaijan
+  "BH", // Bahrain
+  "BD", // Bangladesh
+  "BT", // Bhutan
+  "BN", // Brunei
+  "KH", // Cambodia
+  "CN", // China
+  "CY", // Cyprus
+  "GE", // Georgia
+  "IN", // India
+  "ID", // Indonesia
+  "IR", // Iran
+  "IQ", // Iraq
+  "IL", // Israel
+  "JP", // Japan
+  "JO", // Jordan
+  "KZ", // Kazakhstan
+  "KW", // Kuwait
+  "KG", // Kyrgyzstan
+  "LA", // Laos
+  "LB", // Lebanon
+  "MY", // Malaysia
+  "MV", // Maldives
+  "MN", // Mongolia
+  "MM", // Myanmar
+  "NP", // Nepal
+  "KP", // North Korea
+  "OM", // Oman
+  "PK", // Pakistan
+  "PS", // Palestine
+  "PH", // Philippines
+  "QA", // Qatar
+  "SA", // Saudi Arabia
+  "SG", // Singapore
+  "KR", // South Korea
+  "LK", // Sri Lanka
+  "SY", // Syria
+  "TW", // Taiwan
+  "TJ", // Tajikistan
+  "TH", // Thailand
+  "TL", // Timor-Leste
+  "TR", // Turkey
+  "TM", // Turkmenistan
+  "AE", // United Arab Emirates
+  "UZ", // Uzbekistan
+  "VN", // Vietnam
+  "YE", // Yemen
 ];

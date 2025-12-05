@@ -1,0 +1,139 @@
+diff --git a/src/RateLimitManager.php b/src/RateLimitManager.php
+index 4df0ffd..dad72c8 100644
+--- a/src/RateLimitManager.php
++++ b/src/RateLimitManager.php
+@@ -28,6 +28,11 @@ class RateLimitManager implements RateLimitManagerInterface {
+    */
+   const CRL_ASN_UNKNOWN = -1;
+ 
++  /**
++   * Indicates that Country could not be determined.
++   */
++  const CRL_COUNTRY_UNKNOWN = "--";
++
+   /**
+    * Flag indicating whether rate limiter is enabled or not.
+    *
+@@ -119,6 +124,13 @@ class RateLimitManager implements RateLimitManagerInterface {
+    */
+   private string $asnDbPath;
+ 
++  /**
++   * Path to the local Country database.
++   *
++   * @var string
++   */
++  private string $countryDbPath;
++
+   /**
+    * Value to use in the Retry-After HTTP header if the request is blocked.
+    *
+@@ -147,6 +159,11 @@ class RateLimitManager implements RateLimitManagerInterface {
+    */
+   protected array $asnBlocklist;
+ 
++  /**
++   * @var array
++   */
++  protected array $countryBlockList;
++
+   /**
+    * IP address of the client.
+    *
+@@ -161,6 +178,20 @@ class RateLimitManager implements RateLimitManagerInterface {
+    */
+   protected int $clientAsn;
+ 
++  /**
++   * Country code of the client's IP address.
++   *
++   * @var string
++   */
++  protected string $clientCountry;
++
++  /**
++   * Minimum confidence threshold for country lookup.
++   *
++   * @var int
++   */
++  protected int $countryMinimumConfidenceThreshold;
++
+   /**
+    * Class constructor.
+    *
+@@ -181,6 +212,8 @@ class RateLimitManager implements RateLimitManagerInterface {
+     $this->intervalRegularAsn = $settings['regular_traffic_asn']['interval'];
+     $this->requestsRegularAsn = $settings['regular_traffic_asn']['requests'];
+     $this->asnDbPath = $settings['regular_traffic_asn']['database'];
++    $this->countryDbPath = $settings['regular_traffic_country']['database'];
++    $this->countryMinimumConfidenceThreshold = $settings['regular_traffic_country']['minimum_confidence_threshold'] ?? 0;
+     $this->intervalBots = $settings['bot_traffic']['interval'];
+     $this->requestsBots = $settings['bot_traffic']['requests'];
+     $this->limitBots = $settings['limit_bots'];
+@@ -189,6 +222,7 @@ class RateLimitManager implements RateLimitManagerInterface {
+ 
+     $this->ipAddressAllowlist = $settings['ip_address_allowlist'];
+     $this->asnBlocklist = $settings['asn_blocklist'];
++    $this->countryBlockList = $settings['country_blocklist'];
+ 
+     // Set retryAfter to higher interval value until we figure out which type of
+     // request we are handling in limit() method.
+@@ -300,6 +334,10 @@ class RateLimitManager implements RateLimitManagerInterface {
+     if (in_array($this->clientAsn, $this->asnBlocklist)) {
+       return TRUE;
+     }
++    $this->clientCountry ??= $this->ipToCountry($this->clientIp);
++    if (in_array($this->clientCountry, $this->countryBlockList)) {
++      return TRUE;
++    }
+ 
+     return FALSE;
+   }
+@@ -341,6 +379,47 @@ class RateLimitManager implements RateLimitManagerInterface {
+     return $asn;
+   }
+ 
++  /**
++   * Find location for an IP address.
++   *
++   * Possible reasons why ASN couldn't be determined:
++   * - PHP package geoip2/geoip2 is missing
++   * - GeoIP2 (ASN) database file is missing, corrupt or invalid
++   * - IP address has not been found in the GeoIP2 database
++   * - IP address belongs to a private IP address range.
++   *
++   * @param string $ip
++   *   IP address.
++   *
++   * @return string
++   *   Country ISO-3166 alpha2 code. If ASN could not be determined returns a constant CRL_ASN_UNKNOWN.
++   */
++  protected function ipToCountry($ip) {
++    $countryCode = self::CRL_COUNTRY_UNKNOWN;
++
++    if (empty($this->countryDbPath)) {
++      return $countryCode;
++    }
++
++    if (@class_exists('GeoIp2\Database\Reader')) {
++      try {
++        $reader = new Reader($this->countryDbPath);
++        $record = $reader->country($this->clientIp);
++        if ($record->country->confidence < $this->countryMinimumConfidenceThreshold) {
++          return $countryCode;
++        }
++        $countryCode = $record->country->isoCode;
++      }
++      catch (\Exception $exception) {
++        // Prevent "address not found" and other exceptions from causing
++        // fatal errors.
++      }
++    }
++
++    return $countryCode;
++  }
++
++
+   /**
+    * {@inheritdoc}
+    */
