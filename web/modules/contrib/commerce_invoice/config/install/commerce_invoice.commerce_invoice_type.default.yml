@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+label: 'Invoice'
+id: default
+numberPattern: invoice_default
+footerText: ''
+paymentTerms: ''
+workflow: invoice_default
+sendConfirmation: false
+confirmationBcc: ''
+traits: {  }
