@@ -160,14 +160,39 @@ $settings['crawler_rate_limit.settings']['ip_address_allowlist'] = [];
  * @endcode
  */
 
+// Read the asndrop.json file
+$asndrop_file = __DIR__ . '/asndrop.json';
+$asn_blocklist = [];
+
+if (file_exists($asndrop_file)) {
+  $file_content = file_get_contents($asndrop_file);
+  $lines = explode("\n", trim($file_content));
+
+  foreach ($lines as $line) {
+    if (!empty($line)) {
+      $json_object = json_decode($line, TRUE);
+      if ($json_object && isset($json_object['asn'])) {
+        $asn_blocklist[] = $json_object['asn'];
+      }
+    }
+  }
+}
+
 $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
+  "9009",
+  '14061',
   '216071',
+  '24560',
   '24940',
   '46918',
-  '14061',
   '52449',
-  '24560',
 ];
+
+// Merge into the crawler_rate_limit settings
+$settings['crawler_rate_limit.settings']['asn_blocklist'] = array_merge(
+  $settings['crawler_rate_limit.settings']['asn_blocklist'] ?? [],
+  $asn_blocklist
+);
 
 $settings['crawler_rate_limit.settings']['country_blocklist'] = [
   // Asia
@@ -220,4 +245,6 @@ $settings['crawler_rate_limit.settings']['country_blocklist'] = [
   "UZ", // Uzbekistan
   "VN", // Vietnam
   "YE", // Yemen
+  // Others
+  "CU", // Cuba
 ];
