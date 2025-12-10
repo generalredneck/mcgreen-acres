@@ -133,6 +133,7 @@ module:
   phone_number: 0
   phpass: 0
   physical: 0
+  prlp: 0
   profile: 0
   r4032login: 0
   realname: 0

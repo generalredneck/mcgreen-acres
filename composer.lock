@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15251c086f4cc2eb5bb13f58b34a2d53",
+    "content-hash": "3471f16f9834e02f278566f98bf6e076",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8852,6 +8852,67 @@
             "homepage": "https://drupal.org/project/physical",
             "support": {
                 "source": "https://git.drupalcode.org/project/physical"
+            }
+        },
+        {
+            "name": "drupal/prlp",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/prlp.git",
+                "reference": "2.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/prlp-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "7419b38f701814d78db781e04270f8ab6aa08cbb"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.1",
+                    "datestamp": "1730217302",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Caetano388",
+                    "homepage": "https://www.drupal.org/user/3548675"
+                },
+                {
+                    "name": "ccrawford91",
+                    "homepage": "https://www.drupal.org/user/2888131"
+                },
+                {
+                    "name": "Jitesh Doshi",
+                    "homepage": "https://www.drupal.org/user/1799550"
+                },
+                {
+                    "name": "leymannx",
+                    "homepage": "https://www.drupal.org/user/2482808"
+                },
+                {
+                    "name": "Tcraw",
+                    "homepage": "https://www.drupal.org/user/2899465"
+                }
+            ],
+            "description": "Password Reset Landing Page (PRLP)",
+            "homepage": "https://drupal.org/project/prlp",
+            "support": {
+                "source": "https://git.drupalcode.org/project/prlp",
+                "issues": "https://drupal.org/project/issues/prlp"
             }
         },
         {
