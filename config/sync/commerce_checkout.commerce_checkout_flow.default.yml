@@ -64,16 +64,31 @@ configuration:
       button_id: edit-actions-next
       auto_submit_review_form: false
       setup_future_usage: ''
+    customer_comments:
+      display_label: 'Comments & Special Requests'
+      step: review
+      weight: 7
+      wrapper_element: fieldset
+    agree_terms:
+      display_label: null
+      step: review
+      weight: 6
+      wrapper_element: container
+      link_text: 'Terms and Conditions'
+      prefix_text: 'I agree with the %terms.'
+      invalid_text: 'You must agree with the %terms before continuing'
+      new_window: true
+      nid: '29'
     payment_process:
       display_label: null
       step: payment
-      weight: 6
+      weight: 8
       wrapper_element: container
       capture: true
     completion_message:
       display_label: null
       step: complete
-      weight: 7
+      weight: 9
       wrapper_element: null
       message:
         value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
@@ -82,46 +97,32 @@ configuration:
     completion_register:
       display_label: null
       step: complete
-      weight: 8
+      weight: 10
       wrapper_element: null
     custom_checkout_message:
       display_label: null
       step: _sidebar
-      weight: 9
+      weight: 11
       wrapper_element: container
       message:
         value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
         format: full_html
-    agree_terms:
-      step: review
-      weight: 10
-      wrapper_element: container
-      link_text: 'Terms and Conditions'
-      prefix_text: 'I agree with the %terms.'
-      invalid_text: 'You must agree with the %terms before continuing'
-      new_window: true
-      nid: '29'
     order_summary:
       display_label: null
       step: _sidebar
-      weight: 10
+      weight: 12
       wrapper_element: container
       view: commerce_checkout_order_summary
     coupon_redemption:
       display_label: null
       step: _sidebar
-      weight: 11
+      weight: 13
       wrapper_element: container
       allow_multiple: false
-    customer_comments:
-      display_label: null
-      step: _disabled
-      weight: 12
-      wrapper_element: fieldset
     shipping_information:
       display_label: null
       step: _disabled
-      weight: 13
+      weight: 14
       wrapper_element: fieldset
       auto_recalculate: true
       require_shipping_profile: true
