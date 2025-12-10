@@ -1,0 +1,12 @@
+element:
+  version: VERSION
+  js:
+    js/sms-phone-number-form-element.js: {}
+  css:
+    component:
+      css/sms-phone-number-form-element.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - phone_number/element

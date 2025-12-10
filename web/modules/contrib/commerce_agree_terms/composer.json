@@ -1,0 +1,11 @@
+{
+    "name": "drupal/commerce_agree_terms",
+    "description": "This module provides a terms and conditions pane for checkout.",
+    "type": "drupal-module",
+    "homepage": "http://drupal.org/project/commerce_agree_terms",
+    "license": "GPL-2.0+",
+    "require": {
+        "drupal/commerce": "~2.8 || ^3.0"
+    },
+    "minimum-stability": "dev"
+}
