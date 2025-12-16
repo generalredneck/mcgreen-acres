@@ -1,0 +1,14 @@
+diff --git a/core/modules/update/update.fetch.inc b/core/modules/update/update.fetch.inc
+index c8e4990d38..69394d6d73 100644
+--- a/core/modules/update/update.fetch.inc
++++ b/core/modules/update/update.fetch.inc
+@@ -44,6 +44,9 @@ function _update_cron_notify(): void {
+       $default_langcode = \Drupal::languageManager()->getDefaultLanguage()->getId();
+       $request_time = \Drupal::time()->getRequestTime();
+       foreach ($notify_list as $target) {
++        if (empty($target)) {
++          continue;
++        }
+         if ($target_user = user_load_by_mail($target)) {
+           $target_langcode = $target_user->getPreferredLangcode();
+         }

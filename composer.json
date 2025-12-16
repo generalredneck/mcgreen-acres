@@ -235,6 +235,9 @@
                 "#3187215: Recurring orders show the wrong dates": "https://www.drupal.org/files/issues/2025-06-17/commerce_recurring-prepaid-billing-period-display.patch",
                 "#3215021: Customer Cancel Order Form": "https://www.drupal.org/files/issues/2025-10-26/3215021-fix-customer-cancel-redirect-7.patch"
             },
+            "drupal/core": {
+                "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch"
+            },
             "drupal/crawler_rate_limit": {
                 "Country blocklist": "patches/crawler_rate_limit-country_block.patch"
             },

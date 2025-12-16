@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3471f16f9834e02f278566f98bf6e076",
+    "content-hash": "67044bf7f17165a079a6883ab0b48803",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4054,16 +4054,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "11.2.8",
+            "version": "11.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "e9c111ea8f26f751797fbf6a918f845730fc95ee"
+                "reference": "68d46965d7ea84eef566624e889bf0421351958e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/e9c111ea8f26f751797fbf6a918f845730fc95ee",
-                "reference": "e9c111ea8f26f751797fbf6a918f845730fc95ee",
+                "url": "https://api.github.com/repos/drupal/core/zipball/68d46965d7ea84eef566624e889bf0421351958e",
+                "reference": "68d46965d7ea84eef566624e889bf0421351958e",
                 "shasum": ""
             },
             "require": {
@@ -4220,9 +4220,9 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/11.2.8"
+                "source": "https://github.com/drupal/core/tree/11.2.10"
             },
-            "time": "2025-11-12T21:53:29+00:00"
+            "time": "2025-12-10T09:59:17+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
