@@ -1,0 +1,28 @@
+uuid: 2de58629-6fa4-41df-aa6f-c232e5c8f035
+langcode: en
+status: true
+dependencies: {  }
+id: failed_order
+label: 'Failed Order'
+from: '[site:mail]'
+toType: email
+to: '[commerce_order:uid:entity:mail]'
+toRole: ''
+cc: ''
+bcc: '[site:mail]'
+replyTo: '[site:mail]'
+subject: 'Payment Permanently Failed - Order #[commerce_order:order_id].'
+body:
+  value: '<center><h2>Payment Permanently Failed.</h2></center><p>Your payment has failed to process for this subscription and will need to be rerun manually.&nbsp;</p><p>This can usually be fixed by removing and then re-adding your <a href="/user/[commerce_order:uid:target_id]/payment-methods">payment method</a> then having McGreen Acres re-run the transaction. If you add a new payment method, be sure to edit your <a href="/user/[commerce_order:uid:target_id]/subscriptions">subscription</a> and change it to the new one so future payments will succeed.</p><p>We will be in touch with you on next steps once the reason behind the failure has been identified. Feel free to reach out by calling, texting, or emailing us, but we should also be alerted by our online store of the problem.</p><p>Your subscription is not being canceled and your milk will be ready as usual.</p><p>Thank you and talk to you soon.</p>'
+  format: full_html
+conditions:
+  -
+    plugin: order_type
+    configuration:
+      bundles:
+        - recurring
+conditionOperator: AND
+queue: false
+logToEntity: true
+event: 'order_transition:mark_failed'
+targetEntityType: commerce_order

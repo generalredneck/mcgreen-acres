@@ -7,6 +7,12 @@ config:
   php: "8.4"
   composer_version: 2
 services:
+  appserver:
+    build_as_root:
+      - apt-get update && apt-get install -y libfaketime # Installs libfaketime
+    environment:
+      LD_PRELOAD: /usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 # Preloads the library
+  #    FAKETIME: "@2026-01-01 09:00:00" # Sets the faked time and starts the clock
   mail:
     type: mailpit
     mailFrom:
