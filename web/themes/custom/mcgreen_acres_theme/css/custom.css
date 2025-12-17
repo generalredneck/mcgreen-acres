@@ -993,3 +993,8 @@ th.views-field-remove-button {
 .phone-number-field div.form-item {
   display: block !important;
 }
+.nav-pills .nav-link.is-active
+ {
+    color: #fff;
+    background-color: #1FA12E;
+}

@@ -1,0 +1,30 @@
+mcgreen_acres_store.user_page:
+  title: 'Overview'
+  weight: -10
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\UserMenuLink
+  menu_name: account
+mcgreen_acres_store.user_edit:
+  menu_name: account
+  title: 'Login & Security'
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\UserEditMenuLink
+  weight: -8
+mcgreen_acres_store.address_book:
+  menu_name: account
+  title: Addresses
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\AddressBookMenuLink
+  weight: -6
+mcgreen_acres_store.payment_methods:
+  menu_name: account
+  title: Payment Methods
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\PaymentMethodsMenuLink
+  weight: -6
+mcgreen_acres_store.subscriptions:
+  menu_name: account
+  title: Subscriptions
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\SubscriptionsMenuLink
+  weight: -4
+mcgreen_acres_store.orders:
+  menu_name: account
+  title: Orders
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\OrdersMenuLink
+  weight: -2

@@ -291,6 +291,10 @@ function mcgreen_acres_theme_preprocess_menu(&$variables) {
   // To target a specific menu (e.g., main menu):
   if ($variables['menu_name'] == 'account') {
     foreach ($variables['items'] as $key => &$item) {
+      if ($item['url']->toString() == \Drupal::request()->getRequestUri()) {
+        $item['attributes']['class'][] = 'active';
+        $item['url']->setOption('attributes', ['class' => ['nav-link', 'active']]);
+      }
       $item['url']->setOption('attributes', ['class' => ['nav-link']]);
     }
   }

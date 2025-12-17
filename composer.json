@@ -236,7 +236,8 @@
                 "#3215021: Customer Cancel Order Form": "https://www.drupal.org/files/issues/2025-10-26/3215021-fix-customer-cancel-redirect-7.patch"
             },
             "drupal/core": {
-                "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch"
+                "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch",
+                "active trail": "https://www.drupal.org/files/issues/2025-11-03/3359511-142-d11.2-no-tests.patch"
             },
             "drupal/crawler_rate_limit": {
                 "Country blocklist": "patches/crawler_rate_limit-country_block.patch"
@@ -319,6 +320,7 @@
     },
     "require-dev": {
         "drupal/coder": "^8.3",
+        "drupal/devel": "^5.4",
         "phpcompatibility/php-compatibility": "^9.3"
     }
 }
