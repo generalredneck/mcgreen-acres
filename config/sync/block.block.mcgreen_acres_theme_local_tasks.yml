@@ -2,6 +2,9 @@ uuid: 9ceefd22-0e9a-42f0-b547-f9994f5f0fe4
 langcode: en
 status: true
 dependencies:
+  module:
+    - block_visibility_groups
+    - user
   theme:
     - mcgreen_acres_theme
 _core:
@@ -19,4 +22,16 @@ settings:
   provider: core
   primary: true
   secondary: true
-visibility: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      staff: staff
+      administrator: administrator

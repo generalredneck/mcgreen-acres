@@ -763,6 +763,9 @@ $settings['entity_update_batch_size'] = 50;
  */
 $settings['entity_update_backup'] = TRUE;
 
+$settings['config_exclude_modules'] = [
+  'devel',
+];
 
  if (file_exists($app_root . '/' . $site_path . '/settings.rate-limit.php')) {
    include $app_root . '/' . $site_path . '/settings.rate-limit.php';
