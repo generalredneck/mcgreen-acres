@@ -51,8 +51,7 @@ class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInte
     }
     /*$markup = file_get_contents(__DIR__ . '/../../../McGreenAcres feed - Juicer Social-desktop.html');*/
     $markup = <<<HTML
-<script src="https://assets.juicer.io/embed.js" type="text/javascript"></script>
-<link href="https://assets.juicer.io/embed.css" media="all" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://www.juicer.io/embed/mcgreenacres/embed-code.js" async defer></script>
 <ul class="juicer-feed" data-feed-id="mcgreenacres" data-per="7" data-pages="1">
   <h1 class="referral"><a href="https://www.juicer.io">Powered by Juicer.io</a></h1>
 </ul>
