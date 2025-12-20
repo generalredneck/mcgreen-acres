@@ -7,16 +7,16 @@ _core:
 id: front
 label: 'Front page'
 tags:
-  image_src: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
-  description: 'Locally owned business, focused on naturally producing products like honey, eggs, poultry, and rabbit.'
-  title: 'McGreen Acres | Naturally happy animals'
-  shortlink: '[site:url]'
+  abstract: 'Locally owned business, focused on Pastured GMO/Soy/Corn Free Chicken, Eggs & Pork Pastured Turkey and Raw Milk Herd Share. If you’ve ever wondered how to feed your family better… McGreen Acres began with the same concerns about GMOs, hormones, and food production.'
   canonical_url: '[site:url]'
-  abstract: 'Locally owned business, focused on naturally producing products like honey, eggs, poultry, and rabbit.'
-  keywords: Agriculture
-  hreflang_xdefault: '[site:url]'
+  description: 'Locally owned business, focused on Pastured GMO/Soy/Corn Free Chicken, Eggs & Pork Pastured Turkey and Raw Milk Herd Share. If you’ve ever wondered how to feed your family better… McGreen Acres began with the same concerns about GMOs, hormones, and food production.'
   'hreflang_per_language:hreflang_en': '[site:url]'
-  og_url: '[site:url]'
+  hreflang_xdefault: '[site:url]'
+  image_src: '[site:url]themes/custom/mcgreen_acres_theme/logo.png'
+  keywords: Agriculture
+  og_description: 'Locally owned business, focused on Pastured GMO/Soy/Corn Free Chicken, Eggs & Pork Pastured Turkey and Raw Milk Herd Share. If you’ve ever wondered how to feed your family better… McGreen Acres began with the same concerns about GMOs, hormones, and food production.'
   og_title: '[site:name]'
-  og_description: 'Locally owned business, focused on naturally producing products like honey, eggs, poultry, and rabbit.'
+  og_url: '[site:url]'
+  shortlink: '[site:url]'
+  title: 'McGreen Acres | Naturally happy animals'
   twitter_cards_title: '[site:name]'
