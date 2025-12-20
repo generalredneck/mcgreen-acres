@@ -10,6 +10,7 @@ dependencies:
     - commerce_shipping
     - commerce_stripe
     - facebook_pixel_commerce
+    - mcgreen_acres_store
 _core:
   default_config_hash: mj-wWv7nj79DC7uw5I63mZ3ch0PNp4hyonJyhuEwKDc
 label: Default
@@ -64,31 +65,39 @@ configuration:
       button_id: edit-actions-next
       auto_submit_review_form: false
       setup_future_usage: ''
-    customer_comments:
-      display_label: 'Comments & Special Requests'
-      step: review
-      weight: 7
-      wrapper_element: fieldset
-    agree_terms:
+    newsletter_subscribe:
       display_label: null
       step: review
       weight: 6
+      wrapper_element: container
+      mailchimp_list_id: e31f5f79c4
+      tags: Customer
+      subscribe_text: 'Keep me updated with news and offers.'
+    agree_terms:
+      display_label: null
+      step: review
+      weight: 7
       wrapper_element: container
       link_text: 'Terms and Conditions'
       prefix_text: 'I agree with the %terms.'
       invalid_text: 'You must agree with the %terms before continuing'
       new_window: true
       nid: '29'
+    customer_comments:
+      display_label: 'Comments & Special Requests'
+      step: review
+      weight: 8
+      wrapper_element: fieldset
     payment_process:
       display_label: null
       step: payment
-      weight: 8
+      weight: 9
       wrapper_element: container
       capture: true
     completion_message:
       display_label: null
       step: complete
-      weight: 9
+      weight: 10
       wrapper_element: null
       message:
         value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
@@ -97,32 +106,32 @@ configuration:
     completion_register:
       display_label: null
       step: complete
-      weight: 10
+      weight: 11
       wrapper_element: null
-    custom_checkout_message:
+    order_summary:
       display_label: null
       step: _sidebar
-      weight: 11
+      weight: 13
       wrapper_element: container
-      message:
-        value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
-        format: full_html
-    order_summary:
+      view: commerce_checkout_order_summary
+    custom_checkout_message:
       display_label: null
       step: _sidebar
       weight: 12
       wrapper_element: container
-      view: commerce_checkout_order_summary
+      message:
+        value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
+        format: full_html
     coupon_redemption:
       display_label: null
       step: _sidebar
-      weight: 13
+      weight: 14
       wrapper_element: container
       allow_multiple: false
     shipping_information:
       display_label: null
       step: _disabled
-      weight: 14
+      weight: 15
       wrapper_element: fieldset
       auto_recalculate: true
       require_shipping_profile: true

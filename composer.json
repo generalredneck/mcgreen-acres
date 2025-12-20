@@ -277,10 +277,11 @@
         },
         "drupal-lenient": {
             "allowed-list": [
-                "drupal/pdf",
                 "drupal/commerce_prorater_stepped_proportional",
-                "drupal/webform_ip_geo",
-                "drupal/user_csv_import"
+                "drupal/mailchimp_ecommerce",
+                "drupal/pdf",
+                "drupal/user_csv_import",
+                "drupal/webform_ip_geo"
             ]
         }
     },
