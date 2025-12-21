@@ -45,6 +45,7 @@ module:
   commerce_store: 0
   commerce_stripe: 0
   commerce_tax: 0
+  commerce_tip: 0
   config: 0
   config_split: 0
   contextual: 0
@@ -52,6 +53,7 @@ module:
   crop: 0
   csv_serialization: 0
   ctools: 0
+  custom_commerce_tip: 0
   datetime: 0
   datetime_range: 0
   dblog: 0

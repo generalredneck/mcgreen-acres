@@ -78,6 +78,7 @@
         "drupal/commerce_stock": "^3.0@beta",
         "drupal/commerce_stripe": "^2.0",
         "drupal/commerce_timeslots": "1.0.x-dev",
+        "drupal/commerce_tip": "^1.0",
         "drupal/commerce_variation_bundle": "^1.0",
         "drupal/config_split": "^2.0",
         "drupal/core": "^11.0",
@@ -235,6 +236,12 @@
                 "#3187215: Recurring orders show the wrong dates": "https://www.drupal.org/files/issues/2025-06-17/commerce_recurring-prepaid-billing-period-display.patch",
                 "#3215021: Customer Cancel Order Form": "https://www.drupal.org/files/issues/2025-10-26/3215021-fix-customer-cancel-redirect-7.patch"
             },
+            "drupal/commerce_tip": {
+                "#3429408 d11": "https://www.drupal.org/files/issues/2024-03-16/commerce_tip.1.0.2.rector.patch",
+                "#3564301 8.4": "patches/commerce_tip-8.4_fix-3564301-3.patch",
+                "#3564307 Cannot add tip": "patches/commerce_tip-3564307-cannot-add-tip.patch",
+                "#3564349 Radio button label": "patches/commerce_tip-3564349-radio-buttons-label.patch"
+            },
             "drupal/core": {
                 "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch",
                 "active trail": "https://www.drupal.org/files/issues/2025-11-03/3359511-142-d11.2-no-tests.patch"
@@ -277,6 +284,7 @@
         },
         "drupal-lenient": {
             "allowed-list": [
+                "drupal/commerce_tip",
                 "drupal/commerce_prorater_stepped_proportional",
                 "drupal/mailchimp_ecommerce",
                 "drupal/pdf",

@@ -1,0 +1,8 @@
+name: Custom Commerce Tip
+type: module
+description: Custom overrides for commerce tip module
+core_version_requirement: ^9 || ^10 || ^11
+package: Custom
+dependencies:
+  - commerce:commerce
+  - commerce_tip:commerce_tip

@@ -1,0 +1,12 @@
+diff --git a/src/Plugin/Commerce/InlineForm/TipInlineForm.php b/src/Plugin/Commerce/InlineForm/TipInlineForm.php
+index 4663b8a..5f19fd9 100644
+--- a/src/Plugin/Commerce/InlineForm/TipInlineForm.php
++++ b/src/Plugin/Commerce/InlineForm/TipInlineForm.php
+@@ -152,6 +152,7 @@ class TipInlineForm extends InlineFormBase {
+         '#type' => 'number',
+         '#min' => 0.01,
+         '#step' => 0.01,
++        '#default_value' => '1',
+         '#placeholder' => t('Enter tip number'),
+         '#attributes' => [
+           'id' => 'tip_info_other_tip_number',

@@ -9,6 +9,7 @@ dependencies:
     - commerce_promotion
     - commerce_shipping
     - commerce_stripe
+    - commerce_tip
     - facebook_pixel_commerce
     - mcgreen_acres_store
 _core:
@@ -103,17 +104,19 @@ configuration:
         value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
         format: full_html
       display_pane_summaries: false
+    commerce_tip_checkout_pane:
+      step: order_information
+      weight: 10
+      wrapper_element: fieldset
+      tip_description:
+        value: ''
+        format: plain_text
+      tip_options: 'none|None,other|Other'
     completion_register:
       display_label: null
       step: complete
       weight: 11
       wrapper_element: null
-    order_summary:
-      display_label: null
-      step: _sidebar
-      weight: 13
-      wrapper_element: container
-      view: commerce_checkout_order_summary
     custom_checkout_message:
       display_label: null
       step: _sidebar
@@ -122,6 +125,12 @@ configuration:
       message:
         value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
         format: full_html
+    order_summary:
+      display_label: null
+      step: _sidebar
+      weight: 13
+      wrapper_element: container
+      view: commerce_checkout_order_summary
     coupon_redemption:
       display_label: null
       step: _sidebar

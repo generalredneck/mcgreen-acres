@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Custom Commerce Tip module file.
+ */
+
+/**
+ * Implements hook_plugin_info_alter().
+ */
+function custom_commerce_tip_plugin_info_alter(&$definitions) {
+  if (isset($definitions['commerce_tip_inline_form'])) {
+    $definitions['commerce_tip_inline_form']['class'] = 'Drupal\custom_commerce_tip\Plugin\Commerce\InlineForm\TipInlineForm';
+  }
+}
