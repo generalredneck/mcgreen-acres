@@ -1,0 +1,30 @@
+uuid: f338e971-e5b7-4cbe-8c19-1af6c99288ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_visibility_groups
+    - commerce_checkout
+    - system
+  theme:
+    - mcgreen_acres_theme
+id: mcgreen_acres_theme_checkoutprogress
+theme: mcgreen_acres_theme
+region: content
+weight: -11
+provider: null
+plugin: commerce_checkout_progress
+settings:
+  id: commerce_checkout_progress
+  label: 'Checkout progress'
+  label_display: '0'
+  provider: commerce_checkout
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/checkout/*'

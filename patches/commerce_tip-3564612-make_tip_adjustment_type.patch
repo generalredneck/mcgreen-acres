@@ -1,0 +1,45 @@
+commit aeeb906baacc8c0276c95d2076a34867ef7da889
+Author: Allan Chappell <generalredneck@gmail.com>
+Date:   Mon Dec 22 15:19:47 2025 -0600
+
+    Changing the adjustment type to 'tip'
+
+diff --git a/commerce_tip.commerce_adjustment_types.yml b/commerce_tip.commerce_adjustment_types.yml
+new file mode 100644
+index 0000000..a2d300f
+--- /dev/null
++++ b/commerce_tip.commerce_adjustment_types.yml
+@@ -0,0 +1,6 @@
++tip:
++  label: 'Tip'
++  singular_label: 'tip'
++  plural_label: 'tips'
++  has_ui: false
++  weight: 2
+diff --git a/src/Plugin/Commerce/InlineForm/TipInlineForm.php b/src/Plugin/Commerce/InlineForm/TipInlineForm.php
+index 5f19fd9..c2ebce0 100644
+--- a/src/Plugin/Commerce/InlineForm/TipInlineForm.php
++++ b/src/Plugin/Commerce/InlineForm/TipInlineForm.php
+@@ -197,7 +197,7 @@ class TipInlineForm extends InlineFormBase {
+       $type = $adjustment->getType();
+       $label = $adjustment->getLabel();
+       $sourceId = $adjustment->getSourceId();
+-      if ($type == 'custom'  && $sourceId == 'custom' && $label == 'Tip') {
++      if ($type == 'tip'  && $sourceId == 'commerce_tip' && $label == 'Tip') {
+         $hide_tip = TRUE;
+         /** @var \Drupal\commerce_price\Price $amount */
+         $amount = $adjustment->getAmount();
+@@ -305,11 +305,11 @@ class TipInlineForm extends InlineFormBase {
+     }
+     if ($values['tip'] !== 'none' && !empty($tip)) {
+       $order->addAdjustment(new Adjustment([
+-        'type' => 'custom',
++        'type' => 'tip',
+         'label' => 'Tip',
+         'amount' => new Price($tip, $total_price->getCurrencyCode()),
+         'locked' => TRUE,
+-        'source_id' => 'custom',
++        'source_id' => 'commerce_tip',
+         'percentage' => NULL,
+         'included' => FALSE,
+       ]))->save();

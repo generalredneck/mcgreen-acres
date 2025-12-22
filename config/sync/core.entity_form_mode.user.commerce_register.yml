@@ -1,0 +1,11 @@
+uuid: cfc3074f-ce01-4836-b252-4bd526c07d4b
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.commerce_register
+label: 'Commerce Register'
+description: null
+targetEntityType: user
+cache: true

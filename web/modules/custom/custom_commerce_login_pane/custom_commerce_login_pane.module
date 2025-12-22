@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\Core\Url;
+
+/**
+ * @file
+ * Primary module hooks for Custom Commerce Login Pane module.
+ */
+
+/**
+ * Implements hook_plugin_info_alter().
+ */
+function custom_commerce_login_pane_plugin_info_alter(&$definitions) {
+  if (isset($definitions['commerce_checkout_pane'])) {
+    $definitions['commerce_checkout_pane']['class'] = 'Drupal\custom_commerce_login_pane\Plugin\Commerce\CheckoutPane\Login';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function custom_commerce_login_pane_form_user_login_form_alter(&$form, &$form_state, $form_id) {
+  $form['name']['#title'] = 'Email address';
+  $form['actions']['forgot_password'] = [
+    '#type' => 'link',
+    '#attributes' => ['class' => ['btn', 'btn-outline-primary']],
+    '#weight' => 100,
+    '#title' => t('Forgot password?'),
+    '#url' => Url::fromRoute('user.pass'),
+  ];
+}

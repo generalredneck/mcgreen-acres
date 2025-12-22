@@ -1,0 +1,5 @@
+custom_user_tokens.admin:
+  title: 'Custom User Tokens'
+  parent: user.admin_index
+  route_name: custom_user_tokens.settings
+  weight: 10

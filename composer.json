@@ -240,7 +240,8 @@
                 "#3429408 d11": "https://www.drupal.org/files/issues/2024-03-16/commerce_tip.1.0.2.rector.patch",
                 "#3564301 8.4": "patches/commerce_tip-8.4_fix-3564301-3.patch",
                 "#3564307 Cannot add tip": "patches/commerce_tip-3564307-cannot-add-tip.patch",
-                "#3564349 Radio button label": "patches/commerce_tip-3564349-radio-buttons-label.patch"
+                "#3564349 Radio button label": "patches/commerce_tip-3564349-radio-buttons-label.patch",
+                "#3564612 Make Tip Adjustment Type": "patches/commerce_tip-3564612-make_tip_adjustment_type.patch"
             },
             "drupal/core": {
                 "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch",

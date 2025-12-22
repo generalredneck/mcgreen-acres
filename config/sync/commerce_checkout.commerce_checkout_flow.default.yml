@@ -10,6 +10,7 @@ dependencies:
     - commerce_shipping
     - commerce_stripe
     - commerce_tip
+    - custom_commerce_login_pane
     - facebook_pixel_commerce
     - mcgreen_acres_store
 _core:
@@ -19,20 +20,20 @@ id: default
 plugin: multistep_default
 configuration:
   display_checkout_progress: true
-  display_checkout_progress_breadcrumb_links: false
+  display_checkout_progress_breadcrumb_links: true
   display_sidebar_checkout_complete: false
   guest_order_assign: true
-  guest_new_account: true
+  guest_new_account: false
   guest_new_account_notify: true
   panes:
     login:
       display_label: null
       step: login
       weight: 0
-      wrapper_element: null
-      allow_guest_checkout: true
-      allow_registration: false
-      registration_form_mode: register
+      wrapper_element: container
+      allow_guest_checkout: false
+      allow_registration: true
+      registration_form_mode: commerce_register
     contact_information:
       display_label: null
       step: order_information
@@ -53,15 +54,24 @@ configuration:
       step: order_information
       weight: 3
       wrapper_element: container
+    commerce_tip_checkout_pane:
+      display_label: null
+      step: order_information
+      weight: 4
+      wrapper_element: fieldset
+      tip_description:
+        value: ''
+        format: plain_text
+      tip_options: 'none|None,other|Other'
     review:
       display_label: null
       step: review
-      weight: 4
+      weight: 5
       wrapper_element: null
     stripe_review:
       display_label: null
       step: review
-      weight: 5
+      weight: 6
       wrapper_element: container
       button_id: edit-actions-next
       auto_submit_review_form: false
@@ -69,21 +79,11 @@ configuration:
     newsletter_subscribe:
       display_label: null
       step: review
-      weight: 6
+      weight: 7
       wrapper_element: container
       mailchimp_list_id: e31f5f79c4
       tags: Customer
       subscribe_text: 'Keep me updated with news and offers.'
-    agree_terms:
-      display_label: null
-      step: review
-      weight: 7
-      wrapper_element: container
-      link_text: 'Terms and Conditions'
-      prefix_text: 'I agree with the %terms.'
-      invalid_text: 'You must agree with the %terms before continuing'
-      new_window: true
-      nid: '29'
     customer_comments:
       display_label: 'Comments & Special Requests'
       step: review
@@ -104,23 +104,10 @@ configuration:
         value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
         format: full_html
       display_pane_summaries: false
-    commerce_tip_checkout_pane:
-      step: order_information
-      weight: 10
-      wrapper_element: fieldset
-      tip_description:
-        value: ''
-        format: plain_text
-      tip_options: 'none|None,other|Other'
-    completion_register:
-      display_label: null
-      step: complete
-      weight: 11
-      wrapper_element: null
     custom_checkout_message:
       display_label: null
       step: _sidebar
-      weight: 12
+      weight: 11
       wrapper_element: container
       message:
         value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
@@ -128,19 +115,34 @@ configuration:
     order_summary:
       display_label: null
       step: _sidebar
-      weight: 13
+      weight: 12
       wrapper_element: container
       view: commerce_checkout_order_summary
     coupon_redemption:
       display_label: null
       step: _sidebar
-      weight: 14
+      weight: 13
       wrapper_element: container
       allow_multiple: false
-    shipping_information:
+    agree_terms:
+      display_label: null
+      step: _disabled
+      weight: 14
+      wrapper_element: container
+      link_text: 'Terms and Conditions'
+      prefix_text: 'I agree with the %terms'
+      invalid_text: 'You must agree with the %terms before continuing'
+      new_window: true
+      nid: null
+    completion_register:
       display_label: null
       step: _disabled
       weight: 15
+      wrapper_element: null
+    shipping_information:
+      display_label: null
+      step: _disabled
+      weight: 16
       wrapper_element: fieldset
       auto_recalculate: true
       require_shipping_profile: true

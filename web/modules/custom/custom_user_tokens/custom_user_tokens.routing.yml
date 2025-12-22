@@ -1,0 +1,7 @@
+custom_user_tokens.settings:
+  path: '/admin/config/people/custom-user-tokens'
+  defaults:
+    _form: '\Drupal\custom_user_tokens\Form\SettingsForm'
+    _title: 'Custom User Tokens'
+  requirements:
+    _permission: 'administer site configuration'

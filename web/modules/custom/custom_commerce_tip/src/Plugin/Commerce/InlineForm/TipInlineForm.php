@@ -68,11 +68,20 @@ class TipInlineForm extends TipInlineFormBase {
     return $inline_form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitInlineForm(array &$inline_form, FormStateInterface $form_state) {
     $values = $form_state->getValue($inline_form['#parents']);
     $inline_configuration = $form_state->get('inline_configuration');
     /** @var \Drupal\commerce_order\Entity\Order $order */
     $order = \Drupal::entityTypeManager()->getStorage('commerce_order')->load($inline_configuration['order_id']);
+    if ($order->getAdjustments(['tip'])) {
+      // We don't want to duplicate the tip adjustment when someone returns to
+      // the payment information page after they've already added a tip.
+      // They will have to use the "Remove Tip" button to remove the tip.
+      return;
+    }
     $total_price = $order->getTotalPrice();
     $tip = $values['tip_info']['tip'];
     if ($values['tip_info']['tip_options'] && $values['tip_info']['tip'] == 'other') {
@@ -83,11 +92,11 @@ class TipInlineForm extends TipInlineFormBase {
     }
     if ($values['tip_info']['tip'] !== 'none' && !empty($tip)) {
       $order->addAdjustment(new Adjustment([
-        'type' => 'custom',
+        'type' => 'tip',
         'label' => 'Tip',
         'amount' => new Price($tip, $total_price->getCurrencyCode()),
         'locked' => TRUE,
-        'source_id' => 'custom',
+        'source_id' => 'commerce_tip',
         'percentage' => NULL,
         'included' => FALSE,
       ]))->save();

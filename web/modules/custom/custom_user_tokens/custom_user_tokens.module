@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Custom User Tokens module.
+ */
+
+use Drupal\Core\Render\BubbleableMetadata;
+
+/**
+ * Implements hook_token_info().
+ */
+function custom_user_tokens_token_info() {
+  $info['tokens']['user']['conditional_display'] = [
+    'name' => t('Conditional display name'),
+    'description' => t('A configurable display name that falls back to email if empty. Configure the pattern in the module settings.'),
+    'type' => 'user',
+  ];
+
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function custom_user_tokens_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  if ($type == 'user' && !empty($data['user'])) {
+    /** @var \Drupal\user\UserInterface $account */
+    $account = $data['user'];
+
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'conditional_display':
+          // Get the configured pattern from settings.
+          $config = \Drupal::config('custom_user_tokens.settings');
+          $pattern = $config->get('conditional_display_pattern');
+
+          if (!empty($pattern)) {
+            // Replace tokens in the pattern.
+            $replacement = \Drupal::token()->replace($pattern, ['user' => $account], $options, $bubbleable_metadata);
+            // If the replacement is not empty after trimming, use it.
+            if (trim($replacement) !== '') {
+              $replacements[$original] = $replacement;
+              break;
+            }
+          }
+
+          // Fallback to email if pattern is empty or results in empty string.
+          $replacements[$original] = $account->getEmail();
+          break;
+      }
+    }
+  }
+
+  return $replacements;
+}

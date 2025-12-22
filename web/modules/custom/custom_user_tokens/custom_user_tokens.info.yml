@@ -1,0 +1,7 @@
+name: Custom User Tokens
+type: module
+description: Provides custom tokens for user data with conditional output.
+core_version_requirement: ^9 || ^10 || ^11
+package: Custom
+dependencies:
+  - drupal:token

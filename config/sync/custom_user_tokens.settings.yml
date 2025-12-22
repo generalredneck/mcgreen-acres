@@ -1,0 +1,1 @@
+conditional_display_pattern: '[user:field_name] [user:field_last_name]'
