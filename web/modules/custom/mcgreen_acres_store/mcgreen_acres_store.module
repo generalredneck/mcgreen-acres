@@ -90,3 +90,9 @@ function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
     }
   }
 }
+
+function mcgreen_acres_store_plugin_info_alter(&$definitions) {
+  if (isset($definitions[''])) {
+    $definitions['commerce_checkout_pane']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomerComments';
+  }
+}
