@@ -1,0 +1,101 @@
+diff --git a/composer.json b/composer.json
+index 33ece37cbcf21a1d3f48fe86c49f7af0ba3a43da..969ee6cee44b210752fa6d5d54b9e0ebaf150210 100644
+--- a/composer.json
++++ b/composer.json
+@@ -7,5 +7,12 @@
+   "require": {
+     "drupal/commerce": "^2.7 || ^3",
+     "drupal/core": "^9 || ^10 || ^11"
+-  }
++  },
++  "extra": {
++    "drush": {
++        "services": {
++            "drush.services.yml": "^13 || ^14"
++        }
++    }
++}
+ }
+diff --git a/drush.services.yml b/drush.services.yml
+new file mode 100644
+index 0000000000000000000000000000000000000000..0a8e2b296043e04fae25c401f98480500e600453
+--- /dev/null
++++ b/drush.services.yml
+@@ -0,0 +1,5 @@
++services:
++  commerce_reports.commands:
++    class: Drupal\commerce_reports\Commands\CommerceReportsCommands
++    tags:
++      - { name: drush.command }
+diff --git a/src/Commands/CommerceReportsCommands.php b/src/Commands/CommerceReportsCommands.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..02301a815625ec8154a9da084deed63aa20cfd7a
+--- /dev/null
++++ b/src/Commands/CommerceReportsCommands.php
+@@ -0,0 +1,46 @@
++<?php
++
++namespace Drupal\commerce_reports\Commands;
++
++use Drupal\Core\DependencyInjection\DependencySerializationTrait;
++use Drupal\Core\StringTranslation\StringTranslationTrait;
++use Drupal\commerce_reports\Form\OrderReportGenerateForm;
++use Drush\Commands\DrushCommands;
++
++/**
++ * Commands for commerce reports.
++ */
++class CommerceReportsCommands extends DrushCommands {
++
++  use StringTranslationTrait;
++  use DependencySerializationTrait;
++
++  /**
++   * Generates commerce reports.
++   *
++   * @param string|null $plugin_id
++   *   Plugin id or null to generate all reports.
++   *
++   * @usage commerce_reports:generate-reports order_items_report
++   *
++   * @command commerce_reports:generate-reports
++   * @aliases crgr
++   */
++  public function generateReports(?string $plugin_id = NULL) {
++    $batch = [
++      'title' => $this->t('Generating reports'),
++      'progress_message' => '',
++      'operations' => [
++        [
++          [OrderReportGenerateForm::class, 'processBatch'],
++          [$plugin_id],
++          $this->t('Generating reports'),
++        ],
++      ],
++      'finished' => [$this, 'finishBatch'],
++    ];
++    batch_set($batch);
++    drush_backend_batch_process();
++  }
++
++}
+diff --git a/src/Form/OrderReportGenerateForm.php b/src/Form/OrderReportGenerateForm.php
+index 16d4a7eafd6967975ed946103b852b89d7b604de..498499958955d7462601e1c66d8798b81fbb09ed 100644
+--- a/src/Form/OrderReportGenerateForm.php
++++ b/src/Form/OrderReportGenerateForm.php
+@@ -105,12 +105,12 @@ class OrderReportGenerateForm extends FormBase {
+   /**
+    * Processes the batch and generates the order reports.
+    *
+-   * @param string $plugin_id
++   * @param string|null $plugin_id
+    *   The plugin ID.
+-   * @param array $context
++   * @param array|\DrushBatchContext $context
+    *   The batch context information.
+    */
+-  public static function processBatch(string $plugin_id, array &$context) {
++  public static function processBatch(?string $plugin_id, array &$context) {
+     $order_storage = \Drupal::entityTypeManager()->getStorage('commerce_order');
+ 
+     // Initialization.
