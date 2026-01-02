@@ -245,7 +245,8 @@
             },
             "drupal/core": {
                 "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch",
-                "active trail": "https://www.drupal.org/files/issues/2025-11-03/3359511-142-d11.2-no-tests.patch"
+                "active trail": "https://www.drupal.org/files/issues/2025-11-03/3359511-142-d11.2-no-tests.patch",
+                "views fatal on aggregation": "https://www.drupal.org/files/issues/2025-12-03/3513598-views-entityfield-array-filter-typeerror-11.2.x_0.patch"
             },
             "drupal/crawler_rate_limit": {
                 "Country blocklist": "patches/crawler_rate_limit-country_block.patch"

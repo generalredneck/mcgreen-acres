@@ -9,9 +9,9 @@ dependencies:
     - field.field.user.user.field_name
     - field.field.user.user.field_phone
     - field.field.user.user.user_picture
-    - image.style.thumbnail
+    - image.style.d01_square
   module:
-    - image
+    - focal_point
     - path
     - phone_number
     - text
@@ -90,12 +90,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   user_picture:
-    type: image_image
+    type: image_focal_point
     weight: 4
     region: content
     settings:
       progress_indicator: throbber
-      preview_image_style: thumbnail
+      preview_image_style: d01_square
+      preview_link: true
+      offsets: '50,50'
     third_party_settings: {  }
 hidden:
   commerce_remote_id: true
