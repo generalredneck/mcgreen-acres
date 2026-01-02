@@ -236,6 +236,9 @@
                 "#3187215: Recurring orders show the wrong dates": "https://www.drupal.org/files/issues/2025-06-17/commerce_recurring-prepaid-billing-period-display.patch",
                 "#3215021: Customer Cancel Order Form": "https://www.drupal.org/files/issues/2025-10-26/3215021-fix-customer-cancel-redirect-7.patch"
             },
+            "drupal/commerce_reports": {
+                "#2974570: Drush support": "patches/commerce_reports-2974570-drush_support-15.patch"
+            },
             "drupal/commerce_tip": {
                 "#3429408 d11": "https://www.drupal.org/files/issues/2024-03-16/commerce_tip.1.0.2.rector.patch",
                 "#3564301 8.4": "patches/commerce_tip-8.4_fix-3564301-3.patch",
