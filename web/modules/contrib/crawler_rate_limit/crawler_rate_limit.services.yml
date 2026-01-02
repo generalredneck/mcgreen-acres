@@ -1,0 +1,14 @@
+services:
+  crawler_rate_limit.crawler_detect:
+    class: Jaybizzle\CrawlerDetect\CrawlerDetect
+  crawler_rate_limit.manager:
+    class: Drupal\crawler_rate_limit\RateLimitManager
+    arguments: ['@crawler_rate_limit.crawler_detect', '@crawler_rate_limit.backend_factory']
+  crawler_rate_limit.middleware:
+    class: Drupal\crawler_rate_limit\CrawlerRateLimitMiddleware
+    arguments: ['@crawler_rate_limit.manager']
+    tags:
+      - { name: http_middleware, priority: 240 }
+  crawler_rate_limit.backend_factory:
+    class: Drupal\crawler_rate_limit\RateLimitBackendFactory
+    arguments: ['@service_container']

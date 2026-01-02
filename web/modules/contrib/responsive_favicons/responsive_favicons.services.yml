@@ -1,0 +1,9 @@
+services:
+  responsive_favicons.manager:
+    class: Drupal\responsive_favicons\ResponsiveFavicons
+    arguments:
+      - '@config.factory'
+      - '@file_url_generator'
+      - '@asset.query_string'
+      - '@cache.data'
+      - '@module_handler'

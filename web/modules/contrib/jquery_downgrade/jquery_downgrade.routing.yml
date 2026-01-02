@@ -1,0 +1,8 @@
+jquery_downgrade.settings:
+  path: '/admin/config/development/jquery-downgrade'
+  defaults:
+    _form: '\Drupal\jquery_downgrade\Form\JQueryDowngradeSettingsForm'
+    _title: 'jQuery Downgrade Settings'
+  requirements:
+    _permission: 'administer site configuration'
+
