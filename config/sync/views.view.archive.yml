@@ -27,24 +27,9 @@ display:
       title: 'Monthly archive'
       fields: {  }
       pager:
-        type: mini
+        type: none
         options:
           offset: 0
-          pagination_heading_level: h4
-          items_per_page: 10
-          total_pages: 0
-          id: 0
-          tags:
-            next: ››
-            previous: ‹‹
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
       exposed_form:
         type: basic
         options:
@@ -226,7 +211,6 @@ display:
       contexts:
         - 'languages:language_interface'
         - url
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
@@ -275,13 +259,15 @@ display:
         options: {  }
       defaults:
         arguments: false
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_interface'
         - url
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
@@ -302,7 +288,6 @@ display:
       contexts:
         - 'languages:language_interface'
         - url
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
