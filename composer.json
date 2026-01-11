@@ -90,6 +90,7 @@
         "drupal/diff": "^1.7@RC",
         "drupal/disqus": "^2.0.2",
         "drupal/easy_breadcrumb": "^2.0.7",
+        "drupal/entity_delta_formatter": "^2.1",
         "drupal/entity_embed": "^1.7",
         "drupal/facebook_pixel": "^2.0",
         "drupal/facets_pretty_paths": "^2.0",
@@ -260,6 +261,9 @@
             "drupal/disqus": {
                 "php 8.4": "patches/disqus-3542113-2.patch"
             },
+            "drupal/entity_delta_formatter": {
+                "d11": "https://www.drupal.org/files/issues/2024-03-17/entity_delta_formatter.8.x-2.1.rector.patch"
+            },
             "drupal/facebook_pixel": {
                 "php 8.4": "patches/facebook_pixel-3558063-mr27.patch"
             },
@@ -289,8 +293,9 @@
         },
         "drupal-lenient": {
             "allowed-list": [
-                "drupal/commerce_tip",
                 "drupal/commerce_prorater_stepped_proportional",
+                "drupal/commerce_tip",
+                "drupal/entity_delta_formatter",
                 "drupal/mailchimp_ecommerce",
                 "drupal/pdf",
                 "drupal/user_csv_import",

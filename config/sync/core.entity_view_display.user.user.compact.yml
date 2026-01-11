@@ -18,6 +18,11 @@ targetEntityType: user
 bundle: user
 mode: compact
 content:
+  realname:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
   user_picture:
     type: image
     label: hidden
@@ -37,5 +42,4 @@ hidden:
   entity_print_view_word_docx: true
   field_author_description: true
   member_for: true
-  realname: true
   search_api_excerpt: true

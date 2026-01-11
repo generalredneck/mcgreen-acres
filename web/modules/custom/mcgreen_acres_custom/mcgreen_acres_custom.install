@@ -2,12 +2,13 @@
 
 /**
  * @file
+ * Install, update and uninstall functions for the mcgreen_acres_custom module.
  */
 
 /**
- *
+ * Update hook to clean up duplicate path aliases.
  */
-function mcgreen_acres_custom_10001() {
+function mcgreen_acres_custom_update_10001() {
   $query = \Drupal::database()->select('path_alias', 'pa')
     ->fields('pa', ['alias']);
   $query->addExpression('count(alias)');
@@ -20,4 +21,93 @@ function mcgreen_acres_custom_10001() {
     $queue->createItem($alias);
   }
   return t('Update 10001 completed successfully.');
+}
+
+/**
+ * Migrate field_phone from user to customer profile and remove old fields.
+ */
+function mcgreen_acres_custom_update_10002() {
+  // Ensure the field_phone field exists on profile.customer.
+  $field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load('profile.field_phone');
+  if (!$field_storage) {
+    $field_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+      'uuid' => '1d3e044a-4836-43f8-87a0-41b5ef0ab0e5',
+      'field_name' => 'field_phone',
+      'entity_type' => 'profile',
+      'type' => 'phone_number',
+      'settings' => [
+        'unique' => 0,
+      ],
+      'module' => 'phone_number',
+      'locked' => FALSE,
+      'cardinality' => 1,
+      'translatable' => TRUE,
+      'indexes' => [],
+      'persist_with_no_fields' => FALSE,
+      'custom_storage' => FALSE,
+    ]);
+    $field_storage->save();
+  }
+
+  $field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load('profile.customer.field_phone');
+  if (!$field_config) {
+    $field_config = \Drupal\field\Entity\FieldConfig::create([
+      'uuid' => '52078217-2d9f-4813-8194-58149acc17d2',
+      'field_name' => 'field_phone',
+      'entity_type' => 'profile',
+      'bundle' => 'customer',
+      'label' => 'Phone',
+      'description' => '',
+      'required' => FALSE,
+      'translatable' => FALSE,
+      'default_value' => [],
+      'default_value_callback' => '',
+      'settings' => [
+        'allowed_countries' => ['US' => 'US'],
+        'allowed_types' => [],
+        'extension_field' => FALSE,
+      ],
+      'field_type' => 'phone_number',
+    ]);
+    $field_config->save();
+  }
+
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+  $query = $user_storage->getQuery();
+  $query->accessCheck(FALSE);
+  $query->condition('field_phone', NULL, 'IS NOT NULL');
+  $uids = $query->execute();
+
+  foreach ($uids as $uid) {
+    $user = $user_storage->load($uid);
+    $phone_value = $user->get('field_phone')->value;
+
+    // Get the first customer profile.
+    if ($user->hasField('customer_profiles') && !$user->get('customer_profiles')->isEmpty()) {
+      $profile = $user->get('customer_profiles')->first()->entity;
+      if ($profile && $profile->hasField('field_phone')) {
+        $profile->set('field_phone', $phone_value);
+        $profile->save();
+      }
+    }
+  }
+
+  // Delete the field storages and configs.
+  $entity_type = 'user';
+  $bundle = 'user';
+  $fields_to_delete = ['field_phone', 'field_name', 'field_last_name'];
+  foreach ($fields_to_delete as $field_name) {
+    // Delete field config.
+    $field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load("{$entity_type}.{$bundle}.{$field_name}");
+    if ($field_config) {
+      $field_config->delete();
+    }
+    // Delete field storage.
+    $field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load("{$entity_type}.{$field_name}");
+    if ($field_storage) {
+      $field_storage->delete();
+    }
+  }
+
+  return t('Migrated phone numbers to customer profiles and removed old fields.');
 }

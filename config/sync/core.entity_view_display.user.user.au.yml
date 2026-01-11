@@ -25,6 +25,11 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
+  realname:
+    settings: {  }
+    third_party_settings: {  }
     weight: 1
     region: content
   user_picture:
@@ -52,5 +57,4 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   member_for: true
-  realname: true
   search_api_excerpt: true

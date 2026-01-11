@@ -8,6 +8,7 @@ dependencies:
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
+    - entity_delta_formatter
     - image
     - text
     - user
@@ -18,17 +19,22 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
+  customer_profiles:
+    type: entity_reference_delta_formatter
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+      deltas: '1'
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_author_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 6
-    region: content
-  member_for:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
+    weight: 2
     region: content
   user_picture:
     type: image
@@ -43,9 +49,9 @@ content:
     region: content
 hidden:
   commerce_remote_id: true
-  customer_profiles: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  member_for: true
   realname: true
   search_api_excerpt: true

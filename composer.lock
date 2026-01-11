@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76f43b6ca88e07dc0c04bbdcab1dce93",
+    "content-hash": "d73c6c919737eb8477e930c9d3f4f62e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5808,6 +5808,65 @@
             "homepage": "https://drupal.org/project/entity_clone",
             "support": {
                 "source": "https://git.drupalcode.org/project/entity_clone"
+            }
+        },
+        {
+            "name": "drupal/entity_delta_formatter",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/entity_delta_formatter.git",
+                "reference": "8.x-2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/entity_delta_formatter-8.x-2.1.zip",
+                "reference": "8.x-2.1",
+                "shasum": "e242cb54e130be842030542d4276be4606174ca7"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10 || ^11 || ^12"
+            },
+            "require-dev": {
+                "drupal/token": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.1",
+                    "datestamp": "1710430143",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "c7bamford",
+                    "homepage": "https://www.drupal.org/user/3541163"
+                },
+                {
+                    "name": "fall_0ut",
+                    "homepage": "https://www.drupal.org/user/164834"
+                },
+                {
+                    "name": "jantoine",
+                    "homepage": "https://www.drupal.org/user/192192"
+                }
+            ],
+            "description": "Provides a formatter to display a specified range of entities from an entity reference field.",
+            "homepage": "https://www.drupal.org/project/entity_delta_formatter",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/entity_delta_formatter",
+                "issues": "https://www.drupal.org/project/issues/entity_delta_formatter"
             }
         },
         {
