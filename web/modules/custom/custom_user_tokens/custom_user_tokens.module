@@ -37,18 +37,26 @@ function custom_user_tokens_tokens($type, $tokens, array $data, array $options, 
           $config = \Drupal::config('custom_user_tokens.settings');
           $pattern = $config->get('conditional_display_pattern');
 
-          if (!empty($pattern)) {
+          $replacements[$original] = $account->getAccountName();
+          $roles = $account->getRoles();
+          if ($roles && (in_array('staff', $roles) || in_array('administrator', $roles))) {
+            break;
+          }
+          if ($account->isAnonymous()) {
+            $replacements[$original] = t('Anonymous');
+          }
+          elseif (!empty($pattern)) {
             // Replace tokens in the pattern.
             $replacement = \Drupal::token()->replace($pattern, ['user' => $account], $options, $bubbleable_metadata);
             // If the replacement is not empty after trimming, use it.
             if (trim($replacement) !== '') {
               $replacements[$original] = $replacement;
-              break;
             }
           }
-
-          // Fallback to email if pattern is empty or results in empty string.
-          $replacements[$original] = $account->getEmail();
+          else {
+            // Fallback to email if pattern is empty or results in empty string.
+            $replacements[$original] = $account->getEmail();
+          }
           break;
       }
     }
