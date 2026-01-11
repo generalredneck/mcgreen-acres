@@ -4,11 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.profile.customer.address
+    - field.field.profile.customer.field_phone
     - field.field.profile.customer.tax_number
     - profile.type.customer
   module:
     - address
     - commerce_tax
+    - phone_number
   enforced:
     module:
       - commerce_order
@@ -21,10 +23,18 @@ mode: default
 content:
   address:
     type: address_default
-    label: hidden
+    label: above
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_phone:
+    type: phone_number_international
+    label: above
+    settings:
+      as_link: false
+    third_party_settings: {  }
+    weight: 2
     region: content
   tax_number:
     type: commerce_tax_number_default

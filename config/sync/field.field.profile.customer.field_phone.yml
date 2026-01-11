@@ -1,0 +1,25 @@
+uuid: 52078217-2d9f-4813-8194-58149acc17d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.profile.field_phone
+    - profile.type.customer
+  module:
+    - phone_number
+id: profile.customer.field_phone
+field_name: field_phone
+entity_type: profile
+bundle: customer
+label: Phone
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_countries:
+    US: US
+  allowed_types: {  }
+  extension_field: false
+field_type: phone_number

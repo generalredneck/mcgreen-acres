@@ -1,1 +1,1 @@
-conditional_display_pattern: '[user:field_name] [user:field_last_name]'
+conditional_display_pattern: '[user:customer:address:given_name] [user:customer:address:family_name]'
