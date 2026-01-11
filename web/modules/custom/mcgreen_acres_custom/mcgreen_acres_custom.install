@@ -111,3 +111,56 @@ function mcgreen_acres_custom_update_10002() {
 
   return t('Migrated phone numbers to customer profiles and removed old fields.');
 }
+
+/**
+ * Update hook to update custom_user_tokens.settings configuration.
+ */
+function mcgreen_acres_custom_update_10003() {
+  \Drupal::configFactory()->getEditable('custom_user_tokens.settings')
+    ->set('conditional_display_pattern', '[user:customer:address:given_name] [user:customer:address:family_name]')
+    ->save();
+
+  return t('Updated custom_user_tokens.settings configuration.');
+}
+
+/**
+ * Update hook to change usernames for specific users.
+ */
+function mcgreen_acres_custom_update_10004() {
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+
+  // Change username for uid 23 to "beverly".
+  $user_23 = $user_storage->load(23);
+  if ($user_23) {
+    $user_23->set('name', 'beverly');
+    $user_23->save();
+  }
+
+  // Change username for uid 24 to "rebecca".
+  $user_24 = $user_storage->load(24);
+  if ($user_24) {
+    $user_24->set('name', 'rebecca');
+    $user_24->save();
+  }
+
+  return t('Updated usernames for users 23 and 24.');
+}
+
+/**
+ * Update hook to run realname_update on all users if the function exists.
+ */
+function mcgreen_acres_custom_update_10005() {
+  if (function_exists('realname_update')) {
+    $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+    $query = $user_storage->getQuery();
+    $query->accessCheck(FALSE);
+    $uids = $query->execute();
+
+    foreach ($uids as $uid) {
+      $user = $user_storage->load($uid);
+      realname_update($user);
+    }
+  }
+
+  return t('Updated realnames for all users.');
+}
