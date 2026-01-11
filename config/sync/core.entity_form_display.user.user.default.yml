@@ -5,15 +5,11 @@ dependencies:
   config:
     - field.field.user.user.commerce_remote_id
     - field.field.user.user.field_author_description
-    - field.field.user.user.field_last_name
-    - field.field.user.user.field_name
-    - field.field.user.user.field_phone
     - field.field.user.user.user_picture
     - image.style.d01_square
   module:
     - focal_point
     - path
-    - phone_number
     - text
     - user
 _core:
@@ -40,33 +36,6 @@ content:
     settings:
       rows: 5
       placeholder: ''
-    third_party_settings: {  }
-  field_last_name:
-    type: string_textfield
-    weight: 2
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_name:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_phone:
-    type: phone_number_default
-    weight: 3
-    region: content
-    settings:
-      default_country: US
-      placeholder: 'Phone number'
-      phone_size: null
-      extension_size: 5
-      country_selection: flag
     third_party_settings: {  }
   google_analytics:
     weight: 5

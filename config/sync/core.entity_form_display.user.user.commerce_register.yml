@@ -6,9 +6,6 @@ dependencies:
     - core.entity_form_mode.user.commerce_register
     - field.field.user.user.commerce_remote_id
     - field.field.user.user.field_author_description
-    - field.field.user.user.field_last_name
-    - field.field.user.user.field_name
-    - field.field.user.user.field_phone
     - field.field.user.user.user_picture
   module:
     - user
@@ -38,9 +35,6 @@ hidden:
   commerce_remote_id: true
   customer_profiles: true
   field_author_description: true
-  field_last_name: true
-  field_name: true
-  field_phone: true
   google_analytics: true
   language: true
   path: true
