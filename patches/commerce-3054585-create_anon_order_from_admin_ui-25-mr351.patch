@@ -1,0 +1,60 @@
+diff --git a/modules/order/src/Form/CustomerFormTrait.php b/modules/order/src/Form/CustomerFormTrait.php
+index 1f85e8af780e7cba67392ad5149e875091393196..cc6d438a613910f7635a51d43640bea33bb2447e 100644
+--- a/modules/order/src/Form/CustomerFormTrait.php
++++ b/modules/order/src/Form/CustomerFormTrait.php
+@@ -61,6 +61,7 @@ trait CustomerFormTrait {
+       '#options' => [
+         'existing' => t('Existing customer'),
+         'new' => t('New customer'),
++        'guest' => t('Guest customer'),
+       ],
+       '#default_value' => $selected_customer_type,
+       '#ajax' => [
+@@ -85,6 +86,18 @@ trait CustomerFormTrait {
+         ],
+       ];
+     }
++    elseif ($selected_customer_type == 'guest') {
++      $form['customer']['uid'] = [
++        '#type' => 'value',
++        '#value' => 0,
++      ];
++      $form['customer']['mail'] = [
++        '#type' => 'email',
++        '#title' => t('Email'),
++        '#required' => FALSE,
++        '#description' => t('If given, the order receipt will be sent to the email address.'),
++      ];
++    }
+     else {
+       // New customer.
+       $form['customer']['uid'] = [
+@@ -176,6 +189,9 @@ trait CustomerFormTrait {
+     if ($values['customer_type'] == 'existing') {
+       $values['mail'] = $this->userStorage->load($values['uid'])->getEmail();
+     }
++    elseif ($values['customer_type'] == 'guest') {
++      $values['uid'] = 0;
++    }
+     else {
+       $user = $form_state->get('customer');
+       $user->save();
+diff --git a/modules/order/src/Form/OrderReassignForm.php b/modules/order/src/Form/OrderReassignForm.php
+index b2f2f569d640792626977afe781abbf0d19a6cc0..1a906ff9cf7e8e6f9018ecddb2ab8b9f4873c3bc 100644
+--- a/modules/order/src/Form/OrderReassignForm.php
++++ b/modules/order/src/Form/OrderReassignForm.php
+@@ -134,6 +134,14 @@ class OrderReassignForm extends FormBase {
+       '%label' => $this->order->label(),
+       '%customer' => $this->order->getCustomer()->label(),
+     ]));
++
++    // Now that the order is reassigned,
++    // set the order contact email if customer is a guest.
++    if ($values['customer_type'] == 'guest' && !empty($values['mail'])) {
++      $this->order->setEmail($values['mail']);
++      $this->order->save();
++    }
++
+     $form_state->setRedirectUrl($this->order->toUrl());
+   }
+ 

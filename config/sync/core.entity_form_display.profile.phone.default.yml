@@ -1,0 +1,27 @@
+uuid: c42eaca7-adad-4218-badd-5287a75a1fa0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.profile.phone.field_phone
+    - profile.type.phone
+  module:
+    - phone_number
+id: profile.phone.default
+targetEntityType: profile
+bundle: phone
+mode: default
+content:
+  field_phone:
+    type: phone_number_default
+    weight: 26
+    region: content
+    settings:
+      default_country: US
+      placeholder: 'Phone number'
+      phone_size: 60
+      extension_size: 5
+      country_selection: flag
+    third_party_settings: {  }
+hidden:
+  is_default: true

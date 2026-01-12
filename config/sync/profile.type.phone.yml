@@ -1,0 +1,15 @@
+uuid: 73d68976-781c-4056-940e-a4c2968c5d91
+langcode: en
+status: true
+dependencies: {  }
+third_party_settings:
+  commerce_order:
+    customer_profile_type: false
+id: phone
+label: Phone
+display_label: ''
+multiple: false
+registration: true
+roles: {  }
+allow_revisions: false
+new_revision: false

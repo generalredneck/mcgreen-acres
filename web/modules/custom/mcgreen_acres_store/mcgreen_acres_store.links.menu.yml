@@ -13,18 +13,23 @@ mcgreen_acres_store.address_book:
   title: Addresses
   class: Drupal\mcgreen_acres_store\Plugin\Menu\AddressBookMenuLink
   weight: -6
+mcgreen_acres_store.phone_book:
+  menu_name: account
+  title: Phone Numbers
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\PhoneBookMenuLink
+  weight: -4
 mcgreen_acres_store.payment_methods:
   menu_name: account
   title: Payment Methods
   class: Drupal\mcgreen_acres_store\Plugin\Menu\PaymentMethodsMenuLink
-  weight: -6
+  weight: -2
 mcgreen_acres_store.subscriptions:
   menu_name: account
   title: Subscriptions
   class: Drupal\mcgreen_acres_store\Plugin\Menu\SubscriptionsMenuLink
-  weight: -4
+  weight: 0
 mcgreen_acres_store.orders:
   menu_name: account
   title: Orders
   class: Drupal\mcgreen_acres_store\Plugin\Menu\OrdersMenuLink
-  weight: -2
+  weight: 2

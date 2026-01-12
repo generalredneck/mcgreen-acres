@@ -202,7 +202,7 @@ display:
           id: field_phone
           table: profile__field_phone
           field: field_phone
-          relationship: profile
+          relationship: profile_type_1
           group_type: group
           admin_label: ''
           plugin_id: field
@@ -265,7 +265,7 @@ display:
           id: address
           table: profile__address
           field: address
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: field
@@ -916,7 +916,7 @@ display:
           id: is_default_1
           table: profile
           field: is_default
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           entity_type: profile
@@ -956,7 +956,7 @@ display:
           id: is_default
           table: profile
           field: is_default
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           entity_type: profile
@@ -1092,16 +1092,28 @@ display:
           replica: false
           query_tags: {  }
       relationships:
-        profile:
-          id: profile
+        profile_type:
+          id: profile_type
           table: users_field_data
-          field: profile
+          field: profile_type
           relationship: none
           group_type: group
-          admin_label: Profile
+          admin_label: 'Customer Profile'
           entity_type: user
-          plugin_id: standard
+          plugin_id: profile_relationship
           required: false
+          profile_type: customer
+        profile_type_1:
+          id: profile_type_1
+          table: users_field_data
+          field: profile_type
+          relationship: none
+          group_type: group
+          admin_label: 'Phone Profile'
+          entity_type: user
+          plugin_id: profile_relationship
+          required: false
+          profile_type: phone
       css_class: ''
       use_ajax: false
       group_by: false
@@ -1252,7 +1264,7 @@ display:
           id: field_phone
           table: profile__field_phone
           field: field_phone
-          relationship: profile
+          relationship: profile_type_1
           group_type: group
           admin_label: ''
           plugin_id: field
@@ -1315,7 +1327,7 @@ display:
           id: address_address_line1
           table: profile__address
           field: address_address_line1
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: standard
@@ -1364,7 +1376,7 @@ display:
           id: address_address_line2
           table: profile__address
           field: address_address_line2
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: standard
@@ -1413,7 +1425,7 @@ display:
           id: address_address_line3
           table: profile__address
           field: address_address_line3
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: standard
@@ -1462,7 +1474,7 @@ display:
           id: address_locality
           table: profile__address
           field: address_locality
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: subdivision
@@ -1512,7 +1524,7 @@ display:
           id: address_administrative_area
           table: profile__address
           field: address_administrative_area
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: subdivision
@@ -1562,7 +1574,7 @@ display:
           id: address_postal_code
           table: profile__address
           field: address_postal_code
-          relationship: profile
+          relationship: profile_type
           group_type: group
           admin_label: ''
           plugin_id: standard

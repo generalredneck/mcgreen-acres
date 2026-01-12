@@ -71,6 +71,7 @@
         "drupal/commerce_email": "^1.7",
         "drupal/commerce_fee": "^1.1",
         "drupal/commerce_invoice": "^2.2",
+        "drupal/commerce_profile_pane": "^1.0",
         "drupal/commerce_prorater_stepped_proportional": "^2.0",
         "drupal/commerce_recipe_core": "^1.0",
         "drupal/commerce_recurring": "^1.0@RC",
@@ -224,11 +225,17 @@
             "drupal/bootstrap_basic_image_gallery": {
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
             },
+            "drupal/commerce": {
+                "#3054585": "patches/commerce-3054585-create_anon_order_from_admin_ui-25-mr351.patch"
+            },
             "drupal/commerce_better_product_variation_label": {
                 "field formatter": "patches/commerce_better_product_variation_label-field_formatter.patch"
             },
             "drupal/commerce_custom_checkout_message": {
                 "php 8.4": "patches/commerce_custom_checkout_message-3560486-2.patch"
+            },
+            "drupal/commerce_profile_pane": {
+                "#2953893: Allow creation of a new profile for anonymous": "https://www.drupal.org/files/issues/2020-04-09/allow_creation_of_new_profile-2953893-14.patch"
             },
             "drupal/commerce_prorater_stepped_proportional": {
                 "d11": "https://www.drupal.org/files/issues/2024-07-21/commerce_prorater_stepped_proportional.2.x-dev.rector.patch"

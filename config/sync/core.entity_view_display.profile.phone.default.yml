@@ -1,0 +1,24 @@
+uuid: cecb9377-3119-48db-84e2-197575d118e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.profile.phone.field_phone
+    - profile.type.phone
+  module:
+    - phone_number
+id: profile.phone.default
+targetEntityType: profile
+bundle: phone
+mode: default
+content:
+  field_phone:
+    type: phone_number_international
+    label: above
+    settings:
+      as_link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  search_api_excerpt: true

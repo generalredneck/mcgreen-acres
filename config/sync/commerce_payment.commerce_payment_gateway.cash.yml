@@ -1,0 +1,26 @@
+uuid: 065ebe5e-fb89-4daa-912b-fbf4cec70f46
+langcode: en
+status: true
+dependencies: {  }
+id: cash
+label: Cash
+weight: null
+plugin: manual
+configuration:
+  display_label: Cash
+  mode: n/a
+  payment_method_types:
+    - credit_card
+  collect_billing_information: false
+  instructions:
+    value: 'Payment will be due at pickup.'
+    format: plain_text
+conditions:
+  -
+    plugin: current_user_role
+    configuration:
+      matching_strategy: any
+      roles:
+        - administrator
+        - staff
+conditionOperator: AND

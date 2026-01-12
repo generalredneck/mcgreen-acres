@@ -1,8 +1,9 @@
-uuid: 69a725d1-b599-4fb5-9673-031c6102586c
+uuid: c171329a-bc5c-4216-8117-0b55f30c3d04
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.user.register
     - field.field.user.user.commerce_remote_id
     - field.field.user.user.field_author_description
     - field.field.user.user.user_picture
@@ -10,14 +11,15 @@ dependencies:
   module:
     - focal_point
     - path
+    - profile
     - text
     - user
 _core:
   default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
-id: user.user.default
+id: user.user.register
 targetEntityType: user
 bundle: user
-mode: default
+mode: register
 content:
   account:
     weight: 0
@@ -31,27 +33,34 @@ content:
     third_party_settings: {  }
   field_author_description:
     type: text_textarea
-    weight: 5
+    weight: 8
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
   google_analytics:
-    weight: 2
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   language:
-    weight: 3
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 4
+    weight: 7
     region: content
     settings: {  }
+    third_party_settings: {  }
+  phone_profiles:
+    type: profile_form
+    weight: 90
+    region: content
+    settings:
+      form_mode: default
     third_party_settings: {  }
   timezone:
     weight: 5
@@ -60,7 +69,7 @@ content:
     third_party_settings: {  }
   user_picture:
     type: image_focal_point
-    weight: 1
+    weight: 4
     region: content
     settings:
       progress_indicator: throbber
@@ -71,4 +80,3 @@ content:
 hidden:
   commerce_remote_id: true
   customer_profiles: true
-  phone_profiles: true
