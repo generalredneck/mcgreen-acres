@@ -4,12 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.profile.customer.address
-    - field.field.profile.customer.field_phone
     - field.field.profile.customer.tax_number
     - profile.type.customer
   module:
     - address
-    - phone_number
   enforced:
     module:
       - commerce_order
@@ -25,17 +23,6 @@ content:
     weight: 0
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_phone:
-    type: phone_number_default
-    weight: 26
-    region: content
-    settings:
-      default_country: US
-      placeholder: 'Phone number'
-      phone_size: 60
-      extension_size: 5
-      country_selection: flag
     third_party_settings: {  }
 hidden:
   is_default: true

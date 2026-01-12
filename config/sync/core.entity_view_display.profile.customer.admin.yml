@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.profile.admin
     - field.field.profile.customer.address
-    - field.field.profile.customer.field_phone
     - field.field.profile.customer.tax_number
     - profile.type.customer
   module:
@@ -37,5 +36,4 @@ content:
     weight: 1
     region: content
 hidden:
-  field_phone: true
   search_api_excerpt: true
