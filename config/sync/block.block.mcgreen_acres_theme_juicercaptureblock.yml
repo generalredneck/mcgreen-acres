@@ -15,7 +15,7 @@ third_party_settings:
 id: mcgreen_acres_theme_juicercaptureblock
 theme: mcgreen_acres_theme
 region: content
-weight: -9
+weight: -8
 provider: null
 plugin: juicer_capture_block
 settings:

@@ -17,7 +17,7 @@ third_party_settings:
 id: mcgreen_acres_theme_webform_herd_share_wait_list
 theme: mcgreen_acres_theme
 region: content
-weight: -7
+weight: -6
 provider: null
 plugin: webform_block
 settings:

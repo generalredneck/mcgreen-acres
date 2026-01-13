@@ -13,7 +13,7 @@ dependencies:
 id: mcgreen_acres_theme_webform
 theme: mcgreen_acres_theme
 region: content
-weight: -8
+weight: -7
 provider: null
 plugin: webform_block
 settings:

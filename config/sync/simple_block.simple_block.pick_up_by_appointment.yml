@@ -1,0 +1,11 @@
+uuid: 53d09e7e-813e-40eb-81a9-fcaf267eec06
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+id: pick_up_by_appointment
+title: 'Pick up by Appointment'
+content:
+  value: '<div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
+  format: full_html
