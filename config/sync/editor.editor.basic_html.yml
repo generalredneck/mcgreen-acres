@@ -39,6 +39,7 @@ settings:
       properties:
         reversed: false
         startIndex: true
+        styles: true
       multiBlock: true
     ckeditor5_sourceEditing:
       allowed_tags:
@@ -55,8 +56,6 @@ settings:
         - '<h6 id>'
         - '<a hreflang>'
         - '<blockquote cite>'
-        - '<ul type>'
-        - '<ol type>'
         - '<drupal-entity data-embed-button>'
 image_upload:
   status: true

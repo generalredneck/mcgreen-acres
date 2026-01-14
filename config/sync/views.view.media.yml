@@ -725,6 +725,8 @@ display:
               secondary_label: 'Advanced options'
               text_input_required: 'Select any filter and click on Apply to see results'
               text_input_required_format: basic_html
+              autosubmit_breakpoint: ''
+              auto_submit_sort_only: false
             sort:
               plugin_id: default
               advanced:
@@ -752,6 +754,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
               name:
                 plugin_id: default
                 advanced:
@@ -764,6 +770,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
               bundle:
                 plugin_id: default
                 advanced:
@@ -776,6 +786,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
               langcode:
                 plugin_id: default
                 advanced:
@@ -788,6 +802,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
               created:
                 plugin_id: default
                 advanced:
@@ -800,6 +818,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
               created_1:
                 plugin_id: default
                 advanced:
@@ -812,6 +834,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
       access:
         type: perm
         options:

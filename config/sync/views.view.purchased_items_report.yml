@@ -153,7 +153,7 @@ display:
           set_precision: false
           precision: 0
           decimal: .
-          format_plural: 0
+          format_plural: false
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
@@ -226,7 +226,7 @@ display:
           set_precision: false
           precision: 0
           decimal: .
-          format_plural: 0
+          format_plural: false
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
@@ -336,6 +336,8 @@ display:
               secondary_label: 'Advanced options'
               secondary_open: false
               reset_button_always_show: false
+              autosubmit_breakpoint: ''
+              auto_submit_sort_only: false
             sort:
               plugin_id: default
               advanced:
@@ -354,6 +356,10 @@ display:
                   collapsible_disable_automatic_open: false
                   is_secondary: false
                   hide_label: false
+                  field_classes: ''
+                  open_by_default: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
       access:
         type: perm
         options:

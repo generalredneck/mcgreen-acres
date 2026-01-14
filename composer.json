@@ -82,9 +82,9 @@
         "drupal/commerce_tip": "^1.0",
         "drupal/commerce_variation_bundle": "^1.0",
         "drupal/config_split": "^2.0",
-        "drupal/core": "^11.0",
-        "drupal/core-composer-scaffold": "^11.0",
-        "drupal/core-vendor-hardening": "^11.2",
+        "drupal/core": "^11.3",
+        "drupal/core-composer-scaffold": "^11.3",
+        "drupal/core-vendor-hardening": "^11.3",
         "drupal/crawler_rate_limit": "^3.1",
         "drupal/ctools": "^4.1",
         "drupal/default_content": "^2.0@alpha",
@@ -256,7 +256,7 @@
             },
             "drupal/core": {
                 "Update: remove error when sending to no email": "patches/drupal-update-remove_error_when_sending_to_no_email.patch",
-                "active trail": "https://www.drupal.org/files/issues/2025-11-03/3359511-142-d11.2-no-tests.patch",
+                "active trail": "patches/3359511-147.patch",
                 "views fatal on aggregation": "https://www.drupal.org/files/issues/2025-12-03/3513598-views-entityfield-array-filter-typeerror-11.2.x_0.patch"
             },
             "drupal/crawler_rate_limit": {
@@ -273,12 +273,6 @@
             },
             "drupal/facebook_pixel": {
                 "php 8.4": "patches/facebook_pixel-3558063-mr27.patch"
-            },
-            "drupal/field_permissions": {
-                "php 8.4": "patches/field_permissions-3322809-MR40-e37b8f05.patch"
-            },
-            "drupal/pdf": {
-                "drupal 11": "patches/pdf-3433888-11-mr5.patch"
             },
             "drupal/phone_number": {
                 "php 8.4": "patches/phone_number-3552395-3.patch",
