@@ -1,0 +1,24 @@
+commerce_invoice.configuration:
+  title: 'Invoice'
+  route_name: 'commerce_invoice.configuration'
+  parent: 'commerce.configuration'
+  weight: -5
+
+entity.commerce_invoice.collection:
+  title: 'Invoices'
+  route_name: 'entity.commerce_invoice.collection'
+  parent: 'commerce.admin_commerce'
+  description: 'Manage your invoices.'
+  weight: 5
+
+entity.commerce_invoice_type.collection:
+  title: 'Invoice types'
+  route_name: 'entity.commerce_invoice_type.collection'
+  parent: 'commerce_invoice.configuration'
+  description: 'Manage fields, form and display settings for your invoices.'
+
+entity.commerce_invoice_item.types_list:
+  title: 'Invoice item types'
+  route_name: 'entity.commerce_invoice_item.types_list'
+  parent: 'commerce_invoice.configuration'
+  description: 'Manage fields, form and display settings for your invoice items.'

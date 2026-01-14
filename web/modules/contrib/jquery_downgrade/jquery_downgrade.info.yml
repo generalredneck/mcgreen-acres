@@ -1,0 +1,13 @@
+name: 'jQuery Downgrade'
+type: module
+description: 'Replaces jQuery 4 with jQuery 3 on specific pages.'
+package: Compatibility
+core_version_requirement: ^11 || ^12
+dependencies:
+  - drupal:jquery_ui
+configure: 'jquery_downgrade.settings'
+
+# Information added by Drupal.org packaging script on 2025-10-09
+version: '1.0.3'
+project: 'jquery_downgrade'
+datestamp: 1759972560

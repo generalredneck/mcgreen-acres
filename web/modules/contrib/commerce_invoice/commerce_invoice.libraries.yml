@@ -1,0 +1,5 @@
+entity-print-styling:
+  version: VERSION
+  css:
+    theme:
+      css/commerce_invoice.entityprint.css: {}
