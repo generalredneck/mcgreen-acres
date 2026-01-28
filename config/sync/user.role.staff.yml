@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.basic
+    - filter.format.email_html
     - filter.format.raw_html
     - media.type.audio
     - media.type.ebook
@@ -20,22 +21,24 @@ dependencies:
     - taxonomy.vocabulary.tags
   module:
     - block
-    - block_class
     - block_content
     - block_visibility_groups
     - commerce
     - commerce_fee
+    - commerce_number_pattern
     - commerce_order
     - commerce_payment
     - commerce_product
     - commerce_promotion
     - commerce_recurring
+    - commerce_reports
     - commerce_shipping
     - commerce_stock
     - commerce_stock_local
     - commerce_stock_ui
     - commerce_store
     - contextual
+    - disqus
     - field_permissions
     - file
     - file_delete
@@ -47,6 +50,7 @@ dependencies:
     - paragraphs
     - paragraphs_previewer
     - path
+    - pathauto
     - profile
     - redirect
     - scheduler
@@ -63,13 +67,16 @@ label: Staff
 weight: -8
 is_admin: false
 permissions:
+  - 'access administration pages'
   - 'access any webform configuration'
   - 'access block library'
   - 'access commerce administration pages'
+  - 'access commerce reports'
   - 'access commerce stock administration pages'
   - 'access commerce_billing_schedule overview'
   - 'access commerce_fee overview'
   - 'access commerce_order overview'
+  - 'access commerce_order_report overview'
   - 'access commerce_product overview'
   - 'access commerce_product_attribute overview'
   - 'access commerce_promotion overview'
@@ -90,15 +97,15 @@ permissions:
   - 'access webform overview'
   - 'access webform submission user'
   - 'add commerce_log commerce_order admin comment'
-  - 'administer block classes'
   - 'administer block content'
-  - 'administer block types'
   - 'administer block visibility groups'
   - 'administer blocks'
   - 'administer commerce stock'
   - 'administer commerce_billing_schedule'
   - 'administer commerce_fee'
+  - 'administer commerce_number_pattern'
   - 'administer commerce_order'
+  - 'administer commerce_order_report'
   - 'administer commerce_order_type'
   - 'administer commerce_package_type'
   - 'administer commerce_payment'
@@ -117,13 +124,14 @@ permissions:
   - 'administer commerce_subscription'
   - 'administer commerce_subscription_type'
   - 'administer media'
-  - 'administer media types'
   - 'administer menu'
   - 'administer nodes'
   - 'administer profile'
   - 'administer profile types'
   - 'administer redirect settings'
   - 'administer redirects'
+  - 'administer shortcuts'
+  - 'administer site configuration'
   - 'administer taxonomy'
   - 'administer url aliases'
   - 'administer users'
@@ -132,7 +140,9 @@ permissions:
   - 'administer webform overview'
   - 'administer webform submission'
   - 'administer webform templates'
+  - 'bulk delete aliases'
   - 'bulk generate commerce_promotion_coupon'
+  - 'bulk update aliases'
   - 'cancel account'
   - 'cancel any commerce_subscription'
   - 'cancel own commerce_subscription'
@@ -281,6 +291,7 @@ permissions:
   - 'edit webform source'
   - 'edit webform twig'
   - 'edit webform variants'
+  - 'generate commerce order reports'
   - 'manage default commerce_shipment'
   - 'manage physical commerce_product_variation'
   - 'manage physical_product commerce_order_item'
@@ -310,6 +321,8 @@ permissions:
   - 'schedule publishing of nodes'
   - 'schedule publishing of taxonomy_term'
   - 'select account cancellation method'
+  - 'switch shortcut sets'
+  - 'toggle disqus comments'
   - 'unlock orders'
   - 'update any commerce_payment_method'
   - 'update any commerce_promotion'
@@ -337,6 +350,7 @@ permissions:
   - 'update simple blocks'
   - 'use commerce stock transaction form'
   - 'use media_bulk_upload bulk upload form'
+  - 'use text format email_html'
   - 'use text format raw_html'
   - 'use views bulk edit'
   - 'view all media revisions'
@@ -361,6 +375,7 @@ permissions:
   - 'view commerce_billing_schedule'
   - 'view commerce_fee'
   - 'view commerce_order'
+  - 'view commerce_order_report'
   - 'view commerce_product_attribute'
   - 'view commerce_promotion'
   - 'view commerce_shipping_method'
