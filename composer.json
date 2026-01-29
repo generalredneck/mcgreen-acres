@@ -224,6 +224,9 @@
             ]
         },
         "patches": {
+            "dompdf/dompdf": {
+                "PHP 8.4 compatibility": "patches/dompdf-3640.diff"
+            },
             "drupal/block_visibility_groups": {
                 "3503194": "https://git.drupalcode.org/project/block_visibility_groups/-/merge_requests/26.diff",
                 "3450675": "https://git.drupalcode.org/project/block_visibility_groups/-/commit/1955e94152de033effbfa65ecda06c8ced83baf0.patch"

@@ -1,0 +1,3351 @@
+diff --git a/src/Cellmap.php b/src/Cellmap.php
+index f6f31748b..dddf1c215 100644
+--- a/src/Cellmap.php
++++ b/src/Cellmap.php
+@@ -9,6 +9,7 @@
+ use Dompdf\FrameDecorator\AbstractFrameDecorator;
+ use Dompdf\FrameDecorator\Table as TableFrameDecorator;
+ use Dompdf\FrameDecorator\TableCell as TableCellFrameDecorator;
++use Dompdf\FrameDecorator\TableRow as TableRowFrameDecorator;
+ 
+ /**
+  * Maps table cells to the table grid.
+@@ -59,6 +60,11 @@ class Cellmap
+     /**
+      * 2D array mapping <row,column> to frames
+      *
++     * The first dimension is the row index, the second dimension is the
++     * column index, and the value is the frame populating that cell.
++     *
++     * E.g., $_cells[0][0] is the frame in the first row and first column.
++     *
+      * @var Frame[][]
+      */
+     protected $_cells;
+@@ -87,6 +93,9 @@ class Cellmap
+     /**
+      * 1D Array mapping frames to (multiple) <row, col> pairs, keyed on frame_id.
+      *
++     * The first dimension is the frame ID and the rows and columns
++     * keys reference the cell indices the frame populates.
++     *
+      * @var array[]
+      */
+     protected $_frames;
+@@ -325,6 +334,30 @@ public function frame_exists_in_cellmap(Frame $frame)
+         return isset($this->_frames[$key]);
+     }
+ 
++    /**
++     * Returns the frames in the row. The returned array indices
++     * indicate the column occupied by the frame.
++     *
++     * @param Frame $frame
++     *
++     * @return Frame[]
++     */
++    public function get_frames_in_row(Frame $frame)
++    {
++        if (!($frame instanceof TableRowFrameDecorator)) {
++            throw new Exception("Frame is not a row.");
++        }
++
++        $row_key = $frame->get_id();
++
++        if (!isset($this->_frames[$row_key])) {
++            return null;
++        }
++
++        $row_id = $this->_frames[$row_key]["rows"][0];
++        return $this->_cells[$row_id];
++    }
++
+     /**
+      * @param Frame $frame
+      *
+@@ -482,6 +515,33 @@ protected function resolve_border(int $i, int $j, string $h_v, array $border_spe
+         }
+     }
+ 
++    /**
++     * Resolves the border for a frame
++     *
++     * @param AbstractFrameDecorator $frame
++     */
++    public function resolve_frame_border(AbstractFrameDecorator $frame)
++    {
++        $key = $frame->get_id();
++        $style = $frame->get_style();
++        $bp = $style->get_border_properties();
++
++        $rows = $this->_frames[$key]["rows"];
++        $columns = $this->_frames[$key]["columns"];
++
++        foreach ($rows as $row) {
++            // Resolve vertical borders
++            $this->resolve_border($row, min($columns), "vertical", $bp["left"]);
++            $this->resolve_border($row, max($columns)+1, "vertical", $bp["right"]);
++        }
++
++        foreach ($columns as $column) {
++            // Resolve horizontal borders
++            $this->resolve_border(min($rows), $column, "horizontal", $bp["top"]);
++            $this->resolve_border(max($rows)+1, $column, "horizontal", $bp["bottom"]);
++        }
++    }
++
+     /**
+      * Get the resolved border properties for the given frame.
+      *
+diff --git a/src/Frame.php b/src/Frame.php
+index 678fb65e5..d44354e78 100644
+--- a/src/Frame.php
++++ b/src/Frame.php
+@@ -1235,4 +1235,42 @@ public function __toString()
+ 
+         return $str;
+     }
++
++    /**
++     * Check last child for break when break not allowed for current frame.
++     *
++     * Determines if the page break logic should follow the last child to
++     * check for an allowable page break if a page break is needed but is
++     * not allowed before the current frame.
++     *
++     * For most element frame types this will be true.
++     *
++     * @return bool
++     *
++     * @see \Dompdf\FrameDecorator\Page::check_page_break()
++     * @see \Dompdf\FrameDecorator\Page::_page_break_allowed()
++     */
++    public function checkPageBreakBeforeLastChild(): bool
++    {
++        return true;
++    }
++
++    /**
++     * Check prev sibling for break when break not allowed for current frame.
++     *
++     * Determines if the page break logic should follow the previous sibling
++     * to check for an allowable page break if a page break is needed but
++     * is not allowed before the current frame.
++     *
++     * For most element frame types this will be true.
++     *
++     * @return bool
++     *
++     * @see \Dompdf\FrameDecorator\Page::check_page_break()
++     * @see \Dompdf\FrameDecorator\Page::_page_break_allowed()
++     */
++    public function checkPageBreakBeforePreviousSibling(): bool
++    {
++        return true;
++    }
+ }
+diff --git a/src/FrameDecorator/AbstractFrameDecorator.php b/src/FrameDecorator/AbstractFrameDecorator.php
+index 4ab7e7fc7..abbff79d6 100644
+--- a/src/FrameDecorator/AbstractFrameDecorator.php
++++ b/src/FrameDecorator/AbstractFrameDecorator.php
+@@ -84,6 +84,20 @@ abstract class AbstractFrameDecorator extends Frame
+      */
+     private $_positioned_parent;
+ 
++    /**
++     * First column parent (position: absolute | fixed, display: table-cell, float: left | right)
++     *
++     * @var AbstractFrameDecorator
++     */
++    private $_pageable_context;
++
++    /**
++     * Flag indicating this element can no longer accept content for the current page.
++     *
++     * @var bool
++     */
++    protected $_is_full;
++
+     /**
+      * Cache for the get_parent while loop results
+      *
+@@ -123,6 +137,8 @@ function __construct(Frame $frame, Dompdf $dompdf)
+         $this->_frame = $frame;
+         $this->_root = null;
+         $this->_dompdf = $dompdf;
++        $this->_pageable_context = null;
++        $this->_is_full = false;
+         $frame->set_decorator($this);
+     }
+ 
+@@ -153,6 +169,26 @@ function dispose($recursive = false)
+         unset($this->_reflower);
+     }
+ 
++    /**
++     * Returns true if the element is full and is no longer accepting frames.
++     */
++    function is_full(): bool
++    {
++        $pageable_context = $this->find_pageable_context();
++        if ($pageable_context !== null && $pageable_context->is_full()) {
++            return true;
++        }
++        return $this->_is_full;
++    }
++
++    /**
++     * Marks the current element as full and no longer accepting frames.
++     */
++    function set_full(bool $full): void
++    {
++        $this->_is_full = $full;
++    }
++
+     /**
+      * Return a copy of this frame with $node as its node
+      *
+@@ -250,6 +286,8 @@ function reset()
+         $this->_cached_parent = null;
+         $this->_block_parent = null;
+         $this->_positioned_parent = null;
++        $this->_pageable_context = null;
++        $this->_is_full = false;
+ 
+         // Reset all children
+         foreach ($this->get_children() as $child) {
+@@ -679,6 +717,33 @@ function find_positioned_parent()
+         return $this->_positioned_parent = $p;
+     }
+ 
++    /**
++     * @return AbstractFrameDecorator
++     *
++     * position: | absolute | fixed, display: table-cell, float: left | right
++     */
++    function find_pageable_context()
++    {
++        if (isset($this->_pageable_context)) {
++            return $this->_pageable_context;
++        }
++
++        $p = $this->get_parent();
++        while ($p) {
++            if (!$p->is_in_flow() || $p instanceof TableCell) {
++                break;
++            }
++
++            $p = $p->get_parent();
++        }
++
++        if (!$p) {
++            $p = $this->_root;
++        }
++
++        return $this->_pageable_context = $p;
++    }
++
+     /**
+      * Split this frame at $child.
+      * The current frame is cloned and $child and all children following
+@@ -735,8 +800,6 @@ public function split(?Frame $child = null, bool $page_break = false, bool $forc
+         $split->is_split_off = true;
+         $split->_already_pushed = true;
+ 
+-        $this->get_parent()->insert_child_after($split, $this);
+-
+         if ($this instanceof Block) {
+             // Remove the frames that will be moved to the new split node from
+             // the line boxes
+@@ -763,11 +826,18 @@ public function split(?Frame $child = null, bool $page_break = false, bool $forc
+             $split->append_child($frame);
+         }
+ 
+-        $this->get_parent()->split($split, $page_break, $forced);
++        // Save the split from non-flow elements for the next page,
++        // otherwise break at the current position
++        if (!$this->is_in_flow() && $this->get_style()->position !== "fixed") {
++            $this->get_root()->add_dangling_frame($split);
++        } else {
++            $this->get_parent()->insert_child_after($split, $this);
++            $this->get_parent()->split($split, $page_break, $forced);
+ 
+-        // Preserve the current counter values. This must be done after the
+-        // parent split, as counters get reset on frame reset
+-        $split->_counters = $this->_counters;
++            // Preserve the current counter values. This must be done after the
++            // parent split, as counters get reset on frame reset
++            $split->_counters = $this->_counters;
++        }
+     }
+ 
+     /**
+diff --git a/src/FrameDecorator/Page.php b/src/FrameDecorator/Page.php
+index 374cc97de..57d25fddd 100644
+--- a/src/FrameDecorator/Page.php
++++ b/src/FrameDecorator/Page.php
+@@ -28,13 +28,6 @@ class Page extends AbstractFrameDecorator
+      */
+     protected $bottom_page_edge;
+ 
+-    /**
+-     * Flag indicating page is full.
+-     *
+-     * @var bool
+-     */
+-    protected $_page_full;
+-
+     /**
+      * Number of tables currently being reflowed
+      *
+@@ -49,10 +42,18 @@ class Page extends AbstractFrameDecorator
+      */
+     protected $_renderer;
+ 
++    /**
++     * Collected frames of pageable non-flow elements pushed
++     * to the next page.
++     *
++     * @var Frame[]
++     */
++    protected $_dangling_frames = [];
++
+     /**
+      * This page's floating frames
+      *
+-     * @var array
++     * @var Frame[]
+      */
+     protected $_floating_frames = [];
+ 
+@@ -67,7 +68,7 @@ class Page extends AbstractFrameDecorator
+     function __construct(Frame $frame, Dompdf $dompdf)
+     {
+         parent::__construct($frame, $dompdf);
+-        $this->_page_full = false;
++        $this->_is_full = false;
+         $this->_in_table = 0;
+         $this->bottom_page_edge = null;
+     }
+@@ -105,24 +106,15 @@ public function calculate_bottom_page_edge(): void
+         $this->bottom_page_edge = $cbh - $margin_bottom;
+     }
+ 
+-    /**
+-     * Returns true if the page is full and is no longer accepting frames.
+-     *
+-     * @return bool
+-     */
+-    function is_full()
+-    {
+-        return $this->_page_full;
+-    }
+-
+     /**
+      * Start a new page by resetting the full flag.
+      */
+     function next_page()
+     {
++        $this->_dangling_frames = [];
+         $this->_floating_frames = [];
+         $this->_renderer->new_page();
+-        $this->_page_full = false;
++        $this->_is_full = false;
+     }
+ 
+     /**
+@@ -164,8 +156,8 @@ function in_nested_table()
+      */
+     function check_forced_page_break(Frame $frame)
+     {
+-        // Skip check if page is already split and for the body
+-        if ($this->_page_full || $frame->get_node()->nodeName === "body") {
++        // Skip check if pageable context is already full, or if this is the body element
++        if ($frame->find_pageable_context()->is_full() || $frame->get_node()->nodeName === "body") {
+             return false;
+         }
+ 
+@@ -190,7 +182,7 @@ function check_forced_page_break(Frame $frame)
+             // Prevent cascading splits
+             $frame->split(null, true, true);
+             $style->page_break_before = "auto";
+-            $this->_page_full = true;
++            $frame->find_pageable_context()->set_full(true);
+             $frame->_already_pushed = true;
+ 
+             return true;
+@@ -211,7 +203,7 @@ function check_forced_page_break(Frame $frame)
+                 // Prevent cascading splits
+                 $frame->split(null, true, true);
+                 $prev->get_style()->page_break_after = "auto";
+-                $this->_page_full = true;
++                $frame->find_pageable_context()->set_full(true);
+                 $frame->_already_pushed = true;
+ 
+                 return true;
+@@ -230,7 +222,7 @@ function check_forced_page_break(Frame $frame)
+             ) {
+                 $frame->split(null, true, true);
+                 $prev_last_child->get_style()->page_break_after = "auto";
+-                $this->_page_full = true;
++                $frame->find_pageable_context()->set_full(true);
+                 $frame->_already_pushed = true;
+ 
+                 return true;
+@@ -313,7 +305,14 @@ protected function hasGap(float $childPos, Frame $frame): bool
+      * If that still does not lead to sufficient break points, rule C is
+      * dropped as well, to find still more break points.
+      *
+-     * We also allow breaks between table rows.
++     * Breaks within table cells are also allowed as long as the cell
++     * is not within a table header or footer group. The break follows
++     * the same conditions (1, 2 & 3) and rules (A, B, C & D)
++     * outlined above.
++     *
++     * If a break within the table cell is not allowed but the table
++     * row is overflowing the page boxes, then a break between table
++     * rows is allowed.
+      *
+      * @param AbstractFrameDecorator $frame the frame to check
+      *
+@@ -322,20 +321,13 @@ protected function hasGap(float $childPos, Frame $frame): bool
+     protected function _page_break_allowed(Frame $frame)
+     {
+         Helpers::dompdf_debug("page-break", "_page_break_allowed(" . $frame->get_node()->nodeName . ")");
+-        $display = $frame->get_style()->display;
++        $style = $frame->get_style();
++        $display = $style->display;
+ 
+         // Block Frames (1):
+         if ($frame->is_block_level() || $display === "-dompdf-image") {
+-
+-            // Avoid breaks within table-cells
+-            if ($this->_in_table > ($display === "table" ? 1 : 0)) {
+-                Helpers::dompdf_debug("page-break", "In table: " . $this->_in_table);
+-
+-                return false;
+-            }
+-
+             // Rule A
+-            if ($frame->get_style()->page_break_before === "avoid") {
++            if ($style->page_break_before === "avoid") {
+                 Helpers::dompdf_debug("page-break", "before: avoid");
+ 
+                 return false;
+@@ -369,6 +361,15 @@ protected function _page_break_allowed(Frame $frame)
+ 
+                     return false;
+                 }
++                if ($p instanceof TableCell) {
++                    // Avoid breaking within table header.
++                    $row_group = $p->find_parent_table_row_group();
++                    if ($row_group && in_array($row_group->get_style()->display, Table::STATIC_ROW_GROUPS, true)) {
++                        Helpers::dompdf_debug("page-break", "parent: table header");
++
++                        return false;
++                    }
++                }
+                 $p = $p->find_block_parent();
+             }
+ 
+@@ -396,14 +397,6 @@ protected function _page_break_allowed(Frame $frame)
+         } // Inline frames (2):
+         else {
+             if ($frame->is_inline_level()) {
+-
+-                // Avoid breaks within table-cells
+-                if ($this->_in_table) {
+-                    Helpers::dompdf_debug("page-break", "In table: " . $this->_in_table);
+-
+-                    return false;
+-                }
+-
+                 // Rule C
+                 $block_parent = $frame->find_block_parent();
+                 $parent_style = $block_parent->get_style();
+@@ -434,6 +427,15 @@ protected function _page_break_allowed(Frame $frame)
+ 
+                         return false;
+                     }
++                    if ($p instanceof TableCell) {
++                        // Avoid breaking within table header.
++                        $row_group = $p->find_parent_table_row_group();
++                        if ($row_group && in_array($row_group->get_style()->display, Table::STATIC_ROW_GROUPS, true)) {
++                            Helpers::dompdf_debug("page-break", "parent: table header");
++
++                            return false;
++                        }
++                    }
+                     $p = $p->find_block_parent();
+                 }
+ 
+@@ -459,14 +461,6 @@ protected function _page_break_allowed(Frame $frame)
+             // Table-rows
+             } else {
+                 if ($display === "table-row") {
+-
+-                    // If this is a nested table, prevent the page from breaking
+-                    if ($this->_in_table > 1) {
+-                        Helpers::dompdf_debug("page-break", "table: nested table");
+-
+-                        return false;
+-                    }
+-
+                     // Rule A (table row)
+                     if ($frame->get_style()->page_break_before === "avoid") {
+                         Helpers::dompdf_debug("page-break", "before: avoid");
+@@ -480,10 +474,16 @@ protected function _page_break_allowed(Frame $frame)
+                     if (!$prev) {
+                         $prev_group = $frame->get_parent()->get_prev_sibling();
+ 
+-                        if ($prev_group
+-                            && in_array($prev_group->get_style()->display, Table::ROW_GROUPS, true)
+-                        ) {
+-                            $prev = $prev_group->get_last_child();
++                        if ($prev_group) {
++                            $prev_group_display = $prev_group->get_style()->display;
++                            // Avoid breaking before first row after table header.
++                            if (in_array($prev_group_display, Table::STATIC_ROW_GROUPS, true)) {
++                                Helpers::dompdf_debug("page-break", "table-row: after header");
++                                return false;
++                            }
++                            if (in_array($prev_group_display, Table::ROW_GROUPS, true)) {
++                                $prev = $prev_group->get_last_child();
++                            }
+                         }
+                     }
+ 
+@@ -549,25 +549,22 @@ protected function _page_break_allowed(Frame $frame)
+      */
+     function check_page_break(Frame $frame)
+     {
+-        if ($this->_page_full || $frame->_already_pushed
++        if (
++            $frame->find_pageable_context()->is_full() || $frame->_already_pushed
++            
++            // Never check for breaks on absolutely positioned nodes
++            || $frame->is_absolute()
++            
+             // Never check for breaks on empty text nodes
+             || ($frame->is_text_node() && $frame->get_node()->nodeValue === "")
+         ) {
+             return false;
+         }
+ 
++        // If the frame or a parent is fixed it shouldn't break
+         $p = $frame;
+         do {
+-            $display = $p->get_style()->display;
+-            if ($display == "table-row") {
+-                if ($p->_already_pushed) { return false; }
+-            }
+-        } while ($p = $p->get_parent());
+-
+-        // If the frame is absolute or fixed it shouldn't break
+-        $p = $frame;
+-        do {
+-            if ($p->is_absolute()) {
++            if ($p->is_absolute() && $p->get_style()->position === "fixed") {
+                 return false;
+             }
+         } while ($p = $p->get_parent());
+@@ -604,7 +601,6 @@ function check_page_break(Frame $frame)
+ 
+         Helpers::dompdf_debug("page-break", "Starting search");
+         while ($iter) {
+-            // echo "\nbacktrack: " .$iter->get_node()->nodeName ." ".spl_object_hash($iter->get_node()). "";
+             if ($iter === $this) {
+                 Helpers::dompdf_debug("page-break", "reached root.");
+                 // We've reached the root in our search.  Just split at $frame.
+@@ -616,7 +612,7 @@ function check_page_break(Frame $frame)
+             } elseif ($this->_page_break_allowed($iter)) {
+                 Helpers::dompdf_debug("page-break", "break allowed, splitting.");
+                 $iter->split(null, true);
+-                $this->_page_full = true;
++                $iter->find_pageable_context()->set_full(true);
+                 $this->_in_table = $in_table;
+                 $iter->_already_pushed = true;
+                 $frame->_already_pushed = true;
+@@ -624,7 +620,9 @@ function check_page_break(Frame $frame)
+                 return true;
+             }
+ 
+-            if (!$flg && $next = $iter->get_last_child()) {
++            $next = null;
++
++            if (!$flg && $iter->checkPageBreakBeforeLastChild() && $next = $iter->get_last_child()) {
+                 Helpers::dompdf_debug("page-break", "following last child.");
+ 
+                 if ($next->is_table()) {
+@@ -641,7 +639,9 @@ function check_page_break(Frame $frame)
+                 break;
+             }
+ 
+-            $next = $iter->get_prev_sibling();
++            if ($iter->checkPageBreakBeforePreviousSibling()) {
++                $next = $iter->get_prev_sibling();
++            }
+             // Skip empty text nodes
+             while ($next && $next->is_text_node() && $next->get_node()->nodeValue === "") {
+                 $next = $next->get_prev_sibling();
+@@ -681,24 +681,9 @@ function check_page_break(Frame $frame)
+         // No valid page break found.  Just break at $frame.
+         Helpers::dompdf_debug("page-break", "no valid break found, just splitting.");
+ 
+-        // If we are in a table, backtrack to the nearest top-level table row
+-        if ($this->_in_table) {
+-            $iter = $frame;
+-            while ($iter && $iter->get_style()->display !== "table-row" && $iter->get_style()->display !== 'table-row-group' && $iter->_already_pushed === false) {
+-                $iter = $iter->get_parent();
+-            }
++        $frame->split(null, true);
+ 
+-            if ($iter) {
+-                $iter->split(null, true);
+-                $iter->_already_pushed = true;
+-            } else {
+-                return false;
+-            }
+-        } else {
+-            $frame->split(null, true);
+-        }
+-
+-        $this->_page_full = true;
++        $frame->find_pageable_context()->set_full(true);
+         $frame->_already_pushed = true;
+ 
+         return true;
+@@ -711,6 +696,24 @@ public function split(?Frame $child = null, bool $page_break = false, bool $forc
+         // Do nothing
+     }
+ 
++    /**
++     * Add a floating frame
++     *
++     * @param Frame $frame
++     */
++    function add_dangling_frame(Frame $frame)
++    {
++        array_unshift($this->_dangling_frames, $frame);
++    }
++
++    /**
++     * @return Frame[]
++     */
++    function get_dangling_frames()
++    {
++        return $this->_dangling_frames;
++    }
++
+     /**
+      * Add a floating frame
+      *
+diff --git a/src/FrameDecorator/Table.php b/src/FrameDecorator/Table.php
+index 5ba8ddaa1..fe010c75d 100644
+--- a/src/FrameDecorator/Table.php
++++ b/src/FrameDecorator/Table.php
+@@ -30,6 +30,14 @@ class Table extends AbstractFrameDecorator
+         "table-footer-group"
+     ];
+ 
++    /**
++     * List of row-group display types that replicate across pages.
++     */
++    public const STATIC_ROW_GROUPS = [
++        "table-header-group"
++        /* "table-footer-group" */
++    ];
++
+     /**
+      * The Cellmap object for this table.  The cellmap maps table cells
+      * to rows and columns, and aids in calculating column widths.
+@@ -83,6 +91,10 @@ public function reset()
+         $this->_reflower->reset();
+     }
+ 
++    public function has_headers() {
++        return count($this->_headers) > 0;
++    }
++
+     //........................................................................
+ 
+     /**
+diff --git a/src/FrameDecorator/TableCell.php b/src/FrameDecorator/TableCell.php
+index 7d06b55d6..d9aa290aa 100644
+--- a/src/FrameDecorator/TableCell.php
++++ b/src/FrameDecorator/TableCell.php
+@@ -7,6 +7,7 @@
+ namespace Dompdf\FrameDecorator;
+ 
+ use Dompdf\Dompdf;
++use Dompdf\Exception;
+ use Dompdf\Frame;
+ use Dompdf\FrameDecorator\Block as BlockFrameDecorator;
+ 
+@@ -22,6 +23,45 @@ class TableCell extends BlockFrameDecorator
+      */
+     protected $content_height;
+ 
++    /**
++     * The stored split table cell.
++     *
++     * If the table cell's content does not fit on the current page, the new
++     * split table cell will be stored in this property for processing by
++     * TableRow::split().
++     *
++     * @var ?TableCell
++     */
++    private $_split_frame = null;
++
++    /**
++     * Retrieves the stored split cell.
++     *
++     * @var ?TableCell
++     */
++    public function get_split_frame() : ?TableCell
++    {
++        return $this->_split_frame;
++    }
++
++    /**
++     * Sets the stored split cell.
++     *
++     * @var ?TableCell
++     */
++    public function set_split_frame() : ?TableCell
++    {
++        return $this->_split_frame;
++    }
++
++    /**
++     * Clears the stored split cell.
++     */
++    public function clear_split_frame()
++    {
++        $this->_split_frame = null;
++    }
++
+     /**
+      * TableCell constructor.
+      * @param Frame $frame
+@@ -39,6 +79,98 @@ function reset()
+         $this->content_height = 0.0;
+     }
+ 
++    /**
++     * Split the table cell at the given child.
++     *
++     *  - The current table cell is cloned and $child and all children following
++     * $child are added to the clone.
++     *  - The cloned table cell is stored to be added to a new table row in
++     * TableRow::split() which is called from TableRow::reflow().
++     *
++     * @throws Exception
++     *
++     * @see \Dompdf\FrameDecorator\TableRow::split()
++     * @see \Dompdf\FrameReflower\TableRow::reflow()
++     */
++    public function split(?Frame $child = null, bool $page_break = false, bool $forced = false): void
++    {
++        if (is_null($child)) {
++            $child = $this->get_first_child();
++        }
++
++        if ($child->get_parent() !== $this) {
++            throw new Exception("Unable to split: frame is not a child of this one.");
++        }
++
++        $this->revert_counter_increment();
++
++        $node = $this->_frame->get_node();
++        $split = $this->copy($node->cloneNode());
++
++        $style = $this->_frame->get_style();
++        $split_style = $split->get_style();
++
++        // Truncate the box decoration at the split
++        // if the parent table does not have headers
++        $table = Table::find_parent_table($this);
++        if (!$table->has_headers()) {
++            // Clear bottom decoration of original frame
++            $style->margin_bottom = 0.0;
++            $style->padding_bottom = 0.0;
++            $style->border_bottom_style = "hidden";
++            $style->border_bottom_width = 0.0;
++            $style->border_bottom_left_radius = 0.0;
++            $style->border_bottom_right_radius = 0.0;
++
++            // Clear top decoration of split frame
++            $split_style->margin_top = 0.0;
++            $split_style->padding_top = 0.0;
++            $split_style->border_top_style = "hidden";
++            $split_style->border_top_width = 0.0;
++            $split_style->border_top_left_radius = 0.0;
++            $split_style->border_top_right_radius = 0.0;
++            $split_style->page_break_before = "auto";
++        }
++
++        $split_style->text_indent = 0.0;
++        $split_style->counter_reset = "none";
++
++        $this->is_split = true;
++        $split->is_split_off = true;
++        $split->_already_pushed = true;
++
++        // Remove the frames that will be moved to the new split node from
++        // the line boxes
++        $this->remove_frames_from_line($child);
++
++        // recalculate the float offsets after paging
++        foreach ($this->get_line_boxes() as $line_box) {
++            $line_box->get_float_offsets();
++        }
++
++        if (!$forced) {
++            // Reset top margin in case of an unforced page break
++            // https://www.w3.org/TR/CSS21/page.html#allowed-page-breaks
++            $child->get_style()->margin_top = 0.0;
++        }
++
++        // Add $child and all following siblings to the new split node
++        $iter = $child;
++        while ($iter) {
++            $frame = $iter;
++            $iter = $iter->get_next_sibling();
++            $frame->reset();
++            $split->append_child($frame);
++        }
++
++        // Store the split table cell for future processing.
++        $this->_split_frame = $split;
++
++        // NOTE: The split method on the parent Table Row is not called at this
++        // stage like other split methods to ensure all Table Cells are reflowed
++        // first as their content may be able to be added to the current page.
++    }
++
+     /**
+      * @return float
+      */
+@@ -108,4 +240,39 @@ public function set_cell_height(float $height): void
+             }
+         }
+     }
++
++    /**
++     * Locate the parent table row group of this table cell.
++     *
++     * @return TableRowGroup|null
++     *   The parent Table Row Group or null if this table cell
++     *   does not have a table row group parent.
++     */
++    public function find_parent_table_row_group(): ?TableRowGroup
++    {
++        $parent = $this->get_parent();
++        while (null !== $parent) {
++            if (in_array($parent->get_style()->display, Table::ROW_GROUPS, true)) {
++                break;
++            }
++            $parent = $parent->get_parent();
++        }
++        return $parent;
++    }
++
++    /**
++     * {@inheritdoc}
++     *
++     * The page break logic should not follow previous siblings of a Table
++     * Cell (i.e. preceding table cells in the same row) to check for an
++     * allowable page break.
++     *
++     * These cells have already gone through the reflow process. The table
++     * cell & row split functionality can currently only handle splitting
++     * within table cells & rows that are in reflow.
++     */
++    public function checkPageBreakBeforePreviousSibling(): bool
++    {
++        return false;
++    }
+ }
+diff --git a/src/FrameDecorator/TableRow.php b/src/FrameDecorator/TableRow.php
+index ba985c916..a91173124 100644
+--- a/src/FrameDecorator/TableRow.php
++++ b/src/FrameDecorator/TableRow.php
+@@ -7,6 +7,7 @@
+ namespace Dompdf\FrameDecorator;
+ 
+ use Dompdf\Dompdf;
++use Dompdf\Exception;
+ use Dompdf\Frame;
+ 
+ /**
+@@ -25,4 +26,142 @@ function __construct(Frame $frame, Dompdf $dompdf)
+     {
+         parent::__construct($frame, $dompdf);
+     }
++
++    /**
++     * Split the table row.
++     *
++     * If there are no split table cell children, the entire row will be moved
++     * to the next page by calling the parent table row group split method.
++     *
++     * If there are split table cell children, the current table row is cloned
++     * and the split table cells and empty table cells for non split cells are
++     * added to the clone. The clone is then passed to the parent table row
++     * group split method.
++     *
++     * @throws Exception
++     */
++    public function split(?Frame $child = null, bool $page_break = false, bool $forced = false): void
++    {
++        if ($child !== null) {
++            throw new Exception("Unable to split: child should not be provided.");
++        }
++
++        $table = Table::find_parent_table($this);
++        $cellmap = $table->get_cellmap();
++        $row_cells = $cellmap->get_frames_in_row($this);
++        ksort($row_cells);
++
++        $has_split_child = false;
++        foreach ($row_cells as $row_cell) {
++            if ($row_cell->is_split) {
++                $has_split_child = true;
++                break;
++            }
++        }
++        if (!$has_split_child) {
++            // No split children, just move the row to the next page.
++            $this->get_parent()->split($this, $page_break, $forced);
++            return;
++        }
++
++        $this->revert_counter_increment();
++
++        $node = $this->_frame->get_node();
++        $split = $this->copy($node->cloneNode());
++
++        $style = $this->_frame->get_style();
++        $split_style = $split->get_style();
++
++        // Truncate the box decoration at the split.
++        // if the parent table does not have headers
++        $table = Table::find_parent_table($this);
++        if (!$table->has_headers()) {
++            // Clear bottom decoration of original frame
++            $style->margin_bottom = 0.0;
++            $style->padding_bottom = 0.0;
++            $style->border_bottom_style = "hidden";
++            $style->border_bottom_width = 0.0;
++            $style->border_bottom_left_radius = 0.0;
++            $style->border_bottom_right_radius = 0.0;
++
++            // Clear top decoration of split frame
++            $split_style->margin_top = 0.0;
++            $split_style->padding_top = 0.0;
++            $split_style->border_top_style = "hidden";
++            $split_style->border_top_width = 0.0;
++            $split_style->border_top_left_radius = 0.0;
++            $split_style->border_top_right_radius = 0.0;
++            $split_style->page_break_before = "auto";
++        }
++
++        $split_style->text_indent = 0.0;
++        $split_style->counter_reset = "none";
++
++        $this->is_split = true;
++        $split->is_split_off = true;
++        $split->_already_pushed = true;
++
++        // Copy all child table cells to the cloned row.
++        $row_info = $cellmap->get_spanned_cells($this);
++        foreach ($row_cells as $row_cell) {
++            // if the child was not split because it fully rendered
++            // add a dummy frame and split at that point
++            $split_frame = $row_cell->get_split_frame();
++            if (!$split_frame) {
++                $row_cell_style = $row_cell->get_frame()->get_style();
++                
++                $null_frame = new Frame(new \DOMText());
++                $null_style = new \Dompdf\Css\Style($row_cell_style->get_stylesheet(), $row_cell_style->get_origin());
++                $null_style->reset();
++                $null_style->display = "none";
++                $null_frame->set_style($null_style);
++                $null_deco = new NullFrameDecorator($null_frame, $this->get_dompdf());
++                $null_deco->set_reflower(new \Dompdf\FrameReflower\NullFrameReflower($null_deco, $this->get_dompdf()->getFontMetrics()));
++                $row_cell->append_child($null_deco);
++                $row_cell->split($null_deco, true, false);
++                $split_frame = $row_cell->get_split_frame();
++            }
++            $split_frame->reset();
++
++            // update the rowspan in the frame
++            $cell_info = $cellmap->get_spanned_cells($row_cell);
++            $rowspan = $used_rowspan = max((int) $split_frame->get_node()->getAttribute("rowspan"), 1);
++            if ($rowspan > 1) {
++                $used_rowspan = $row_info["rows"][0] - $cell_info["rows"][0];
++                $row_cell->get_node()->setAttribute("rowspan", max($used_rowspan, 1));
++                $split_frame->get_node()->setAttribute("rowspan", max($rowspan - $used_rowspan, 1));
++            }
++
++            $split->append_child($split_frame);
++            $cellmap->resolve_frame_border($row_cell);
++        }
++
++        // Preserve the current counter values. This must be done after the
++        // parent split, as counters get reset on frame reset
++        $split->_counters = $this->_counters;
++        
++        $this->get_parent()->insert_child_after($split, $this, true);
++        $this->get_parent()->split($split, $page_break, $forced);
++    }
++
++    /**
++     * {@inheritdoc}
++     *
++     * The page break logic should not follow the last child of a Table Row
++     * (i.e. a table cell) to check for an allowable page break.
++     *
++     * This situation would only occur if a table cell (or its contents) within
++     * a following row does not fit on a page and a page break is not allowed
++     * within that table cell or before its parent table row or before the
++     * current table row.
++     *
++     * The table cells of a preceding row would have already gone through
++     * the reflow process. The table cell & row split functionality can
++     * currently only handle splitting within table cells & rows that are
++     * being reflowed.
++     */
++    public function checkPageBreakBeforeLastChild(): bool
++    {
++        return false;
++    }
+ }
+diff --git a/src/FrameDecorator/TableRowGroup.php b/src/FrameDecorator/TableRowGroup.php
+index 00fe43a34..b928b12b6 100644
+--- a/src/FrameDecorator/TableRowGroup.php
++++ b/src/FrameDecorator/TableRowGroup.php
+@@ -47,6 +47,64 @@ public function split(?Frame $child = null, bool $page_break = false, bool $forc
+         $cellmap = $parent->get_cellmap();
+         $iter = $child;
+ 
++        // If the row has already been split we don't need to do anything else,
++        // otherwise we need to check for rowspanned cells. The rowspanned cells
++        // that began on a previous row need to be split so that the split off
++        // frame can be added to this row for rendering on the following page.
++        if (!$child->is_split_off) {
++            $row_info = $cellmap->get_spanned_cells($child);
++            $row_index = $row_info["rows"][0];
++            if ($row_index !== 0) {
++                $row_cells = $cellmap->get_frames_in_row($child);
++                ksort($row_cells);
++                $prev_cell = null;
++    
++                // collect new frames so we're not modifying the collection as we evaulate it
++                $new_frames = [];
++                foreach ($row_cells as $row_cell) {
++                    $cell_info = $cellmap->get_spanned_cells($row_cell);
++                    if ($cell_info["rows"][0] === $row_index) {
++                        $prev_cell = $row_cell;
++                        continue;
++                    }
++    
++                    $split_frame = $row_cell->get_split_frame();
++                    if (!$split_frame) {
++                        $row_cell_style = $row_cell->get_frame()->get_style();
++                        $null_frame = new Frame(new \DOMText());
++                        $null_style = new \Dompdf\Css\Style($row_cell_style->get_stylesheet(), $row_cell_style->get_origin());
++                        $null_style->reset();
++                        $null_style->display = "none";
++                        $null_frame->set_style($null_style);
++                        $null_deco = new NullFrameDecorator($null_frame, $this->get_dompdf());
++                        $null_deco->set_reflower(new \Dompdf\FrameReflower\NullFrameReflower($null_deco, $this->get_dompdf()->getFontMetrics()));
++                        $row_cell->append_child($null_deco);
++                        $row_cell->split($null_deco, true, false);
++                        $split_frame = $row_cell->get_split_frame();
++                    }
++    
++                    // update the rowspan in the frame
++                    $cell_info = $cellmap->get_spanned_cells($row_cell);
++                    $rowspan = $used_rowspan = max((int) $split_frame->get_node()->getAttribute("rowspan"), 1);
++                    if ($rowspan > 1) {
++                        $used_rowspan = $row_info["rows"][0] - $cell_info["rows"][0];
++                        $row_cell->get_node()->setAttribute("rowspan", max($used_rowspan, 1));
++                        $split_frame->get_node()->setAttribute("rowspan", max($rowspan - $used_rowspan, 1));
++                    }
++    
++                    $new_frames[] = [$split_frame, $prev_cell];
++                    $prev_cell = $split_frame;
++                }
++                foreach ($new_frames as $new_frame) {
++                    if ($new_frame[1] === null) {
++                        $child->prepend_child($new_frame[0]);
++                    } else {
++                        $child->insert_child_after($new_frame[0], $new_frame[1]);
++                    }
++                }
++            }
++        }
++
+         while ($iter) {
+             $cellmap->remove_row($iter);
+             $iter = $iter->get_next_sibling();
+diff --git a/src/FrameReflower/Block.php b/src/FrameReflower/Block.php
+index 45db9fdb9..3126c6b67 100644
+--- a/src/FrameReflower/Block.php
++++ b/src/FrameReflower/Block.php
+@@ -785,8 +785,7 @@ function reflow(?BlockFrameDecorator $block = null)
+         $page = $this->_frame->get_root();
+         $page->check_forced_page_break($this->_frame);
+ 
+-        // Bail if the page is full
+-        if ($page->is_full()) {
++        if ($this->_frame->find_pageable_context()->is_full()) {
+             return;
+         }
+ 
+@@ -870,7 +869,7 @@ function reflow(?BlockFrameDecorator $block = null)
+             // Don't add the child to the line if a page break has occurred
+             // before it (possibly via a descendant), in which case it has been
+             // reset, including its position
+-            if ($page->is_full() && $child->get_position("x") === null) {
++            if ($this->_frame->find_pageable_context()->is_full() && $child->get_position("x") === null) {
+                 break;
+             }
+ 
+@@ -879,7 +878,7 @@ function reflow(?BlockFrameDecorator $block = null)
+ 
+         // Stop reflow if a page break has occurred before the frame, in which
+         // case it has been reset, including its position
+-        if ($page->is_full() && $this->_frame->get_position("x") === null) {
++        if ($this->_frame->find_pageable_context()->is_full() && $this->_frame->get_position("x") === null) {
+             return;
+         }
+ 
+diff --git a/src/FrameReflower/Inline.php b/src/FrameReflower/Inline.php
+index d31fa456c..67e3e5a55 100644
+--- a/src/FrameReflower/Inline.php
++++ b/src/FrameReflower/Inline.php
+@@ -83,7 +83,7 @@ function reflow(?BlockFrameDecorator $block = null)
+         $page = $frame->get_root();
+         $page->check_forced_page_break($frame);
+ 
+-        if ($page->is_full()) {
++        if ($frame->find_pageable_context()->is_full()) {
+             return;
+         }
+ 
+diff --git a/src/FrameReflower/Page.php b/src/FrameReflower/Page.php
+index 42b521f8d..ecd1c5576 100644
+--- a/src/FrameReflower/Page.php
++++ b/src/FrameReflower/Page.php
+@@ -150,6 +150,24 @@ function reflow(?BlockFrameDecorator $block = null)
+             // Check for end render callback
+             $this->_check_callbacks("end_page_render", $child);
+ 
++            // If we completed page rendering without having to create a new page then handle floating frames when no other content was present
++            $dangling_frames = $frame->get_dangling_frames();
++            if (count($dangling_frames) > 0) {
++                if ($next_child) {
++                    while ($dangling_frame = array_shift($dangling_frames)) {
++                        $dangling_frame->reset();
++                        $next_child->get_frame()->prepend_child($dangling_frame->get_frame());
++                    }
++                } else {
++                    $dangling_frame = $first_child = array_pop($dangling_frames);
++                    do {
++                        $child->get_frame()->append_child($dangling_frame->get_frame());
++                    } while ($dangling_frame = array_pop($dangling_frames));
++                    $child->split($first_child, false, false);
++                    $next_child = $child->get_next_sibling();
++                }
++            }
++
+             if ($next_child) {
+                 $frame->next_page();
+             }
+diff --git a/src/FrameReflower/Table.php b/src/FrameReflower/Table.php
+index 707d18f31..4f29fb29c 100644
+--- a/src/FrameReflower/Table.php
++++ b/src/FrameReflower/Table.php
+@@ -306,7 +306,7 @@ function reflow(?BlockFrameDecorator $block = null)
+         $page->check_forced_page_break($frame);
+ 
+         // Bail if the page is full
+-        if ($page->is_full()) {
++        if ($frame->find_pageable_context()->is_full()) {
+             return;
+         }
+ 
+@@ -417,7 +417,7 @@ function reflow(?BlockFrameDecorator $block = null)
+                 // Check if a split has occurred
+                 $page->check_page_break($child);
+     
+-                if ($page->is_full()) {
++                if ($frame->find_pageable_context()->is_full()) {
+                     break;
+                 }
+             }
+@@ -425,7 +425,7 @@ function reflow(?BlockFrameDecorator $block = null)
+ 
+         // Stop reflow if a page break has occurred before the frame, in which
+         // case it has been reset, including its position
+-        if ($page->is_full() && $frame->get_position("x") === null) {
++        if ($frame->find_pageable_context()->is_full() && $frame->get_position("x") === null) {
+             $page->table_reflow_end();
+             return;
+         }
+diff --git a/src/FrameReflower/TableCell.php b/src/FrameReflower/TableCell.php
+index e63029fff..a31523edc 100644
+--- a/src/FrameReflower/TableCell.php
++++ b/src/FrameReflower/TableCell.php
+@@ -100,11 +100,18 @@ function reflow(?BlockFrameDecorator $block = null)
+             $child->set_containing_block($content_x, $content_y, $cb_w, $h);
+             $this->process_clear($child);
+             $child->reflow($frame);
+-            $this->process_float($child, $content_x, $cb_w);
+ 
+-            if ($page->is_full()) {
++            // Check for a page break before the child
++            $page->check_page_break($child);
++
++            // Don't add the child to the line if a page break has occurred
++            // before it (possibly via a descendant), in which case it has been
++            // reset, including its position
++            if ($frame->is_full() && $child->get_position("x") === null) {
+                 break;
+             }
++
++            $this->process_float($child, $content_x, $cb_w);
+         }
+ 
+         // Determine our height
+diff --git a/src/FrameReflower/TableRow.php b/src/FrameReflower/TableRow.php
+index 5115a24e3..775b0c20f 100644
+--- a/src/FrameReflower/TableRow.php
++++ b/src/FrameReflower/TableRow.php
+@@ -40,7 +40,7 @@ function reflow(?BlockFrameDecorator $block = null)
+         $page->check_forced_page_break($frame);
+ 
+         // Bail if the page is full
+-        if ($page->is_full()) {
++        if ($frame->find_pageable_context()->is_full()) {
+             return;
+         }
+ 
+@@ -55,12 +55,12 @@ function reflow(?BlockFrameDecorator $block = null)
+             $child->set_containing_block($cb);
+             $child->reflow();
+ 
+-            if ($page->is_full()) {
++            if ($frame->find_pageable_context()->is_full() && $child->get_position("x") === null) {
+                 break;
+             }
+         }
+ 
+-        if ($page->is_full()) {
++        if ($frame->find_pageable_context()->is_full()) {
+             return;
+         }
+ 
+@@ -74,6 +74,25 @@ function reflow(?BlockFrameDecorator $block = null)
+         $style->set_used("height", $cellmap->get_frame_height($frame));
+ 
+         $frame->set_position($cellmap->get_frame_position($frame));
++        
++        // split the row if one of the contained cells was split
++        $row_info = $cellmap->get_spanned_cells($frame);
++        $row_index = $row_info["rows"][0];
++        $row_cells = $cellmap->get_frames_in_row($frame);
++        ksort($row_cells);
++        foreach ($row_cells as $child) {
++            if ($child->is_split) {
++                // ...unless the child is rowspanned into the next row, then we wait
++                $cell_info = $cellmap->get_spanned_cells($child);
++                $cell_cols = array_keys($cell_info["rows"]);
++                if (end($cell_cols) > $row_index) {
++                    continue;
++                }
++
++                $frame->split(null, true, false);
++                break;
++            }
++        }
+     }
+ 
+     /**
+diff --git a/src/FrameReflower/TableRowGroup.php b/src/FrameReflower/TableRowGroup.php
+index 20f5ee6df..048b0c90f 100644
+--- a/src/FrameReflower/TableRowGroup.php
++++ b/src/FrameReflower/TableRowGroup.php
+@@ -52,12 +52,12 @@ function reflow(?BlockFrameDecorator $block = null)
+             // Check if a split has occurred
+             $page->check_page_break($child);
+ 
+-            if ($page->is_full()) {
++            if ($frame->find_pageable_context()->is_full()) {
+                 break;
+             }
+         }
+ 
+-        if ($page->is_full() && $dompdf_generated && $frame->get_parent() === null) {
++        if ($frame->find_pageable_context()->is_full() && $dompdf_generated && $frame->get_parent() === null) {
+             return;
+         }
+ 
+@@ -69,7 +69,7 @@ function reflow(?BlockFrameDecorator $block = null)
+ 
+         // Stop reflow if a page break has occurred before the frame, in which
+         // case it is not part of its parent table's cell map yet
+-        if ($page->is_full() && !$cellmap->frame_exists_in_cellmap($frame)) {
++        if ($frame->find_pageable_context()->is_full() && !$cellmap->frame_exists_in_cellmap($frame)) {
+             return;
+         }
+ 
+diff --git a/src/FrameReflower/Text.php b/src/FrameReflower/Text.php
+index 7564910e3..d2ad16da2 100644
+--- a/src/FrameReflower/Text.php
++++ b/src/FrameReflower/Text.php
+@@ -379,7 +379,7 @@ function reflow(?BlockFrameDecorator $block = null)
+         $page = $frame->get_root();
+         $page->check_forced_page_break($frame);
+ 
+-        if ($page->is_full()) {
++        if ($frame->find_pageable_context()->is_full()) {
+             return;
+         }
+ 
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-block-big.html b/tests/_files/OutputTest/page-break-table/break-table-cell-block-big.html
+new file mode 100644
+index 000000000..aba96502a
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-block-big.html
+@@ -0,0 +1,80 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 325pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block in column 1 row 2 is bigger than the page height causing page break. Page break occurs in Row 2 after 1 line of text in Col 1. Col 2 and Col 3 text appears on first page and rest of Col 1 text appears on second page which is printed exceeding the page boundaries.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                <p>Row2 Col1 Line1</p>
++                <p style="height: 405pt; background-color: yellow;">Row2 Col1 Line2</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-block-big.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-block-big.pdf
+new file mode 100644
+index 000000000..700de3faf
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-block-big.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-block-page-break-inside-avoid.html b/tests/_files/OutputTest/page-break-table/break-table-cell-block-page-break-inside-avoid.html
+new file mode 100644
+index 000000000..42ff299b9
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-block-page-break-inside-avoid.html
+@@ -0,0 +1,81 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++    page-break-inside: avoid;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 325pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 1 row 2 does not fit in page causing page break. Page break would typically occur in Row 2 after 1 line of text in Col 1, however, td page-break-inside avoid is respected and the entire row is moved to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                <p>Row2 Col1 Line1</p>
++                <p>Row2 Col1 Line2</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-block-page-break-inside-avoid.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-block-page-break-inside-avoid.pdf
+new file mode 100644
+index 000000000..d02d613b3
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-block-page-break-inside-avoid.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-block.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-block.html
+new file mode 100644
+index 000000000..e9b84435e
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-block.html
+@@ -0,0 +1,80 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 335pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 1 row 1 does not fit in page causing page break. Page break occurs in Row 1 after 1 line of text in Col 1. Col 2 and Col 3 text appears on first page and rest of Col 1 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                <p>Row1 Col1 Line1</p>
++                <p>Row1 Col1 Line2</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-block.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-block.pdf
+new file mode 100644
+index 000000000..2eeddd0d0
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-block.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-fail.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-fail.html
+new file mode 100644
+index 000000000..81ddb76a7
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-fail.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 350pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 1 row 1 does not fit in page causing page break. Inline text fails orphan requirement therefore the break needs to happen before the table row. Given the table row is the first tbody row, the page break occurs before the table forcing it all to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-fail.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-fail.pdf
+new file mode 100644
+index 000000000..4499373e8
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-fail.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-pass.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-pass.html
+new file mode 100644
+index 000000000..9bdef04a9
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-pass.html
+@@ -0,0 +1,78 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<meta name="description"
++      content="Page Break occurs in Row 1 after 2 lines of text in Col 1. Col 2 and Col 3 text appears on first page and rest of Col1 text appears on second page.">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 330pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 1 row 1 does not fit in page causing page break. Inline text passes orphan requirement therefore page break occurs in Row 1 after 2 lines of text in Col 1. Col 2 and Col 3 text appears on first page and rest of Col 1 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-pass.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-pass.pdf
+new file mode 100644
+index 000000000..635e0d29c
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row1-inline-orphan-pass.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-block.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-block.html
+new file mode 100644
+index 000000000..53b5005d1
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-block.html
+@@ -0,0 +1,80 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 325pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 1 row 2 does not fit in page causing page break. Page break occurs in Row 2 after 1 line of text in Col 1. Col 2 and Col 3 text appears on first page and rest of Col 1 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                <p>Row2 Col1 Line1</p>
++                <p>Row2 Col1 Line2</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-block.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-block.pdf
+new file mode 100644
+index 000000000..03be16c10
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-block.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-fail.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-fail.html
+new file mode 100644
+index 000000000..5e5bafdfe
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-fail.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 320pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 1 row 2 does not fit in page causing page break. Inline text fails orphan requirement therefore the break occurs before the table row.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-fail.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-fail.pdf
+new file mode 100644
+index 000000000..6b74dc528
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-fail.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-pass.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-pass.html
+new file mode 100644
+index 000000000..1fa1e2a1f
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-pass.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 310pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 1 row 2 does not fit in page causing page break. Inline text passes orphan requirement therefore page break occurs in Row 2 after 2 lines of text in Col 1. Col 2 and Col 3 text appears on first page and rest of Col 1 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-pass.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-pass.pdf
+new file mode 100644
+index 000000000..be5d04266
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col1row2-inline-orphan-pass.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-block.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-block.html
+new file mode 100644
+index 000000000..015114b57
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-block.html
+@@ -0,0 +1,80 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 335pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 2 row 1 does not fit in page causing page break. Page break occurs in Row 1 after 1 line of text in Col 2. Col 1 and Col 3 text appears on first page and rest of Col 2 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                <p>Row1 Col2 Line1</p>
++                <p>Row1 Col2 Line2</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-block.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-block.pdf
+new file mode 100644
+index 000000000..d4a3fb186
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-block.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-fail.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-fail.html
+new file mode 100644
+index 000000000..92c6e3a69
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-fail.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 350pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 2 row 1 does not fit in page causing page break. Inline text fails orphan requirement therefore the break needs to happen before the table row. Given the table row is the first tbody row, the page break occurs before the table forcing it all to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-fail.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-fail.pdf
+new file mode 100644
+index 000000000..04de07fd2
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-fail.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-pass.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-pass.html
+new file mode 100644
+index 000000000..b3cfbdc42
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-pass.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 330pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 2 row 1 does not fit in page causing page break. Inline text passes orphan requirement therefore page break occurs in Row 1 after 2 lines of text in Col 2. Col 1 and Col 3 text appears on first page and rest of Col2 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-pass.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-pass.pdf
+new file mode 100644
+index 000000000..ab29f0bba
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row1-inline-orphan-pass.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-block.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-block.html
+new file mode 100644
+index 000000000..ba28e30b1
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-block.html
+@@ -0,0 +1,80 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 325pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 2 row 2 does not fit in page causing page break. Page break occurs in Row 2 after 1 line of text in Col 2. Col 1 and Col 3 text appears on first page and rest of Col 2 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                <p>Row2 Col2 Line1</p>
++                <p>Row2 Col2 Line2</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-block.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-block.pdf
+new file mode 100644
+index 000000000..201cabe9f
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-block.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-fail.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-fail.html
+new file mode 100644
+index 000000000..dcf97ad2c
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-fail.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 320pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 2 row 2 does not fit in page causing page break. Inline text fails orphan requirement therefore the break occurs before the table row.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-fail.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-fail.pdf
+new file mode 100644
+index 000000000..70ee07187
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-fail.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-pass.html b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-pass.html
+new file mode 100644
+index 000000000..0b6bb1621
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-pass.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 310pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 2 row 2 does not fit in page causing page break. Inline text passes orphan requirement therefore page break occurs in Row 2 after 2 lines of text in Col 2. Col 1 and Col 3 text appears on first page and rest of Col2 text appears on second page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-pass.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-pass.pdf
+new file mode 100644
+index 000000000..f504c82d2
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-col2row2-inline-orphan-pass.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-colspan.html b/tests/_files/OutputTest/page-break-table/break-table-cell-colspan.html
+new file mode 100644
+index 000000000..7adcfb9e8
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-colspan.html
+@@ -0,0 +1,78 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 325pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 1 row 2 (which spans two columns) does not fit in page causing page break. Page break occurs in Row 2 after 1 line of text in Col 1. Col 3 text appears on first page and rest of Col 1 text appears on second page. Colspan is correctly handled regardless of page break.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;" colspan="2">
++                <p>Row2 Col1 Colspan2 Line1</p>
++                <p>Row2 Col1 Colspan2 Line2</p>
++                <p>Row2 Col1 Colspan2 Line3</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-colspan.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-colspan.pdf
+new file mode 100644
+index 000000000..68f09bafa
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-colspan.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-inline-page-break-inside-avoid.html b/tests/_files/OutputTest/page-break-table/break-table-cell-inline-page-break-inside-avoid.html
+new file mode 100644
+index 000000000..0f5a96e90
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-inline-page-break-inside-avoid.html
+@@ -0,0 +1,77 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++    page-break-inside: avoid;
++}
++.block {
++    width: 100%;
++    height: 330pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 2 row 1 does not fit in page causing page break. Inline text passes orphan requirement therefore page break would typically occur in Row 1 after 2 lines of text in Col 2, however, td page-break-inside avoid is respected. Given the row is the first table row the entire table is moved to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1 Long text that meets the orphans 2 line minimum
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-inline-page-break-inside-avoid.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-inline-page-break-inside-avoid.pdf
+new file mode 100644
+index 000000000..776a71f6c
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-inline-page-break-inside-avoid.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-nested-table.html b/tests/_files/OutputTest/page-break-table/break-table-cell-nested-table.html
+new file mode 100644
+index 000000000..f090bcee7
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-nested-table.html
+@@ -0,0 +1,87 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 320pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Nested table in Column 1 Row 2 does not fit in page causing page break. Breaking within a nested table is not allowed so entire parent row is moved to the next page</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                <table>
++                    <tr>
++                        <td>
++                            <p>Nested content A</p>
++                            <p>Nested content B</p>
++                        </td>
++                        <td>Nested content C</td>
++                    </tr>
++                </table>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-nested-table.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-nested-table.pdf
+new file mode 100644
+index 000000000..b412e4d34
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-nested-table.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-parent-row-not-allowed.html b/tests/_files/OutputTest/page-break-table/break-table-cell-parent-row-not-allowed.html
+new file mode 100644
+index 000000000..a33749da0
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-parent-row-not-allowed.html
+@@ -0,0 +1,149 @@
++<!DOCTYPE html>
++<html>
++<head>
++    <meta charset="UTF-8">
++    <style>
++        @page {
++            size: 500pt 600pt;
++            margin: 10pt;
++            font-size: 10pt;
++        }
++
++        body {
++            background-color: lightgray;
++        }
++
++        table {
++            border-collapse: collapse;
++        }
++
++        th,
++        td {
++            border: 1pt solid black;
++            background-color: white;
++        }
++
++        p {
++            margin: 0;
++        }
++
++        .block {
++            width: 100%;
++            height: 140pt;
++            background-color: lightblue;
++        }
++    </style>
++</head>
++<body>
++<div class="block">Ensure page breaks are correctly handled when a table cell's content does not fit on page and page
++    break is not allowed within the table cell or before the parent table row or before the previous table row. If a page
++    break is not allowed in the table cell or before the parent table row, then each previous table row should be
++    checked until a page break is allowed. Page breaks within tables cells of previous rows are not allowed.
++</div>
++<table>
++    <thead>
++    <tr>
++        <th>Lorem</th>
++        <th>Exists<br>(Y or N)</th>
++        <th>Ipsum</th>
++        <th>Morbi</th>
++        <th>Curabitur</th>
++        <th>Vivamus</th>
++    </tr>
++    </thead>
++    <tbody>
++    <tr>
++        <td colspan="6" class="hazard-heading"><span class="is-bold">2. Lorem Ipsum</span><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor?</td>
++    </tr>
++    <tr style="page-break-before: avoid;">
++        <td style="page-break-inside: avoid;">
++            <ul>
++                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit? Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas?</li>
++            </ul>
++        </td>
++        <td class="align-center">Y</td>
++        <td><p>Vivamus porta mi nec lorem interdum, at placerat enim luctus.</p></td>
++        <td class="align-center">1</td>
++        <td>
++            <ul>
++                <li>Suspendisse potenti. Nunc commodo nibh id sapien tempor, at efficitur ante sodales.</li>
++                <li>Morbi pulvinar lectus id arcu aliquet, non cursus neque ultricies.</li>
++            </ul>
++        </td>
++        <td class="align-center">2</td>
++    </tr>
++    <tr>
++        <td colspan="6" class="hazard-heading"><span class="is-bold">3. Dolor Sit</span><br>Phasellus quis augue at neque auctor pharetra:</td>
++    </tr>
++    <tr style="page-break-before: avoid;">
++        <td style="page-break-inside: avoid;">
++            <ul>
++                <li>Quisque imperdiet lorem at sapien vestibulum, sed dictum erat ultrices, etiam pharetra sem vitae justo gravida?</li>
++            </ul>
++        </td>
++        <td class="align-center">N</td>
++        <td></td>
++        <td class="align-center"></td>
++        <td></td>
++        <td class="align-center"></td>
++    </tr>
++    <tr>
++        <td colspan="6" class="hazard-heading"><span class="is-bold">5. Consectetur</span><br>Integer non risus sed sapien porttitor consequat:</td>
++    </tr>
++    <tr style="page-break-before: avoid;">
++        <td style="page-break-inside: avoid;">
++            <ul>
++                <li>Praesent bibendum, lacus id luctus luctus, metus leo gravida justo, nec molestie elit massa vitae tortor?</li>
++            </ul>
++        </td>
++        <td class="align-center">Y</td>
++        <td><p>Explosio ficta - Fuelis.</p></td>
++        <td class="align-center">1</td>
++        <td>
++            <ul>
++                <li>Curabitur laoreet dui in orci pretium, eget dictum massa commodo.</li>
++                <li>Donec pharetra tellus sed purus tincidunt, ut tristique sem porta.</li>
++                <li>Extintor ignis praesto in vehiculo.</li>
++            </ul>
++        </td>
++        <td class="align-center">2<br>2<br>2</td>
++    </tr>
++    <tr style="page-break-before: avoid;">
++        <td style="page-break-inside: avoid;"></td>
++        <td class="align-center"></td>
++        <td><p>Lorem Batteries</p></td>
++        <td class="align-center">2</td>
++        <td>
++            <ul>
++                <li>Proin dictum nisi at arcu convallis, sed pharetra magna lacinia, vivamus cursus sapien nec nisi gravida, sed dignissim magna aliquam.</li>
++                <li>Phasellus gravida lorem non libero cursus, id aliquam urna tincidunt.</li>
++                <li>Capsulae robustae ad spiritum sinendum aptatae sunt.</li>
++            </ul>
++        </td>
++        <td class="align-center">3</td>
++    </tr>
++    <tr>
++        <td colspan="6" class="hazard-heading"><span class="is-bold">6. Amet Elit</span><br>Nam sit amet nibh ut massa consequat vulputate:</td>
++    </tr>
++    <tr style="page-break-before: avoid;">
++        <td style="page-break-inside: avoid;">
++            <ul>
++                <li>Etiam sodales augue vitae mi sodales? Mauris fringilla orci ut justo porttitor, sed tincidunt dui sagittis? Aenean venenatis leo non blandit bibendum?</li>
++            </ul>
++        </td>
++        <td class="align-center">Y</td>
++        <td><p>Superficie lubricans.</p></td>
++        <td class="align-center">2</td>
++        <td>
++            <ul>
++                <li>Aliquam erat volutpat, class aptent taciti sociosqu ad litora torquent per conubia nostra.</li>
++                <li>Si conscendendum in alveo est, omnis cura adhibetur.</li>
++                <li>Statim effusiones chemicae vel combustibilis purgantur.</li>
++            </ul>
++        </td>
++        <td class="align-center">3</td>
++    </tr>
++    </tbody>
++</table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-parent-row-not-allowed.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-parent-row-not-allowed.pdf
+new file mode 100644
+index 000000000..07fd776a7
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-parent-row-not-allowed.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-rowspan.html b/tests/_files/OutputTest/page-break-table/break-table-cell-rowspan.html
+new file mode 100644
+index 000000000..25c77368f
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-cell-rowspan.html
+@@ -0,0 +1,78 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 325pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 1 row 2 (which spans two rows) does not fit in page causing page break. Page break occurs before Row 2 because the rowspan attribute prevents breaking within table cells.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;" rowspan="2">
++                <p>Row2&3 Col1 Line1</p>
++                <p>Row2&3 Col1 Line2</p>
++                <p>Row2&3 Col1 Line3</p>
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-cell-rowspan.pdf b/tests/_files/OutputTest/page-break-table/break-table-cell-rowspan.pdf
+new file mode 100644
+index 000000000..495cb56d2
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-cell-rowspan.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-header-cell-block.html b/tests/_files/OutputTest/page-break-table/break-table-header-cell-block.html
+new file mode 100644
+index 000000000..401f7980c
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-header-cell-block.html
+@@ -0,0 +1,79 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 120pt;
++    background-color: white;
++}
++p {
++    margin: 0;
++}
++.block {
++    width: 100%;
++    height: 350pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Block of text in column 2 header does not fit in page causing page break. Block is within a table header row group, therefore the break needs to happen before the table row. Given the row is the first table row, the page break occurs before the table forcing it all to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading</th>
++            <th><p>Col2 Heading Line 1</p><p>Col2 Heading Line 2</p></th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-header-cell-block.pdf b/tests/_files/OutputTest/page-break-table/break-table-header-cell-block.pdf
+new file mode 100644
+index 000000000..ca5a06ba1
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-header-cell-block.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-fail.html b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-fail.html
+new file mode 100644
+index 000000000..e97c4b5c8
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-fail.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 350pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 1 header does not fit in page causing page break. Inline text fails orphan requirement therefore the break needs to happen before the table row. Given the row is the first table row, the page break occurs before the table forcing it all to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading Long text that meets the orphans 2 line minimum</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-fail.pdf b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-fail.pdf
+new file mode 100644
+index 000000000..4cde8792b
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-fail.pdf differ
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-pass.html b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-pass.html
+new file mode 100644
+index 000000000..61d5b809d
+--- /dev/null
++++ b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-pass.html
+@@ -0,0 +1,76 @@
++<!DOCTYPE html>
++<html>
++<head>
++<meta charset="UTF-8">
++<style>
++@page {
++    size: 400pt 400pt;
++    margin: 10pt;
++}
++body {
++    background-color: lightgray;
++}
++table {
++    border-collapse: collapse;
++}
++th,
++td {
++    border: 1pt solid black;
++    width: 33%;
++    background-color: white;
++}
++.block {
++    width: 100%;
++    height: 340pt;
++    background-color: lightblue;
++}
++</style>
++</head>
++<body>
++    <div class="block">Inline text in column 1 header does not fit in page causing page break. Inline text passes orphan requirement but is within a table header row group, therefore the break needs to happen before the table row. Given the row is the first table row, the page break occurs before the table forcing it all to the next page.</div>
++    <table>
++        <thead>
++        <tr>
++            <th>Col1 Heading Long text that meets the orphans 2 line minimum</th>
++            <th>Col2 Heading</th>
++            <th>Col3 Heading</th>
++        </tr>
++        </thead>
++        <tbody>
++        <tr>
++            <td style="vertical-align:top;">
++                Row1 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row1 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row2 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row2 Col3 Line1
++            </td>
++        </tr>
++        <tr>
++            <td style="vertical-align:top;">
++                Row3 Col1 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col2 Line1
++            </td>
++            <td style="vertical-align:top;">
++                Row3 Col3 Line1
++            </td>
++        </tr>
++        </tbody>
++    </table>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-pass.pdf b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-pass.pdf
+new file mode 100644
+index 000000000..8f43e1fd9
+Binary files /dev/null and b/tests/_files/OutputTest/page-break-table/break-table-header-cell-inline-orphan-pass.pdf differ
