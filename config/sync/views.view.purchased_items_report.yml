@@ -7,8 +7,13 @@ dependencies:
   module:
     - better_exposed_filters
     - commerce
+    - commerce_order
     - commerce_reports
+    - csv_serialization
+    - rest
+    - serialization
     - user
+    - views_data_export
 id: purchased_items_report
 label: 'Purchased items report'
 module: views
@@ -25,15 +30,17 @@ display:
     display_options:
       title: 'Purchased items report'
       fields:
-        title:
-          id: title
-          table: commerce_order_report__title
-          field: title
-          relationship: none
+        purchased_entity:
+          id: purchased_entity
+          table: commerce_order_item
+          field: purchased_entity
+          relationship: order_item_id_target_id
           group_type: group
           admin_label: ''
+          entity_type: commerce_order_item
+          entity_field: purchased_entity
           plugin_id: field
-          label: Title
+          label: Item
           exclude: false
           alter:
             alter_text: false
@@ -66,7 +73,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -74,11 +81,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: string
+          click_sort_column: target_id
+          type: entity_reference_label
           settings:
-            link_to_entity: false
-          group_column: value
+            link: true
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -230,6 +237,65 @@ display:
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
+        unit_price_number:
+          id: unit_price_number
+          table: commerce_order_report__unit_price
+          field: unit_price_number
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: commerce_order_report
+          entity_field: unit_price
+          plugin_id: numeric
+          label: 'Unit price'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          set_precision: false
+          precision: 0
+          decimal: .
+          separator: ','
+          format_plural: false
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: ''
+          suffix: ''
         total_price:
           id: total_price
           table: commerce_order_report__total_price
@@ -327,6 +393,8 @@ display:
           bef:
             general:
               autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
               autosubmit_textfield_minimum_length: 3
@@ -336,8 +404,6 @@ display:
               secondary_label: 'Advanced options'
               secondary_open: false
               reset_button_always_show: false
-              autosubmit_breakpoint: ''
-              auto_submit_sort_only: false
             sort:
               plugin_id: default
               advanced:
@@ -352,14 +418,14 @@ display:
               created:
                 plugin_id: bef_datepicker
                 advanced:
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: false
                   hide_label: false
                   field_classes: ''
-                  open_by_default: false
-                  sort_options_method: alphabetical_asc
-                  sort_options_natural: true
       access:
         type: perm
         options:
@@ -368,19 +434,7 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts:
-        title_value:
-          id: title_value
-          table: commerce_order_report__title
-          field: title_value
-          relationship: none
-          group_type: count
-          admin_label: ''
-          plugin_id: standard
-          order: DESC
-          expose:
-            label: '# of Purchases'
-          exposed: true
+      sorts: {  }
       arguments: {  }
       filters:
         type:
@@ -429,16 +483,19 @@ display:
             placeholder: ''
           is_grouped: false
           group_info:
-            label: ''
-            description: ''
-            identifier: ''
+            label: Created
+            description: null
+            identifier: created
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1: {  }
+              2: {  }
+              3: {  }
       style:
         type: table
       row:
@@ -451,7 +508,29 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      relationships: {  }
+      relationships:
+        order_item_id_target_id:
+          id: order_item_id_target_id
+          table: commerce_order_report__order_item_id
+          field: order_item_id_target_id
+          relationship: none
+          group_type: group
+          admin_label: 'Order item'
+          entity_type: commerce_order_report
+          entity_field: order_item_id
+          plugin_id: standard
+          required: false
+        order_id:
+          id: order_id
+          table: commerce_order_item
+          field: order_id
+          relationship: order_item_id_target_id
+          group_type: group
+          admin_label: Order
+          entity_type: commerce_order_item
+          entity_field: order_id
+          plugin_id: standard
+          required: true
       group_by: true
       header: {  }
       footer: {  }
@@ -463,8 +542,55 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
+        - user.permissions
+      tags: {  }
+  data_export_1:
+    id: data_export_1
+    display_title: 'Data export'
+    display_plugin: data_export
+    position: 2
+    display_options:
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+            output_header: true
+          xml_settings:
+            encoding: UTF-8
+            root_node_name: response
+            item_node_name: item
+            format_output: false
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/commerce/reports/purchased-items/csv
+      displays:
+        page_1: page_1
+        default: '0'
+      filename: purchased-items.csv
+      automatic_download: true
+      store_in_public_file_directory: false
+      custom_redirect_path: false
+      redirect_to_display: none
+      include_query_params: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
         - user.permissions
       tags: {  }
   page_1:
@@ -494,7 +620,5 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
         - user.permissions
       tags: {  }

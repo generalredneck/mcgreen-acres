@@ -429,7 +429,7 @@ display:
           entity_type: commerce_order_report
           entity_field: order_id
           plugin_id: standard
-          required: false
+          required: true
       group_by: true
       header: {  }
       footer: {  }
