@@ -1,0 +1,19 @@
+timeslots:
+  js:
+    js/timeslots.js: {}
+  css:
+    theme:
+      css/timeslots.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal.date
+    - jquery_ui_datepicker/datepicker
+
+timeslots_admin:
+  js:
+    js/timeslots_admin.js: {}
+  css:
+    theme:
+      css/timeslots_admin.css: {}
+  dependencies:
+    - core/jquery

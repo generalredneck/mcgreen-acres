@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_invoice
+id: commerce_invoice.user
+label: User
+targetEntityType: commerce_invoice
+cache: true

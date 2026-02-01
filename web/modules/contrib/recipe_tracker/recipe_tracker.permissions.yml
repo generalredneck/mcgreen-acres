@@ -1,0 +1,3 @@
+administer recipe_tracker_log:
+  title: 'Administer logs'
+  restrict access: true

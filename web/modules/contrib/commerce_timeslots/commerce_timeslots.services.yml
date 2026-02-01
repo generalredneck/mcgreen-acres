@@ -1,0 +1,16 @@
+services:
+  commerce_timeslots.timeslots:
+    class: Drupal\commerce_timeslots\Services\CommerceTimeSlots
+    arguments: [
+      '@entity_type.manager',
+      '@config.factory',
+      '@datetime.time',
+      '@date.formatter',
+      '@uuid'
+    ]
+
+  commerce_timeslots.order_subscriber:
+    class: Drupal\commerce_timeslots\EventSubscriber\OrderEventSubscriber
+    arguments: ['@commerce_timeslots.timeslots']
+    tags:
+      - { name: event_subscriber }

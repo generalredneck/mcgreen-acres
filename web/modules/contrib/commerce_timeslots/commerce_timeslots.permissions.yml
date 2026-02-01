@@ -1,0 +1,43 @@
+# Commerce Time Slot entity permissions.
+administer commerce timeslot entity:
+  title: 'Administer commerce time slot entity'
+view commerce timeslot entity:
+  title: 'View commerce time slot entity'
+add commerce timeslot entity:
+  title: 'Add commerce time slot entity'
+edit commerce timeslot entity:
+  title: 'Edit commerce time slot entity'
+delete commerce timeslot entity:
+  title: 'Delete commerce time slot entity'
+
+# Commerce Time Slot Day entity permissions.
+administer commerce timeslot day entity:
+  title: 'Administer commerce time slot day entity'
+view commerce timeslot day entity:
+  title: 'View commerce time slot day entity'
+add commerce timeslot day entity:
+  title: 'Add commerce time slot day entity'
+edit commerce timeslot day entity:
+  title: 'Edit commerce time slot day entity'
+delete commerce timeslot day entity:
+  title: 'Delete commerce time slot day entity'
+
+# Commerce Time Slot Day Capacity entity permissions.
+administer commerce timeslot day capacity entity:
+  title: 'Administer commerce time slot day capacity entity'
+view commerce timeslot day capacity entity:
+  title: 'View commerce time slot day capacity entity'
+add commerce timeslot day capacity entity:
+  title: 'Add commerce time slot day capacity entity'
+edit commerce timeslot day capacity entity:
+  title: 'Edit commerce time slot day capacity entity'
+delete commerce timeslot day capacity entity:
+  title: 'Delete commerce time slot day capacity entity'
+
+# Commerce Time Slot Booking entity permissions.
+view commerce timeslot booking entity:
+  title: 'View commerce timeslot booking entity'
+delete commerce timeslot booking entity:
+  title: 'Delete commerce timeslot booking entity'
+administer commerce timeslot bookings:
+  title: 'Administer commerce timeslot bookings'
