@@ -256,6 +256,9 @@
             "drupal/commerce_reports": {
                 "#2974570: Drush support": "patches/commerce_reports-2974570-drush_support-15.patch"
             },
+            "drupal/commerce_stripe": {
+                "#3564625: Reusable payment method is not usable": "patches/commerce_stripe-Reusable_payment_method_is_not_usable-3564625-11-MR199.patch"
+            },
             "drupal/commerce_tip": {
                 "#3429408 d11": "https://www.drupal.org/files/issues/2024-03-16/commerce_tip.1.0.2.rector.patch",
                 "#3564301 8.4": "patches/commerce_tip-8.4_fix-3564301-3.patch",

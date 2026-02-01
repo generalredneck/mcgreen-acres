@@ -1,0 +1,195 @@
+diff --git a/commerce_stripe.install b/commerce_stripe.install
+index 43ca3d476c46e6610347bb285688e8b2cacd1973..76c8036216c5ebc692d3775a1a48b3bd6b98dd7d 100644
+--- a/commerce_stripe.install
++++ b/commerce_stripe.install
+@@ -218,3 +218,11 @@ function commerce_stripe_update_8106() {
+   $entity_type = \Drupal::entityTypeManager()->getDefinition('commerce_payment_method');
+   \Drupal::service('entity.bundle_plugin_installer')->installBundles($entity_type, ['commerce_stripe']);
+ }
++
++/**
++ * Install the customer ID field to existing stripe card payment methods.
++ */
++function commerce_stripe_update_8107() {
++  $entity_type = \Drupal::entityTypeManager()->getDefinition('commerce_payment_method');
++  \Drupal::service('entity.bundle_plugin_installer')->installBundles($entity_type, ['commerce_payment']);
++}
+diff --git a/commerce_stripe.module b/commerce_stripe.module
+index 2ba5ca4be8d80905c06bb24d71eba4de73580453..43c74b5a87f25148638a9ce2bf5a1c0becfd9278 100644
+--- a/commerce_stripe.module
++++ b/commerce_stripe.module
+@@ -5,15 +5,15 @@
+  * Provides Commerce integration for Stripe Payments.
+  */
+ 
++use Drupal\Core\Url;
++use Drupal\Core\Link;
++use Drupal\Core\Entity\EntityInterface;
++use Drupal\commerce_stripe\StripeHelper;
++use Drupal\Core\Form\FormStateInterface;
+ use Drupal\commerce_payment\Entity\PaymentGateway;
+ use Drupal\commerce_payment\Entity\PaymentGatewayInterface;
+-use Drupal\commerce_stripe\Plugin\Commerce\PaymentGateway\StripePaymentElementInterface;
+ use Drupal\commerce_stripe\PluginForm\Stripe\PaymentMethodAddForm;
+-use Drupal\commerce_stripe\StripeHelper;
+-use Drupal\Core\Entity\EntityInterface;
+-use Drupal\Core\Form\FormStateInterface;
+-use Drupal\Core\Link;
+-use Drupal\Core\Url;
++use Drupal\commerce_stripe\Plugin\Commerce\PaymentGateway\StripePaymentElementInterface;
+ 
+ /**
+  * Implements hook_form_FORM_ID_alter().
+@@ -200,3 +200,12 @@ function commerce_stripe_entity_operation(EntityInterface $entity) {
+ 
+   return $operations;
+ }
++
++/**
++ * Implements hook_plugin_info_alter().
++ */
++function commerce_stripe_plugin_info_alter(&$definitions) {
++  if (isset($definitions['credit_card'])) {
++    $definitions['credit_card']['class'] = 'Drupal\commerce_stripe\Plugin\Commerce\PaymentMethodType\LegacyCard';
++  }
++}
+diff --git a/src/EventSubscriber/OrderPaymentIntentSubscriber.php b/src/EventSubscriber/OrderPaymentIntentSubscriber.php
+index ecccd31b8db0b9ab751dfff8be7e247589db831c..e8e1a7a82bdb6fa79a0b5581ba7d009f19fd7d4d 100644
+--- a/src/EventSubscriber/OrderPaymentIntentSubscriber.php
++++ b/src/EventSubscriber/OrderPaymentIntentSubscriber.php
+@@ -16,6 +16,7 @@ use Drupal\commerce_stripe\Plugin\Commerce\PaymentGateway\StripePaymentElement;
+ use Drupal\commerce_stripe\Plugin\Commerce\PaymentGateway\StripePaymentElementInterface;
+ use Drupal\Core\DestructableInterface;
+ use Psr\Log\LoggerInterface;
++use Stripe\Customer;
+ use Stripe\Exception\ApiErrorException;
+ use Stripe\PaymentIntent;
+ use Stripe\PaymentMethod;
+@@ -267,6 +268,23 @@ class OrderPaymentIntentSubscriber implements EventSubscriberInterface, Destruct
+             }
+           }
+         }
++        if ($plugin instanceof StripeInterface) {
++          /** @var \Drupal\commerce_payment\Entity\PaymentMethodInterface $payment_method */
++          $payment_method = $order->get('payment_method')->entity;
++          if ($payment_method !== NULL && $payment_method->hasField('stripe_customer_id') && !empty($payment_method->stripe_customer_id->value)) {
++            $customer = $event->getCustomer();
++            /** @var \Drupal\commerce_payment\Entity\PaymentMethodInterface $payment_method */
++            $remote_ids = $customer->get('commerce_remote_id');
++            // Only set a customer ID for this payment method on the user if the
++            // user doesn't already have one. Else you may break existing
++            // payment methods.
++            if (empty($remote_ids->getByProvider($payment_method->getPaymentGatewayId() . '|' . $payment_method->getPaymentGatewayMode()))) {
++              $remote_ids->setByProvider($payment_method->getPaymentGatewayId() . '|' . $payment_method->getPaymentGatewayMode(), $payment_method->stripe_customer_id->value);
++              $customer->save();
++            }
++            Customer::update($payment_method->stripe_customer_id->value, ['email' => $customer->getEmail()]);
++          }
++        }
+       }
+     }
+     catch (\Throwable $throwable) {
+diff --git a/src/Plugin/Commerce/PaymentGateway/Stripe.php b/src/Plugin/Commerce/PaymentGateway/Stripe.php
+index b418003ae7eab00b1a4a8d966d05ad8e584283d0..d72071b4c2e6f0829fcfda5cb93a434ba032c514 100644
+--- a/src/Plugin/Commerce/PaymentGateway/Stripe.php
++++ b/src/Plugin/Commerce/PaymentGateway/Stripe.php
+@@ -538,7 +538,12 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+       'capture_method' => 'automatic',
+     ];
+ 
+-    $customer_remote_id = $this->getRemoteCustomerId($order->getCustomer());
++    if ($payment_method->hasField('stripe_customer_id')) {
++      $customer_remote_id = $payment_method->stripe_customer_id->value ?? $this->getRemoteCustomerId($order->getCustomer());
++    }
++    else {
++      $customer_remote_id = $this->getRemoteCustomerId($order->getCustomer());
++    }
+     if (!empty($customer_remote_id)) {
+       $default_intent_attributes['customer'] = $customer_remote_id;
+     }
+@@ -589,6 +594,9 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+     if ($owner && $owner->isAuthenticated()) {
+       $customer_id = $this->getRemoteCustomerId($owner);
+     }
++    $params = [
++      'payment_method' => $stripe_payment_method_id,
++    ];
+     try {
+       $stripe_payment_method = PaymentMethod::retrieve($stripe_payment_method_id);
+ 
+@@ -606,7 +614,7 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+         $email = $owner->getEmail();
+       }
+       // If the user is authenticated, created a Stripe customer to attach the
+-      // payment method to.
++      // payment method to, and connect it to the user.
+       elseif ($owner && $owner->isAuthenticated()) {
+         $email = $owner->getEmail();
+         $customer = Customer::create([
+@@ -619,14 +627,23 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+         $this->setRemoteCustomerId($owner, $customer_id);
+         $owner->save();
+       }
++      // If the user is anonymous, created a Stripe customer to attach the
++      // payment method to, then attach it. Later, if a user is created matching
++      // this Order, we can use that customer ID for the user.
+       else {
+         $email = NULL;
++        if ($payment_method->hasField('stripe_customer_id')) {
++          $customer = Customer::create($params);
++          $customer_id = $customer->id;
++          $payment_method->set('stripe_customer_id', $customer_id);
++        }
+       }
+ 
+-      if ($customer_id && $email) {
+-        $payment_method_data = [
+-          'email' => $email,
+-        ];
++      if ($customer_id) {
++        $payment_method_data = [];
++        if ($email) {
++          $payment_method_data['email'] = $email;
++        }
+         $billing_profile = $payment_method->getBillingProfile();
+         $formatted_address = $billing_profile ? $this->getFormattedAddress($billing_profile) : NULL;
+         if (!empty($formatted_address)) {
+diff --git a/src/Plugin/Commerce/PaymentMethodType/LegacyCard.php b/src/Plugin/Commerce/PaymentMethodType/LegacyCard.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..9434d78732c8330823f333b76590f8c80094679c
+--- /dev/null
++++ b/src/Plugin/Commerce/PaymentMethodType/LegacyCard.php
+@@ -0,0 +1,33 @@
++<?php
++
++namespace Drupal\commerce_stripe\Plugin\Commerce\PaymentMethodType;
++
++use Drupal\entity\BundleFieldDefinition;
++use Drupal\Core\StringTranslation\TranslatableMarkup;
++use Drupal\commerce_payment\Plugin\Commerce\PaymentMethodType\CreditCard;
++use Drupal\commerce_payment\Attribute\CommercePaymentMethodType;
++
++/**
++ * Provides the credit card payment method type.
++ */
++#[CommercePaymentMethodType(
++  id: "credit_card",
++  label: new TranslatableMarkup('Credit card'),
++)]
++class LegacyCard extends CreditCard {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function buildFieldDefinitions() {
++    $fields = parent::buildFieldDefinitions();
++
++    $fields['stripe_customer_id'] = BundleFieldDefinition::create('string')
++      ->setLabel($this->t('Card Customer Id'))
++      ->setDescription($this->t('The remote customer ID for the card.'))
++      ->setSetting('max_length', 255);
++
++    return $fields;
++  }
++
++}
