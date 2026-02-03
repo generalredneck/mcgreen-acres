@@ -1,0 +1,7 @@
+field.formatter.settings.entity_reference_delta_formatter:
+  type: field.formatter.settings.entity_reference_entity_view
+  label: 'Entity reference rendered entity display format settings'
+  mapping:
+    deltas:
+      type: string
+      label: 'Deltas'

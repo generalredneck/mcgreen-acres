@@ -1,0 +1,20 @@
+entity.commerce_timeslot.add_form:
+  route_name: entity.commerce_timeslot.add_form
+  title: 'Create a time slot'
+  appears_on:
+    - entity.commerce_timeslot.collection
+
+entity.commerce_timeslot_day.add_form:
+  route_name: entity.commerce_timeslot_day.add_form
+  title: 'Create a time slot day'
+  appears_on:
+    - entity.commerce_timeslot.collection
+    - entity.commerce_timeslot_day.collection
+
+entity.commerce_timeslot_day_capacity.add_form:
+  route_name: entity.commerce_timeslot_day_capacity.add_form
+  title: 'Create a time slot day capacity'
+  appears_on:
+    - entity.commerce_timeslot.collection
+    - entity.commerce_timeslot_day.collection
+    - entity.commerce_timeslot_day_capacity.collection

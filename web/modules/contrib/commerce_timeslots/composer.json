@@ -1,0 +1,24 @@
+{
+  "name": "drupal/commerce_timeslots",
+  "type": "drupal-module",
+  "description": "A commerce configurable system for time slots management.",
+  "homepage": "https://www.drupal.org/project/commerce_timeslots",
+  "authors": [
+    {
+        "name": "Andrei Vesterli (andrei.vesterli)",
+        "homepage": "https://www.drupal.org/u/andreivesterli",
+        "role": "Maintainer"
+    }
+  ],
+  "license": "GPL-2.0-or-later",
+  "support": {
+    "issues": "https://drupal.org/project/issues/commerce_timeslots",
+    "source": "https://git.drupalcode.org/project/commerce_timeslots"
+  },
+  "require": {
+    "php": ">=7.3",
+    "drupal/commerce": "^2.30 || ^3.0",
+    "drupal/commerce_shipping": "^2.3",
+    "drupal/jquery_ui_datepicker": "^1.2 || ^2.1"
+  }
+}

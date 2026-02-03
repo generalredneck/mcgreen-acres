@@ -1,0 +1,425 @@
+@import '../defaults'; // Global defaults.
+
+// bp background color field at the admin.
+.field--name-bp-background {
+  .form-type-radio,
+  .form-type--radio {
+    input {
+      position: absolute;
+      visibility: hidden;
+
+      &:checked + label {
+        border: #000 2px solid;
+      }
+    }
+
+    label {
+      position: relative !important;
+      display: inline-block !important;
+      float: left !important;
+      width: 25px !important;
+      height: 25px !important;
+      margin: 10px 10px 10px 0 !important;
+      padding: 0 !important;
+      cursor: pointer !important;
+      white-space: nowrap;
+      border: #000 1px solid;
+      font-size: 0.00001px;
+
+      &::after {
+        position: absolute;
+        z-index: 1;
+        top: 3px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: table;
+        width: 100%;
+        height: 100%;
+        content: 'a';
+        text-align: center;
+        vertical-align: middle;
+        font-size: 20px !important;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &._none {
+        background: #fff !important;
+
+        &::after {
+          position: absolute;
+          z-index: auto;
+          top: 12px;
+          right: 0;
+          bottom: 0;
+          left: -5px;
+          display: inline-block;
+          float: none;
+          -webkit-box-sizing: content-box;
+          -moz-box-sizing: content-box;
+          box-sizing: content-box;
+          width: 35px;
+          height: 2px;
+          margin: 0;
+          padding: 0;
+          content: '';
+          cursor: pointer !important;
+          -webkit-transition: none;
+          -moz-transition: none;
+          -o-transition: none;
+          transition: none;
+          -webkit-transform: rotateZ(-45deg);
+          transform: rotateZ(-45deg);
+          -webkit-transform-origin: 50% 50% 0;
+          transform-origin: 50% 50% 0;
+          -o-text-overflow: clip;
+          opacity: 1;
+          background: #f00;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          text-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+.field--name-bp-width,
+.field--name-bp-gutter,
+.field--name-bp-column-style-3,
+.field--name-bp-column-style-2,
+.field--name-text-and-image-style,
+.field--name-field-image-position {
+  .form-type-radio,
+  .form-type--radio {
+    input {
+      position: absolute;
+      visibility: hidden;
+
+      &:checked + label {
+        -webkit-filter: invert(25%) sepia(0.9);
+        filter: invert(25%) sepia(0.9);
+      }
+    }
+
+    label {
+      position: relative !important;
+      display: inline-block !important;
+      float: left !important;
+      min-width: 50px !important;
+      height: 20px !important;
+      margin: 10px 10px 10px 0 !important;
+      padding: 40px 0 0 !important;
+      cursor: pointer !important;
+      -webkit-transition: opacity 0.3s ease-in-out;
+      -moz-transition: opacity 0.3s ease-in-out;
+      transition: opacity 0.3s ease-in-out;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 75%;
+
+      &::after {
+        position: absolute;
+        z-index: 1;
+        top: 3px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: table;
+        width: 100%;
+        height: 100%;
+        content: '';
+        text-align: center;
+        vertical-align: middle;
+        font-size: 20px !important;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap paragraph width.
+.field--name-bp-width {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      &.option.paragraph--width--tiny,
+      &.option.paragraph--width--narrow,
+      &.option.paragraph--width--medium,
+      &.option.paragraph--width--wide,
+      &.option.paragraph--width--full,
+      &.option.bg-edge2edge {
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+
+      &.option.paragraph--width--tiny {
+        background-image: url('../../images/icons/paragraph--width--tiny.svg');
+      }
+
+      &.option.paragraph--width--narrow {
+        background-image: url('../../images/icons/paragraph--width--narrow.svg');
+      }
+
+      &.option.paragraph--width--medium {
+        background-image: url('../../images/icons/paragraph--width--medium.svg');
+      }
+
+      &.option.paragraph--width--wide {
+        background-image: url('../../images/icons/paragraph--width--wide.svg');
+      }
+
+      &.option.paragraph--width--full {
+        background-image: url('../../images/icons/paragraph--width--full.svg');
+      }
+
+      &.option.bg-edge2edge {
+        background-image: url('../../images/icons/paragraph--width--edge-to-edge.svg');
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap paragraph gutter.
+.field--name-bp-gutter {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      &.option.gutter-0,
+      &.option.gutter-1 {
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+
+      &.option.gutter-0 {
+        background-image: url('../../images/icons/paragraph--gutter--without-gutter.svg');
+      }
+
+      &.option.gutter-1 {
+        background-image: url('../../images/icons/paragraph--gutter--with-gutter.svg');
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap paragraph column style 3
+.field--name-bp-column-style-3 {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      &.option.paragraph--style--25-50-25,
+      &.option.paragraph--style--50-25-25,
+      &.option.paragraph--style--25-25-50,
+      &.option.paragraph--style--16-66-16,
+      &.option.paragraph--style--66-16-16,
+      &.option.paragraph--style--16-16-66 {
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+
+      &.option.paragraph--style--25-50-25 {
+        background-image: url('../../images/icons/paragraph--style--25-50-25.svg');
+      }
+
+      &.option.paragraph--style--50-25-25 {
+        background-image: url('../../images/icons/paragraph--style--50-25-25.svg');
+      }
+
+      &.option.paragraph--style--25-25-50 {
+        background-image: url('../../images/icons/paragraph--style--25-25-50.svg');
+      }
+
+      &.option.paragraph--style--16-66-16 {
+        background-image: url('../../images/icons/paragraph--style--16-66-16.svg');
+      }
+
+      &.option.paragraph--style--66-16-16 {
+        background-image: url('../../images/icons/paragraph--style--66-16-16.svg');
+      }
+
+      &.option.paragraph--style--16-16-66 {
+        background-image: url('../../images/icons/paragraph--style--16-16-66.svg');
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap paragraph column style 2
+.field--name-bp-column-style-2 {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      &.option.paragraph--style--75-25,
+      &.option.paragraph--style--66-33,
+      &.option.paragraph--style--25-75,
+      &.option.paragraph--style--33-66 {
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+
+      &.option.paragraph--style--75-25 {
+        background-image: url('../../images/icons/paragraph--style--75-25.svg');
+      }
+
+      &.option.paragraph--style--66-33 {
+        background-image: url('../../images/icons/paragraph--style--66-33.svg');
+      }
+
+      &.option.paragraph--style--25-75 {
+        background-image: url('../../images/icons/paragraph--style--25-75.svg');
+      }
+
+      &.option.paragraph--style--33-66 {
+        background-image: url('../../images/icons/paragraph--style--33-66.svg');
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap paragraph text and image style
+.field--name-text-and-image-style {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      &.option.paragraph--style--50-50,
+      &.option.paragraph--style--75-25,
+      &.option.paragraph--style--66-33,
+      &.option.paragraph--style--25-75,
+      &.option.paragraph--style--33-66 {
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+
+      &.option.paragraph--style--50-50 {
+        background-image: url('../../images/icons/paragraph--style--50-50.svg');
+      }
+
+      &.option.paragraph--style--75-25 {
+        background-image: url('../../images/icons/paragraph--style--75-25.svg');
+      }
+
+      &.option.paragraph--style--66-33 {
+        background-image: url('../../images/icons/paragraph--style--66-33.svg');
+      }
+
+      &.option.paragraph--style--25-75 {
+        background-image: url('../../images/icons/paragraph--style--25-75.svg');
+      }
+
+      &.option.paragraph--style--33-66 {
+        background-image: url('../../images/icons/paragraph--style--33-66.svg');
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap paragraph text and image field image position.
+.field--name-field-image-position {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      &.option.right,
+      &.option.left {
+        background-image: none;
+        background-repeat: no-repeat;
+        background-position: top center;
+      }
+
+      &.option.right {
+        background-image: url('../../images/icons/paragraph--style--right.svg');
+      }
+
+      &.option.left {
+        background-image: url('../../images/icons/paragraph--style--left.svg');
+      }
+    }
+  }
+}
+
+[dir='rtl'] .field--name-bp-background,
+[dir='rtl'] .field--name-bp-width,
+[dir='rtl'] .field--name-bp-gutter,
+[dir='rtl'] .field--name-bp-column-style-3,
+[dir='rtl'] .field--name-bp-column-style-2,
+[dir='rtl'] .field--name-text-and-image-style,
+[dir='rtl'] .field--name-field-image-position {
+  .form-type-radio,
+  .form-type--radio {
+    label {
+      float: right !important;
+
+      &._none {
+        &::after {
+          right: -5px;
+          left: 0;
+        }
+      }
+    }
+  }
+}
+
+.paragraph--view-mode--preview {
+  .field--name-bp-image-field img {
+    width: 100%;
+  }
+}
+
+.paragraph-type-add-modal {
+  input {
+    &.paragraph-type-add-modal-button:hover {
+      color: #000;
+    }
+  }
+}
+
+input {
+  &.paragraph-type-add-modal-button,
+  .widget {
+    padding-left: 10px !important;
+  }
+}
+
+.paragraphs-collapsed-description {
+  display: none;
+}
+
+.paragraph-actions {
+  float: right;
+}
+
+.paragraphs-subform {
+  .paragraph-type-top {
+    top: 0;
+  }
+}
+
+.paragraphs-previewer {
+  &.button {
+    grid-column-start: 5;
+    grid-column-end: 5;
+  }
+}
+
+.add-in-between-row {
+  td {
+    text-align: center;
+  }
+}
+.paragraphs-tabs-wrapper {
+  .form-item {
+    .clearfix {
+      margin-top: 10px;
+    }
+  }
+}

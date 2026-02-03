@@ -1,0 +1,18 @@
+commerce_checkout.commerce_checkout_pane.agree_terms:
+  type: commerce_checkout_pane_configuration
+  mapping:
+    link_text:
+      type: label
+      label: 'Link text'
+    prefix_text:
+      type: label
+      label: 'Prefix text'
+    invalid_text:
+      type: label
+      label: 'Invalid text'
+    new_window:
+      type: boolean
+      label: 'New Window'
+    nid:
+      type: string
+      label: 'Node ID'

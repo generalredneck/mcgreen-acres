@@ -1,0 +1,10 @@
+name: Commerce Time Slots
+description: A commerce configurable system for time slots management.
+type: module
+package: Commerce
+core_version_requirement: ^9 || ^10 || ^11
+dependencies:
+  - commerce:commerce
+  - commerce_shipping:commerce_shipping
+  - jquery_ui_datepicker:jquery_ui_datepicker
+  - drupal:datetime_range

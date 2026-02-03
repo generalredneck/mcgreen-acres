@@ -1,0 +1,18 @@
+facebook_pixel:
+  version: 2.0
+  header: true
+  js:
+    js/facebook_pixel.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+facebook_pixel_command:
+  version: 2.0
+  header: true
+  js:
+    js/facebook_pixel_command.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
