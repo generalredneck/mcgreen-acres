@@ -1,0 +1,5 @@
+name: Herd Share
+type: module
+description: Provides herd share agreement functionality.
+core_version_requirement: ^9 || ^10 || ^11
+package: Custom

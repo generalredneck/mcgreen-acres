@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Herd Share module file.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function herd_share_theme() {
+  return [
+    'herd-share-agreement' => [
+      'variables' => [
+        'agreement_date' => NULL,
+        'agreement_month' => NULL,
+        'agreement_year' => NULL,
+        'owner_name' => NULL,
+        'shares' => NULL,
+        'price_per_share' => NULL,
+        'price_per_share_text' => NULL,
+        'herd_share_fee_text' => NULL,
+        'owner_address_line1' => NULL,
+        'owner_address_line2' => NULL,
+        'owner_email' => NULL,
+      ],
+      'template' => 'herd-share-agreement',
+    ],
+  ];
+}

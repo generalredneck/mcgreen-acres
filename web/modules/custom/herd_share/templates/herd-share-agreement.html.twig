@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bovine Agistment Agreement</title>
+  <style>
+    /* === Legal Agreement Style === */
+    @page {
+        margin: .5in; /* Sets all four margins to 1 inch */
+    }
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 12pt;
+      color: #000;
+      background-color: #fff;
+      width: 8.5in;
+      margin: 0 auto;
+      max-width: 100%;
+      line-height: 1.6;
+    }
+    .field {
+      border-bottom: 1px solid #000;
+      display: inline-block;
+      text-indent: 0;
+      min-width: 2em;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      text-transform: uppercase;
+      margin-top: .5em;
+      margin-bottom: .5em;
+      font-size: 12pt;
+      font-weight: normal;
+      text-decoration: underline;
+    }
+
+    p {
+      text-indent: .5in;
+      text-align: justify;
+      margin: 0.5em 0;
+    }
+
+    .signature-block {
+      margin-top: 2em;
+    }
+    .signature-block td {
+      vertical-align: bottom;
+      min-height:.5in;
+    }
+    .signature-center-column {
+      width: 2em;
+    }
+
+    .signature-date-label {
+      text-align: right;
+      padding-right: 1in;
+    }
+    .signature-person-label {
+      width: 80px;
+    }
+    .inline-signature-line {
+      width: 2.75in;
+      height: .5in;
+    }
+    .signature-line {
+      border-bottom: 1px solid #000;
+      text-align: center;
+      padding-top: 0.2em;
+    }
+
+    .exhibit h2 {
+      text-transform: none;
+      font-size: 13pt;
+    }
+    ol ol {
+      list-style-type: upper-alpha;
+    }
+    ol li {
+      padding-left: .5in;
+      margin-bottom: .5em;
+      widows: 3;
+      orphans: 3;
+    }
+    ol ol li {
+    }
+    .page-break {
+      display: block;
+      break-before: always; /* Modern syntax */
+      page-break-before: always; /* Legacy support */
+    }
+    @media print {
+      body {
+        width: 100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Bovine Agistment Agreement</h1>
+
+  <p>
+    THIS AGREEMENT, made this <span class="field">{{ agreement_date }}</span> day of <span class="field">{{ agreement_month }}</span>, <span class="field">{{ agreement_year }}</span>, by and between
+    McGreen Acres LLC (“Agister”) and <span class="field">{{ owner_name }}</span> (“Owner”) is a boarding contract.
+  </p>
+
+  <h2>Recitals</h2>
+  <p>
+    Agister possesses dairy facilities at 2414 Westmoreland Road, Red Oak, TX 75154 (the “Dairy
+    Facilities”), for the holding, care, handling, and milking of dairy cows.  Owner wishes to board the cow(s)
+    constituting his/her undivided interest in the herd of dairy cows (the “Herd”) at the Dairy Facilities.
+  </p>
+  <p>
+    Agister has agreed to provide care and boarding for the Herd at the Dairy Facilities for a fee of
+    <span class="field">{{ price_per_share_text }}</span> per month per share on behalf of the Owner (together with all other Herd
+    Owners also entering into a similar agreement with Agister).
+  </p>
+  <p>The parties agree as follows:</p>
+  <ol>
+    <li><u>Definitions.</u> In addition to other terms defined in this Agreement, for purposes of this
+        Agreement, the words:
+      <ol>
+        <li>
+          “Agister” shall mean McGreen Acres LLC.</li>
+        <li>
+          “Agistment” shall mean pasturing, feeding, maintaining, caring for, and milking the Herd at
+          the Dairy Facilities, and making available the Herd’s milk production for the Herd Owners.
+        </li>
+        <li>
+          “Herd” shall mean the dairy cows referred to above, augmented annually by any increases (male
+          or female) and replacements, and diminished annually by any decreases.
+        </li>
+        <li>
+          “Herd Agreements” shall mean, collectively, this Agreement and all other similar agreements
+          signed by all other Owners of the Herd.
+        </li>
+        <li>
+          “Owner” shall mean a person who possesses an undivided interest in the Herd.
+        </li>
+        <li>
+          “Herd Owners” shall mean, collectively, all of the Owners of undivided interests in
+          the Herd.
+        </li>
+        <li>
+          “Percentage Interest” shall mean the undivided percentage interest of Owner (or
+          another person) in the Herd determined by dividing the total number of the Owner’s (or other
+          person’s) shares in the Herd by the total number of shares authorized to be sold in the Herd.
+        </li>
+      </ol>
+      <p class="page-break"></p>
+    </li>
+    <li>
+      <u>Share(s) of the Herd.</u>
+      <ol>
+        <li>
+          As evidenced by the document attached hereto and titled Bovine Bill of Sale, Owner
+          has purchased <span class="field">{{ shares }}</span> share(s) in the Herd at <span class="field">{{ herd_share_fee_text }}</span> per share.
+        </li>
+        <li>
+          Owner expressly disclaims any ownership rights to any calves that may be born into
+          the Herd from time to time or meat that may be harvested. Owner acknowledges that calves may or may not
+          become a part of the Herd at the Agister’s discretion and, if the Agister sells the calves, Owner expressly
+          disclaims any interest in the proceeds from that sale.
+        </li>
+      </ol>
+    </li>
+    <li>
+      <u>Boarding Fees.</u>
+      <ol>
+        <li>
+          Owner shall pay to Agister a monthly care and boarding fee of <span class="field">{{ price_per_share }}</span> per share,
+          owned by Owner. The first month’s fee is to be paid with the execution of this
+          Agreement, and Owner agrees s/he is thereafter responsible for paying the fee each month when milk shares
+          are picked up, and even if milk shares are not picked up. The date that milk shares are picked up will be set
+          by the Agister based on availability of milk and may be subject to change based on supply. If Owner does not
+          pick up his/her milk share within two (2) days after scheduled date, milk may be disposed of as Agister
+          prefers and as permitted by law. The parties agree that the amount of the care and boarding fee set forth
+          herein is a fair and reasonable charge for the services and supplies to be provided by Agister to Owner under
+          this Agreement. Payment shall be made by cash, check, PayPal, Venmo, or other method agreed upon by the
+          parties.
+        </li>
+        <li>
+          Agister may, at its discretion, adjust the fee up to twice per calendar year to cover any
+          increased expense of boarding and caring for the Herd, such increase not to exceed 25% annually. If Agister
+          determines, or Owner requests, any special services beyond those required under this Agreement, Agister
+          will inform Owner of the amount of additional charges to be paid by Owner.
+        </li>
+      </ol>
+    </li>
+    <li>
+      <u>Allocation of Milk.</u>
+      <ol>
+        <li>
+          It is estimated that one share will typically yield one half (1/2) gallon per week of
+          the Herd’s milk production, but the actual amount Owner receives will be based on the actual production,
+          which will vary.
+        </li>
+        <li>
+          Owner shall provide clean glass jars and lids for the storage of milk. Owner
+          assumes all responsibility for cleaning the jars and lids prior to refilling. The providing of clean jars and lids
+          by Owner is a condition of this Agreement.
+        </li>
+        <li>
+          The dates and times for milk pickup will be agreed upon in advance between the
+          parties and shall thereafter remain consistent each week. Owner agrees to receive his/her share of milk
+          directly and in person. Agister will not release Owner’s milk to anyone but the Owner, or the Owner’s
+          agents.
+        </li>
+        <li>
+          Owner agrees that all milk obtained from the Herd will be used only for
+          consumption by Owner and his/her immediate family, and accepts all risk and responsibility of consumption
+          by anyone, including but not limited to himself/herself and his/her immediate family.
+        </li>
+        <li>
+          On request, the Owner may have Agister produce cow milk cream, yogurt, or other
+          products with the Owner’s share of milk, and the parties will enter into an additional agreement for prices for
+          such labor.
+        </li>
+      </ol>
+    </li>
+    <li>
+      <u>Duties of Agister.</u> Agister’s duties under this Agreement shall include:
+      <ol>
+        <li>
+          Boarding the Herd at the Dairy Facilities, and maintaining and caring for the Herd
+          pursuant to the aspirational herd health protocols attached to this Agreement to the extent possible <b>(Exhibit
+          A)</b>;
+        </li>
+        <li>
+          Managing the Herd for the Herd Owners and acquiring and disposing of cows as
+          needed to maintain the health and production of the Herd;
+        </li>
+        <li>
+          Paying all expenses to maintain and care for the Herd as required above, except that
+          Owner shall pay pro rata on a per share basis extraordinary veterinary expenses, which include, but are not
+          limited to, all tests conducted in accordance with <b>Exhibit A</b>; and
+        </li>
+        <li>
+          Providing appropriate reports to apprise Owner of the condition, health, and
+          performance of the Herd.
+        </li>
+      </ol>
+    </li>
+    <li>
+      <u>Prohibited Sales of Milk/Indemnification.</u> Agister and Owner acknowledge that certain sales
+      of raw milk are prohibited by the State of Texas. Under no circumstances shall either Agister or Owner
+      transfer the ownership or possession of any raw milk produced by the Herd in any transaction that would
+      constitute a sale of milk in violation of the statutes of the State of Texas and/or the rules of any state agency.
+      Agister and Owner each agrees to indemnify and hold the other harmless for any liability, loss, damage,
+      expense or penalties incurred by the other because of a breach of the provisions of this Paragraph by the
+      indemnifying party. Agister and Owner also understand that herd share agreements such as this one are
+      recognized by the State of Texas under Chapter 217 of Title 25, Texas Administrative Code.
+    </li>
+    <li>
+      <u>Enforcement.</u> Owner shall timely pay the care and boarding fee and agrees that if
+      payments are not paid when due, or as otherwise arranged with the Agister, Agister may, ten (10) business
+      days after having notified Owner in writing, dispose of Owner’s interest in the Herd at public or private sale,
+      or Agister may acquire Owner’s interest in the Herd in satisfaction of the debt.
+    </li>
+    <li>
+      <u>Ownership.</u>
+      <ol>
+        <li>
+          Owner understands and acknowledges that raw milk may contain harmful pathogens
+          and that its consumption is not recommended by the Centers for Disease Control (CDC), the Food and Drug
+          Administration (FDA), and the Texas Department of State Health Services. Owner agrees to educate
+          Owner’s family members and guests about the risks of consuming or improperly storing raw milk and
+          releases Agister from any responsibility for the education of Owner’s family members or guests.
+        </li>
+        <li>
+          Owner acknowledges that there may be risks of harm when entering Agister’s
+          premises, including but not limited to proximity to farm equipment, and visiting and/or interacting with the
+          Herd and other farm animals.
+        </li>
+        <li>
+          By signing this Agreement, Owner hereby knowingly and voluntarily assumes the
+          risk of any and all such harm and also hereby waives any and all right to make, file, or pursue any claims,
+          demands, suits, actions, causes of action, damages, etc. against the other Herd Owners, Agister or any of
+          Agister’s agents, employees, representatives, principals, lessors, lessees, vendors, contractors,
+          subcontractors, etc. that may arise out of, or in any way relate, to any injury, illness, death, loss or damage:
+          (1) caused to the Owner, in whole or in part, by (a) the handling or consumption of raw milk produced by the
+          Herd; or (b) visiting or entering upon Agister’s premises or any premises where the Herd is located; or (2)
+          caused to the Herd, in whole or in part, by the care and/or boarding of the Herd by Agister.
+        </li>
+      </ol>
+    </li>
+    <li>
+      <u>Indemnification.</u> Owner shall indemnify, defend, and hold harmless Agister and Agister’s
+      agents, employees, representatives, principals, lessors, lessees, vendors, contractors, subcontractors and all
+      other Herd Owners against any and all demands, claims, liabilities, suits, actions, causes of action, etc. for
+      any injury, illness, death, loss, costs, or damage that arises out of or relates in any way to (1) any handling,
+      consumption, or use of any milk produced by the Herd after it has been retrieved or otherwise obtained by
+      Owner, (2) the visit of any person that Owner brings to or visit Agister’s premises or any premises where the
+      Herd is located, and/or (3) any failure on the part of Owner to comply with the terms of this Agreement or with
+      any rules, procedures, directions, orders, etc. of Agister that are authorized or permitted by this Agreement.
+    </li>
+    <li>
+      <u>Claims.</u> Should either Agister or Owner seek to assert any claim against the other for any
+      reason in connection with their duties and responsibilities in this Agreement, other than a claim of
+      nonpayment under <b>Section 7</b>, the nature of the claim shall be made in writing and served on the other party
+      within one hundred eighty (180) calendar days of learning of the circumstances giving rise to the claim.
+      Otherwise, such claim shall be waived.
+    </li>
+    <li>
+      <u>Arbitration of Disputes.</u> All disputes, claims, and questions regarding the parties’ rights and
+      obligations under this Agreement (other than a claim of nonpayment under <b>Section 7</b>) are subject to
+      arbitration. A written demand for arbitration may be served by either party on the other within one hundred
+      eighty (180) calendar days after the dispute first arises, including any demand for arbitration served in
+      compliance with a written claim made pursuant to <b>Section 11</b>. The parties shall agree on an arbitrator in
+      accordance with the rules of the American Arbitration Association, and each party shall pay its own
+      arbitration costs, except the costs of the arbitrators shall be shared equally.
+    </li>
+    <li>
+      <u>Termination.</u>
+      <ol>
+        <li>
+          This Agreement may be terminated by either party upon written notice served by
+          email or by mail to the email address or street address of each party to the Agreement. Such notice shall be
+          given not less than thirty (30) calendar days prior to the date of termination unless caused by catastrophic
+          loss of Herd animals or due to acts of God, and in such case, notice shall be as soon as practicable. Notice
+          shall be given in writing by mail or email to the address of each party provided in this Agreement and shall
+          expressly state the date that termination is effective.
+        </li>
+        <li>
+          Upon termination of this Agreement by Agister, Owner may demand that Agister
+          purchase Owner’s shares at the price originally paid.
+        </li>
+      </ol>
+    </li>
+    <li>
+      <u>First Right of Refusal.</u> This Agreement may be terminated by either party upon written
+      notice served by email or by mail to the email address or street address of each party to the Agreement. Such
+      notice shall be given not less than thirty (30) calendar days prior to the date of termination unless caused by
+      catastrophic loss of Herd animals or due to acts of God, and in such case, notice shall be as soon as
+      practicable. Notice shall be given in writing by mail or email to the address of each party provided in this
+      Agreement and shall expressly state the date that termination is effective.
+      <p class="page-break"></p>
+    </li>
+    <li>
+      <u>Force Majeure.</u> Neither Agister nor Owner shall be responsible for any delay or failure of
+      his/her performance under this Agreement if caused by any matter beyond the control of that party,
+      including, but not limited to: government regulations, public emergency, public health emergency or
+      necessity, herd diseases that result in quarantines or depopulation, legal restrictions, labor disputes and
+      actions related thereto, riot, war, or insurrection, and windstorms, rainstorms, ice storms, snowstorms, floods
+      or any other acts of God.
+    </li>
+    <li>
+      <u>Miscellaneous.</u>
+      <ol>
+        <li>
+          <u>Construction.</u> When necessary for proper construction, the masculine of any word
+          used in this Agreement shall include the feminine and gender neutral; the singular, the plural; and vice versa.
+        </li>
+        <li>
+          <u>Governing Law.</u> This Agreement is being executed, delivered, and shall be
+          construed in accordance with and governed by the laws of the State of Texas.
+        </li>
+        <li>
+          <u>Severability.</u> If any provision(s) of this Agreement is invalid, such invalidity shall
+          not impair the operation of or affect those portions of this Agreement which are valid.
+        </li>
+        <li>
+          <u>Waiver.</u> No express or implied assent or waiver to a breach of any one or more of
+          the provisions above shall constitute a waiver of any succeeding breach.
+        </li>
+        <li>
+          <u>Assignment.</u> This Agreement and each of its provisions shall inure to the benefit of
+          and be binding upon the parties, their successors and permitted assigns.
+        </li>
+      </ol>
+    </li>
+  </ol>
+  <p>IN WITNESS WHEREOF, the parties have executed this Agreement on the dates shown below to be
+effective on the date or dates described above.</p>
+
+  <!-- Continue additional sections as needed -->
+
+  <table class="signature-block" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan=2 class="signature-line">&nbsp;</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td colspan=2 class="signature-line"></td>
+    </tr>
+    <tr>
+      <td class="signature-person-label">For Agister</td>
+      <td class="signature-date-label">Date</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td class="signature-person-label">Owner</td>
+      <td class="signature-date-label">Date</td>
+    </tr>
+    <tr>
+      <td>Print Name:</td>
+      <td class="inline-signature-line signature-line"></td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td>Print Name:</td>
+      <td class="inline-signature-line signature-line">{{ owner_name }}</td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td class="inline-signature-line signature-line">2414 Westmoreland Rd</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td>Address:</td>
+      <td class="inline-signature-line signature-line">{{ owner_address_line1 }}</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td class="inline-signature-line signature-line">Red Oak, TX 75154</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="inline-signature-line signature-line">{{ owner_address_line2 }}</td>
+    </tr>
+    <tr>
+      <td>Email Address:</td>
+      <td class="inline-signature-line signature-line">mcgreenacres@gmail.com</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td>Email Address:</td>
+      <td class="inline-signature-line signature-line">{{ owner_email }}</td>
+    </tr>
+  </table>
+
+  <div class="exhibit page-break">
+    <h2>Exhibit A: <b>Farm Operating Standards and Herd Health Protocols</b></h2>
+    <p>Agister hereby agrees to operate McGreen Acres, located at 2414 Westmoreland Road, Red Oak, TX 75154
+    (the “Farm”), under the general standards below, which are subject to change:</p>
+    <ol>
+      <li>
+        Dairy animals will be kept clean and milked in clean stables/parlors where rodents, flies, and manure
+        will be controlled, and the Farm will not be littered with dead livestock or have persistent standing
+        water or mud near milking areas.
+      </li>
+      <li>
+        Milk will never be produced for consumption from any dairy animal with any apparent illness or
+        from any animal treated with antibiotics or other drugs that require a withdrawal period. If a dairy
+        animal is treated with drugs for illness, milk produced from the treated dairy animal will be
+        discarded during the withdrawal period specified by the drug’s manufacturer. If a dairy animal is
+        treated with antibiotics, then milk will be tested and found to be antibiotic-free before returning to
+        milk line.
+      </li>
+      <li>
+        Animals will be tested as deemed necessary by Agister for BLV, Johnes, and Brucellosis. Inquire
+        with the Agister for further details.
+      </li>
+      <li>
+        Dairy animals will be fed a predominantly pasture- and/or hay- or forage-based diet depending on
+        climate conditions.
+      </li>
+      <li>
+        The Farm will, upon request, advise Owner concerning the appropriate handling of milk produced by
+        animals boarded at the Farm.
+      </li>
+      <li>
+        If Owner becomes aware of specific instances in which these standards, contained within Exhibit A,
+        are not being met, Owner will promptly notify Agister regarding these instances and Agister will
+        make reasonable efforts to take corrective action or advise owner of corrective actions currently
+        being taken.
+      </li>
+      <li>
+        If provisions within Exhibit A are not met, it will not constitute a breach of contract.
+      </li>
+    </ol>
+  <table class="signature-block" cellspacing="0" cellpadding="0">
+    <tr>
+      <td colspan=2 class="signature-line">&nbsp;</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td colspan=2 class="signature-line"></td>
+    </tr>
+    <tr>
+      <td class="signature-person-label">For Agister</td>
+      <td class="signature-date-label">Date</td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td class="signature-person-label">Owner</td>
+      <td class="signature-date-label">Date</td>
+    </tr>
+    <tr>
+      <td> Print Name:</td>
+      <td class="inline-signature-line signature-line"></td>
+      <td class="signature-center-column">&nbsp;</td>
+      <td> Print Name:</td>
+      <td class="inline-signature-line signature-line">{{ owner_name }}</td>
+    </tr>
+  </table>
+  </div>
+</body>
+</html>

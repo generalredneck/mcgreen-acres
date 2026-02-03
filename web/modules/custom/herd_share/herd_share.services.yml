@@ -1,0 +1,4 @@
+services:
+  herd_share.agreement_service:
+    class: Drupal\herd_share\HerdShareService
+    arguments: []
