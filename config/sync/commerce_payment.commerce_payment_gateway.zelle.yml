@@ -1,0 +1,26 @@
+uuid: 02381b14-329e-4826-95eb-0cc7e58b5bb2
+langcode: en
+status: true
+dependencies: {  }
+id: zelle
+label: Zelle
+weight: null
+plugin: manual
+configuration:
+  display_label: Zelle
+  mode: n/a
+  payment_method_types:
+    - credit_card
+  collect_billing_information: false
+  instructions:
+    value: ''
+    format: plain_text
+conditions:
+  -
+    plugin: current_user_role
+    configuration:
+      matching_strategy: any
+      roles:
+        - administrator
+        - staff
+conditionOperator: AND
