@@ -62,7 +62,6 @@ module:
   datetime_range: 0
   dblog: 0
   default_content: 0
-  devel_entity_updates: 0
   diff: 0
   disqus: 0
   dropzonejs: 0
