@@ -402,7 +402,16 @@ display:
           plugin_id: standard
           required: true
       header: {  }
-      footer: {  }
+      footer:
+        commerce_order_total:
+          id: commerce_order_total
+          table: views
+          field: commerce_order_total
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: commerce_order_total
+          empty: false
       display_extenders: {  }
     cache_metadata:
       max-age: -1
