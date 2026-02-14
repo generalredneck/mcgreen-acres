@@ -11,6 +11,7 @@ dependencies:
     - field_permissions
     - filter
     - media
+    - profile
     - system
 _core:
   default_config_hash: pq_mEIu_B4widZN7Ap81iCJSjShFFdcL0jEiCi8VrDk
@@ -22,11 +23,15 @@ permissions:
   - 'access checkout'
   - 'access content'
   - 'access user profiles'
+  - 'create phone profile'
+  - 'delete own phone profile'
+  - 'update own phone profile'
   - 'use text format restricted_html'
   - 'view commerce_product'
   - 'view disqus comments'
   - 'view field_author_description'
   - 'view media'
   - 'view own field_author_description'
+  - 'view own phone profile'
   - 'view own user_picture'
   - 'view user_picture'

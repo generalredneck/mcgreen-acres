@@ -8,3 +8,8 @@ services:
     tags:
       - { name: event_subscriber }
     arguments: ['@entity_type.manager']
+  mcgreen_acres_store.guest_checkout_set_phone_on_completion_subscriber:
+    class: Drupal\mcgreen_acres_store\EventSubscriber\GuestCheckoutSetPhoneOnCompletionSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: ['@entity_type.manager', '@language_manager']

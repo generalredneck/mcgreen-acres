@@ -26,6 +26,9 @@ class Login extends CheckoutPaneLogin {
    */
   public function buildPaneForm(array $pane_form, FormStateInterface $form_state, array &$complete_form) {
     $form = parent::buildPaneForm($pane_form, $form_state, $complete_form);
+    $form['guest']['#weight'] = -10;
+    $form['register']['#weight'] = -5;
+    $form['returning_customer']['#weight'] = 0;
 
     $form['returning_customer']['name']['#title'] = 'Email address';
     $form['returning_customer']['forgot_password']['#attributes']['class'] = ['btn', 'btn-outline-primary'];

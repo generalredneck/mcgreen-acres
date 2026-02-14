@@ -1,0 +1,20 @@
+uuid: 74f3133b-8378-4a80-8a41-d91ac8214b57
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+    - phone_number
+id: commerce_order.field_order_contact
+field_name: field_order_contact
+entity_type: commerce_order
+type: phone_number
+settings:
+  unique: 0
+module: phone_number
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

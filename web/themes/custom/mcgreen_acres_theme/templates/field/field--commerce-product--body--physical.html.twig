@@ -49,6 +49,17 @@
     label_display == 'visually_hidden' ? 'visually-hidden',
   ]
 %}
+{% set parent_entity = element['#object'] %}
+
+{# Detect if the product_collection field contains the taxonomy term id 25 (Livestock) #}
+{% set has_livestock = false %}
+{% if parent_entity and parent_entity.get('product_collections') is not empty %}
+  {% for pc in parent_entity.get('product_collections') %}
+    {% if pc.target_id == '25' or pc.target_id == 25 %}
+      {% set has_livestock = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
 
 {% if label_hidden %}
   {% if multiple %}
@@ -76,4 +87,8 @@
     {% endif %}
   </div>
 {% endif %}
+{% if has_livestock %}
+  <div class="alert alert-warning"><p class="lead"><strong>All livestock sales are final. Buyer assumes responsibility upon transfer.</strong></p></div>
+{% endif %}
+
 <div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p></div>

@@ -91,8 +91,11 @@ function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
   }
 }
 
-function mcgreen_acres_store_plugin_info_alter(&$definitions) {
-  if (isset($definitions[''])) {
-    $definitions['commerce_checkout_pane']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomerComments';
+function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
+  if (!empty($definitions['customer_comments'])) {
+    $definitions['customer_comments']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomerComments';
+  }
+  if (!empty($definitions['profile_form'])) {
+    $definitions['profile_form']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomProfileForm';
   }
 }

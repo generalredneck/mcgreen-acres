@@ -106,11 +106,8 @@
                 <td>
                   {% set user = order_entity.getCustomer() %}
                   {% set phone = '' %}
-                  {% if user.phone_profiles is not empty %}
-                    {% set profile = user.phone_profiles.0.entity %}
-                    {% if profile.field_phone is not empty %}
-                      {% set phone = profile.field_phone.value %}
-                    {% endif %}
+                  {% if order_entity.field_order_contact is not empty %}
+                    {% set phone = order_entity.field_order_contact.value %}
                   {% endif %}
                   Email: {{ user.getEmail() }}<br>
                   {% if phone %}Phone: {{ phone }}{% endif %}
