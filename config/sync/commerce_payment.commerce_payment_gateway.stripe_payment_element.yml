@@ -10,7 +10,7 @@ weight: -10
 plugin: stripe_payment_element
 configuration:
   display_label: 'Credit Card / Wallet'
-  mode: live
+  mode: test
   payment_method_types:
     - stripe_card
   collect_billing_information: true
