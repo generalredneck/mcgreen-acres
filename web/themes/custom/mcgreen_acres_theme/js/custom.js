@@ -1103,7 +1103,7 @@ $(window).on('load', function(){
 	// Collapse Categories on mobile.
 	Drupal.behaviors.collapseCategories = {
 		attach(context, settings) {
-			if (window.innerWidth <= 991) {
+			if (window.innerWidth <= 767) {
 				jQuery('#facetBlock-facet-blockproduct-collections').collapse('hide');
 			}
 		},

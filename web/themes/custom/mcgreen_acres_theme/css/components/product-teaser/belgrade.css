@@ -1,6 +1,6 @@
 .product-image {
   margin-bottom: 2px;
-  min-height: 252px;
+  min-height: 110px;
 }
 .product-image img {
   width: 100%;
@@ -62,4 +62,13 @@
   --beo-primary: #fff;
   --beo-white: var(--beo-dark);
   --beo-body-color: #fff;
+}
+#accordionFilterLabel svg {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 767px) {
+}
+
+@media (max-width: 575px) {
 }

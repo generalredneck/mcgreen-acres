@@ -9,8 +9,8 @@ dependencies:
     - field.field.commerce_product.subscription.images
     - field.field.commerce_product.subscription.product_collections
     - field.field.commerce_product.subscription.product_tags
-    - image.style.d01
-    - image.style.d05
+    - image.style.d01_square
+    - image.style.d05_standard
   module:
     - bootstrap_basic_image_gallery
     - commerce_product
@@ -27,15 +27,15 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   images:
     type: bootstrap_basic_image_gallery_formatter
     label: hidden
     settings:
-      image_style: d05
+      image_style: d05_standard
       thumbnails_per_row: '3'
-      thumbnail_image_style: d01
+      thumbnail_image_style: d01_square
       modal_image_style: ''
       carousel_interval: '5000'
       lazyload: '1'
@@ -57,7 +57,7 @@ content:
     settings:
       combine: true
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
 hidden:
   created: true

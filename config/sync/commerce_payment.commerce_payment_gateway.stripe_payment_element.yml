@@ -74,4 +74,9 @@ conditions:
       matching_strategy: any
       roles:
         - administrator
+  -
+    plugin: order_type
+    configuration:
+      bundles:
+        - default
 conditionOperator: AND

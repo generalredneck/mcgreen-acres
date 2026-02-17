@@ -30,11 +30,17 @@
 
 <article{{ attributes.addClass(classes) }}>
   <div class="row g-5">
-    <div class="col-md-7 order-md-last">
+    <div class="col-md-5">
+      {% if product.variation_images|render is not empty %}
+        {{- product.variation_images -}}
+      {% else %}
+        {{- product.images -}}
+      {% endif %}
+    </div>
+    <div class="col-md-7">
       <div class="mb-2">
         {{- product.product_categories -}}
       </div>
-      {{- product.title -}}
       {{- product.brand -}}
       <div class="fs-4 font-weight-bold">{{- product.variation_price -}}</div>
       <hr/>
@@ -44,13 +50,6 @@
         </div>
       {% endif %}
       {{- product|without('variation_attributes', 'images', 'variation_images', 'title', 'variation_price', 'product_categories', 'brand', 'special_categories') -}}
-    </div>
-    <div class="col-md-5">
-      {% if product.variation_images|render is not empty %}
-        {{- product.variation_images -}}
-      {% else %}
-        {{- product.images -}}
-      {% endif %}
     </div>
   </div>
 

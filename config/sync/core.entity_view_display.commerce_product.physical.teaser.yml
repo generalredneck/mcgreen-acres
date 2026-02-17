@@ -10,7 +10,7 @@ dependencies:
     - field.field.commerce_product.physical.images
     - field.field.commerce_product.physical.product_collections
     - field.field.commerce_product.physical.product_tags
-    - image.style.product_teaser
+    - image.style.de2e_standard
   module:
     - image_delta_formatter
 _core:
@@ -24,10 +24,13 @@ content:
     type: image_delta_formatter
     label: hidden
     settings:
-      deltas: '0'
+      deltas:
+        - 0
       deltas_reversed: false
       image_link: content
-      image_style: product_teaser
+      image_style: de2e_standard
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
