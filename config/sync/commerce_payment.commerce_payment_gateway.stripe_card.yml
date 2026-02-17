@@ -6,7 +6,7 @@ dependencies:
     - commerce_stripe
 id: stripe_card
 label: 'Credit Card'
-weight: null
+weight: -9
 plugin: stripe
 configuration:
   display_label: 'Stripe Card Element'

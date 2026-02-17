@@ -46,7 +46,7 @@
     %}
     {#  Always wrap fieldset legends in a <span> for CSS positioning. #}
     <legend{{ legend.attributes.addClass('accordion-header') }}>
-      <span{{ legend_span.attributes.addClass(legend_span_classes) }} type="button" data-bs-toggle="collapse" data-bs-target="#{{ attributes.id ~ '-item' }}" aria-expanded="true" aria-controls="{{ attributes.id }}">{{ legend.title }}</span>
+      <span{{ legend_span.attributes.addClass(legend_span_classes) }} type="button" data-toggle="collapse" data-target="#{{ attributes.id ~ '-item' }}" aria-expanded="true" aria-controls="{{ attributes.id }}">{{ legend.title }}</span>
     </legend>
     <div class="collapse show" id="{{ attributes.id ~ '-item' }}">
       <div class="accordion-body fieldset-wrapper">

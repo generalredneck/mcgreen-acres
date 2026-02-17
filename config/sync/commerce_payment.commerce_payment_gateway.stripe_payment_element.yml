@@ -1,4 +1,4 @@
-uuid: f22430f9-14ab-47b7-a16d-d85d13ff6589
+uuid: 886b15db-7796-470b-be9f-c92ecdd1175d
 langcode: en
 status: true
 dependencies:
@@ -6,11 +6,11 @@ dependencies:
     - commerce_stripe
 id: stripe_payment_element
 label: 'Stripe Payment Element'
-weight: null
+weight: -10
 plugin: stripe_payment_element
 configuration:
-  display_label: 'Express Payment'
-  mode: test
+  display_label: 'Credit Card / Wallet'
+  mode: live
   payment_method_types:
     - stripe_card
   collect_billing_information: true
@@ -31,12 +31,12 @@ configuration:
       link: '0'
     button_styles:
       applePay:
-        theme: black
+        theme: white
         type: plain
       googlePay:
         theme: black
         type: buy
-    collect_phone_number: false
+    collect_phone_number: true
     collect_billing_address: true
   webhook_signing_secret: ''
   payment_method_usage: off_session
@@ -52,15 +52,15 @@ configuration:
       discover: discover
       mastercard: mastercard
       visa: visa
-      amazon_pay: '0'
       klarna: '0'
-      link: '0'
-      paypal: '0'
-      us_bank_account: '0'
-      affirm: '0'
-      alipay: '0'
-      cashapp: '0'
       wechat_pay: '0'
+      link: '0'
+      alipay: '0'
+      affirm: '0'
+      us_bank_account: '0'
+      amazon_pay: '0'
+      cashapp: '0'
+      paypal: '0'
       dinersclub: '0'
       jcb: '0'
       maestro: '0'

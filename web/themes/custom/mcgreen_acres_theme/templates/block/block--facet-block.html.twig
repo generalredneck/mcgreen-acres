@@ -76,7 +76,7 @@
       {{ title_prefix }}
       {% if label %}
       <h5 {{ title_attributes.addClass(['accordion-header', 'mb-0']) }}>
-        <button class="accordion-button border-0 fs-md" type="button" data-bs-toggle="collapse" data-bs-target="#facetBlock-{{  plugin_id|clean_class }}" aria-expanded="true">
+        <button class="accordion-button border-0 fs-md" type="button" data-toggle="collapse" data-target="#facetBlock-{{  plugin_id|clean_class }}" aria-expanded="false">
           {{ label }}
         </button>
       </h5>
@@ -84,7 +84,7 @@
       {{ title_suffix }}
     </div>
     {% block content %}
-    <div id="facetBlock-{{  plugin_id|clean_class }}" class="accordion-collapse collapse show border-0" aria-labelledby="flush-headingOne">
+    <div id="facetBlock-{{  plugin_id|clean_class }}" class="accordion-collapse show border-0" aria-labelledby="flush-headingOne" aria-expanded="false">
       <div class="accordion-body pt-0">
         {{ content }}
       </div>

@@ -1100,4 +1100,14 @@ $(window).on('load', function(){
     },
   };
 
+	// Collapse Categories on mobile.
+	Drupal.behaviors.collapseCategories = {
+		attach(context, settings) {
+			if (window.innerWidth <= 991) {
+				jQuery('#facetBlock-facet-blockproduct-collections').collapse('hide');
+			}
+		},
+	};
+
+
 })(Drupal, drupalSettings);

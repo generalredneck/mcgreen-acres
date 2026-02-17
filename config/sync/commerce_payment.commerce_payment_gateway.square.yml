@@ -1,19 +1,19 @@
-uuid: 065ebe5e-fb89-4daa-912b-fbf4cec70f46
+uuid: 4bcb0ca5-3ae4-4c50-be9d-d8a9c2c6e3ec
 langcode: en
 status: true
 dependencies: {  }
-id: cash
-label: Cash
-weight: -8
+id: square
+label: Square
+weight: -7
 plugin: manual
 configuration:
-  display_label: Cash
+  display_label: Square
   mode: n/a
   payment_method_types:
     - credit_card
   collect_billing_information: false
   instructions:
-    value: 'Payment will be due at pickup.'
+    value: ''
     format: plain_text
 conditions:
   -
