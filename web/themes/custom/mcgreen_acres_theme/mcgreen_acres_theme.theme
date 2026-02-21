@@ -356,3 +356,26 @@ function bootstrap4_covert_classes_string_to_array(&$variables) {
     $variables['attributes']['class'][] = $class;
   }
 }
+
+/**
+ * Implements hook_preprocess_links() for container--actions.
+ */
+function mcgreen_acres_theme_preprocess_links__container__actions(array &$variables) {
+  if (!empty($variables['links'])) {
+    foreach ($variables['links'] as &$link) {
+      if (!empty($link['attributes']['class'])) {
+        // Convert class to array if it's a string.
+        if (is_string($link['attributes']['class'])) {
+          $link['attributes']['class'] = [$link['attributes']['class']];
+        }
+        // Add Bootstrap classes if Drupal button classes are present.
+        if (in_array('button', $link['attributes']['class'])) {
+          $link['attributes']['class'][] = 'btn';
+        }
+        if (in_array('button--danger', $link['attributes']['class'])) {
+          $link['attributes']['class'][] = 'btn-danger';
+        }
+      }
+    }
+  }
+}
