@@ -1,0 +1,6 @@
+errorlog.configuration:
+  path: '/admin/config/development/errorlog'
+  defaults:
+    _form: '\Drupal\errorlog\Form\ErrorlogConfigForm'
+  requirements:
+    _permission: 'administer site configuration'

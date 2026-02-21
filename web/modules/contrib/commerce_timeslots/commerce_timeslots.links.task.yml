@@ -1,0 +1,74 @@
+# Define the time slot entity tabs.
+commerce_timeslots.timeslot_settings:
+  title: 'Time slot - Entity Settings.'
+  route_name: commerce_timeslots.timeslot_settings
+  base_route: commerce_timeslots.timeslot_settings
+
+entity.commerce_timeslot.view:
+  route_name: entity.commerce_timeslot.canonical
+  base_route: entity.commerce_timeslot.canonical
+  title: 'View'
+
+entity.commerce_timeslot.edit:
+  route_name: entity.commerce_timeslot.edit_form
+  base_route: entity.commerce_timeslot.canonical
+  title: 'Edit'
+
+entity.commerce_timeslot.delete_confirm:
+  route_name: entity.commerce_timeslot.delete_form
+  base_route: entity.commerce_timeslot.canonical
+  title: 'Delete'
+  weight: 10
+
+entity.commerce_timeslot_day.view:
+  route_name: entity.commerce_timeslot_day.canonical
+  base_route: entity.commerce_timeslot_day.canonical
+  title: 'View'
+
+entity.commerce_timeslot_day.edit:
+  route_name: entity.commerce_timeslot_day.edit_form
+  base_route: entity.commerce_timeslot_day.canonical
+  title: 'Edit'
+
+entity.commerce_timeslot_day.delete_confirm:
+  route_name: entity.commerce_timeslot_day.delete_form
+  base_route: entity.commerce_timeslot_day.canonical
+  title: 'Delete'
+  weight: 10
+
+entity.commerce_timeslot_day_capacity.view:
+  route_name: entity.commerce_timeslot_day_capacity.canonical
+  base_route: entity.commerce_timeslot_day_capacity.canonical
+  title: 'View'
+
+entity.commerce_timeslot_day_capacity.edit:
+  route_name: entity.commerce_timeslot_day_capacity.edit_form
+  base_route: entity.commerce_timeslot_day_capacity.canonical
+  title: 'Edit'
+
+entity.commerce_timeslot_day_capacity.delete_confirm:
+  route_name: entity.commerce_timeslot_day_capacity.delete_form
+  base_route: entity.commerce_timeslot_day_capacity.canonical
+  title: 'Delete'
+  weight: 10
+
+# Define main time slot tabs.
+entity.commerce_timeslot.collection:
+  route_name: entity.commerce_timeslot.collection
+  base_route: entity.commerce_timeslot.collection
+  title: 'Time slots'
+
+entity.commerce_timeslot_day.collection:
+  route_name: entity.commerce_timeslot_day.collection
+  base_route: entity.commerce_timeslot.collection
+  title: 'Time slot days'
+
+entity.commerce_timeslot_day_capacity.collection:
+  route_name: entity.commerce_timeslot_day_capacity.collection
+  base_route: entity.commerce_timeslot.collection
+  title: 'Time slot day capacities'
+
+entity.commerce_timeslot_booking.collection:
+  route_name: entity.commerce_timeslot_booking.collection
+  base_route: entity.commerce_timeslot.collection
+  title: 'Time slot bookings'

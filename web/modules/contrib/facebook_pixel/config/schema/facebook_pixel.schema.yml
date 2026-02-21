@@ -1,0 +1,42 @@
+facebook_pixel.settings:
+  type: config_object
+  label: 'facebook_pixel settings'
+  mapping:
+    facebook_id:
+      type: string
+      label: 'Your facebook id'
+    visibility:
+      type: mapping
+      label: 'Visibility settings'
+      mapping:
+        request_path_mode:
+          type: string
+          label: 'Request path mode'
+        request_path_pages:
+          type: string
+          label: 'Request path pages'
+        user_role_mode:
+          type: string
+          label: 'User role mode'
+        user_role_roles:
+          type: sequence
+          label: 'User roles'
+          sequence:
+            type: string
+            lablel: 'Role'
+    privacy:
+      type: mapping
+      label: 'Privacy settings'
+      mapping:
+        donottrack:
+          type: boolean
+          label: 'Do not track'
+        fb_disable_advanced:
+          type: boolean
+          label: 'Disable advance'
+        eu_cookie_compliance:
+          type: boolean
+          label: 'Cookie compliance'
+        disable_noscript_img:
+          type: boolean
+          label: 'Disable noscript image'

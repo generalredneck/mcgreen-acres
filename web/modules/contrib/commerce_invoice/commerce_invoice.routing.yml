@@ -1,0 +1,61 @@
+commerce_invoice.configuration:
+  path: '/admin/commerce/config/invoices'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Invoices'
+  requirements:
+    _permission: 'access commerce administration pages'
+
+entity.commerce_order.invoice_add_form:
+  path: '/admin/commerce/orders/{commerce_order}/invoice/add/{commerce_invoice_type}'
+  defaults:
+    _controller: '\Drupal\commerce_invoice\Controller\InvoiceController::addForm'
+    _title: 'Add invoice'
+  options:
+    parameters:
+      commerce_order:
+        type: 'entity:commerce_order'
+      commerce_invoice_type:
+        type: 'entity:commerce_invoice_type'
+  requirements:
+    commerce_order: '\d+'
+    _invoice_generate_form_access: 'TRUE'
+    _invoice_order_access: 'TRUE'
+
+entity.commerce_order.invoices:
+  path: '/admin/commerce/orders/{commerce_order}/invoices'
+  options:
+    parameters:
+      commerce_order:
+        type: 'entity:commerce_order'
+  requirements:
+    _invoice_order_access: 'TRUE'
+
+entity.commerce_order.credit_memos:
+  path: '/admin/commerce/orders/{commerce_order}/credit-memos'
+  options:
+    parameters:
+      commerce_order:
+        type: 'entity:commerce_order'
+  requirements:
+    _invoice_order_access: 'TRUE'
+
+entity.commerce_invoice_item.types_list:
+  path: '/admin/commerce/config/invoices/invoice-item-types'
+  defaults:
+    _controller: 'Drupal\commerce_invoice\Controller\InvoiceItemTypesAdminController::adminPage'
+    _title: 'Invoice item types'
+  requirements:
+    _permission: 'administer commerce_invoice'
+  options:
+    _admin_route: 'TRUE'
+
+entity.commerce_invoice_item.bundle_settings:
+  path: '/admin/commerce/config/invoices/invoice-item-types/{bundle}'
+  defaults:
+    _controller: 'Drupal\commerce_invoice\Controller\InvoiceItemTypesAdminController::bundlePage'
+    _title: 'Settings'
+  requirements:
+    _permission: 'administer commerce_invoice'
+  options:
+    _admin_route: 'TRUE'

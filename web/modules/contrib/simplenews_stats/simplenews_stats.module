@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Simplenews stats module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\symfony_mailer\EmailInterface;
+
+/**
+ * Implements hook_help().
+ */
+function simplenews_stats_help($path, $arg) {
+  switch ($path) {
+    case 'simplenews_stats.stats_tab':
+      return '';
+  }
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function simplenews_stats_mail_alter(&$message) {
+  if ($message['module'] !== 'simplenews' ||
+    !in_array($message['key'], ['node', 'test'])) {
+    return;
+  }
+
+  /** @var \Drupal\simplenews_stats\SimplenewsStatsMail $simplenewsStats */
+  $simplenewsStats = \Drupal::service('simplenews_stats.mail');
+  $simplenewsStats->prepareMail($message);
+}
+
+/**
+ * Implements hook_mailer_post_render().
+ */
+function simplenews_stats_mailer_post_render(EmailInterface $email) {
+  $is_simplenews_newsletter = FALSE;
+
+  // Symfony mailer 1.x
+  if (method_exists($email, 'getType') && $email->getType() === 'simplenews_newsletter' && in_array($email->getSubType(), [
+      'node',
+      'test',
+    ])) {
+    $is_simplenews_newsletter = TRUE;
+  }
+  elseif (method_exists($email, 'getTag') && in_array($email->getTag(), [
+      'simplenews.newsletter.node',
+      'simplenews.newsletter.test',
+    ])) {
+    // Symfony mailer 2.x
+    $is_simplenews_newsletter = TRUE;
+  }
+
+  if (!$is_simplenews_newsletter) {
+    return;
+  }
+
+  /** @var \Drupal\simplenews_stats\SimplenewsStatsMailSymfony $simplenewsStats */
+  $simplenewsStats = Drupal::service('simplenews_stats.symfony_mail');
+  $simplenewsStats->prepareMail($email);
+}

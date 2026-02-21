@@ -1,0 +1,10 @@
+name: 'Recipe Tracker'
+type: module
+description: 'This module helps you track when which recipe was applied since the module was installed.'
+package: Contrib (Recipe)
+core_version_requirement: ^11
+
+# Information added by Drupal.org packaging script on 2025-03-26
+version: '1.0.0'
+project: 'recipe_tracker'
+datestamp: 1742994159

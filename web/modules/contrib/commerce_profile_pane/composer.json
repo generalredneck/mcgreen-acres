@@ -1,0 +1,18 @@
+{
+  "name": "drupal/commerce_profile_pane",
+  "type": "drupal-module",
+  "description": "This module provides checkout panes for Drupal Commerce which output a form for the user's profile entity of a particular type.",
+  "keywords": ["Drupal", "Commerce"],
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://www.drupal.org/project/commerce_profile_pane",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/commerce_profile_pane",
+    "source": "https://git.drupalcode.org/project/commerce_profile_pane"
+  },
+  "require": {
+    "drupal/commerce": "^2.38 || ^3",
+    "drupal/profile": "^1.8",
+    "drupal/inline_entity_form": "^1 || ^3"
+  }
+}
