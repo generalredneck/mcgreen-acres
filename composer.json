@@ -129,9 +129,12 @@
         "drupal/search_api": "^1.35",
         "drupal/seo_checklist": "^5.2",
         "drupal/simple_block": "^1.6@beta",
+        "drupal/simplenews": "^4.1",
+        "drupal/simplenews_stats": "4.x-dev",
         "drupal/symfony_mailer": "^1.5",
         "drupal/term_condition": "^2.0",
         "drupal/twig_tweak": "^3.3",
+        "drupal/universal_device_detection": "^2.1",
         "drupal/upgrade_status": "^4.3",
         "drupal/user_csv_import": "^2.0",
         "drupal/varbase_bootstrap_paragraphs": "^10.0.9",
@@ -289,6 +292,9 @@
             "drupal/phone_number": {
                 "php 8.4": "patches/phone_number-3552395-3.patch",
                 "overstyled": "patches/phone_number-3516091-8.patch"
+            },
+            "drupal/simplenews_stats": {
+                "#3268515: Allow Capturing the device type": "patches/simplenews_stats-Allow_capturing_the_device_type-MR23-3268515-223907ef.patch"
             },
             "drupal/user_csv_import": {
                 "drupal 11": "https://www.drupal.org/files/issues/2025-10-15/user_csv_import_D11.patch"

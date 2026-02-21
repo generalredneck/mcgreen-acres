@@ -1,0 +1,210 @@
+diff --git a/composer.json b/composer.json
+index 377bdfe76f7f21a3d256af59c0e692f5733cecc9..4cf2ff74276561f8c1f4314838f66f221ae96c16 100644
+--- a/composer.json
++++ b/composer.json
+@@ -18,6 +18,7 @@
+     },
+     "license": "GPL-2.0+",
+     "require": {
+-        "drupal/simplenews": "^4.0"
++        "drupal/simplenews": "^4.0",
++        "drupal/universal_device_detection": "^2.1"
+     }
+ }
+diff --git a/simplenews_stats.install b/simplenews_stats.install
+index b19164f175921c3faf6d89f16cb06b3d6689cc05..835fdcfea211a9ade3b87227188ff6269137c18a 100644
+--- a/simplenews_stats.install
++++ b/simplenews_stats.install
+@@ -8,6 +8,7 @@
+ declare(strict_types=1);
+ 
+ use Drupal\Core\Database\Database;
++use Drupal\Core\Field\BaseFieldDefinition;
+ use Drupal\Core\Serialization\Yaml;
+ use Drupal\Component\Uuid\Php as Uuid;
+ use Drupal\Core\Utility\UpdateException;
+@@ -183,3 +184,28 @@ function simplenews_stats_update_10101(&$sandbox) {
+     );
+   }
+ }
++
++/**
++ * Add device field to simplenews_stats_item entity type.
++ */
++function simplenews_stats_update_10102() {
++  $storage_definition = BaseFieldDefinition::create('string')
++    ->setLabel(t('Device'))
++    ->setDescription(t('The device of the email client.'))
++    ->setSettings(['max_lenght' => 32])
++    ->setDefaultValue('unknown')
++    ->setDisplayOptions('view', [
++      'label' => 'above',
++      'type' => 'string',
++      'weight' => 22,
++    ])
++    ->setDisplayOptions('form', [
++      'type'     => 'string',
++      'settings' => [],
++      'weight'   => 22,
++    ])
++    ->setDisplayConfigurable('form', TRUE);
++
++  \Drupal::entityDefinitionUpdateManager()
++    ->installFieldStorageDefinition('device', 'simplenews_stats_item', 'simplenews_stats_item', $storage_definition);
++}
+diff --git a/src/Entity/SimplenewsStatsItem.php b/src/Entity/SimplenewsStatsItem.php
+index 9239f305619f9b9c2ee653800ff3a208fa8a8fe0..d07f9a57a6ed73a3fb4db0ab795cd202a4d36408 100644
+--- a/src/Entity/SimplenewsStatsItem.php
++++ b/src/Entity/SimplenewsStatsItem.php
+@@ -184,6 +184,16 @@ class SimplenewsStatsItem extends ContentEntityBase implements SimplenewsStatsIt
+     return NULL;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getDevice(): ?string {
++    if (!$this->get('device')->isEmpty()) {
++      return $this->get('device')->first()->value;
++    }
++    return NULL;
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -324,6 +334,23 @@ class SimplenewsStatsItem extends ContentEntityBase implements SimplenewsStatsIt
+       ])
+       ->setDisplayConfigurable('view', TRUE);
+ 
++    $fields['device'] = BaseFieldDefinition::create('string')
++      ->setLabel(t('Device'))
++      ->setDescription(t('The device of the email client.'))
++      ->setSettings(['max_lenght' => 32])
++      ->setDefaultValue('unknown')
++      ->setDisplayOptions('view', [
++        'label' => 'above',
++        'type' => 'string',
++        'weight' => 22,
++      ])
++      ->setDisplayOptions('form', [
++        'type'     => 'string',
++        'settings' => [],
++        'weight'   => 22,
++      ])
++      ->setDisplayConfigurable('form', TRUE);
++
+     return $fields;
+   }
+ 
+diff --git a/src/SimplenewsStatsEngine.php b/src/SimplenewsStatsEngine.php
+index 86c9d1e862e5e7f958fd8225a587c5d6a34c8e5c..474e41ac30fe650767ddd4f293e76f4398f9e1ca 100644
+--- a/src/SimplenewsStatsEngine.php
++++ b/src/SimplenewsStatsEngine.php
+@@ -4,12 +4,14 @@ declare(strict_types=1);
+ 
+ namespace Drupal\simplenews_stats;
+ 
++use DeviceDetector\DeviceDetector;
+ use Drupal\Component\Datetime\Time;
++use Drupal\Component\Utility\Html;
++use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+-use Symfony\Component\HttpFoundation\RequestStack;
+ use Drupal\Core\Routing\CurrentRouteMatch;
+-use Drupal\Core\Entity\EntityInterface;
+ use Drupal\simplenews\SubscriberInterface;
++use Symfony\Component\HttpFoundation\RequestStack;
+ 
+ /**
+  * The simplenews stats engine.
+@@ -97,12 +99,18 @@ class SimplenewsStatsEngine {
+     // click.
+     $action = ($route_name === 'simplenews_stats.hit_view') ? 'view' : 'click';
+ 
++    $userAgent = Html::escape($_SERVER['HTTP_USER_AGENT']);
++
++    $dd = new DeviceDetector($userAgent);
++    $dd->parse();
++
+     $data = [
+       'uid' => $subscriber->getUserId(),
+       'snid' => $subscriber->id(),
+       'email' => $subscriber->getMail(),
+       'title' => $action,
+       'entity_type' => $entity->getEntityTypeId(),
++      'device' => $dd->getDeviceName(),
+       'entity_id' => $entity->id(),
+       'route_path' => substr($path, 0, 255),
+       'created' => $this->time->getRequestTime(),
+@@ -140,6 +148,7 @@ class SimplenewsStatsEngine {
+    *   The action (click or view).
+    */
+   protected function globalStatUpdate(SubscriberInterface $subscriber, EntityInterface $entity, string $action): void {
++    /** @var \Drupal\simplenews_stats\SimplenewsStatsEntityStorageInterface $storage */
+     $storage = $this->entityTypeManager->getStorage('simplenews_stats');
+     $entity_gs = $storage->getFromRelatedEntity($entity);
+ 
+@@ -163,6 +172,8 @@ class SimplenewsStatsEngine {
+    *   The simplenews stats entity.
+    */
+   protected function getSimplenewsStats(SubscriberInterface $subscriber, EntityInterface $entity): SimplenewsStatsInterface {
++
++    /** @var \Drupal\simplenews_stats\SimplenewsStatsEntityStorageInterface $storage */
+     $storage = $this->entityTypeManager->getStorage('simplenews_stats');
+     $entity_gs = $storage->getFromRelatedEntity($entity);
+ 
+diff --git a/src/SimplenewsStatsPage.php b/src/SimplenewsStatsPage.php
+index 37b7002829712008a6ca765a5592dd884624b6f6..089e9acc1cce359b643dfa26ec85d01b73f977c5 100644
+--- a/src/SimplenewsStatsPage.php
++++ b/src/SimplenewsStatsPage.php
+@@ -210,6 +210,35 @@ class SimplenewsStatsPage {
+     return $links;
+   }
+ 
++  /**
++   * Return the most used devices.
++   *
++   * @return array
++   *   List of most used devices.
++   */
++  public function getTopDevices() {
++    $devices = [];
++
++    $query = Database::getConnection()
++      ->select('simplenews_stats_item', 'ss');
++
++    $query->fields('ss', ['device']);
++    $query->addExpression('COUNT(ssiid)', 'number');
++    $query->condition('entity_type', $this->entity->getEntityTypeId())
++      ->condition('entity_id', $this->entity->id())
++      ->condition('title', 'view')
++      ->groupBy('device')
++      ->orderBy('number', 'DESC');
++
++    $results = $query->execute();
++
++    foreach ($results as $data) {
++      $devices[] = ['device' => $data->device, 'count' => $data->number];
++    }
++
++    return $devices;
++  }
++
+   /**
+    * The statistics page.
+    *
+@@ -275,6 +304,13 @@ class SimplenewsStatsPage {
+       '#rows' => $this->getTopLinks(),
+     ];
+ 
++    $content['devices'] = [
++      '#prefix' => '<h2>' . $this->t('Devices') . '</h2>',
++      '#theme' => 'table',
++      '#header' => [$this->t('Device type'), $this->t('Count')],
++      '#rows'   => $this->getTopDevices(),
++    ];
++
+     return $content;
+   }
+ 

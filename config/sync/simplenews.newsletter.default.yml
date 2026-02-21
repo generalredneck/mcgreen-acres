@@ -1,0 +1,23 @@
+uuid: 36442ad3-4203-4336-989e-ad2048031291
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: wg5cCxB554rXZx4TIzUACcXRXe-VSodwqcq-_QS4Tv0
+name: 'McGreen Acres Site Updates'
+id: default
+description: 'All mandatory user related announcements.'
+format: html
+priority: 1
+receipt: false
+from_name: 'McGreen Acres'
+subject: '[node:title]'
+from_address: info@mcgreenacres.com
+hyperlinks: false
+allowed_handlers:
+  0: '0'
+  simplenews_all: '0'
+new_account: silent
+access: hidden
+reason: ''
+weight: 0

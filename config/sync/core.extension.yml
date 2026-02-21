@@ -167,6 +167,8 @@ module:
   serialization: 0
   shortcut: 0
   simple_block: 0
+  simplenews: 0
+  simplenews_stats: 0
   state_machine: 0
   symfony_mailer: 0
   system: 0

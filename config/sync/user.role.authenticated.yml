@@ -26,6 +26,7 @@ dependencies:
     - google_analytics
     - media
     - profile
+    - simplenews
     - system
 _core:
   default_config_hash: btW6TFHajhy7Eo6YUvdFiPh4TcPggo8GBXYctjV6zag
@@ -51,6 +52,7 @@ permissions:
   - 'dropzone upload files'
   - 'manage own commerce_payment_method'
   - 'opt-in or out of google analytics tracking'
+  - 'subscribe to newsletters'
   - 'update own commerce_subscription'
   - 'update own customer profile'
   - 'update own phone profile'

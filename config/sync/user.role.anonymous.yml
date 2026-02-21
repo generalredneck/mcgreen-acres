@@ -12,6 +12,7 @@ dependencies:
     - filter
     - media
     - profile
+    - simplenews
     - system
 _core:
   default_config_hash: pq_mEIu_B4widZN7Ap81iCJSjShFFdcL0jEiCi8VrDk
@@ -25,6 +26,7 @@ permissions:
   - 'access user profiles'
   - 'create phone profile'
   - 'delete own phone profile'
+  - 'subscribe to newsletters'
   - 'update own phone profile'
   - 'use text format restricted_html'
   - 'view commerce_product'
