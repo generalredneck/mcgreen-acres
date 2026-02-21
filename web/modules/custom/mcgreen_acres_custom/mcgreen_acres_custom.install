@@ -214,39 +214,39 @@ function mcgreen_acres_custom_update_10006() {
 /**
  * Subscribe all users to the default newsletter.
  */
-// function mcgreen_acres_custom_update_10007() {
-//   $uids = \Drupal::entityTypeManager()->getStorage('user')->getQuery()
-//     ->getQuery();
-//     ->accessCheck(FALSE)
-//     ->execute();
-//   // Replace 'default' with the id of the newsletter you want them to be subscribed to.
-//   $newsletter_id = 'default';
-//   foreach ($uids as $uid) {
-//     $subscriber = Subscriber::loadByUid($uid, TRUE);
-//     if ($subscriber) {
+function mcgreen_acres_custom_update_10007() {
+  $uids = \Drupal::entityTypeManager()->getStorage('user')->getQuery()
+    ->getQuery();
+    ->accessCheck(FALSE)
+    ->execute();
+  // Replace 'default' with the id of the newsletter you want them to be subscribed to.
+  $newsletter_id = 'default';
+  foreach ($uids as $uid) {
+    $subscriber = Subscriber::loadByUid($uid, TRUE);
+    if ($subscriber) {
 
-//       $subscriber->subscribe($newsletter_id);
-//       $subscriber->save();
-//     }
-//   }
-//   // Load all users with a Commerce Subscription for the herd share and subscribe them to the newsletter as well.
-//   $newsletter_id = 'herd_share_updates';
-//   /** @var /Drupal/commerce_recurring/Entity/CommerceSubscription $subscription*/
-//   $subscription_ids = \Drupal::entityTypeManager()->getStorage('commerce_subscription')->getQuery()
-//     ->accessCheck(FALSE)
-//     ->condition('purchased_entity.target_id', '28')
-//     ->condition('state', 'active')
-//     ->execute();
-//   foreach ($subscription_ids as $subscription_id) {
-//     $subscription = \Drupal::entityTypeManager()->getStorage('commerce_subscription')->load($subscription_id);
-//     if ($subscription) {
-//       $uid = $subscription->getOwnerId();
-//       $subscriber = Subscriber::loadByUid($uid, TRUE);
-//       if ($subscriber) {
-//         $subscriber->subscribe($newsletter_id);
-//         $subscriber->save();
-//       }
-//     }
-//   }
-//   return t('Update 10007 completed successfully.');
-// }
+      $subscriber->subscribe($newsletter_id);
+      $subscriber->save();
+    }
+  }
+  // Load all users with a Commerce Subscription for the herd share and subscribe them to the newsletter as well.
+  $newsletter_id = 'herd_share_updates';
+  /** @var /Drupal/commerce_recurring/Entity/CommerceSubscription $subscription*/
+  $subscription_ids = \Drupal::entityTypeManager()->getStorage('commerce_subscription')->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('purchased_entity.target_id', '28')
+    ->condition('state', 'active')
+    ->execute();
+  foreach ($subscription_ids as $subscription_id) {
+    $subscription = \Drupal::entityTypeManager()->getStorage('commerce_subscription')->load($subscription_id);
+    if ($subscription) {
+      $uid = $subscription->getOwnerId();
+      $subscriber = Subscriber::loadByUid($uid, TRUE);
+      if ($subscriber) {
+        $subscriber->subscribe($newsletter_id);
+        $subscriber->save();
+      }
+    }
+  }
+  return t('Update 10007 completed successfully.');
+}
