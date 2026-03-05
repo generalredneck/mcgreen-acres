@@ -6,6 +6,7 @@ dependencies:
     - commerce_product.commerce_product_type.physical
     - field.field.commerce_product.physical.body
     - field.field.commerce_product.physical.field_featured
+    - field.field.commerce_product.physical.field_product_department
     - field.field.commerce_product.physical.images
     - field.field.commerce_product.physical.product_collections
     - field.field.commerce_product.physical.product_tags
@@ -62,6 +63,7 @@ content:
 hidden:
   created: true
   field_featured: true
+  field_product_department: true
   product_collections: true
   product_tags: true
   search_api_excerpt: true

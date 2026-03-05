@@ -7,6 +7,7 @@ dependencies:
     - core.entity_view_mode.commerce_product.cart
     - field.field.commerce_product.subscription.body
     - field.field.commerce_product.subscription.field_featured
+    - field.field.commerce_product.subscription.field_product_department
     - field.field.commerce_product.subscription.images
     - field.field.commerce_product.subscription.product_collections
     - field.field.commerce_product.subscription.product_tags
@@ -41,6 +42,7 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_featured: true
+  field_product_department: true
   product_collections: true
   product_tags: true
   search_api_excerpt: true

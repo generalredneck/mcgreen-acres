@@ -6,6 +6,7 @@ dependencies:
     - commerce_product.commerce_product_type.subscription
     - field.field.commerce_product.subscription.body
     - field.field.commerce_product.subscription.field_featured
+    - field.field.commerce_product.subscription.field_product_department
     - field.field.commerce_product.subscription.images
     - field.field.commerce_product.subscription.product_collections
     - field.field.commerce_product.subscription.product_tags
@@ -37,6 +38,7 @@ third_party_settings:
       children:
         - product_collections
         - product_tags
+        - field_product_department
       label: Organization
       region: content
       parent_name: ''
@@ -77,6 +79,12 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  field_product_department:
+    type: options_select
+    weight: 13
+    region: content
+    settings: {  }
     third_party_settings: {  }
   images:
     type: image_focal_point

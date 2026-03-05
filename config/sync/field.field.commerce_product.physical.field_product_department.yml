@@ -1,0 +1,29 @@
+uuid: 6405bdac-154e-4882-94c6-6c1d1bebdb62
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.physical
+    - field.storage.commerce_product.field_product_department
+    - taxonomy.vocabulary.product_department
+id: commerce_product.physical.field_product_department
+field_name: field_product_department
+entity_type: commerce_product
+bundle: physical
+label: 'Product Department'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      product_department: product_department
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
