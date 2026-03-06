@@ -89,9 +89,18 @@ index 029bfef6546f0ea1c35b38decd85c8e857d97e31..ccd112e2e3c1827c684257a948caf778
      }
      catch (\Throwable $throwable) {
 diff --git a/src/Plugin/Commerce/PaymentGateway/Stripe.php b/src/Plugin/Commerce/PaymentGateway/Stripe.php
-index b418003ae7eab00b1a4a8d966d05ad8e584283d0..d72071b4c2e6f0829fcfda5cb93a434ba032c514 100644
+index b418003ae7eab00b1a4a8d966d05ad8e584283d0..c3ef554d6c8f4090454f322cd8721988f8ca79f3 100644
 --- a/src/Plugin/Commerce/PaymentGateway/Stripe.php
 +++ b/src/Plugin/Commerce/PaymentGateway/Stripe.php
+@@ -299,7 +299,7 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+           $decline_message = sprintf('%s: %s', $error->type, $error->message ?? '');
+         }
+         else {
+-          $decline_message = $intent->last_payment_error;
++          $decline_message = $intent->last_payment_error ?? sprintf('Unexpected payment intent status: %s', $intent->status);
+         }
+         throw HardDeclineException::createForPayment($payment, $decline_message);
+       }
 @@ -538,7 +538,12 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
        'capture_method' => 'automatic',
      ];
