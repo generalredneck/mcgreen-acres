@@ -181,11 +181,15 @@ if (file_exists($asndrop_file)) {
 $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
   "9009",
   '14061',
+  '197540',
   '216071',
   '24560',
   '24940',
+  '396507',
   '46918',
   '52449',
+  '53667',
+  '61125',
 ];
 
 // Merge into the crawler_rate_limit settings
