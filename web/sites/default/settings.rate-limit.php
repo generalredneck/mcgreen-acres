@@ -128,6 +128,44 @@ $settings['crawler_rate_limit.settings']['regular_traffic_country'] = [
 $settings['crawler_rate_limit.settings']['ip_address_allowlist'] = [];
 
 /**
+ * Block specified IP addresses. Optional.
+ *
+ * Useful if you want to block specific IP addresses from accessing your site.
+ *
+ * Blocklist can contain:
+ *   - IPv4 addresses or subnets in CIDR notation
+ *   - IPv6 addresses or subnets in CIDR notation
+ *
+ * Default value: empty array.
+ *
+ * Sample configuration to block a specific IP address.
+ *
+ * @code
+ * $settings['crawler_rate_limit.settings']['ip_address_blocklist'] = [
+ *   '192.168.1.100',
+ *   '10.0.0.0/8',
+ * ];
+ * @endcode
+ */
+
+// Read the ipblocklist.json file
+$ipblocklist_file = $app_root . '/../private/ipblocklist.txt';
+$ip_blocklist = [];
+
+if (file_exists($ipblocklist_file)) {
+  $file_content = file_get_contents($ipblocklist_file);
+  $ip_blocklist = file($ipblocklist_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+}
+
+$settings['crawler_rate_limit.settings']['ip_address_blocklist'] = [];
+
+// Merge into the crawler_rate_limit settings.
+$settings['crawler_rate_limit.settings']['ip_address_blocklist'] = array_merge(
+  $settings['crawler_rate_limit.settings']['ip_address_blocklist'] ?? [],
+  $ip_blocklist
+);
+
+/**
  * List of ASNs that should be blocked. Optional.
  *
  * All requests coming from IP addresses belonging to the ASNs on this list

@@ -1,5 +1,5 @@
 diff --git a/src/RateLimitManager.php b/src/RateLimitManager.php
-index 4df0ffd..dad72c8 100644
+index 4df0ffd..32945b2 100644
 --- a/src/RateLimitManager.php
 +++ b/src/RateLimitManager.php
 @@ -28,6 +28,11 @@ class RateLimitManager implements RateLimitManagerInterface {
@@ -28,7 +28,21 @@ index 4df0ffd..dad72c8 100644
    /**
     * Value to use in the Retry-After HTTP header if the request is blocked.
     *
-@@ -147,6 +159,11 @@ class RateLimitManager implements RateLimitManagerInterface {
+@@ -140,6 +152,13 @@ class RateLimitManager implements RateLimitManagerInterface {
+    */
+   protected array $ipAddressAllowlist;
+ 
++  /**
++   * IPs that should be blocked.
++   *
++   * @var array
++   */
++  protected array $ipAddressBlocklist;
++
+   /**
+    * ASNs that should be blocked.
+    *
+@@ -147,6 +166,11 @@ class RateLimitManager implements RateLimitManagerInterface {
     */
    protected array $asnBlocklist;
  
@@ -40,7 +54,7 @@ index 4df0ffd..dad72c8 100644
    /**
     * IP address of the client.
     *
-@@ -161,6 +178,20 @@ class RateLimitManager implements RateLimitManagerInterface {
+@@ -161,6 +185,20 @@ class RateLimitManager implements RateLimitManagerInterface {
     */
    protected int $clientAsn;
  
@@ -61,7 +75,7 @@ index 4df0ffd..dad72c8 100644
    /**
     * Class constructor.
     *
-@@ -181,6 +212,8 @@ class RateLimitManager implements RateLimitManagerInterface {
+@@ -181,6 +219,8 @@ class RateLimitManager implements RateLimitManagerInterface {
      $this->intervalRegularAsn = $settings['regular_traffic_asn']['interval'];
      $this->requestsRegularAsn = $settings['regular_traffic_asn']['requests'];
      $this->asnDbPath = $settings['regular_traffic_asn']['database'];
@@ -70,15 +84,30 @@ index 4df0ffd..dad72c8 100644
      $this->intervalBots = $settings['bot_traffic']['interval'];
      $this->requestsBots = $settings['bot_traffic']['requests'];
      $this->limitBots = $settings['limit_bots'];
-@@ -189,6 +222,7 @@ class RateLimitManager implements RateLimitManagerInterface {
+@@ -188,7 +228,9 @@ class RateLimitManager implements RateLimitManagerInterface {
+     $this->limitRegularAsn = $settings['limit_regular_asn'];
  
      $this->ipAddressAllowlist = $settings['ip_address_allowlist'];
++    $this->ipAddressBlocklist = $settings['ip_address_blocklist'];
      $this->asnBlocklist = $settings['asn_blocklist'];
 +    $this->countryBlockList = $settings['country_blocklist'];
  
      // Set retryAfter to higher interval value until we figure out which type of
      // request we are handling in limit() method.
-@@ -300,6 +334,10 @@ class RateLimitManager implements RateLimitManagerInterface {
+@@ -291,15 +333,22 @@ class RateLimitManager implements RateLimitManagerInterface {
+    * {@inheritdoc}
+    */
+   public function block(Request $request) {
+-    if (!$this->isEnabled() || empty($this->asnBlocklist)) {
++    if (!$this->isEnabled() || (empty($this->asnBlocklist) && empty($this->ipAddressBlocklist) && empty($this->countryBlockList))) {
+       return FALSE;
+     }
+ 
+     $this->clientIp ??= $request->getClientIp();
+     $this->clientAsn ??= $this->ipToAsn($this->clientIp);
++    if (in_array($this->clientIp, $this->ipAddressBlocklist)) {
++      return TRUE;
++    }
      if (in_array($this->clientAsn, $this->asnBlocklist)) {
        return TRUE;
      }
@@ -89,7 +118,7 @@ index 4df0ffd..dad72c8 100644
  
      return FALSE;
    }
-@@ -341,6 +379,47 @@ class RateLimitManager implements RateLimitManagerInterface {
+@@ -341,6 +390,47 @@ class RateLimitManager implements RateLimitManagerInterface {
      return $asn;
    }
  
