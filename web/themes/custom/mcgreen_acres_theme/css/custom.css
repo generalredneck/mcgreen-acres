@@ -751,6 +751,9 @@ figure {
   .index_v2.clv_main_wrapper .clv_right_header .clv_menu {
     padding-right: 185px;
   }
+  .slogan {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -777,7 +780,6 @@ figure {
   .view-product-catalog .views-field-out-of-stock {
     top: 23%;
   }
-
 }
 
 
@@ -865,10 +867,6 @@ th.views-field-remove-button {
 
   .paragraph--type--bp-simple img {
     width: 100%;
-  }
-
-  .slogan {
-    display:none;
   }
 
   .index_v2 main {

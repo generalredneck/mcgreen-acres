@@ -18,5 +18,5 @@ tags:
   og_title: '[site:name]'
   og_url: '[site:url]'
   shortlink: '[site:url]'
-  title: 'McGreen Acres | Naturally happy animals'
+  title: '[site:name] | [site:slogan]'
   twitter_cards_title: '[site:name]'
