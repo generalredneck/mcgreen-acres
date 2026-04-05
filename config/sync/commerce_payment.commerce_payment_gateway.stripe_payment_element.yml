@@ -6,7 +6,7 @@ dependencies:
     - commerce_stripe
 id: stripe_payment_element
 label: 'Stripe Payment Element'
-weight: -10
+weight: -7
 plugin: stripe_payment_element
 configuration:
   display_label: 'Credit Card / Wallet'

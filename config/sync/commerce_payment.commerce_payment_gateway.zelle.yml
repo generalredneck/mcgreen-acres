@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: zelle
 label: Zelle
-weight: -6
+weight: -8
 plugin: manual
 configuration:
   display_label: Zelle

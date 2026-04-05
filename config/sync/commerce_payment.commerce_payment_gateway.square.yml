@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: square
 label: Square
-weight: -7
+weight: -9
 plugin: manual
 configuration:
   display_label: Square

@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: cash
 label: Cash
-weight: -8
+weight: -10
 plugin: manual
 configuration:
   display_label: Cash
