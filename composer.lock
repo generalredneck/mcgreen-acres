@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d34f240801d7160891705e9dd2048b63",
+    "content-hash": "9b0c8effb4391a9bd68b8b14db293b33",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3909,30 +3909,30 @@
         },
         {
             "name": "drupal/commerce_shipping",
-            "version": "2.15.0",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/commerce_shipping.git",
-                "reference": "8.x-2.15"
+                "reference": "3.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce_shipping-8.x-2.15.zip",
-                "reference": "8.x-2.15",
-                "shasum": "42e3f317ad022adff628012af97dc044820ae4ca"
+                "url": "https://ftp.drupal.org/files/projects/commerce_shipping-3.0.2.zip",
+                "reference": "3.0.2",
+                "shasum": "cbd652ee1a3dcdf2d01db3c7963bdc0bc18d4806"
             },
             "require": {
-                "drupal/commerce": "^2.29 || ^3",
+                "drupal/commerce": "^3.3.0",
                 "drupal/commerce_order": "*",
                 "drupal/commerce_price": "*",
-                "drupal/core": "^9.3 || ^10 || ^11",
+                "drupal/core": "^10.3 || ^11",
                 "drupal/physical": "^1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.15",
-                    "datestamp": "1757407008",
+                    "version": "3.0.2",
+                    "datestamp": "1771255082",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3941,7 +3941,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -3966,7 +3966,7 @@
                 }
             ],
             "description": "Provides shipping functionality for Commerce.",
-            "homepage": "http://drupal.org/project/commerce_shipping",
+            "homepage": "https://drupal.org/project/commerce_shipping",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce_shipping"
             }
@@ -4162,40 +4162,6 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce_stripe"
             }
-        },
-        {
-            "name": "drupal/commerce_timeslots",
-            "version": "1.0.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/commerce_timeslots.git",
-                "reference": "a24725c11dc7d591529e5a5d890b92fb6f7e501b"
-            },
-            "require": {
-                "drupal/commerce": "^2.30 || ^3.0",
-                "drupal/commerce_shipping": "^2.3",
-                "drupal/jquery_ui_datepicker": "^1.2 || ^2.1",
-                "php": ">=7.3"
-            },
-            "default-branch": true,
-            "type": "drupal-module",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Andrei Vesterli (andrei.vesterli)",
-                    "homepage": "https://www.drupal.org/u/andreivesterli",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "A commerce configurable system for time slots management.",
-            "homepage": "https://www.drupal.org/project/commerce_timeslots",
-            "support": {
-                "issues": "https://drupal.org/project/issues/commerce_timeslots",
-                "source": "https://git.drupalcode.org/project/commerce_timeslots"
-            },
-            "time": "2025-05-16T13:55:32+00:00"
         },
         {
             "name": "drupal/commerce_tip",
@@ -5103,41 +5069,41 @@
         },
         {
             "name": "drupal/diff",
-            "version": "1.10.0",
+            "version": "2.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/diff.git",
-                "reference": "8.x-1.10"
+                "reference": "2.0.0-beta5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/diff-8.x-1.10.zip",
-                "reference": "8.x-1.10",
-                "shasum": "21398888a97071bfeb57bdc7128fcf6681da5358"
+                "url": "https://ftp.drupal.org/files/projects/diff-2.0.0-beta5.zip",
+                "reference": "2.0.0-beta5",
+                "shasum": "b988587a42a8c4329cd861e6f5c273f73bec7976"
             },
             "require": {
-                "drupal/core": "^10 || ^11",
+                "drupal/core": "^10.5 || ^11",
                 "mkalkbrenner/php-htmldiff-advanced": "~0.0.8",
                 "php": "^8.1"
             },
             "require-dev": {
-                "jangregor/phpstan-prophecy": "^1.0",
-                "mglaman/phpstan-drupal": "^1.2.10",
+                "jangregor/phpstan-prophecy": "^1.0 || ^2.2.0",
+                "mglaman/phpstan-drupal": "^1.2.10 || ^2.0.7",
                 "phpstan/extension-installer": "^1.2",
-                "phpstan/phpstan": "^1.11",
+                "phpstan/phpstan": "^1.11 || ^2.1.17",
                 "phpstan/phpstan-deprecation-rules": "*",
-                "phpstan/phpstan-phpunit": "1.4.x-dev",
-                "phpstan/phpstan-strict-rules": "^1@stable",
-                "previousnext/coding-standard": "1.0.1"
+                "phpstan/phpstan-phpunit": "1.4 || ^2.0",
+                "phpstan/phpstan-strict-rules": "^1.0 || ^2.0.4",
+                "previousnext/coding-standard": "1.1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.10",
-                    "datestamp": "1768951091",
+                    "version": "2.0.0-beta5",
+                    "datestamp": "1772417313",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -19759,9 +19725,8 @@
         "drupal/commerce_recurring": 5,
         "drupal/commerce_reports": 5,
         "drupal/commerce_stock": 10,
-        "drupal/commerce_timeslots": 20,
         "drupal/default_content": 15,
-        "drupal/diff": 5,
+        "drupal/diff": 10,
         "drupal/logging_alerts": 10,
         "drupal/phone_number": 15,
         "drupal/realname": 10,

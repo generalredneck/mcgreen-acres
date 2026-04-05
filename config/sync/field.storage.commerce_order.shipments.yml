@@ -18,5 +18,5 @@ locked: true
 cardinality: -1
 translatable: false
 indexes: {  }
-persist_with_no_fields: false
+persist_with_no_fields: true
 custom_storage: false

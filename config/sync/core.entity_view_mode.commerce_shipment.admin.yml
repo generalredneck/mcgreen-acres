@@ -1,0 +1,11 @@
+uuid: ad1b1a68-7301-4014-a5ef-cd95a2505d12
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_shipping
+id: commerce_shipment.admin
+label: Admin
+description: null
+targetEntityType: commerce_shipment
+cache: true

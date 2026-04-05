@@ -5,7 +5,6 @@ dependencies:
   config:
     - commerce_order.commerce_order_type.default
     - field.field.commerce_order.default.field_order_contact
-    - field.field.commerce_order.default.shipments
   module:
     - commerce_order
     - inline_entity_form
@@ -77,7 +76,6 @@ hidden:
   ip_address: true
   mail: true
   order_number: true
-  shipments: true
   state: true
   store_id: true
   uid: true

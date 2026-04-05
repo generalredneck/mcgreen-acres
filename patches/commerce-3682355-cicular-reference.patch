@@ -1,0 +1,43 @@
+From d7a58b272e85c20d7e0519620ca0c1d474daea55 Mon Sep 17 00:00:00 2001
+From: Amaranto del Barrio <1958-alonsomaniaco@users.noreply.drupalcode.org>
+Date: Tue, 31 Mar 2026 08:36:35 +0000
+Subject: [PATCH] fix: #3582355 Circular reference detected with the
+ InboxMessageFetcher.
+
+By: abarrio
+---
+ src/InboxMessageFetcher.php | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/InboxMessageFetcher.php b/src/InboxMessageFetcher.php
+index 010f26eae..ac4f4f578 100644
+--- a/src/InboxMessageFetcher.php
++++ b/src/InboxMessageFetcher.php
+@@ -4,7 +4,6 @@ namespace Drupal\commerce;
+ 
+ use Drupal\Component\Datetime\TimeInterface;
+ use Drupal\Component\Serialization\Json;
+-use Drupal\Core\Datetime\DateFormatterInterface;
+ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\Site\Settings;
+ use Drupal\Core\State\StateInterface;
+@@ -37,8 +36,6 @@ class InboxMessageFetcher implements InboxMessageFetcherInterface {
+    *   The module handler service.
+    * @param \Drupal\commerce\InboxMessageStorageInterface $inboxMessageStorage
+    *   The Commerce inbox message storage.
+-   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
+-   *   The date formatter.
+    * @param \Drupal\Core\State\StateInterface $state
+    *   The state service.
+    * @param \Drupal\Component\Datetime\TimeInterface $time
+@@ -50,7 +47,6 @@ class InboxMessageFetcher implements InboxMessageFetcherInterface {
+     protected LoggerInterface $logger,
+     protected ModuleHandlerInterface $moduleHandler,
+     protected InboxMessageStorageInterface $inboxMessageStorage,
+-    protected DateFormatterInterface $dateFormatter,
+     protected StateInterface $state,
+     protected TimeInterface $time,
+   ) {
+-- 
+GitLab
+
