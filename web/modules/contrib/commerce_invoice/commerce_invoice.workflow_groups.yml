@@ -1,0 +1,3 @@
+commerce_invoice:
+  label: Invoice
+  entity_type: commerce_invoice

@@ -1,0 +1,105 @@
+commerce_stripe.settings:
+  path: '/admin/commerce/config/stripe'
+  defaults:
+    _form: '\Drupal\commerce_stripe\Form\StripeSettings'
+    _title: 'Stripe settings'
+  requirements:
+    _permission: 'administer commerce stripe'
+
+commerce_stripe.connect.oauth_return:
+  path: '/stripe-connect/oauth/return/{commerce_payment_gateway}'
+  defaults:
+    _controller: '\Drupal\commerce_stripe\Controller\StripeConnectController::oauthReturn'
+    _title: 'Stripe connect OAuth return'
+  requirements:
+    _permission: 'administer commerce_payment_gateway'
+  options:
+    parameters:
+      commerce_payment_gateway:
+        type: 'entity:commerce_payment_gateway'
+
+commerce_stripe.connect.oauth_connect_form:
+  path: '/admin/commerce/config/payment-gateways/manage/{commerce_payment_gateway}/connect'
+  defaults:
+    _form: '\Drupal\commerce_stripe\Form\StripeConnectConfirmationForm'
+    _title: 'Connect with Stripe'
+  requirements:
+    _permission: 'administer commerce stripe'
+  options:
+    parameters:
+      commerce_payment_gateway:
+        type: 'entity:commerce_payment_gateway'
+
+commerce_stripe.connect.oauth_disconnect_form:
+  path: '/admin/commerce/config/payment-gateways/manage/{commerce_payment_gateway}/disconnect'
+  defaults:
+    _form: '\Drupal\commerce_stripe\Form\StripeConnectDisconnectForm'
+    _title: 'Disconnect Stripe'
+  requirements:
+    _permission: 'administer commerce stripe'
+  options:
+    parameters:
+      commerce_payment_gateway:
+        type: 'entity:commerce_payment_gateway'
+
+commerce_stripe.express_checkout.payment_confirm:
+  path: '/commerce-stripe/express-checkout/payment-confirm/{commerce_payment_gateway}/{commerce_order}'
+  defaults:
+    _controller: '\Drupal\commerce_stripe\Controller\ExpressCheckoutController::onPaymentConfirm'
+  requirements:
+    _entity_access: 'commerce_order.update'
+    _format: 'json'
+  options:
+    parameters:
+      commerce_payment_gateway:
+        type: entity:commerce_payment_gateway
+      commerce_order:
+        type: entity:commerce_order
+
+commerce_stripe.express_checkout.shipping_address_change:
+  path: '/commerce-stripe/express-checkout/shipping-address-change/{commerce_order}'
+  defaults:
+    _controller: '\Drupal\commerce_stripe\Controller\ExpressCheckoutController::onShippingAddressChange'
+  requirements:
+    _entity_access: 'commerce_order.update'
+    _format: 'json'
+  options:
+    parameters:
+      commerce_order:
+        type: entity:commerce_order
+
+commerce_stripe.express_checkout.shipping_rate_change:
+  path: '/commerce-stripe/express-checkout/shipping-rate-change/{commerce_order}'
+  defaults:
+    _controller: '\Drupal\commerce_stripe\Controller\ExpressCheckoutController::onShippingRateChange'
+  requirements:
+    _entity_access: 'commerce_order.update'
+    _format: 'json'
+  options:
+    parameters:
+      commerce_order:
+        type: entity:commerce_order
+
+commerce_stripe.express_checkout.cancel:
+  path: '/commerce-stripe/express-checkout/cancel/{commerce_order}'
+  defaults:
+    _controller: '\Drupal\commerce_stripe\Controller\ExpressCheckoutController::onCancel'
+  requirements:
+    _entity_access: 'commerce_order.update'
+    _format: 'json'
+  options:
+    parameters:
+      commerce_order:
+        type: entity:commerce_order
+
+commerce_stripe.express_checkout.validate_shipping_address:
+  path: '/commerce-stripe/express-checkout/validate-shipping-address/{commerce_order}'
+  defaults:
+    _controller: '\Drupal\commerce_stripe\Controller\ExpressCheckoutController::onValidateShippingAddress'
+  requirements:
+    _entity_access: 'commerce_order.update'
+    _format: 'json'
+  options:
+    parameters:
+      commerce_order:
+        type: entity:commerce_order

@@ -1,0 +1,3 @@
+langcode: en
+password_required: 1
+login_destination: '/user/%user/edit'
