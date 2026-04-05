@@ -289,10 +289,6 @@
             "drupal/facebook_pixel": {
                 "php 8.4": "patches/facebook_pixel-3558063-mr27.patch"
             },
-            "drupal/phone_number": {
-                "php 8.4": "patches/phone_number-3552395-3.patch",
-                "overstyled": "patches/phone_number-3516091-8.patch"
-            },
             "drupal/simplenews_stats": {
                 "#3268515: Allow Capturing the device type": "patches/simplenews_stats-Allow_capturing_the_device_type-MR23-3268515-223907ef.patch"
             },
