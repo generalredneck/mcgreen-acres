@@ -21,6 +21,7 @@ module:
   commerce_agree_terms: 0
   commerce_better_product_variation_label: 0
   commerce_cart: 0
+  commerce_cart_redirection: 0
   commerce_checkout: 0
   commerce_checkout_link: 0
   commerce_custom_checkout_message: 0

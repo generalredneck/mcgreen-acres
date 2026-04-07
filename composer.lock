@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24220018be7e27ff0b9a5c3baa4dac01",
+    "content-hash": "058c0f66835e76d1a4e7506b01ca8cf7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2966,6 +2966,58 @@
             "homepage": "https://www.drupal.org/project/commerce",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce"
+            }
+        },
+        {
+            "name": "drupal/commerce_cart_redirection",
+            "version": "3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/commerce_cart_redirection.git",
+                "reference": "3.3.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/commerce_cart_redirection-3.3.0.zip",
+                "reference": "3.3.0",
+                "shasum": "d5ce21b36e9aa6509885dd3896de18b7644a97d4"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.3.0",
+                    "datestamp": "1724976712",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "andyd328",
+                    "homepage": "https://www.drupal.org/user/2261214"
+                },
+                {
+                    "name": "calbasi",
+                    "homepage": "https://www.drupal.org/user/318818"
+                }
+            ],
+            "description": "Redirect to your cart page after adding a product to it",
+            "homepage": "https://www.drupal.org/project/commerce_cart_redirection",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/commerce_cart_redirection",
+                "issues": "https://www.drupal.org/project/issues/commerce_cart_redirection"
             }
         },
         {

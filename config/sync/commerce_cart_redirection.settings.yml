@@ -1,0 +1,8 @@
+product_bundles:
+  physical: physical
+  subscription: subscription
+negate_product_bundles: 0
+redirection_route_path: cart
+redirection_route_path_other: ''
+add_to_cart_replacement_text: ''
+clear_cart_before_add: 0

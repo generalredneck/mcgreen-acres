@@ -7,6 +7,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
 
 /**
  *
@@ -20,6 +21,16 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
       unset($item['#value']);
     }
   }
+  // Define the "Continue Shopping" button as a link styled like a button.
+  $form['actions']['continue_shopping'] = [
+    '#type' => 'link',
+    '#title' => t('Continue Shopping'),
+    '#url' => Url::fromRoute('view.product_catalog.catalog_page'),
+    '#attributes' => [
+      'class' => ['button', 'button--continue-shopping', 'btn', 'btn-outline-primary'],
+    ],
+    '#weight' => -10,
+  ];
 }
 
 /**
