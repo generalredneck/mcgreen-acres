@@ -5,3 +5,5 @@ override:
   user: 3
   update: 3
   commerce_order_type: 3
+  simplenews_newsletter: 3
+  simplenews: 3

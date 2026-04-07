@@ -15,10 +15,16 @@ configuration:
     - credit_card
   collect_billing_information: true
   authentication_method: stripe_connect
-  access_token: null
-  stripe_user_id: acct_1SJzX8PUoTEGbLcN
-  publishable_key: null
+  access_token: ''
+  stripe_user_id: ''
+  publishable_key: ''
   secret_key: ''
   enable_credit_card_icons: true
-conditions: {  }
+conditions:
+  -
+    plugin: current_user_role
+    configuration:
+      matching_strategy: any
+      roles:
+        - administrator
 conditionOperator: AND
