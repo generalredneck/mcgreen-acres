@@ -104,6 +104,7 @@
         "drupal/facets_pretty_paths": "^2.0",
         "drupal/field_permissions": "^1.4",
         "drupal/file_delete": "^3.0",
+        "drupal/file_to_media": "^1.0",
         "drupal/google_analytics": "^4.0.2",
         "drupal/honeypot": "^2.2",
         "drupal/image_delta_formatter": "^1.3",
