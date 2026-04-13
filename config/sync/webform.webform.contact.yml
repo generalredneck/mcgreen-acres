@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - advanced_email_validation
     - webform_mailchimp
   enforced:
     module:
@@ -242,9 +243,9 @@ handlers:
     handler_id: mailchimp
     label: MailChimp
     notes: ''
-    status: true
+    status: false
     conditions: {  }
-    weight: 2
+    weight: -49
     settings:
       list: e31f5f79c4
       email: email
@@ -260,7 +261,7 @@ handlers:
     notes: ''
     status: true
     conditions: {  }
-    weight: 3
+    weight: -48
     settings:
       states:
         - completed
@@ -291,4 +292,34 @@ handlers:
       langcode: ''
       parameters: {  }
       debug: false
+  advanced_email_webform_validator:
+    id: advanced_email_webform_validator_handler
+    handler_id: advanced_email_webform_validator
+    label: 'Advanced email webform validator'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings:
+      override_site_defaults: false
+      rules:
+        mx_lookup: false
+        disposable: false
+        free: false
+        banned: false
+      error_messages:
+        basic: ''
+        mx_lookup: ''
+        disposable: ''
+        free: ''
+        banned: ''
+      domain_lists:
+        disposable:
+          - ''
+        free:
+          - ''
+        banned:
+          - ''
+      emails:
+        '[webform_submission:values:email:html_email]': '[webform_submission:values:email:html_email]'
 variants: {  }

@@ -64,6 +64,7 @@
         "cweagans/composer-patches": "^1.7.3",
         "dompdf/dompdf": ">=3.0.0",
         "drupal/admin_toolbar": "^3.4.2",
+        "drupal/advanced_email_validation": "^2.0",
         "drupal/antibot": "^2.0",
         "drupal/block_class": "^4.0",
         "drupal/block_visibility_groups": "^2.0.1",
