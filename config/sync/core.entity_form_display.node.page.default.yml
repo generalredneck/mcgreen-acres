@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.page.body
     - field.field.node.page.field_content_paragraphs
+    - field.field.node.page.field_meta_tags
     - node.type.page
   module:
+    - metatag
     - paragraphs_previewer
     - path
     - text
@@ -44,6 +46,20 @@ content:
       add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: bp_simple
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 51
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   path:
     type: path
