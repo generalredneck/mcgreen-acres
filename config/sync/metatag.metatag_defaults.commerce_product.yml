@@ -30,7 +30,7 @@ tags:
   schema_product_name: '[commerce_product:title]'
   schema_product_offers: 'a:9:{s:5:"@type";s:5:"Offer";s:3:"@id";s:22:"[commerce_product:url]";s:5:"price";s:49:"[commerce_product:current_variation:price:number]";s:13:"priceCurrency";s:56:"[commerce_product:current_variation:price:currency_code]";s:3:"url";s:22:"[commerce_product:url]";s:13:"itemCondition";s:31:"https://schema.org/NewCondition";s:12:"availability";s:26:"https://schema.org/InStock";s:8:"category";s:38:"[commerce_product:product_collections]";s:14:"eligibleRegion";a:2:{s:5:"@type";s:7:"Country";s:4:"name";s:3:"USA";}}'
   schema_product_sku: '[commerce_product:variations:0:entity:sku:value]'
-  schema_product_type: IndividualProduct
+  schema_product_type: Product
   schema_product_url: '[commerce_product:url]'
   title: '[commerce_product:title] | [site:name]'
   twitter_cards_description: '[commerce_product:body:summary]'
