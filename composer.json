@@ -187,7 +187,8 @@
             },
             "file-mapping": {
                 "[web-root]/sites/development.services.yml": false,
-                "[web-root]/.htaccess": false
+                "[web-root]/.htaccess": false,
+                "[web-root]/robots.txt": false
             }
         },
         "drupal-core-vendor-hardening": {
