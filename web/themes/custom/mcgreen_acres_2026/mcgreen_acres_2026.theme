@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * @file
+ * McGreen Acres Bootstrap 5 theme hooks and preprocess functions.
+ */
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function mcgreen_acres_2026_preprocess_html(&$variables) {
+  $variables['html_attributes']->setAttribute(
+    'lang',
+    \Drupal::languageManager()->getCurrentLanguage()->getId()
+  );
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Makes logo URL, site name, and slogan available directly in page.html.twig
+ * so the header can be built without relying on block placement.
+ */
+function mcgreen_acres_2026_preprocess_page(&$variables) {
+  $config = \Drupal::config('system.site');
+  $variables['site_name']   = $config->get('name');
+  $variables['site_slogan'] = 'Red Oak, Texas · Family Farm';
+
+  // Only override logo_url if theme settings return a real value;
+  // otherwise the base theme's value (set earlier in the preprocess chain) stands.
+  $logo_url = theme_get_setting('logo.url');
+  if (!empty($logo_url)) {
+    $variables['logo_url'] = $logo_url;
+  }
+  else {
+    // If no logo is set, ensure the variable is defined for the template.
+    $variables['logo_url'] = '/themes/custom/mcgreen_acres_2026/logo.png';
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function mcgreen_acres_2026_preprocess_node(&$variables) {
+  // Expose display mode to template for conditional markup.
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+}
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ *
+ * Adds page--{path-alias-segment}.html.twig suggestions so you can create
+ * page--herd-share.html.twig, page--about.html.twig, etc.
+ */
+function mcgreen_acres_2026_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  $path_alias = \Drupal::service('path_alias.manager')
+    ->getAliasByPath(\Drupal::service('path.current')->getPath());
+  $alias = ltrim($path_alias, '/');
+  $parts = explode('/', $alias);
+
+  if (!empty($parts[0])) {
+    $suggestions[] = 'page__' . str_replace(['-', '/'], '_', $parts[0]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function mcgreen_acres_2026_preprocess_breadcrumb(&$variables) {
+  // Ensure the current page title appears as the last breadcrumb item.
+  if ($variables['breadcrumb']) {
+    $request = \Drupal::request();
+    $route   = \Drupal::routeMatch();
+    $title   = \Drupal::service('title_resolver')->getTitle($request, $route->getRouteObject());
+    if ($title) {
+      $variables['breadcrumb'][] = ['text' => $title, 'url' => ''];
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Applies Bootstrap 5 form classes to all Drupal forms automatically.
+ * This handles the most common input types — add cases as needed.
+ */
+function mcgreen_acres_2026_form_alter(&$form, &$form_state, $form_id) {
+  _mcgreen_acres_2026_bootstrap_form_classes($form);
+}
+
+/**
+ * Recursively applies Bootstrap 5 form element classes.
+ *
+ * @param array $elements
+ *   Form element array, passed by reference.
+ */
+function _mcgreen_acres_2026_bootstrap_form_classes(array &$elements) {
+  foreach (\Drupal\Core\Render\Element::children($elements) as $key) {
+    $el = &$elements[$key];
+    if (empty($el['#type'])) {
+      _mcgreen_acres_2026_bootstrap_form_classes($el);
+      continue;
+    }
+    switch ($el['#type']) {
+      case 'textfield':
+      case 'email':
+      case 'password':
+      case 'password_confirm':
+      case 'search':
+      case 'tel':
+      case 'url':
+      case 'number':
+      case 'date':
+      case 'textarea':
+        $el['#attributes']['class'][] = 'form-control';
+        break;
+
+      case 'select':
+        $el['#attributes']['class'][] = 'form-select';
+        break;
+
+      case 'checkbox':
+        $el['#attributes']['class'][] = 'form-check-input';
+        break;
+
+      case 'radios':
+        $el['#attributes']['class'][] = 'form-check';
+        break;
+
+      case 'submit':
+        $el['#attributes']['class'][] = 'btn';
+        $el['#attributes']['class'][] = 'btn-primary';
+        break;
+
+      case 'button':
+        $el['#attributes']['class'][] = 'btn';
+        $el['#attributes']['class'][] = 'btn-secondary';
+        break;
+
+      case 'fieldset':
+        $el['#attributes']['class'][] = 'fieldset';
+        break;
+    }
+
+    // Recurse into children.
+    _mcgreen_acres_2026_bootstrap_form_classes($el);
+  }
+}
+
+/**
+ * Implements hook_preprocess_status_messages().
+ *
+ * Maps Drupal message types to Bootstrap 5 alert variants.
+ */
+function mcgreen_acres_2026_preprocess_status_messages(&$variables) {
+  $map = [
+    'status'  => 'success',
+    'warning' => 'warning',
+    'error'   => 'danger',
+    'info'    => 'info',
+  ];
+  $variables['alert_map'] = $map;
+}

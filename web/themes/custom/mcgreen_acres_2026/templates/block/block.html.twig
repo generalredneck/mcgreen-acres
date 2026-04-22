@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * McGreen Acres — block.html.twig
+ *
+ * Minimal block template. Strips Drupal's default extra wrapper divs
+ * so block output flows cleanly into Bootstrap 5 layout regions.
+ *
+ * The block label is hidden by default (label_display defaults to false
+ * for most block types). If you need visible labels, toggle them in the
+ * block configuration UI — they'll appear as an <h2> here.
+ *
+ * Variables:
+ *   label         — Block label string (visible only if label_display is set)
+ *   content       — Block content (renderable array)
+ *   attributes    — HTML attributes for the outer element
+ *   title_attributes — HTML attributes for the title element
+ */
+#}
+{% if label %}
+  <h2{{ title_attributes.addClass('visually-hidden') }}>{{ label }}</h2>
+{% endif %}
+{{ content }}

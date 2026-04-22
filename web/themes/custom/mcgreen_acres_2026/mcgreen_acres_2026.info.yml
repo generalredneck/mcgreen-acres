@@ -1,0 +1,46 @@
+name: McGreen Acres
+type: theme
+description: 'Minimalistic Bootstrap 5 custom theme for McGreen Acres family farm. Red Oak, Texas.'
+core_version_requirement: ^9.4 || ^10 || ^11
+base theme: bootstrap5
+
+libraries:
+  - mcgreen_acres_2026/global
+
+# Attach toolbar fix whenever the admin toolbar library loads
+libraries-extend:
+  toolbar/toolbar:
+    - mcgreen_acres_2026/toolbar-fix
+
+# Override Drupal core CSS that conflicts with Bootstrap 5
+libraries-override:
+  system/base:
+    css:
+      component:
+        /core/themes/stable9/css/system/components/ajax-progress.module.css: false
+
+regions:
+  admin_toolbar:  'Admin Toolbar'
+  header:         'Header (Logo + CTA)'
+  primary_menu:   'Primary Navigation'
+  nav_icons:      'Nav Icons (Cart + Account)'
+  hero:           'Hero'
+  breadcrumb:     'Breadcrumb'
+  highlighted:    'Highlighted Messages'
+  help:           'Help'
+  content:        'Content (required)'
+  sidebar_first:  'Left Sidebar'
+  footer_first:   'Footer — Column 1 (Brand)'
+  footer_second:  'Footer — Column 2 (Navigation)'
+  footer_third:   'Footer — Column 3 (Policies)'
+  footer_bottom:  'Footer — Bottom Bar'
+
+# Feature flags
+features:
+  - logo
+  - name
+  - slogan
+  - favicon
+
+logo: 'logo.png'
+favicon: 'favicon.ico'

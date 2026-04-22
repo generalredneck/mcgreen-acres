@@ -1,0 +1,28 @@
+uuid: f99cc2e3-436a-4c6b-add7-6ef6701c449b
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.footer_social
+  module:
+    - block_visibility_groups
+    - simple_block
+  theme:
+    - mcgreen_acres_2026
+id: mcgreen_acres_2026_hangout
+theme: mcgreen_acres_2026
+region: footer_first
+weight: -12
+provider: null
+plugin: 'simple_block:footer_social'
+settings:
+  id: 'simple_block:footer_social'
+  label: 'Hang Out'
+  label_display: visible
+  provider: simple_block
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    context_mapping: {  }
+    block_visibility_group: ''

@@ -1,0 +1,675 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+
+/*
+ * McGreen Acres — Bootstrap 5 Custom Theme
+ * Overrides and extensions on top of Bootstrap 5.
+ * Design tokens are set as CSS custom properties so they cascade
+ * into Bootstrap utilities and our custom components consistently.
+ */
+
+/* ─────────────────────────────────────────────
+   1. DESIGN TOKENS
+───────────────────────────────────────────── */
+:root {
+  /* Brand greens */
+  --mca-green-dark:   #1a2e1a;
+  --mca-green:        #3a6b35;
+  --mca-green-mid:    #2d4a28;
+  --mca-green-light:  #e8f0e6;
+  --mca-green-muted:  #8ab085;
+
+  /* Warm neutrals */
+  --mca-cream:        #faf8f4;
+  --mca-cream-dark:   #f0ebe0;
+  --mca-tan:          #c8bc9e;
+  --mca-tan-dark:     #7a6a4a;
+  --mca-brown:        #3d3528;
+
+  /* Accent */
+  --mca-amber:        #c8902a;
+
+  /* Typography */
+  --mca-font-serif:   'Georgia', 'Times New Roman', serif;
+  --mca-font-sans:    'Arial', 'Helvetica Neue', sans-serif;
+
+  /* Bootstrap 5 overrides via custom properties */
+  --bs-primary:             var(--mca-green);
+  --bs-primary-rgb:         58, 107, 53;
+  --bs-dark:                var(--mca-green-dark);
+  --bs-dark-rgb:            26, 46, 26;
+  --bs-body-bg:             var(--mca-cream);
+  --bs-body-color:          var(--mca-brown);
+  --bs-body-font-family:    var(--mca-font-serif);
+  --bs-border-radius:       4px;
+  --bs-link-color:          var(--mca-green);
+  --bs-link-hover-color:    var(--mca-green-dark);
+}
+
+/* ─────────────────────────────────────────────
+   2. BOOTSTRAP OVERRIDES
+───────────────────────────────────────────── */
+
+/* Buttons */
+.btn-primary {
+  --bs-btn-bg:              var(--mca-green);
+  --bs-btn-border-color:    var(--mca-green);
+  --bs-btn-hover-bg:        var(--mca-green-dark);
+  --bs-btn-hover-border-color: var(--mca-green-dark);
+  --bs-btn-active-bg:       var(--mca-green-dark);
+  font-family: var(--mca-font-sans);
+  font-weight: bold;
+  letter-spacing: .04em;
+}
+
+.btn-outline-primary {
+  --bs-btn-color:           var(--mca-green);
+  --bs-btn-border-color:    var(--mca-green);
+  --bs-btn-hover-bg:        var(--mca-green);
+  --bs-btn-hover-border-color: var(--mca-green);
+  font-family: var(--mca-font-sans);
+  letter-spacing: .04em;
+}
+
+.btn-outline-light {
+  --bs-btn-color:           #e8dfc8;
+  --bs-btn-border-color:    #c8bc9e;
+  --bs-btn-hover-color:     var(--mca-green-dark);
+  font-family: var(--mca-font-sans);
+  letter-spacing: .04em;
+}
+
+/* Navbar */
+.navbar { font-family: var(--mca-font-sans); }
+.navbar .nav-link {
+  font-size: .8125rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #c8bc9e !important;
+  padding: .5rem 0;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus { color: #fff !important; }
+.navbar-toggler { border-color: rgba(200,188,158,.4); }
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28200%2C188%2C158%2C0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: var(--bs-border-radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+.card-title { color: var(--mca-green-dark); font-size: 1.125rem; }
+
+/* Breadcrumb */
+.breadcrumb {
+  background: var(--mca-cream-dark);
+  padding: .75rem 1.5rem;
+  margin-bottom: 0;
+  border-radius: 0;
+  font-family: var(--mca-font-sans);
+  font-size: .75rem;
+  letter-spacing: .04em;
+}
+.breadcrumb-item a { color: var(--mca-green); text-decoration: none; }
+.breadcrumb-item.active { color: var(--mca-tan-dark); }
+.breadcrumb-item + .breadcrumb-item::before { color: var(--mca-tan); }
+
+/* Alerts / Status messages */
+.alert { border-radius: var(--bs-border-radius); font-family: var(--mca-font-sans); font-size: .9375rem; }
+
+/* Form controls */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--mca-green);
+  box-shadow: 0 0 0 .2rem rgba(58,107,53,.2);
+}
+.form-label { font-family: var(--mca-font-sans); font-size: .875rem; color: var(--mca-brown); }
+
+/* ─────────────────────────────────────────────
+   3. SITE HEADER
+───────────────────────────────────────────── */
+.mca-header {
+  background: #fff;
+  border-bottom: 3px solid var(--mca-green);
+  padding: 1rem 1.5rem;
+}
+
+.mca-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+  text-decoration: none;
+}
+
+.mca-logo { height: 90px; width: auto; display: block; }
+
+.mca-wordmark { display: flex; flex-direction: column; gap: .1875rem; }
+
+.mca-site-name {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 1.625rem;
+  font-weight: normal;
+  color: #66c430;
+  line-height: 1;
+  letter-spacing: .01em;
+}
+
+.mca-site-slogan {
+  font-family: var(--mca-font-sans);
+  font-size: .75rem;
+  color: #5a7a55;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* Header CTA — "Join the Herd Share" button */
+.mca-header-cta {
+  background: var(--mca-green);
+  color: #fff !important;
+  padding: .75rem 1.5rem;
+  border-radius: var(--bs-border-radius);
+  font-family: var(--mca-font-sans);
+  font-size: .875rem;
+  font-weight: bold;
+  letter-spacing: .04em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .15s ease;
+}
+.mca-header-cta:hover { background: var(--mca-green-dark); }
+
+/* ─────────────────────────────────────────────
+   4. NAVIGATION
+───────────────────────────────────────────── */
+.mca-navbar { background: var(--mca-green-dark) !important; min-height: 48px; }
+.mca-navbar .navbar-nav { gap: 2rem; margin-left: auto; }
+
+/* Nav icons region (cart + account) */
+.mca-nav-icons a {
+  color: #c8bc9e;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: .25rem .375rem;
+  transition: color .15s;
+}
+.mca-nav-icons a:hover { color: #fff; }
+
+/* ─────────────────────────────────────────────
+   5. HERO
+───────────────────────────────────────────── */
+.mca-hero {
+  position: relative;
+  background-color: var(--mca-green-dark);
+  background-image: url('../images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  color: #fff;
+}
+.mca-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(15,30,10,.60);
+  z-index: 0;
+}
+.mca-hero > * { position: relative; z-index: 1; }
+
+.mca-hero-eyebrow {
+  font-family: var(--mca-font-sans);
+  font-size: .75rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mca-tan);
+  margin-bottom: 1rem;
+}
+.mca-hero h1 {
+  font-size: clamp(1.625rem, 4.5vw, 2.875rem);
+  line-height: 1.2;
+  color: #fff;
+  max-width: 820px;
+  margin-bottom: 1rem;
+}
+.mca-hero .lead {
+  font-size: clamp(.9375rem, 2.2vw, 1.25rem);
+  color: #d4c8a8;
+  font-style: italic;
+  max-width: 620px;
+  margin-bottom: 2rem;
+}
+
+/* Homepage hero — taller, with email form variant */
+.mca-hero--home { min-height: 560px; padding: 5rem 1.5rem; }
+
+/* ─────────────────────────────────────────────
+   6. DIFFERENTIATOR STRIP
+───────────────────────────────────────────── */
+.mca-diff-strip {
+  background: var(--mca-green-mid);
+  color: #e8dfc8;
+  text-align: center;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.mca-diff-strip .mca-sep { opacity: .45; margin: 0 .75rem; }
+
+/* ─────────────────────────────────────────────
+   7. SECTION BACKGROUNDS (alternating pattern)
+───────────────────────────────────────────── */
+.mca-bg-cream     { background: var(--mca-cream); }
+.mca-bg-warm      { background: var(--mca-cream-dark); }
+.mca-bg-dark      { background: var(--mca-green-dark); color: #e8dfc8; }
+.mca-bg-mid       { background: var(--mca-green-mid); color: #e8dfc8; }
+
+/* Headings invert on dark sections */
+.mca-bg-dark h2,
+.mca-bg-dark h3,
+.mca-bg-mid h2,
+.mca-bg-mid h3 { color: #fff; }
+
+.mca-bg-dark .mca-section-label { color: var(--mca-green-muted); }
+.mca-bg-mid  .mca-section-label { color: #a0b898; }
+
+/* ─────────────────────────────────────────────
+   8. SECTION TYPOGRAPHY HELPERS
+───────────────────────────────────────────── */
+.mca-section-label {
+  font-family: var(--mca-font-sans);
+  font-size: .6875rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mca-tan-dark);
+  margin-bottom: .5rem;
+  display: block;
+}
+
+.mca-section-body {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--mca-brown);
+  max-width: 44rem;
+}
+.mca-section-body p { margin-bottom: .875rem; }
+
+/* ─────────────────────────────────────────────
+   9. PRODUCT CARDS
+───────────────────────────────────────────── */
+.mca-product-card .card-title {
+  border-bottom: 2px solid var(--mca-green);
+  padding-bottom: .625rem;
+  margin-bottom: .625rem;
+}
+.mca-product-card .card-text {
+  font-size: .9375rem;
+  color: #5a5040;
+  line-height: 1.65;
+}
+.mca-product-card .card-link {
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  font-weight: bold;
+  color: var(--mca-green);
+  text-decoration: none;
+  letter-spacing: .04em;
+}
+.mca-product-card .card-link:hover { color: var(--mca-green-dark); }
+
+/* ─────────────────────────────────────────────
+   10. HERD SHARE CALLOUT (dark panel)
+───────────────────────────────────────────── */
+.mca-herd-callout {
+  background: var(--mca-green-dark);
+  border-radius: var(--bs-border-radius);
+  padding: 2.25rem 2rem;
+  color: #e8dfc8;
+}
+.mca-herd-callout h3 { color: #fff; font-size: 1.375rem; }
+.mca-herd-callout p  { color: #c8bc9e; font-size: 1rem; line-height: 1.7; }
+.mca-herd-callout a  {
+  color: var(--mca-green-muted);
+  font-family: var(--mca-font-sans);
+  font-size: .875rem;
+  font-weight: bold;
+  letter-spacing: .04em;
+  text-decoration: none;
+}
+.mca-herd-callout a:hover { color: #fff; }
+.mca-hs-label {
+  font-family: var(--mca-font-sans);
+  font-size: .6875rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mca-green-muted);
+  margin-bottom: .5rem;
+  display: block;
+}
+
+/* ─────────────────────────────────────────────
+   11. DIFFERENTIATORS GRID
+───────────────────────────────────────────── */
+.mca-diff-item {
+  border-top: 3px solid var(--mca-green);
+  padding-top: 1.125rem;
+}
+.mca-diff-item h4 { font-size: 1rem; color: var(--mca-green-dark); margin-bottom: .5rem; }
+.mca-diff-item p  { font-size: .9375rem; line-height: 1.65; color: #5a5040; }
+
+/* ─────────────────────────────────────────────
+   12. STEPS (numbered process list)
+───────────────────────────────────────────── */
+.mca-step { display: flex; gap: .875rem; align-items: flex-start; margin-bottom: 1rem; }
+.mca-step-num {
+  background: var(--mca-green);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: .125rem;
+}
+.mca-step-text { font-size: .9375rem; line-height: 1.65; color: var(--mca-brown); }
+.mca-step-text strong { color: var(--mca-green-dark); }
+
+/* ─────────────────────────────────────────────
+   13. HOW IT WORKS — 3-STEP CARDS
+───────────────────────────────────────────── */
+.mca-hiw-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+.mca-hiw-num {
+  width: 44px;
+  height: 44px;
+  background: var(--mca-green);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mca-font-sans);
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin: 0 auto 1rem;
+}
+.mca-hiw-card h3 { font-size: 1.25rem; color: var(--mca-green-dark); margin-bottom: .625rem; }
+.mca-hiw-card p  { font-size: .9375rem; line-height: 1.65; color: #5a5040; }
+
+/* ─────────────────────────────────────────────
+   14. LEAD MAGNET / EMAIL CAPTURE
+───────────────────────────────────────────── */
+.mca-lead-magnet { background: var(--mca-green-mid); color: #e8dfc8; }
+.mca-lead-magnet h2 { color: #fff; }
+.mca-lead-magnet .mca-lm-sub {
+  font-family: var(--mca-font-sans);
+  font-size: .9375rem;
+  color: #a0b898;
+  font-style: italic;
+}
+.mca-lead-magnet .form-control {
+  border: none;
+  border-radius: var(--bs-border-radius);
+}
+.mca-lead-magnet .btn-amber {
+  background: var(--mca-amber);
+  color: #fff;
+  border: none;
+  font-family: var(--mca-font-sans);
+  font-weight: bold;
+  letter-spacing: .04em;
+}
+.mca-lead-magnet .btn-amber:hover { background: #b07820; color: #fff; }
+.mca-lm-fine {
+  font-family: var(--mca-font-sans);
+  font-size: .6875rem;
+  color: #7a9a75;
+  margin-top: .75rem;
+}
+
+/* Hero lead magnet form variant */
+.mca-hero-form {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  max-width: 520px;
+  width: 100%;
+}
+.mca-hero-form-label {
+  font-family: var(--mca-font-sans);
+  font-size: .6875rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--mca-tan);
+  margin-bottom: .375rem;
+}
+.mca-hero-form-title { font-size: 1.125rem; color: #fff; margin-bottom: .25rem; }
+.mca-hero-form-sub   { font-family: var(--mca-font-sans); font-size: .8125rem; color: #b0a888; font-style: italic; margin-bottom: 1.125rem; }
+.mca-hero-form-fine  { font-family: var(--mca-font-sans); font-size: .6875rem; color: #908870; margin-top: .625rem; }
+
+/* ─────────────────────────────────────────────
+   15. DISTANCE BADGE
+───────────────────────────────────────────── */
+.mca-distance-badge {
+  display: inline-block;
+  background: var(--mca-green-light);
+  color: var(--mca-green-mid);
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  font-weight: bold;
+  padding: .375rem .875rem;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  letter-spacing: .04em;
+}
+
+/* ─────────────────────────────────────────────
+   16. DIRECTIONS / MAP SECTION
+───────────────────────────────────────────── */
+.mca-address-block {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--mca-green-dark);
+  padding: 1rem;
+  background: var(--mca-cream-dark);
+  border-radius: var(--bs-border-radius);
+  border-left: 4px solid var(--mca-green);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.mca-map-embed {
+  background: #d4d0c8;
+  border-radius: var(--bs-border-radius);
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mca-font-sans);
+  font-size: .875rem;
+  color: #6a6050;
+  font-style: italic;
+}
+.mca-map-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: var(--bs-border-radius);
+}
+
+/* ─────────────────────────────────────────────
+   17. CTA BAND
+───────────────────────────────────────────── */
+.mca-cta-band { background: var(--mca-green); }
+.mca-cta-band h2 { color: #fff; }
+.mca-cta-band p  { color: #b8d4b4; font-family: var(--mca-font-sans); font-size: .9375rem; }
+
+/* ─────────────────────────────────────────────
+   18. EMPATHY / "MAYBE" LIST
+───────────────────────────────────────────── */
+.mca-maybe-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+.mca-maybe-list li {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--mca-brown);
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: .875rem;
+}
+.mca-maybe-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--mca-green-muted);
+}
+
+/* ─────────────────────────────────────────────
+   19. TESTIMONIAL CARDS
+───────────────────────────────────────────── */
+.mca-testimonial {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--bs-border-radius);
+  padding: 1.75rem;
+}
+.mca-testimonial-quote {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #e8dfc8;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.mca-testimonial-quote::before { content: '\201C'; }
+.mca-testimonial-quote::after  { content: '\201D'; }
+.mca-testimonial-attr {
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  color: var(--mca-green-muted);
+  letter-spacing: .04em;
+}
+
+/* ─────────────────────────────────────────────
+   20. LOCATION TAGS (drive-time section)
+───────────────────────────────────────────── */
+.mca-location-tag {
+  display: inline-block;
+  background: var(--mca-green);
+  color: #fff;
+  padding: .5rem 1.125rem;
+  border-radius: 20px;
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  letter-spacing: .04em;
+  margin: .25rem;
+}
+
+/* ─────────────────────────────────────────────
+   21. FOOTER
+───────────────────────────────────────────── */
+.mca-footer { background: #0f1f0f; padding: 3rem 1.5rem 2rem; }
+.mca-footer-brand {
+  font-family: var(--mca-font-serif);
+  font-size: 1.25rem;
+  color: #e8dfc8;
+  margin-bottom: .625rem;
+}
+.mca-footer-address {
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  line-height: 1.8;
+  color: #6a8a65;
+}
+.mca-footer-heading {
+  font-family: var(--mca-font-sans);
+  font-size: .6875rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #5a7a55;
+  margin-bottom: .875rem;
+}
+.mca-footer-links { list-style: none; padding: 0; }
+.mca-footer-links li { margin-bottom: .5rem; }
+.mca-footer-links a {
+  color: #7a9a75;
+  text-decoration: none;
+  font-family: var(--mca-font-sans);
+  font-size: .875rem;
+  transition: color .15s;
+}
+.mca-footer-links a:hover { color: #e8dfc8; }
+
+.mca-footer-bottom {
+  background: #0a150a;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #1e3a1e;
+  font-family: var(--mca-font-sans);
+  font-size: .75rem;
+  color: #4a6a45;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────
+   22. DRUPAL ADMIN TOOLBAR OFFSET
+   Prevents admin toolbar from covering fixed/sticky elements.
+───────────────────────────────────────────── */
+body.toolbar-fixed .mca-sticky-header { top: 39px; }
+body.toolbar-fixed.toolbar-tray-open .mca-sticky-header { top: 79px; }
+
+/* ─────────────────────────────────────────────
+   23. DRUPAL BLOCK / REGION RESETS
+   Strip excess Drupal wrapper margin so regions render cleanly.
+───────────────────────────────────────────── */
+.block { margin: 0; }
+.region { margin: 0; }
+.field { margin: 0; }
+
+/* ─────────────────────────────────────────────
+   24. RESPONSIVE ADJUSTMENTS
+───────────────────────────────────────────── */
+@media (max-width: 991.98px) {
+  .mca-header { padding: 1rem; }
+  .mca-logo   { height: 70px; }
+  .mca-site-name { font-size: 1.25rem; }
+
+  .mca-navbar .navbar-nav { gap: .5rem; }
+  .mca-navbar .navbar-collapse {
+    padding: .75rem 1rem;
+    background: var(--mca-green-dark);
+    position: relative;
+    z-index: 1000;
+  }
+  .mca-navbar .nav-link { padding: .5rem 0 !important; border-bottom: 1px solid rgba(255,255,255,.06); }
+}
+
+@media (max-width: 575.98px) {
+  .mca-hero { padding: 3rem 1rem; }
+  .mca-hero h1 { font-size: 1.625rem; }
+
+  .mca-hero-form { padding: 1.25rem 1rem; }
+  .mca-hero-form .row.g-2 > * { width: 100%; }
+
+  .mca-header-cta { display: none; } /* Herd share CTA moves into mobile nav */
+  .mca-herd-callout { padding: 1.5rem 1.25rem; }
+  .mca-footer { padding: 2rem 1rem 1.5rem; }
+}

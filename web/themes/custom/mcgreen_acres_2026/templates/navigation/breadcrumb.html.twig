@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * McGreen Acres — breadcrumb.html.twig
+ *
+ * Bootstrap 5 breadcrumb component.
+ *
+ * Variables:
+ *   breadcrumb — Array of breadcrumb items, each with:
+ *     - text  Display string
+ *     - url   URL string (empty for the current page item)
+ */
+#}
+{% if breadcrumb %}
+  <nav aria-label="{{ 'Breadcrumb'|t }}" class="mca-breadcrumb-region">
+    <ol class="breadcrumb mb-0">
+      {% for item in breadcrumb %}
+        {% if item.url %}
+          <li class="breadcrumb-item">
+            <a href="{{ item.url }}">{{ item.text }}</a>
+          </li>
+        {% else %}
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ item.text }}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </nav>
+{% endif %}

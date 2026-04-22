@@ -1,0 +1,27 @@
+uuid: 5a5403ae-7581-40a9-89b1-f590e8e2f84c
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.copyright
+  module:
+    - block_visibility_groups
+    - simple_block
+  theme:
+    - mcgreen_acres_2026
+id: mcgreen_acres_2026_copyright
+theme: mcgreen_acres_2026
+region: footer_bottom
+weight: -13
+provider: null
+plugin: 'simple_block:copyright'
+settings:
+  id: 'simple_block:copyright'
+  label: Copyright
+  label_display: '0'
+  provider: simple_block
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''

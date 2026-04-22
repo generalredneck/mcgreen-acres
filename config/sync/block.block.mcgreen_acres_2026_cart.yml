@@ -1,0 +1,27 @@
+uuid: f9f3d430-5f80-4e5e-8fce-5c1037a788e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_visibility_groups
+    - commerce_cart
+  theme:
+    - mcgreen_acres_2026
+id: mcgreen_acres_2026_cart
+theme: mcgreen_acres_2026
+region: nav_icons
+weight: -13
+provider: null
+plugin: commerce_cart
+settings:
+  id: commerce_cart
+  label: Cart
+  label_display: '0'
+  provider: commerce_cart
+  dropdown: true
+  show_if_empty: true
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''

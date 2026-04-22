@@ -1,0 +1,26 @@
+global:
+  version: 1.0.0
+  css:
+    theme:
+      css/mcgreen_acres_2026.css: {}
+  js:
+    js/mcgreen_acres_2026.js: { attributes: { defer: true } }
+  dependencies:
+    - core/drupal
+    - core/once
+
+# Loaded only when Admin Toolbar is present
+toolbar-fix:
+  version: 1.0.0
+  css:
+    theme:
+      css/toolbar-fix.css: {}
+
+# Webform-specific Bootstrap overrides (loaded only on pages with forms)
+webform:
+  version: 1.0.0
+  css:
+    theme:
+      css/webform.css: {}
+  dependencies:
+    - mcgreen_acres_2026/global

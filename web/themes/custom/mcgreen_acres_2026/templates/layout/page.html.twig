@@ -1,0 +1,227 @@
+{#
+/**
+ * @file
+ * McGreen Acres — page.html.twig
+ *
+ * Regions used:
+ *   admin_toolbar  — Drupal admin toolbar (injected by core, leave at top)
+ *   header         — Site branding block (logo, name, slogan)
+ *   primary_menu   — Main navigation menu
+ *   hero           — Hero block (image + headline)
+ *   breadcrumb     — Breadcrumb trail
+ *   highlighted    — Highlighted / status messages
+ *   help           — Contextual help (admin)
+ *   content        — Main page content (required)
+ *   sidebar_first  — Optional left sidebar
+ *   footer_first   — Footer brand column
+ *   footer_second  — Footer nav column
+ *   footer_third   — Footer policy column
+ *   footer_bottom  — Footer copyright bar
+ *
+ * Variables:
+ *   logo_url    — Theme logo URL (set in mcgreen_acres_2026.theme)
+ *   site_name   — Site name string
+ *   site_slogan — Site slogan string
+ */
+#}
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {{ head_title|safe_join(' | ') }}
+  {{ head }}
+  {{ styles }}
+</head>
+<body{{ attributes.addClass('d-flex flex-column min-vh-100') }}>
+
+  {# Drupal skip-link for accessibility #}
+  <a href="#main-content" class="visually-hidden-focusable">
+    {{ 'Skip to main content'|t }}
+  </a>
+
+  {# ── Admin toolbar (Drupal injects this region automatically) ── #}
+  {% if page.admin_toolbar %}
+    {{ page.admin_toolbar }}
+  {% endif %}
+
+  {# ═══════════════════════════════════════════
+     SITE HEADER — Logo band (white)
+  ═══════════════════════════════════════════ #}
+  <header class="mca-header" role="banner">
+    <div class="container-fluid px-3 px-lg-4 d-flex align-items-center justify-content-between gap-3">
+
+      {# Logo + wordmark #}
+      <a href="{{ path('<front>') }}" class="mca-header-brand" rel="home">
+        {% if logo_url %}
+          <img src="{{ logo_url }}" alt="{{ site_name }}" class="mca-logo" />
+        {% endif %}
+        <div class="mca-wordmark">
+          <span class="mca-site-name">{{ site_name }}</span>
+          {% if site_slogan %}
+            <span class="mca-site-slogan">{{ site_slogan }}</span>
+          {% endif %}
+        </div>
+      </a>
+
+      {# Optional extra header blocks (e.g. commerce cart, search) #}
+      {% if page.header %}
+        <div class="mca-header-extra d-flex align-items-center gap-3">
+          {{ page.header }}
+        </div>
+      {% endif %}
+
+      {# Primary hard CTA — Herd Share. Link target configurable via block. #}
+      <a href="/herd-share" class="mca-header-cta d-none d-md-inline-block">
+        {{ 'Join the Herd Share →'|t }}
+      </a>
+
+    </div>
+  </header>
+
+  {# ═══════════════════════════════════════════
+     PRIMARY NAVIGATION — dark green navbar
+  ═══════════════════════════════════════════ #}
+  <nav class="navbar navbar-expand-lg mca-navbar" role="navigation" aria-label="{{ 'Main navigation'|t }}">
+    <div class="container-fluid px-3 px-lg-4">
+
+      {# Cart + account icons — always visible.
+         ms-auto pushes them (and the toggler) to the right on mobile.
+         order-lg-last places them after the menu links on desktop. #}
+      {% if page.nav_icons %}
+        <div class="mca-nav-icons d-flex align-items-center gap-2 ms-auto ms-lg-0 order-lg-last">
+          {{ page.nav_icons }}
+        </div>
+      {% endif %}
+
+      {# Mobile toggle — sits to the right of the icons #}
+      <button class="navbar-toggler d-lg-none" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#mcaMainNav"
+              aria-controls="mcaMainNav"
+              aria-expanded="false"
+              aria-label="{{ 'Toggle navigation'|t }}">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mcaMainNav">
+        {{ page.primary_menu }}
+
+        {# Mobile-only herd share CTA inside nav #}
+        <div class="d-lg-none mt-3 pb-2">
+          <a href="/herd-share" class="btn btn-primary btn-sm w-100">
+            {{ 'Join the Herd Share →'|t }}
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  {# ═══════════════════════════════════════════
+     HERO REGION (optional — only renders if a block is placed here)
+  ═══════════════════════════════════════════ #}
+  {% if page.hero %}
+    <div class="mca-hero-region">
+      {{ page.hero }}
+    </div>
+  {% endif %}
+
+  {# ═══════════════════════════════════════════
+     BREADCRUMB
+  ═══════════════════════════════════════════ #}
+  {% if page.breadcrumb %}
+    <div class="mca-breadcrumb-region" aria-label="{{ 'Breadcrumb'|t }}">
+      {{ page.breadcrumb }}
+    </div>
+  {% endif %}
+
+  {# ═══════════════════════════════════════════
+     HIGHLIGHTED MESSAGES
+  ═══════════════════════════════════════════ #}
+  {% if page.highlighted %}
+    <div class="container py-3">
+      {{ page.highlighted }}
+    </div>
+  {% endif %}
+
+  {# ═══════════════════════════════════════════
+     MAIN CONTENT
+  ═══════════════════════════════════════════ #}
+  <main id="main-content" class="flex-grow-1" tabindex="-1">
+
+    {% if page.help %}
+      <div class="container py-2">
+        {{ page.help }}
+      </div>
+    {% endif %}
+
+    {# Sidebar layout — only wraps in a grid when sidebar has content #}
+    {% if page.sidebar_first %}
+      <div class="container py-4">
+        <div class="row g-4">
+          <aside class="col-lg-3" role="complementary">
+            {{ page.sidebar_first }}
+          </aside>
+          <div class="col-lg-9">
+            {{ page.content }}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      {#
+        Full-width: content region manages its own container/padding.
+        This allows full-bleed section backgrounds on location pages,
+        homepages, etc. — content blocks use .container internally.
+      #}
+      {{ page.content }}
+    {% endif %}
+
+  </main>
+
+  {# ═══════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════ #}
+  <footer class="mca-footer mt-auto" role="contentinfo">
+    <div class="container-fluid px-3 px-lg-5">
+      <div class="row g-4 g-lg-5 pb-4">
+
+        {% if page.footer_first %}
+          <div class="col-12 col-md-6 col-lg-5">
+            {{ page.footer_first }}
+          </div>
+        {% endif %}
+
+        {% if page.footer_second %}
+          <div class="col-6 col-md-3 col-lg-2">
+            {{ page.footer_second }}
+          </div>
+        {% endif %}
+
+        {% if page.footer_third %}
+          <div class="col-6 col-md-3 col-lg-2">
+            {{ page.footer_third }}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    {% if page.footer_bottom %}
+      <div class="mca-footer-bottom">
+        <div class="container-fluid px-3 px-lg-5">
+          {{ page.footer_bottom }}
+        </div>
+      </div>
+    {% else %}
+      <div class="mca-footer-bottom">
+        © {{ "now"|date("Y") }} McGreen Acres LLC. All rights reserved. · Red Oak, Texas
+      </div>
+    {% endif %}
+
+  </footer>
+
+  {{ scripts }}
+
+</body>
+</html>

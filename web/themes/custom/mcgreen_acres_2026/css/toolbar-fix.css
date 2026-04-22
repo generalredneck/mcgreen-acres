@@ -1,0 +1,23 @@
+/* Reset Bootstrap interference with Drupal Admin Toolbar */
+#toolbar-administration,
+#toolbar-administration * {
+  box-sizing: content-box;
+}
+
+#toolbar-administration .toolbar-menu li {
+  font-size: initial;
+  line-height: initial;
+}
+
+#toolbar-administration .toolbar-menu .toolbar-menu li {
+  display: block;
+  width: 100%;
+}
+
+/* Mobile toolbar: keep tabs inline so they don't stack */
+@media (max-width: 767px) {
+  #toolbar-bar .toolbar-tab {
+    display: inline-block;
+    width: auto;
+  }
+}

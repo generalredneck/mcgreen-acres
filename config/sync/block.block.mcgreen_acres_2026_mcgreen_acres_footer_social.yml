@@ -1,0 +1,28 @@
+uuid: 1c813fb4-59e7-4cc5-8097-c1f397232ddc
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.mcgreen_acres_footer_social
+  module:
+    - block_visibility_groups
+    - simple_block
+  theme:
+    - mcgreen_acres_2026
+id: mcgreen_acres_2026_mcgreen_acres_footer_social
+theme: mcgreen_acres_2026
+region: footer_first
+weight: -13
+provider: null
+plugin: 'simple_block:mcgreen_acres_footer_social'
+settings:
+  id: 'simple_block:mcgreen_acres_footer_social'
+  label: 'Contact Us'
+  label_display: visible
+  provider: simple_block
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    context_mapping: {  }
+    block_visibility_group: ''

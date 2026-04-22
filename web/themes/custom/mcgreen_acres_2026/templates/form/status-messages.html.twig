@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * McGreen Acres — status-messages.html.twig
+ *
+ * Maps Drupal message types to Bootstrap 5 alert components.
+ *
+ * Variables:
+ *   message_list — Associative array keyed by message type (status/warning/error/info).
+ *   status_headings — Labels for each type.
+ */
+#}
+{% set type_map = { status: 'success', warning: 'warning', error: 'danger', info: 'info' } %}
+
+{% for type, messages in message_list %}
+  {% set bs_type = type_map[type] ?? 'secondary' %}
+  <div class="alert alert-{{ bs_type }} alert-dismissible fade show" role="alert"
+       aria-label="{{ status_headings[type] }}">
+    {% if status_headings[type] %}
+      <strong>{{ status_headings[type] }}</strong>
+    {% endif %}
+    {% if messages|length == 1 %}
+      {{ messages|first }}
+    {% else %}
+      <ul class="mb-0 mt-1">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"
+            aria-label="{{ 'Close'|t }}"></button>
+  </div>
+{% endfor %}

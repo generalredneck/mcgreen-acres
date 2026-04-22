@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * McGreen Acres — menu--main.html.twig
+ *
+ * Renders the main navigation as a Bootstrap 5 navbar-nav list.
+ * This template is placed inside the <nav> collapse container in page.html.twig.
+ *
+ * Variables:
+ *   items — A nested list of menu items with:
+ *     - url          Link URL object
+ *     - title        Link text
+ *     - attributes   HTML attributes
+ *     - is_expanded  True if item has visible children
+ *     - below        Child menu items (array)
+ *     - in_active_trail  True if item is in the active path
+ */
+#}
+{% import _self as menus %}
+
+{#
+  Recursive macro — handles top-level items and one level of dropdowns.
+  Bootstrap 5 supports multi-level via additional nesting, but keep it
+  simple unless the menu actually needs it.
+#}
+{% macro menu_links(items, depth) %}
+  {% if items %}
+    <ul class="{{ depth == 0 ? 'navbar-nav ms-auto' : 'dropdown-menu' }}">
+      {% for item in items %}
+        {% set item_classes = ['nav-item'] %}
+        {% if item.is_expanded and item.below %}
+          {% set item_classes = item_classes|merge(['dropdown']) %}
+        {% endif %}
+        {% if item.in_active_trail %}
+          {% set item_classes = item_classes|merge(['active']) %}
+        {% endif %}
+
+        <li{{ item.attributes.addClass(item_classes) }}>
+          {% if item.is_expanded and item.below %}
+            {# Dropdown toggle #}
+            <a href="{{ item.url }}"
+               class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               aria-expanded="false"
+               {{ item.in_active_trail ? 'aria-current="page"' }}>
+              {{ item.title }}
+            </a>
+            {{ _self.menu_links(item.below, depth + 1) }}
+          {% else %}
+            <a href="{{ item.url }}"
+               class="{{ depth == 0 ? 'nav-link' : 'dropdown-item' }}"
+               {{ item.in_active_trail ? 'aria-current="page"' }}>
+              {{ item.title }}
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{{ _self.menu_links(items, 0) }}

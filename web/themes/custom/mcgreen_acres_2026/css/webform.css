@@ -1,0 +1,39 @@
+/*
+ * McGreen Acres — Webform Bootstrap 5 overrides.
+ * Loaded only on pages that include a Drupal webform.
+ */
+
+/* Webform generates some extra wrappers — tighten spacing */
+.webform-submission-form .form-item { margin-bottom: 1rem; }
+.webform-submission-form .form-item label {
+  font-family: 'Arial', sans-serif;
+  font-size: .875rem;
+  font-weight: 600;
+  color: #3d3528;
+  margin-bottom: .375rem;
+}
+
+/* The honeypot / hidden fields */
+.webform-submission-form .hidden { display: none !important; }
+
+/* Submit button */
+.webform-submission-form [data-drupal-selector$="submit"],
+.webform-submission-form .webform-button--submit {
+  background: #3a6b35;
+  border-color: #3a6b35;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  letter-spacing: .04em;
+  padding: .75rem 1.75rem;
+}
+.webform-submission-form [data-drupal-selector$="submit"]:hover {
+  background: #1a2e1a;
+  border-color: #1a2e1a;
+}
+
+/* Lead magnet form — compact inline variant */
+.mca-lead-magnet .webform-submission-form .form-item {
+  margin-bottom: 0;
+}
+.mca-lead-magnet .webform-submission-form .row { gap: .625rem; }

@@ -1,0 +1,31 @@
+uuid: 21b7010a-4443-4b2e-9e70-d35cc76ba224
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_visibility_groups.block_visibility_group.blog
+    - views.view.archive
+  module:
+    - block_visibility_groups
+    - views
+  theme:
+    - mcgreen_acres_2026
+id: mcgreen_acres_2026_views_block__archive_block_1
+theme: mcgreen_acres_2026
+region: sidebar_first
+weight: -10
+provider: null
+plugin: 'views_block:archive-block_1'
+settings:
+  id: 'views_block:archive-block_1'
+  label: Archive
+  label_display: visible
+  provider: views
+  views_label: Archive
+  items_per_page: null
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    context_mapping: {  }
+    block_visibility_group: blog
