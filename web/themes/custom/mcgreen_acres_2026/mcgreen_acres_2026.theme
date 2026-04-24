@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Render\Element;
+
 /**
  * @file
  * McGreen Acres Bootstrap 5 theme hooks and preprocess functions.
@@ -22,9 +24,15 @@ function mcgreen_acres_2026_preprocess_html(&$variables) {
  * so the header can be built without relying on block placement.
  */
 function mcgreen_acres_2026_preprocess_page(&$variables) {
-  $config = \Drupal::config('system.site');
+  $config                    = \Drupal::config('system.site');
   $variables['site_name']   = $config->get('name');
   $variables['site_slogan'] = 'Red Oak, Texas · Family Farm';
+
+  // Attach home-page-specific stylesheet only on the front page.
+  $path_matcher = \Drupal::service('path.matcher');
+  if ($path_matcher->isFrontPage()) {
+    $variables['#attached']['library'][] = 'mcgreen_acres_2026/home';
+  }
 
   // Only override logo_url if theme settings return a real value;
   // otherwise the base theme's value (set earlier in the preprocess chain) stands.
@@ -95,7 +103,7 @@ function mcgreen_acres_2026_form_alter(&$form, &$form_state, $form_id) {
  *   Form element array, passed by reference.
  */
 function _mcgreen_acres_2026_bootstrap_form_classes(array &$elements) {
-  foreach (\Drupal\Core\Render\Element::children($elements) as $key) {
+  foreach (Element::children($elements) as $key) {
     $el = &$elements[$key];
     if (empty($el['#type'])) {
       _mcgreen_acres_2026_bootstrap_form_classes($el);

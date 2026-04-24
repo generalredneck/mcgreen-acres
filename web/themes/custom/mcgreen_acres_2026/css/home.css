@@ -1,0 +1,83 @@
+/*
+ * McGreen Acres — Homepage-specific styles
+ * Loaded only on the front page via the mcgreen_acres_2026/home library.
+ */
+
+/* ─────────────────────────────────────────────
+   HERO (home variant)
+───────────────────────────────────────────── */
+.mca-hero--home { min-height: 560px; padding: 5rem 1.5rem; }
+
+/* ─────────────────────────────────────────────
+   HERO LEAD MAGNET FORM
+───────────────────────────────────────────── */
+.mca-hero-form {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  max-width: 520px;
+  margin: 0 auto;
+  width: 100%;
+}
+.mca-hero-form-label {
+  font-family: var(--mca-font-sans);
+  font-size: .6875rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--mca-tan);
+  margin-bottom: .375rem;
+}
+.mca-hero-form-title { font-size: 1.125rem; color: #fff; margin-bottom: .25rem; }
+.mca-hero-form-sub   { font-family: var(--mca-font-sans); font-size: .8125rem; color: #b0a888; font-style: italic; margin-bottom: 1.125rem; }
+.mca-hero-form-fine  { font-family: var(--mca-font-sans); font-size: .6875rem; color: #908870; margin-top: .625rem; }
+
+/* ─────────────────────────────────────────────
+   DIFFERENTIATOR STRIP
+───────────────────────────────────────────── */
+.mca-diff-strip {
+  background: var(--mca-green-mid);
+  color: #e8dfc8;
+  text-align: center;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--mca-font-sans);
+  font-size: .8125rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.mca-diff-strip .mca-sep { opacity: .45; margin: 0 .75rem; }
+
+/* ─────────────────────────────────────────────
+   DIFFERENTIATORS GRID
+───────────────────────────────────────────── */
+.mca-diff-item {
+  border-top: 3px solid var(--mca-green);
+  padding-top: 1.125rem;
+}
+.mca-diff-item h4 { font-size: 1rem; color: var(--mca-green-dark); margin-bottom: .5rem; }
+.mca-diff-item p  { font-size: .9375rem; line-height: 1.65; color: #5a5040; }
+
+/* ─────────────────────────────────────────────
+   HOW IT WORKS — 3-STEP CARDS
+───────────────────────────────────────────── */
+.mca-hiw-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+.mca-hiw-num {
+  width: 44px;
+  height: 44px;
+  background: var(--mca-green);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mca-font-sans);
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin: 0 auto 1rem;
+}
+.mca-hiw-card h3 { font-size: 1.25rem; color: var(--mca-green-dark); margin-bottom: .625rem; }
+.mca-hiw-card p  { font-size: .9375rem; line-height: 1.65; color: #5a5040; }

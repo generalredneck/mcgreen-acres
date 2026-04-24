@@ -9,6 +9,15 @@ global:
     - core/drupal
     - core/once
 
+# Loaded only on the front page
+home:
+  version: 1.0.0
+  css:
+    theme:
+      css/home.css: {}
+  dependencies:
+    - mcgreen_acres_2026/global
+
 # Loaded only when Admin Toolbar is present
 toolbar-fix:
   version: 1.0.0

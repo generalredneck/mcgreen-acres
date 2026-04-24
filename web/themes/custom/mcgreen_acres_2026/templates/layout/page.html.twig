@@ -138,10 +138,13 @@
 
   {# ═══════════════════════════════════════════
      HIGHLIGHTED MESSAGES
+     Render first, then only output the wrapper if there is actual visible
+     content — status_messages block emits empty HTML when there are no msgs.
   ═══════════════════════════════════════════ #}
-  {% if page.highlighted %}
+  {% set highlighted_content = page.highlighted|render %}
+  {% if highlighted_content|striptags|trim %}
     <div class="container py-3">
-      {{ page.highlighted }}
+      {{ highlighted_content }}
     </div>
   {% endif %}
 
@@ -150,9 +153,10 @@
   ═══════════════════════════════════════════ #}
   <main id="main-content" class="flex-grow-1" tabindex="-1">
 
-    {% if page.help %}
+    {% set help_content = page.help|render %}
+    {% if help_content|striptags|trim %}
       <div class="container py-2">
-        {{ page.help }}
+        {{ help_content }}
       </div>
     {% endif %}
 

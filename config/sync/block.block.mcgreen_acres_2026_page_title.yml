@@ -2,6 +2,9 @@ uuid: cf073411-96cb-462e-bc66-2c5768aaed19
 langcode: en
 status: true
 dependencies:
+  module:
+    - block_visibility_groups
+    - system
   theme:
     - mcgreen_acres_2026
 _core:
@@ -17,4 +20,12 @@ settings:
   label: 'Page title'
   label_display: '0'
   provider: core
-visibility: {  }
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: true
+    pages: '<front>'
