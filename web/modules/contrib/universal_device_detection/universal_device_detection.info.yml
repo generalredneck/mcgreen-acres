@@ -1,0 +1,10 @@
+name: 'Universal Device Detection'
+type: module
+description: 'The Universal Device Detection library will parse any User Agent and detect the browser, operating system, device used (desktop, tablet, mobile, tv, cars, console, etc.), brand and model.'
+core_version_requirement: ^9 || ^10 || ^11
+package: 'Utility'
+
+# Information added by Drupal.org packaging script on 2024-10-15
+version: '2.1.0'
+project: 'universal_device_detection'
+datestamp: 1728989983

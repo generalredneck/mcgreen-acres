@@ -1,0 +1,12 @@
+name: Varbase Bootstrap Paragraphs Text and Image
+description: Text and image paragraph type
+type: module
+core_version_requirement: ~11.3.0
+package: Varbase
+dependencies:
+  - varbase_bootstrap_paragraphs:varbase_bootstrap_paragraphs
+
+# Information added by Drupal.org packaging script on 2025-12-22
+version: '10.1.0'
+project: 'varbase_bootstrap_paragraphs'
+datestamp: 1766403067

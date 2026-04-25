@@ -1,0 +1,13 @@
+name: Commerce Custom Checkout Message
+type: module
+description: 'Provides a custom message panel in the Commerce Checkout Flow'
+package: Commerce
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - commerce:commerce(>=3)
+  - commerce:commerce_checkout
+
+# Information added by Drupal.org packaging script on 2024-08-23
+version: '3.0.0'
+project: 'commerce_custom_checkout_message'
+datestamp: 1724410313

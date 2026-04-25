@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains commerce_email.module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function commerce_email_theme($existing, $type, $theme, $path) {
+  return [
+    'commerce_email' => [
+      'variables' => [
+        'email' => NULL,
+        'body' => NULL,
+        'target_entity' => NULL,
+        'related_entities' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function commerce_email_theme_suggestions_commerce_email(array $variables) {
+  $original = $variables['theme_hook_original'];
+  $email = $variables['email'];
+
+  $suggestions = [];
+  $suggestions[] = $original . '__' . $email->id();
+
+  return $suggestions;
+}
