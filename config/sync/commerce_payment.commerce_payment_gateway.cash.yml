@@ -15,5 +15,12 @@ configuration:
   instructions:
     value: 'Payment will be due at pickup.'
     format: plain_text
-conditions: {  }
+conditions:
+  -
+    plugin: current_user_role
+    configuration:
+      matching_strategy: any
+      roles:
+        - administrator
+        - staff
 conditionOperator: AND
