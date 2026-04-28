@@ -1,0 +1,8 @@
+name: Commerce Receipt on Payment
+type: module
+description: 'Allows sending order receipts when an order is marked as paid rather than (or in addition to) when placed.'
+package: Commerce
+core_version_requirement: ^10 || ^11
+dependencies:
+  - commerce:commerce_order
+  - commerce:commerce_payment

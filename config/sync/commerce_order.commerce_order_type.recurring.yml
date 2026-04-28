@@ -5,6 +5,7 @@ dependencies:
   module:
     - commerce_cart
     - commerce_checkout
+    - commerce_receipt_on_payment
     - commerce_recurring
     - commerce_shipping
 third_party_settings:
@@ -17,6 +18,8 @@ third_party_settings:
     checkout_flow: subscription
   commerce_shipping:
     shipment_type: ''
+  commerce_receipt_on_payment:
+    send_receipt_on_paid: true
 _core:
   default_config_hash: alBtcl93cZUqOuWKBA9ltV1C-XnMEvXgiagdjOkpj2Y
 id: recurring
@@ -24,9 +27,10 @@ label: Recurring
 traits: {  }
 locked: true
 workflow: order_recurring
+showOrderEditLinks: true
 numberPattern: null
 refresh_mode: customer
 refresh_frequency: 300
-sendReceipt: true
+sendReceipt: false
 receiptBcc: mcgreenacres@gmail.com
 receiptSubject: 'Your subscription at McGreen Acres is being renewed! Order #[commerce_order:order_number]'

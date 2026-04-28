@@ -1,0 +1,55 @@
+<?php
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the order type form.
+ *
+ * Adds a "send receipt on paid" checkbox to the Emails section of the order
+ * type form, stored as a third-party setting on the order type config entity.
+ */
+function commerce_receipt_on_payment_form_commerce_order_type_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
+  $order_type = $form_state->getFormObject()->getEntity();
+
+  $send_receipt_on_paid = $order_type->getThirdPartySetting('commerce_receipt_on_payment', 'send_receipt_on_paid', FALSE);
+
+  // Set explicit weights on existing elements so our new checkbox can slot in.
+  $form['emails']['notice']['#weight'] = -10;
+  $form['emails']['sendReceipt']['#weight'] = 0;
+
+  $form['emails']['sendReceiptOnPaid'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Email the customer a receipt when an order is marked as paid'),
+    '#description' => t('When enabled, the receipt is sent on the <em>order paid</em> event rather than on placement. If both checkboxes are checked, only the paid receipt is sent.'),
+    '#default_value' => $send_receipt_on_paid,
+    '#weight' => 1,
+  ];
+
+  // Show the BCC field when either receipt option is active.
+  $form['emails']['receiptBcc']['#weight'] = 2;
+  $form['emails']['receiptBcc']['#states'] = [
+    'visible' => [
+      [':input[name="sendReceipt"]' => ['checked' => TRUE]],
+      ['or'],
+      [':input[name="sendReceiptOnPaid"]' => ['checked' => TRUE]],
+    ],
+  ];
+
+  $form['emails']['receiptSubject']['#weight'] = 3;
+  $form['emails']['receiptSubject_help']['#weight'] = 4;
+
+  $form['#entity_builders'][] = 'commerce_receipt_on_payment_order_type_builder';
+}
+
+/**
+ * Entity builder: saves the third-party setting on the order type.
+ */
+function commerce_receipt_on_payment_order_type_builder($entity_type, EntityInterface $order_type, array &$form, FormStateInterface $form_state) {
+  $order_type->setThirdPartySetting(
+    'commerce_receipt_on_payment',
+    'send_receipt_on_paid',
+    (bool) $form_state->getValue('sendReceiptOnPaid')
+  );
+}
