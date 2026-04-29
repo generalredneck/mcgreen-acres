@@ -51,6 +51,21 @@ class OrderPaidReceiptSubscriber implements EventSubscriberInterface {
       return;
     }
 
+    // Guard against the edge case where ORDER_PAID fires on an order that is
+    // still in draft state (e.g. admin recording a payment before the order is
+    // formally placed). In that situation order_number is not yet set, which
+    // would produce a broken subject like "Order # confirmed".
+    //
+    // The normal checkout paths are safe: on-site gateways place the order
+    // before capturing payment, and off-site gateways are handled by
+    // commerce_payment's OrderPaidSubscriber (priority 0) which places the
+    // order synchronously before our priority -100 listener runs.
+    if (empty($order->getOrderNumber())) {
+      // Mirror what OrderNumberSubscriber does when no number pattern exists:
+      // fall back to the order ID so token replacement produces a valid value.
+      $order->setOrderNumber($order->id());
+    }
+
     $this->orderReceiptMail->send($order, $order->getEmail(), $order_type->getReceiptBcc());
   }
 

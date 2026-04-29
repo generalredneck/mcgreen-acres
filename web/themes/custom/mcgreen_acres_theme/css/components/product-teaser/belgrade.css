@@ -67,6 +67,51 @@
   margin-right: 0.5rem;
 }
 
+.product .product-card__actions {
+  padding: 6px 0 2px;
+  position: relative;
+  z-index: 2;
+}
+.product .product-card__actions .form-actions {
+  margin: 0;
+}
+/* Reset browser-native <input type="submit"> appearance and make the Commerce form button
+   look identical to Bootstrap .btn.btn-primary.btn-sm.w-100 (same pill, padding, color). */
+.product .product-card__actions [data-drupal-selector="edit-submit"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  border: 1px solid #1fa12e;
+  border-radius: 1rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  background-color: #1fa12e;
+  color: #fff;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+.product .product-card__actions [data-drupal-selector="edit-submit"]:hover {
+  background-color: #198a25;
+  border-color: #198a25;
+}
+.product .product-card__actions [data-drupal-selector="edit-submit"].added {
+  background-color: #2d6a4f;
+  border-color: #2d6a4f;
+  color: #fff;
+}
+/* Out-of-stock disabled state — match Bootstrap .btn-secondary[disabled] appearance. */
+.product .product-card__actions [data-drupal-selector="edit-submit"].is-disabled,
+.product .product-card__actions [data-drupal-selector="edit-submit"]:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 @media (max-width: 767px) {
 }
 
