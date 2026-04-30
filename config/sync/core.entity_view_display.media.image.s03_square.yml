@@ -9,8 +9,7 @@ dependencies:
     - media.type.image
     - responsive_image.styles.d03_square
   module:
-    - blazy
-    - ds
+    - responsive_image
 _core:
   default_config_hash: FW59nXisMRYmxeR8nwNIUOGe_pc6XkBSkoy-JYBe_CQ
 id: media.image.s03_square
@@ -19,44 +18,15 @@ bundle: image
 mode: s03_square
 content:
   field_media_image:
-    type: blazy
+    type: responsive_image
     label: hidden
     settings:
-      caption: {  }
-      icon: ''
-      layout: ''
-      view_mode: ''
-      cache: 0
-      current_view_mode: ''
-      skin: ''
-      fx: ''
-      style: ''
-      background: false
-      box_caption: ''
-      box_caption_custom: ''
-      box_media_style: ''
       responsive_image_style: d03_square
-      box_style: ''
-      image_style: ''
-      media_switch: ''
-      ratio: ''
-      thumbnail_style: ''
-      _uri: ''
-      breakpoints: {  }
-      sizes: ''
-      grid_header: ''
-      grid: ''
-      grid_medium: ''
-      grid_small: ''
-    third_party_settings:
-      ds:
-        ft:
-          id: default
-          settings:
-            lb: ''
-            lb-col: false
-            classes: {  }
-    weight: 0
+      image_link: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   created: true

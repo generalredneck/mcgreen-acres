@@ -9,7 +9,6 @@ module:
   antibot: 0
   automated_cron: 0
   better_exposed_filters: 0
-  blazy: 0
   block: 0
   block_class: 0
   block_content: 0
@@ -139,6 +138,7 @@ module:
   options: 0
   page_cache: 0
   paragraphs_edit: 0
+  paragraphs_features: 0
   paragraphs_previewer: 0
   path: 0
   path_alias: 0
@@ -213,6 +213,7 @@ module:
   views: 10
   paragraphs: 11
   varbase_bootstrap_paragraphs: 12
+  paragraphs_ee: 15
   standard: 1000
 theme:
   mcgreen_acres_theme: 0

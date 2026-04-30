@@ -9,7 +9,7 @@ dependencies:
     - media.type.image
     - responsive_image.styles.d01_standard
   module:
-    - blazy
+    - responsive_image
 _core:
   default_config_hash: H2SsozDiQwfBpQlM6x7IoFJYOYAcbylTzwsapZ4CEhc
 id: media.image.s01_standard
@@ -18,37 +18,15 @@ bundle: image
 mode: s01_standard
 content:
   field_media_image:
-    type: blazy
-    label: hidden
+    type: responsive_image
+    label: visually_hidden
     settings:
-      caption: {  }
-      icon: ''
-      layout: ''
-      view_mode: ''
-      cache: 0
-      current_view_mode: ''
-      skin: ''
-      fx: ''
-      style: ''
-      background: false
-      box_caption: ''
-      box_caption_custom: ''
-      box_media_style: ''
       responsive_image_style: d01_standard
-      box_style: ''
-      image_style: ''
-      media_switch: ''
-      ratio: ''
-      thumbnail_style: ''
-      _uri: ''
-      breakpoints: {  }
-      sizes: ''
-      grid_header: ''
-      grid: ''
-      grid_medium: ''
-      grid_small: ''
+      image_link: ''
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
 hidden:
   created: true

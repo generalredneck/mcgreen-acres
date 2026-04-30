@@ -113,6 +113,11 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
     $variables['user_name'] = $user->getDisplayName();
     $variables['user_initials'] = substr($variables['user_name'], 0, 1);
   }
+  // Check if the current page is the front page.
+  if ($variables['is_front']) {
+    // Attach the library for the home page.
+    $variables['#attached']['library'][] = 'mcgreen_acres_theme/home-page';
+  }
 
 }
 

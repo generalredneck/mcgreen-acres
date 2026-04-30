@@ -42,3 +42,9 @@ product-teaser.zoom:
   css:
     theme:
       css/components/product-teaser/zoom.css: {}
+
+# Home Page
+home-page:
+  css:
+    theme:
+      css/home.css: {}

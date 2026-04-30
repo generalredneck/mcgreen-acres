@@ -9,7 +9,9 @@ dependencies:
     - node.type.page
   module:
     - metatag
-    - paragraphs_previewer
+    - paragraphs
+    - paragraphs_ee
+    - paragraphs_features
     - path
     - text
 _core:
@@ -36,23 +38,37 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_content_paragraphs:
-    type: entity_reference_paragraphs_previewer
+    type: paragraphs
     weight: 6
     region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: bp_simple
+      edit_mode: closed
       closed_mode: summary
       autocollapse: none
       closed_mode_threshold: 0
+      add_mode: modal
+      form_display_mode: default
+      default_paragraph_type: bp_simple
       features:
-        duplicate: duplicate
+        add_above: '0'
         collapse_edit_all: collapse_edit_all
-    third_party_settings: {  }
+        convert: '0'
+        duplicate: duplicate
+    third_party_settings:
+      paragraphs_ee:
+        paragraphs_ee:
+          dialog_off_canvas: false
+          dialog_style: tiles
+          drag_drop: false
+          sidebar_disabled: false
+      paragraphs_features:
+        add_in_between: true
+        add_in_between_link_count: 0
+        delete_confirmation: false
+        show_drag_and_drop: true
+        show_collapse_all: true
   field_meta_tags:
     type: metatag_firehose
     weight: 51
