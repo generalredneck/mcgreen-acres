@@ -6,7 +6,7 @@ id: herd_share_confirmation
 label: 'Herd Share Confirmation'
 from: '[site:mail]'
 toType: email
-to: '[commerce_order:uid:entity:mail]'
+to: '[commerce_order:mail]'
 toRole: ''
 cc: ''
 bcc: '[site:mail]'
@@ -29,6 +29,6 @@ conditions:
           product: 8d66f141-4b15-4413-84fd-d84cd1754cf6
 conditionOperator: AND
 queue: false
-logToEntity: false
+logToEntity: true
 event: order_paid
 targetEntityType: commerce_order
