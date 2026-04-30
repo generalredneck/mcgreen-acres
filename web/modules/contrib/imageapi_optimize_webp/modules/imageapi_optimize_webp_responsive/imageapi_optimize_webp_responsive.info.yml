@@ -1,0 +1,12 @@
+name: 'ImageAPI Optimize WebP Responsive'
+type: module
+description: 'Implements WebP derivatives in core Responsive Images'
+core_version_requirement: ^10.3 || ^11
+package: 'Image Optimize'
+dependencies:
+  - imageapi_optimize_webp:imageapi_optimize_webp
+
+# Information added by Drupal.org packaging script on 2025-02-24
+version: '3.0.0-alpha2'
+project: 'imageapi_optimize_webp'
+datestamp: 1740427453

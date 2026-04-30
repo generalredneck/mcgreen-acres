@@ -1,0 +1,37 @@
+services:
+  commerce_stripe.order_events_subscriber:
+    class: Drupal\commerce_stripe\EventSubscriber\OrderPaymentIntentSubscriber
+    arguments:
+      - '@commerce_price.minor_units_converter'
+      - '@logger.channel.commerce_stripe'
+      - '@entity_type.manager'
+      - '@commerce_order.order_assignment'
+      - '@password_generator'
+    tags:
+      - { name: needs_destruction }
+      - { name: event_subscriber }
+
+  commerce_stripe.order_subscriber:
+    class: Drupal\commerce_stripe\EventSubscriber\OrderSubscriber
+    arguments: ['@logger.channel.commerce_stripe', '@entity_type.manager', '@module_handler']
+    tags:
+      - { name: event_subscriber }
+
+  logger.channel.commerce_stripe:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['commerce_stripe']
+
+  commerce_stripe.express_checkout_buttons_builder:
+    class: Drupal\commerce_stripe\ExpressCheckoutButtonsBuilder
+    arguments:
+      - '@commerce_price.minor_units_converter'
+      - '@commerce_stripe.express_checkout_helper'
+    calls:
+      - ['setShippingOrderManager', ['@?commerce_shipping.order_manager']]
+
+  commerce_stripe.express_checkout_helper:
+    class: Drupal\commerce_stripe\ExpressCheckoutHelper
+    arguments:
+      - '@commerce_price.minor_units_converter'
+      - '@commerce_order.order_total_summary'

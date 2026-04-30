@@ -1,0 +1,6 @@
+webform_ip_geo.settings_form:
+  title: 'Webform IP Geo'
+  route_name: webform_ip_geo.settings_form
+  description: 'Settings for the Webform IP Geo provider.'
+  parent: system.admin_config_services
+  weight: 99

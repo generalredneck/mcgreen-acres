@@ -1,0 +1,21 @@
+entity.commerce_invoice.collection:
+  route_name: entity.commerce_invoice.collection
+  base_route: entity.commerce_invoice.collection
+  title: 'Invoices'
+
+entity.commerce_order.invoices:
+  route_name: entity.commerce_order.invoices
+  base_route: entity.commerce_order.canonical
+  title: 'Invoices'
+  weight: 15
+
+entity.commerce_order.credit_memos:
+  route_name: entity.commerce_order.credit_memos
+  base_route: entity.commerce_order.canonical
+  title: 'Credit memos'
+  weight: 15
+
+entity.commerce_invoice_item.bundle_settings:
+  route_name: entity.commerce_invoice_item.bundle_settings
+  base_route: entity.commerce_invoice_item.bundle_settings
+  title: 'Settings'

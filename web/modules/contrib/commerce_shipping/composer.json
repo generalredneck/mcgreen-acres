@@ -1,0 +1,13 @@
+{
+    "name": "drupal/commerce_shipping",
+    "type": "drupal-module",
+    "description": "Provides shipping functionality for Commerce.",
+    "homepage": "https://drupal.org/project/commerce_shipping",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^10.3 || ^11",
+        "drupal/commerce": "^3.3.0",
+        "drupal/physical": "^1.0"
+    },
+    "minimum-stability": "dev"
+}

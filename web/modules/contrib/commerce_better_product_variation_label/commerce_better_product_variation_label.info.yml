@@ -1,0 +1,12 @@
+name: 'Commerce Better Product Variation Label'
+type: module
+description: 'Provides improvements for Drupal Commerce Product Variation labels / titles.'
+package: Commerce
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - commerce:commerce_product
+
+# Information added by Drupal.org packaging script on 2024-12-03
+version: '1.0.0-beta2'
+project: 'commerce_better_product_variation_label'
+datestamp: 1733225779
