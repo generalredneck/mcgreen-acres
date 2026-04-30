@@ -1,0 +1,6 @@
+services:
+  commerce_receipt_on_payment.order_paid_receipt_subscriber:
+    class: Drupal\commerce_receipt_on_payment\EventSubscriber\OrderPaidReceiptSubscriber
+    arguments: ['@entity_type.manager', '@commerce_order.order_receipt_mail']
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,73 @@
+<?php
+
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_install().
+ *
+ * Installs the manual_payment_gateway field storage on commerce_subscription.
+ * The field definition is built inline so it is available before Drupal's
+ * entity-field-manager cache is warm.
+ */
+function mcgreen_subscription_payment_install() {
+  $definition = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Manual payment gateway'))
+    ->setDescription(t('The manual payment gateway (e.g. cash, check) for this subscription.'))
+    ->setSetting('target_type', 'commerce_payment_gateway')
+    ->setSetting('handler', 'default')
+    ->setDisplayOptions('form', [
+      'type' => 'options_select',
+      'weight' => 2,
+    ])
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition(
+    'manual_payment_gateway',
+    'commerce_subscription',
+    'mcgreen_subscription_payment',
+    $definition
+  );
+}
+
+/**
+ * Installs manual_payment_gateway on existing sites where hook_install already ran.
+ */
+function mcgreen_subscription_payment_update_9001() {
+  $schema = \Drupal::database()->schema();
+  if ($schema->fieldExists('commerce_subscription', 'manual_payment_gateway__target_id')) {
+    return;
+  }
+
+  $definition = \Drupal\Core\Field\BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Manual payment gateway'))
+    ->setDescription(t('The manual payment gateway (e.g. cash, check) for this subscription.'))
+    ->setSetting('target_type', 'commerce_payment_gateway')
+    ->setSetting('handler', 'default')
+    ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 2])
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition(
+    'manual_payment_gateway',
+    'commerce_subscription',
+    'mcgreen_subscription_payment',
+    $definition
+  );
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Removes the manual_payment_gateway field storage from commerce_subscription.
+ */
+function mcgreen_subscription_payment_uninstall() {
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+  $definition = $update_manager->getFieldStorageDefinition(
+    'manual_payment_gateway',
+    'commerce_subscription'
+  );
+  if ($definition) {
+    $update_manager->uninstallFieldStorageDefinition($definition);
+  }
+}

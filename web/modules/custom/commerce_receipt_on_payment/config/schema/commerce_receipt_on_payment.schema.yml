@@ -1,0 +1,7 @@
+commerce_order.commerce_order_type.*.third_party.commerce_receipt_on_payment:
+  type: mapping
+  label: 'Commerce Receipt on Payment settings'
+  mapping:
+    send_receipt_on_paid:
+      type: boolean
+      label: 'Email the customer a receipt when an order is marked as paid'

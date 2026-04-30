@@ -1,7 +1,7 @@
 .product-card {
   position: relative;
   margin: 22px 0;
-  padding: 0 0 140px 0;
+  padding: 0 0 192px 0;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
   transition: all 0.3s linear 0s;
 }
@@ -26,7 +26,7 @@
   background: #fff;
   width: 100%;
   padding: 28px;
-  min-height: 140px;
+  min-height: 192px;
 }
 .product-card .card-body a {
   color: currentcolor;
@@ -57,6 +57,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.product-card .product-card__actions {
+  margin-top: 10px;
+}
+.product-card .product-card__actions .form-actions {
+  margin: 0;
+}
+.product-card .product-card__actions [data-drupal-selector="edit-submit"] {
+  width: 100%;
+}
+.product-card .product-card__actions [data-drupal-selector="edit-submit"].added {
+  background-color: #2d6a4f;
+  border-color: #2d6a4f;
+  color: #fff;
+}
+
 .product-card:hover {
   box-shadow: 0 1px 35px 0 rgba(0, 0, 0, 0.3);
 }

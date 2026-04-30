@@ -1,0 +1,96 @@
+<?php
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Adds a manual_payment_gateway reference to subscriptions so that cash/check
+ * subscriptions can store which manual gateway they belong to without needing
+ * a stored payment method entity.
+ */
+function mcgreen_subscription_payment_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() !== 'commerce_subscription') {
+    return [];
+  }
+
+  $fields['manual_payment_gateway'] = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Manual payment gateway'))
+    ->setDescription(t('The manual payment gateway (e.g. cash, check) for this subscription. Used when no stored payment method is available.'))
+    ->setSetting('target_type', 'commerce_payment_gateway')
+    ->setSetting('handler', 'default')
+    ->setDisplayOptions('form', [
+      'type' => 'options_select',
+      'weight' => 2,
+    ])
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  return $fields;
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Filters the manual_payment_gateway select to only show manual gateways,
+ * and hides it on the customer-facing subscription form.
+ */
+function mcgreen_subscription_payment_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $form_object = $form_state->getFormObject();
+  if (!($form_object instanceof \Drupal\Core\Entity\EntityFormInterface)) {
+    return;
+  }
+  $entity = $form_object->getEntity();
+  if ($entity->getEntityTypeId() !== 'commerce_subscription') {
+    return;
+  }
+
+  // Hide this field entirely on the customer-facing form.
+  if ($form_object->getOperation() === 'customer') {
+    if (isset($form['manual_payment_gateway'])) {
+      $form['manual_payment_gateway']['#access'] = FALSE;
+    }
+    return;
+  }
+
+  // Filter the options widget to only include active manual gateways.
+  if (!isset($form['manual_payment_gateway']['widget'])) {
+    return;
+  }
+
+  $gateway_storage = \Drupal::entityTypeManager()->getStorage('commerce_payment_gateway');
+  $all_gateways = $gateway_storage->loadByProperties(['status' => TRUE]);
+
+  $manual_ids = [];
+  foreach ($all_gateways as $gateway) {
+    if ($gateway->getPlugin() instanceof \Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\ManualPaymentGatewayInterface) {
+      $manual_ids[$gateway->id()] = TRUE;
+    }
+  }
+
+  $widget = &$form['manual_payment_gateway']['widget'];
+  if (isset($widget['#options'])) {
+    foreach (array_keys($widget['#options']) as $key) {
+      if ($key !== '_none' && !isset($manual_ids[$key])) {
+        unset($widget['#options'][$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function mcgreen_subscription_payment_theme() {
+  return [
+    'commerce_recurring_payment_due' => [
+      'variables' => [
+        'order_entity' => NULL,
+        'totals' => [],
+        'billing_information' => NULL,
+      ],
+    ],
+  ];
+}

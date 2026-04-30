@@ -37,6 +37,10 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
  *
  */
 function mcgreen_acres_store_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (str_starts_with($form_id, 'commerce_order_item_add_to_cart_form') && $form_state->get('view_mode') === 'teaser') {
+    $form['quantity']['#access'] = FALSE;
+  }
+
   if ($form_id === 'commerce_subscription_product_variation_cancel_form') {
     if (isset($form['cancel_option']['#options'])) {
       // Define the cancellation policy text.
@@ -101,6 +105,52 @@ function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_commerce_product__teaser().
+ */
+function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
+  /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
+  $product = $variables['product_entity'];
+  if (!$product) {
+    return;
+  }
+
+  $variations = $product->getVariations();
+  $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  if (count($variations) === 1 && $product->bundle() === 'physical') {
+    $variables['add_to_cart_form'] = [
+      '#lazy_builder' => [
+        'commerce_product.lazy_builders:addToCartForm', [
+          $product->id(),
+          'teaser',
+          TRUE,
+          $langcode,
+        ],
+      ],
+      '#create_placeholder' => TRUE,
+    ];
+  }
+  else {
+    $stock_manager = \Drupal::service('commerce_stock.service_manager');
+    $any_in_stock = FALSE;
+    foreach ($variations as $variation) {
+      if ($stock_manager->getStockLevel($variation) > 0) {
+        $any_in_stock = TRUE;
+        break;
+      }
+    }
+
+    if ($any_in_stock) {
+      $variables['choose_options_url'] = $product->toUrl();
+    }
+    else {
+      $variables['all_out_of_stock'] = TRUE;
+    }
+  }
+}
+
 
 function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
   if (!empty($definitions['customer_comments'])) {

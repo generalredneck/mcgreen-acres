@@ -51,4 +51,15 @@
     <a href="{{ product_url }}" class="stretched-link"></a>
     {{- product|without('title', 'variation_attributes', 'images', 'variation_images') -}}
   </div>
+  {% if add_to_cart_form or choose_options_url or all_out_of_stock %}
+    <div class="product-card__actions position-relative">
+      {% if add_to_cart_form %}
+        {{ add_to_cart_form }}
+      {% elseif choose_options_url %}
+        <a href="{{ choose_options_url }}" class="btn btn-outline-primary btn-sm w-100">{{ 'Choose Options'|t }}</a>
+      {% elseif all_out_of_stock %}
+        <button class="btn btn-secondary btn-sm w-100" disabled>{{ 'Out of Stock'|t }}</button>
+      {% endif %}
+    </div>
+  {% endif %}
 </article>

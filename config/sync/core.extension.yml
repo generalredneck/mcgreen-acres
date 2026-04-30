@@ -38,6 +38,7 @@ module:
   commerce_profile_pane: 0
   commerce_promotion: 0
   commerce_prorater_stepped_proportional: 0
+  commerce_receipt_on_payment: 0
   commerce_recurring: 0
   commerce_reports: 0
   commerce_shipping: 0
@@ -117,6 +118,7 @@ module:
   maxlength: 0
   mcgreen_acres_custom: 0
   mcgreen_acres_store: 0
+  mcgreen_subscription_payment: 0
   media: 0
   media_bulk_upload: 0
   media_bulk_upload_dropzonejs: 0
