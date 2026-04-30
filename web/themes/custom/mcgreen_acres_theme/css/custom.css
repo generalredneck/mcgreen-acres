@@ -911,9 +911,9 @@ th.views-field-remove-button {
 
 }
 
-.blazy--field-media-image--large img {
+.field-media-image img {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 .g-0, .no-gutters,
