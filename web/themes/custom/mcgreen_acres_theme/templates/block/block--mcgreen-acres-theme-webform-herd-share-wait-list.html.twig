@@ -26,6 +26,15 @@
  * @see template_preprocess_block()
  */
 #}
+
+{#
+How to reopen the herd share program:
+ 1. Change mcgreen_acres_theme_preprocess_node() to use the mcgreen_acres_theme_theherdshareisopen block for the cta.
+ 2. Change the links on /herd-share to point to the herd share program instead of the wait list.
+ 3. Republish the variation of the herd share product in the store
+ 4. Change the content of the herd share product to remove the Join the wait list cta.
+ 5. Do what ever needs to be done make the product not show out of stock.
+#}
 <div class="alert alert-warning text-center" role="alert">
   <p class='h3'>Our herd share program is currently closed for a dry period.</p>
   <p>If you want to learn more about dry periods, check out the <a href="/herd-share/dry-period-faq">Herd Share Dry Period FAQ</a>. Feel free to join the wait-list and we will contact you when the herd share reopens</p>
