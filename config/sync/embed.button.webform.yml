@@ -1,0 +1,23 @@
+uuid: bc66c8b5-1645-477b-b383-b01304dad6bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_embed
+    - webform
+label: Webform
+id: webform
+type_id: entity
+type_settings:
+  entity_type: webform
+  bundles: {  }
+  display_plugins: {  }
+  entity_browser: ''
+  entity_browser_settings:
+    display_review: false
+  inline_entity_form: false
+  inline_entity_form_settings:
+    entity_form_display: default
+    display_review: false
+icon: {  }
+icon_uuid: null

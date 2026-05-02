@@ -1,35 +1,54 @@
 {#
 /**
  * @file
- * Default theme implementation for a webform submission form.
+ * Template for the honey newsletter webform — renders a trigger button and
+ * a modal dialog containing the form. On successful Ajax submission the
+ * modal is closed automatically via the honeyNewsletterModal Drupal behavior.
  *
  * Available variables:
  * - form: The webform submission form.
- *
- * @ingroup themeable
  */
 #}
+
 <div class="container">
-  <div class="row">
-    <div id="mc_embed_shell" class="col-md-12">
-      <div id='newsletter' class="clv_newsletter_wrapper">
-        <div class="newsletter_text">
-          <h2>Download the free guide to Honey &amp; Seasonal Wellness</h2>
-        </div>
-        <div class="newsletter_field mc-field-group">
-          <h3>A practical guide for using honey in keeping families healthy.</h3>
-          <p>Sign up and also receive news and special offers from McGreen Acres.</p>
+  <div class="row g-4 g-lg-5 align-items-center">
+    <div class="col text-center">
+      <h2 class="mca-hero-form-title">Download The Honey &amp; Seasonal Wellness Guide</h2>
+      <p class="mca-hero-form-sub font-italic">The Honey & Seasonal Wellness Guide: A practical guide for using honey in keeping your family healthy.</p>
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#honeyNewsletterModal">
+        Get Your Free Honey Guide
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="honeyNewsletterModal" tabindex="-1" role="dialog" aria-labelledby="honeyNewsletterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pt-0">
+        <div id="newsletter" class="clv_newsletter_wrapper">
+          <div class="newsletter_text">
+            <h2>Download the free guide to Honey &amp; Seasonal Wellness</h2>
+          </div>
+          <div class="newsletter_field mc-field-group">
+            <h3>A practical guide for using honey in keeping families healthy.</h3>
+            <p>Sign up and also receive news and special offers from McGreen Acres.</p>
             <div class="newsletter_field_block">
-            {{ form }}
+              {{ form }}
             </div>
-          <div id="mce-responses" class="clear foot">
-            <div class="response alert alert-danger" id="mce-error-response" style="display: none;"></div>
-            <div class="response alert alert-success" id="mce-success-response" style="display: none;"></div>
+            <div id="mce-responses" class="clear foot">
+              <div class="response alert alert-danger" id="mce-error-response" style="display: none;"></div>
+              <div class="response alert alert-success" id="mce-success-response" style="display: none;"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<br/>
-<br/>

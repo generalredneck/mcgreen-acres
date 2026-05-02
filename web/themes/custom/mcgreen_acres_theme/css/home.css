@@ -241,7 +241,7 @@ DIFFERENTIATOR STRIP
 /* ─────────────────────────────────────────────
    13. LEAD MAGNET / EMAIL CAPTURE
 ───────────────────────────────────────────── */
-.mca-lead-magnet { background: var(--mca-green-mid); color: #e8dfc8; }
+.mca-lead-magnet { color: #e8dfc8; }
 .mca-lead-magnet h2 { color: #fff; }
 .mca-lead-magnet .mca-lm-sub {
   font-family: var(--mca-font-sans);

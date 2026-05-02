@@ -1110,4 +1110,21 @@ $(window).on('load', function(){
 	};
 
 
+  // Close the honey newsletter modal after successful Ajax submission.
+  Drupal.behaviors.honeyNewsletterModal = {
+    attach(context, settings) {
+      once('honeyNewsletterModal', '#honeyNewsletterModal', context).forEach((modalEl) => {
+        const observer = new MutationObserver(function () {
+          if (modalEl.querySelector('.webform-confirmation')) {
+            observer.disconnect();
+            setTimeout(function () {
+              $(modalEl).modal('hide');
+            }, 2000);
+          }
+        });
+        observer.observe(modalEl, { childList: true, subtree: true });
+      });
+    },
+  };
+
 })(Drupal, drupalSettings);
