@@ -17,10 +17,7 @@ categories: {  }
 elements: |-
   markup:
     '#type': webform_markup
-    '#markup': |-
-      <h2><strong>Join the wait list for the herd share!</strong></h2>
-
-      <p>We will contact people on a first come first serve basis.</p>
+    '#markup': '<h2><strong>Join the wait list for the herd share!</strong></h2><p>We will contact you when the herd share reopens.</p>'
   fname:
     '#title': 'First Name'
     '#type': textfield
@@ -296,4 +293,42 @@ handlers:
       interest_groups: {  }
       control: ''
       tags: HerdShareWaitList
+  email_1:
+    id: email
+    handler_id: email_1
+    label: 'Response Email'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:email:raw]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: "You're on the McGreen Acres Herd Share Waitlist."
+      body: '<p>Hi [webform_submission:values:fname],</p><p>Thank you for your interest in our herd share program. We''ve added you to our waitlist.</p><p>Both of our cows are entering their natural dry period before calving, so we have temporarily closed enrollment. We expect the dry period to last approximately 2-3 months beginning around June 1. Once the herd freshens and we evaluate production, we will reach out to the waitlist before reopening enrollment.</p><p>Re-entry is subject to availability and current share pricing at the time of reopening. If you have questions in the meantime, our <a href="https://mcgreenacres.com/herd-share/dry-period-faq">dry period FAQ</a> covers the details.</p><p>We appreciate your interest and look forward to connecting with you when shares are available.</p><p>Rebecca<br>McGreen Acres<br>mcgreenacres.com</p>'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {  }
+      debug: false
 variants: {  }
