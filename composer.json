@@ -15,12 +15,17 @@
             "url": "https://packages.drupal.org/8",
             "exclude": [
                 "drupal/bootstrap_basic_image_gallery",
-                "drupal/commerce_timeslots"
+                "drupal/commerce_timeslots",
+                "drupal/visitors"
             ]
         },
         {
             "type": "vcs",
             "url": "https://git.drupalcode.org/issue/bootstrap_basic_image_gallery-3429041.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://git.drupalcode.org/issue/visitors-3589175.git"
         },
         {
             "type": "package",
@@ -144,6 +149,7 @@
         "drupal/user_csv_import": "^2.0",
         "drupal/varbase_bootstrap_paragraphs": "^10.0.9",
         "drupal/views_data_export": "^1.8",
+        "drupal/visitors": "3589175-support-geoip2geoip23-dev",
         "drupal/webform": "^6.3@beta",
         "drupal/webform_ip_geo": "^1.0",
         "drupal/webform_mailchimp": "^5.11",

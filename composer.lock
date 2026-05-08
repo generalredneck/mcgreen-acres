@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc0912b64c7330138756bc913901213d",
+    "content-hash": "c43c62f7b0e748daffaf99ccde20bdba",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2709,6 +2709,83 @@
                 "issues": "https://www.drupal.org/project/issues/bootstrap_basic_image_gallery"
             },
             "time": "2024-03-16T16:51:08+00:00"
+        },
+        {
+            "name": "drupal/charts",
+            "version": "5.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/charts.git",
+                "reference": "5.2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/charts-5.2.0.zip",
+                "reference": "5.2.0",
+                "shasum": "6c51d85039407a6e68733f8068c3af86d97f460e"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "5.2.0",
+                    "datestamp": "1775594157",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Cothran (andileco)",
+                    "homepage": "https://www.drupal.org/u/andileco",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Nia Kathoni (nikathone)",
+                    "homepage": "https://www.drupal.org/u/nikathone",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Nate Lampton (quicksketch)",
+                    "homepage": "https://www.drupal.org/u/quicksketch",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "brmassa",
+                    "homepage": "https://www.drupal.org/u/brmassa",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Rafal W (kenorb)",
+                    "homepage": "https://www.drupal.org/u/kenorb",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Pierre Vriens (pierrevriens)",
+                    "homepage": "https://www.drupal.org/u/pierrevriens",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Majali (rashad612)",
+                    "homepage": "https://www.drupal.org/u/rashad612",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A charting API for Drupal that provides chart elements and integration with Views",
+            "homepage": "https://drupal.org/project/charts",
+            "support": {
+                "source": "https://git.drupalcode.org/project/charts",
+                "issues": "https://www.drupal.org/project/issues/charts?version=all_5.1.*",
+                "docs": "https://www.drupal.org/docs/contributed-modules/charts"
+            }
         },
         {
             "name": "drupal/checklistapi",
@@ -11755,6 +11832,52 @@
             }
         },
         {
+            "name": "drupal/visitors",
+            "version": "dev-3589175-support-geoip2geoip23",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/issue/visitors-3589175.git",
+                "reference": "3a33a0aa13652a474f84b9ec4af5568854fee770"
+            },
+            "require": {
+                "drupal/charts": "^5",
+                "drupal/core": "^10 || ^11",
+                "geoip2/geoip2": "^3",
+                "matomo/device-detector": "^6.1"
+            },
+            "require-dev": {
+                "drupal/statistics": "~1",
+                "drush/drush": "^12 || ^13"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drush": {
+                    "services": {
+                        "drush.services.yml": ">=9"
+                    }
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Steven Ayers (bluegeek9)",
+                    "homepage": "https://www.drupal.org/u/bluegeek9",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Visitors is a native drupal web analytics software.",
+            "homepage": "https://drupal.org/project/visitors",
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/visitors?version=8.x",
+                "source": "https://git.drupalcode.org/project/visitors",
+                "docs": "https://www.drupal.org/docs/8/modules/visitors",
+                "forum": "https://drupal.stackexchange.com/questions/tagged/visitors"
+            },
+            "time": "2026-05-08T14:36:24+00:00"
+        },
+        {
             "name": "drupal/webform",
             "version": "6.3.0-beta8",
             "source": {
@@ -20073,6 +20196,7 @@
         "drupal/realname": 10,
         "drupal/simple_block": 10,
         "drupal/simplenews_stats": 20,
+        "drupal/visitors": 20,
         "drupal/webform": 10,
         "fourkitchens/pots": 20
     },

@@ -15,6 +15,8 @@ module:
   block_visibility_groups: 0
   bootstrap_basic_image_gallery: 0
   breakpoint: 0
+  charts: 0
+  charts_chartjs: 0
   checklistapi: 0
   ckeditor5: 0
   commerce: 0
@@ -194,6 +196,8 @@ module:
   views_infinite_scroll: 0
   views_ui: 0
   viewsreference: 0
+  visitors: 0
+  visitors_geoip: 0
   webform: 0
   webform_attachment: 0
   webform_ip_geo: 0
