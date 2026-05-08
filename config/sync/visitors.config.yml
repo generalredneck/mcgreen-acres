@@ -1,7 +1,7 @@
 _core:
   default_config_hash: VHTER_ocQrRFozHfzRpf_-JHU99IFrgn_8Pq57idxZ4
 flush_log_timer: 0
-bot_retention_log: 0
+bot_retention_log: 604800
 items_per_page: 10
 theme: admin
 disable_tracking: false
