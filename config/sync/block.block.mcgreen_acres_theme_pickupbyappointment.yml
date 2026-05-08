@@ -13,7 +13,7 @@ dependencies:
 id: mcgreen_acres_theme_pickupbyappointment
 theme: mcgreen_acres_theme
 region: content
-weight: -13
+weight: -7
 provider: null
 plugin: 'simple_block:pick_up_by_appointment'
 settings:

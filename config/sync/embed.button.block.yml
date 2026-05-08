@@ -1,0 +1,25 @@
+uuid: 0a43cecd-b157-4e9d-aaf5-adddcac44b95
+langcode: en
+status: true
+dependencies:
+  module:
+    - block
+    - entity_embed
+label: block
+id: block
+type_id: entity
+type_settings:
+  entity_type: block
+  bundles: {  }
+  display_plugins: {  }
+  entity_browser: ''
+  entity_browser_settings:
+    display_review: false
+  inline_entity_form: false
+  inline_entity_form_settings:
+    entity_form_display: default
+    display_review: false
+icon:
+  uri: 'public://embed_buttons/block-svgrepo-com.svg'
+  data: PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCA2NCA2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiPjxwb2x5Z29uIHBvaW50cz0iOCAyMCA4IDQ0IDMyIDU2IDU2IDQ0IDU2IDIwIDMyIDggOCAyMCIvPjxwb2x5bGluZSBwb2ludHM9IjU2IDIwIDMyIDMyIDggMjAiLz48bGluZSB4MT0iMzIiIHkxPSIzMiIgeDI9IjMyIiB5Mj0iNTYiLz48L3N2Zz4=
+icon_uuid: null

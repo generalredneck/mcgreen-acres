@@ -12,7 +12,7 @@ dependencies:
 id: subscribe
 theme: mcgreen_acres_theme
 region: content
-weight: -5
+weight: -6
 provider: null
 plugin: 'simple_block:newsletter_footer'
 settings:

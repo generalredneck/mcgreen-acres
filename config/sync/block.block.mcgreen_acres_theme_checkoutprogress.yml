@@ -11,7 +11,7 @@ dependencies:
 id: mcgreen_acres_theme_checkoutprogress
 theme: mcgreen_acres_theme
 region: content
-weight: -10
+weight: -11
 provider: null
 plugin: commerce_checkout_progress
 settings:

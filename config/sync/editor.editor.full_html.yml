@@ -26,6 +26,7 @@ settings:
       - blockQuote
       - media
       - webform
+      - block
       - insertTable
       - horizontalLine
       - '|'
