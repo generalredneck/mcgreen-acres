@@ -12,7 +12,7 @@ services:
       - apt-get update && apt-get install -y libfaketime # Installs libfaketime
     environment:
       LD_PRELOAD: /usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 # Preloads the library
-      FAKETIME: "@2026-05-02 09:00:00" # Sets the faked time and starts the clock
+      #FAKETIME: "@2026-05-02 09:00:00" # Sets the faked time and starts the clock
   mail:
     type: mailpit
     mailFrom:
