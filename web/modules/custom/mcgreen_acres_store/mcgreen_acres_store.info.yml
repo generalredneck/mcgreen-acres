@@ -5,9 +5,12 @@ package: McGreen Acres
 core_version_requirement: ^10 || ^11
 dependencies:
   - default_content:default_content
+  - commerce_checkout:commerce_checkout
+  - commerce_fee:commerce_fee
 default_content:
   commerce_fee:
     - d123b32d-37a8-4cca-a0d0-0a655db3c5c6
+    - ef76db0f-cf33-48f6-8ef2-b6b66cfe132b
   commerce_product:
     - 13a07289-7e1f-4384-a6cc-aa6a10da1980
     - 8d66f141-4b15-4413-84fd-d84cd1754cf6

@@ -15,6 +15,7 @@ dependencies:
     - custom_commerce_login_pane
     - facebook_pixel_commerce
     - mcgreen_acres_store
+    - commerce_fee
 _core:
   default_config_hash: mj-wWv7nj79DC7uw5I63mZ3ch0PNp4hyonJyhuEwKDc
 label: Default
@@ -62,13 +63,18 @@ configuration:
       wrapper_element: container
     commerce_tip_checkout_pane:
       display_label: null
-      step: order_information
+      step: _disabled
       weight: 5
       wrapper_element: fieldset
       tip_description:
         value: ''
         format: plain_text
       tip_options: 'none|None,other|Other'
+    credit_card_fee:
+      display_label: null
+      step: order_information
+      weight: 5
+      wrapper_element: container
     review:
       display_label: null
       step: review

@@ -1,0 +1,25 @@
+uuid: 4c21329a-974c-473a-b146-14965f458396
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - field.storage.commerce_order.field_cover_stripe_fees
+  module:
+    - commerce_order
+id: commerce_order.default.field_cover_stripe_fees
+field_name: field_cover_stripe_fees
+entity_type: commerce_order
+bundle: default
+label: 'Cover Stripe fees'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
