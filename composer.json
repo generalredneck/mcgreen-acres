@@ -125,6 +125,7 @@
         "drupal/mailsystem": "^4.5",
         "drupal/menu_block": "^1.11",
         "drupal/ms_clarity": "^2.0",
+        "drupal/optimize_database_tables": "^1.2",
         "drupal/paragraphs": "^1.20",
         "drupal/paragraphs_ee": "^10.0",
         "drupal/pathauto": "^1.12",
