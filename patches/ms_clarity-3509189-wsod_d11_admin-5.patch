@@ -1,0 +1,106 @@
+diff --git a/src/Form/MicrosoftClarityAdminSettingsForm.php b/src/Form/MicrosoftClarityAdminSettingsForm.php
+index 8e8c00e98af748787966a0928e85a2fb8656e826..5dd08432eeb6ddcc99b0e47197c57cc2b4f4ffb2 100755
+--- a/src/Form/MicrosoftClarityAdminSettingsForm.php
++++ b/src/Form/MicrosoftClarityAdminSettingsForm.php
+@@ -3,11 +3,14 @@
+ namespace Drupal\ms_clarity\Form;
+ 
+ use Drupal\Core\Config\ConfigFactoryInterface;
++use Drupal\Core\Config\TypedConfigManagerInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Extension\ModuleHandlerInterface;
+ use Drupal\Core\Form\ConfigFormBase;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\ms_clarity\Helpers\MicrosoftClarityAccounts;
++use Drupal\user\RoleInterface;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+@@ -37,16 +40,11 @@ class MicrosoftClarityAdminSettingsForm extends ConfigFormBase {
+   protected $msAccounts;
+ 
+   /**
+-   * The constructor method.
++   * The entity type manager service.
+    *
+-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+-   *   The config factory.
+-   * @param \Drupal\Core\Session\AccountInterface $current_user
+-   *   The current user.
+-   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+-   *   The manages modules.
+-   * @param \Drupal\ms_clarity\Helpers\MicrosoftClarityAccounts $ms_clarity_accounts
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+    */
++  protected $entityTypeManager;
+ 
+   /**
+    * {@inheritdoc}
+@@ -69,18 +67,30 @@ class MicrosoftClarityAdminSettingsForm extends ConfigFormBase {
+    *
+    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+    *   The config factory.
++   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
++   *   The typed config manager.
+    * @param \Drupal\Core\Session\AccountInterface $current_user
+    *   The current user.
+    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+    *   The manages modules.
+    * @param \Drupal\ms_clarity\Helpers\MicrosoftClarityAccounts $ms_clarity_accounts
+    *   The Microsoft Account Manager accounts manager.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
++   *   The entity type manager service.
+    */
+-  public function __construct(ConfigFactoryInterface $config_factory, AccountInterface $current_user, ModuleHandlerInterface $module_handler, MicrosoftClarityAccounts $ms_clarity_accounts) {
+-    parent::__construct($config_factory,$module_handler);
++  public function __construct(
++    ConfigFactoryInterface $config_factory,
++    TypedConfigManagerInterface $typed_config_manager,
++    AccountInterface $current_user,
++    ModuleHandlerInterface $module_handler,
++    MicrosoftClarityAccounts $ms_clarity_accounts,
++    EntityTypeManagerInterface $entity_type_manager,
++  ) {
++    parent::__construct($config_factory, $typed_config_manager);
+     $this->currentUser = $current_user;
+     $this->moduleHandler = $module_handler;
+     $this->msAccounts = $ms_clarity_accounts;
++    $this->entityTypeManager = $entity_type_manager;
+   }
+ 
+   /**
+@@ -88,11 +98,12 @@ class MicrosoftClarityAdminSettingsForm extends ConfigFormBase {
+    */
+   public static function create(ContainerInterface $container) {
+     return new static(
+-      // Load the service required to construct this class.
+       $container->get('config.factory'),
++      $container->get('config.typed'),
+       $container->get('current_user'),
+       $container->get('module_handler'),
+       $container->get('ms_clarity.accounts'),
++      $container->get('entity_type.manager')
+     );
+   }
+ 
+@@ -206,11 +217,18 @@ class MicrosoftClarityAdminSettingsForm extends ConfigFormBase {
+       ],
+       '#default_value' => $config->get('visibility.user_role_mode') ? $config->get('visibility.user_role_mode') : 0,
+     ];
++
++    // Get the available roles.
++    $roles = $this->entityTypeManager->getStorage('user_role')->loadMultiple();
++    $role_options = array_map(function (RoleInterface $role) {
++      return $role->label();
++    }, $roles);
++
+     $form['tracking']['role_visibility_settings']['ms_clarity_visibility_user_role_roles'] = [
+       '#type' => 'checkboxes',
+       '#title' => $this->t('Roles'),
+       '#default_value' => !empty($visibility_user_role_roles) ? $visibility_user_role_roles : [],
+-      '#options' => array_map('\Drupal\Component\Utility\Html::escape', user_role_names()),
++      '#options' => array_map('\Drupal\Component\Utility\Html::escape', $role_options),
+       '#description' => $this->t('If none of the roles are selected, all users will be tracked. If a user has any of the roles checked, that user will be tracked (or excluded, depending on the setting above).'),
+     ];
+     $form['submit'] = [
