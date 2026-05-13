@@ -105,8 +105,12 @@ display:
         type: none
         options: {  }
       cache:
-        type: tag
-        options: {  }
+        type: time
+        options:
+          results_lifespan: 60
+          results_lifespan_custom: 0
+          output_lifespan: 60
+          output_lifespan_custom: 0
       empty: {  }
       sorts:
         visitors_id:
@@ -1550,7 +1554,10 @@ display:
           label: table
           empty: false
           display_id: continent_table
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
     cache_metadata:
       max-age: -1
       contexts:
