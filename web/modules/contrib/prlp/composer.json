@@ -1,0 +1,14 @@
+{
+    "name": "drupal/prlp",
+    "type": "drupal-module",
+    "description": "Password Reset Landing Page (PRLP)",
+    "homepage": "https://drupal.org/project/prlp",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://drupal.org/project/issues/prlp",
+        "source": "https://git.drupalcode.org/project/prlp"
+    },
+    "require-dev": {
+    }
+}

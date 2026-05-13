@@ -1,0 +1,11 @@
+drimage_improved:
+  css:
+    component:
+      css/drimage_improved.css: {}
+    state:
+      css/drimage_improved_loader.css: {}
+  js:
+    js/drimage_improved.js: {}
+  dependencies:
+    - core/drupal
+    - core/classList

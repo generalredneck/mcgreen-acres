@@ -1,0 +1,63 @@
+commerce_email.commerce_email.*:
+  type: config_entity
+  label: 'Email'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'
+    from:
+      type: string
+      label: 'From'
+    toType:
+      type: string
+      label: 'Send this email to'
+    to:
+      type: string
+      label: 'Email'
+    toRole:
+      type: string
+      label: 'Role'
+    cc:
+      type: string
+      label: 'Cc'
+    bcc:
+      type: string
+      label: 'Bcc'
+    replyTo:
+      type: string
+      label: 'Reply to'
+    subject:
+      type: label
+      label: 'Subject'
+    body:
+      type: mapping
+      label: 'Body'
+      mapping:
+        value:
+          type: text
+          label: 'Body'
+        format:
+          type: string
+          label: 'Text format'
+    conditions:
+      type: sequence
+      sequence:
+        type: commerce_condition
+    conditionOperator:
+      type: string
+      label: 'Condition operator'
+    queue:
+      type: boolean
+      label: 'Use a queue for sending'
+    logToEntity:
+      type: boolean
+      label: 'Log sends to the related entity'
+    event:
+      type: string
+      label: 'Event'
+    targetEntityType:
+      type: string
+      label: 'Target entity type'
