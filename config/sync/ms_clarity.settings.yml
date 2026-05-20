@@ -2,5 +2,7 @@ account: wq7d9c595d
 visibility:
   request_path_mode: 0
   request_path_pages: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user/*/*\r\n/visitors\r\n/visitors/*"
-  user_role_mode: 0
-  user_role_roles: {  }
+  user_role_mode: 1
+  user_role_roles:
+    staff: staff
+    administrator: administrator
