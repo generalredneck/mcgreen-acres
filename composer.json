@@ -122,6 +122,7 @@
         "drupal/key": "^1.20",
         "drupal/link_attributes": "^2.1",
         "drupal/logging_alerts": "^2.1@beta",
+        "drupal/login_emailusername": "^3.0",
         "drupal/mailsystem": "^4.5",
         "drupal/menu_block": "^1.11",
         "drupal/ms_clarity": "^2.0",
