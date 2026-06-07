@@ -97,7 +97,7 @@
         "drupal/core": "^11.3",
         "drupal/core-composer-scaffold": "^11.3",
         "drupal/core-vendor-hardening": "^11.3",
-        "drupal/crawler_rate_limit": "^3.1",
+        "drupal/crawler_rate_limit": "3.1.0",
         "drupal/ctools": "^4.1",
         "drupal/default_content": "^2.0@alpha",
         "drupal/devel_entity_updates": "^5.0",
@@ -184,6 +184,7 @@
             "drupal/drupal-library-installer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
             "oomphinc/composer-installers-extender": true,
+            "vardot/varbase-patches": true,
             "zaporylie/composer-drupal-optimizations": true
         }
     },
@@ -253,14 +254,10 @@
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
             },
             "drupal/commerce": {
-                "#3054585": "patches/commerce-3054585-create_anon_order_from_admin_ui-25-mr351.patch",
-                "#3582355": "patches/commerce-3682355-cicular-reference.patch"
+                "#3054585": "patches/commerce-3054585-create_anon_order_from_admin_ui-25-mr351.patch"
             },
             "drupal/commerce_better_product_variation_label": {
                 "field formatter": "patches/commerce_better_product_variation_label-field_formatter.patch"
-            },
-            "drupal/commerce_custom_checkout_message": {
-                "php 8.4": "patches/commerce_custom_checkout_message-3560486-2.patch"
             },
             "drupal/commerce_profile_pane": {
                 "#2953893: Allow creation of a new profile for anonymous": "https://www.drupal.org/files/issues/2020-04-09/allow_creation_of_new_profile-2953893-14.patch"

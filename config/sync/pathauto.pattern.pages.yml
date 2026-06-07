@@ -2,17 +2,18 @@ uuid: 24fa5e21-a85f-40af-a1be-558d8538db41
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.page
   module:
     - node
 id: pages
 label: Pages
 type: 'canonical_entities:node'
-pattern: '[node:title]'
+pattern: '/[node:title]'
 selection_criteria:
   826dc28b-3f54-49a2-8a9d-dde5ebf79b8f:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 826dc28b-3f54-49a2-8a9d-dde5ebf79b8f
     context_mapping:
       node: node
     bundles:
