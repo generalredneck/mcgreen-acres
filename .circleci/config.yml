@@ -423,7 +423,7 @@ commands:
     steps:
       # Most projects require both composer and npm to be installed to do
       # anything.
-      - php/install-composer
+      - php/install_composer
       - run:
           name: Set up Github Token
           command: |
@@ -450,7 +450,7 @@ commands:
     parameters:
       <<: *node-install-packages-parameters
     steps:
-      - php/install-packages
+      - php/install_packages
       # - node/install-packages:
       #     app-dir: << parameters.node-app-dir >>
       #     cache-only-lockfile: << parameters.node-cache-only-lockfile >>
