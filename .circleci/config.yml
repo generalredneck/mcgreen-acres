@@ -450,6 +450,9 @@ commands:
     parameters:
       <<: *node-install-packages-parameters
     steps:
+      - run:
+          name: remove composer folder in vendor if it exists to prevent caching issues
+          command: rm -rf vendor/composer
       - php/install_packages
       # - node/install-packages:
       #     app-dir: << parameters.node-app-dir >>
