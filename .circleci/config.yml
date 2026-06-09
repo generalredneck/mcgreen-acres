@@ -288,22 +288,6 @@ jobs:
             else
               ./vendor/fourkitchens/pots/scripts/general/deploy-to-live
             fi
-  # Run this on one of the main branches to push a release back to github.
-  #
-  # This usually will do things like create a change log and bump the version
-  # on the source repository.
-  release:
-    <<: *defaults
-    steps:
-      - setup-project
-      - run:
-          name: Publish a Release
-          command: |
-            if [ -f "./.circleci/scripts/release" ]; then
-              ./.circleci/scripts/release
-            else
-              ./vendor/fourkitchens/pots/scripts/release
-            fi
 
 workflows:
   version: 2
@@ -341,14 +325,6 @@ workflows:
               only:
                 - 'deploy-main'
                 - 'deploy-master'
-      - release:
-          requires:
-          - deploy
-          filters:
-            branches:
-              only:
-                - 'main'
-                - 'master'
 
 ###### Please do not change things in the commands without contributing back.
 node-install-parameters: &node-install-parameters
@@ -438,7 +414,7 @@ node-install-packages-parameters: &node-install-packages-parameters
     type: boolean
 orbs:
   # node: circleci/node@5.1.0
-  php: circleci/php@1.1.0
+  php: circleci/php@2.0.0
 commands:
   install-project-dependency-managers:
     description: setup composer and npm.
