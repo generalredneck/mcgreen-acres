@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Install and update functions for the facebook_pixel module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Set default config for new configuration keys and migrate old config value.
+ */
+function facebook_pixel_update_8101() {
+  $config_factory = \Drupal::configFactory();
+
+  // Get the old config:
+  $oldConfig = $config_factory->getEditable('facebook_pixel.facebookpixelconfig');
+
+  // Get the install config:
+  $source = new FileStorage(__DIR__ . '/config/install');
+  $installConfig = $source->read('facebook_pixel.settings');
+
+  // Get the new config:
+  $newConfig = $config_factory->getEditable('facebook_pixel.settings');
+  // Move old facebook_id:
+  $newConfig->set('facebook_id', $oldConfig->get('facebook_id'));
+  // Set new defaults from install config:
+  $newConfig->set('visibility', $installConfig['visibility']);
+  $newConfig->set('privacy', $installConfig['privacy']);
+  $newConfig->save(TRUE);
+
+  // Delete the old config:
+  $oldConfig->delete();
+}
