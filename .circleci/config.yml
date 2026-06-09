@@ -450,10 +450,16 @@ commands:
     parameters:
       <<: *node-install-packages-parameters
     steps:
-      - run:
-          name: remove composer folder in vendor if it exists to prevent caching issues
-          command: rm -rf vendor/composer
-      - php/install_packages
+      - restore_cache:
+          keys:
+            - composer-additional-v2-{{ checksum "composer.lock" }}
+            - composer-additional-v2-
+      - php/install_packages:
+          cache_version: v2
+      - save_cache:
+          key: composer-additional-v2-{{ checksum "composer.lock" }}
+          paths:
+            - web/core
       # - node/install-packages:
       #     app-dir: << parameters.node-app-dir >>
       #     cache-only-lockfile: << parameters.node-cache-only-lockfile >>
