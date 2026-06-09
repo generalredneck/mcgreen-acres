@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - search_api.index.products
-    - system.menu.main
   module:
     - better_exposed_filters
     - search_api
@@ -197,18 +196,18 @@ display:
               search_api_fulltext:
                 plugin_id: default
                 advanced:
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
                     filter_rewrite_values_key: false
                   collapsible: false
                   collapsible_disable_automatic_open: false
+                  open_by_default: false
                   is_secondary: false
                   hide_label: false
                   field_classes: ''
-                  open_by_default: false
-                  sort_options_method: alphabetical_asc
-                  sort_options_natural: true
       access:
         type: none
         options: {  }
@@ -460,11 +459,10 @@ display:
           tokenize: false
       path: product
       menu:
-        type: normal
+        type: none
         title: 'Shop Online'
         description: ''
-        weight: -47
-        enabled: true
+        weight: -44
         expanded: false
         menu_name: main
         parent: ''

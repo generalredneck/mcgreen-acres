@@ -339,8 +339,6 @@ ul.links {
     z-index: 999;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(100px);
-  transition: all 0.3s ease-in-out;-webkit-transition: all 0.3s ease-in-out;-moz-transition: all 0.3s ease-in-out;
 }
 .clv_right_header .clv_menu .clv_menu_nav > ul > li:hover > ul{
   opacity: 1;
@@ -9588,8 +9586,9 @@ ul.links {
     z-index: 999;
     transition: all 0.3s ease-in-out;
   }
-  .clv_right_header .clv_menu .clv_menu_nav > ul > li > a{
-    display: block;
+  .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li > a{
+    /*display: block;*/
+    padding: 5px;
   }
   .clv_right_header .clv_menu .clv_menu_nav > ul > li > a:after{
     display: none;
@@ -9639,15 +9638,17 @@ ul.links {
     box-shadow: none;
     border-radius: 0;
     border: none;
+    border-left: 3px solid #1fa12e;;
     transform: none;
     position: relative;
     display: none;
     transition: none;
     left: auto;
-    padding: 10px 0px;
+    margin-left: 10px;
+    padding: 0px 0px;
     opacity: 1;
     visibility: visible;
-    background-color: #f1b400;
+    background-color: #005D28;
   }
   .clv_right_header .clv_menu .clv_menu_nav > ul > li:hover > ul{
     opacity: unset;
@@ -9658,18 +9659,9 @@ ul.links {
     padding: 0px 10px;
     position: relative;
   }
-  .clv_right_header .clv_menu .clv_menu_nav > ul > li > ul > li:before{
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    transform: translateY(-50%);
-    width: 7px;
-    height: 1px;
-    background-color: #fefefe;
-  }
   .clv_right_header .clv_menu .clv_menu_nav > ul > li > ul > li > a{
     color: #ffffff;
+    font-size: 20px;
   }
   .clv_right_header .clv_menu .cart_nav ul > li > .clv_cart_box > a{
     border-radius: 0;

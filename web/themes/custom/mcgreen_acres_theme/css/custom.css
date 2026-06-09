@@ -881,7 +881,9 @@ th.views-field-remove-button {
   .view-product-catalog .views-field-out-of-stock {
     top: 25%;
   }
-
+  .index_v2.clv_main_wrapper .clv_right_header .clv_menu .clv_menu_nav > ul > li:last-child > a {
+    padding-right: 5px;
+  }
 }
 
 @media (max-width: 575px) {
@@ -1073,4 +1075,151 @@ th.views-field-remove-button {
   background: #222;
   color: #fff;
   opacity: 1;
+}
+
+/* =====================================================
+   Multi-level dropdown navigation
+   Adapted from ThemeForest template (no animations)
+   ===================================================== */
+
+/* Top-level list items */
+.clv_menu_nav > ul > li {
+  display: inline-block;
+  margin: 0px 7px;
+  padding: 14px 0px;
+  position: relative;
+}
+
+/* Top-level links */
+.clv_menu_nav > ul > li > a {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  padding: 5px 10px;
+  text-transform: capitalize;
+  position: relative;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-decoration: none;
+}
+
+/* Underline indicator (static, no animation) */
+.clv_menu_nav > ul > li > a:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  width: 0%;
+  height: 2px;
+  background-color: #ffffff;
+}
+.clv_menu_nav > ul > li > a:hover:after,
+.clv_menu_nav > ul > li.menu-item--active-trail > a:after {
+  width: 60%;
+}
+.clv_menu_nav > ul > li > a:hover {
+  text-decoration: none;
+}
+
+/* Dropdown submenu — hidden by default */
+.clv_menu_nav > ul > li > ul {
+  position: absolute;
+  top: 100%;
+  left: -10px;
+  padding: 10px;
+  min-width: 180px;
+  background-color: #ffffff;
+  border-radius: 0px 0px 10px 10px;
+  border-bottom: 3px solid #1fa12e;
+  box-shadow: 0px 0px 30px 1px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  list-style: none;
+  margin: 0;
+}
+
+/* Show submenu on hover */
+.clv_menu_nav > ul > li:hover > ul,
+.clv_menu_nav > ul > li:focus-within > ul {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Submenu items */
+.clv_menu_nav > ul > li > ul > li {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.clv_menu_nav > ul > li > ul > li > a {
+  color: #222222;
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 6px 10px;
+  text-transform: capitalize;
+  font-family: 'Source Sans Pro', sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.clv_menu_nav > ul > li > ul > li > a:hover {
+  color: #1fa12e;
+  text-decoration: none;
+}
+.clv_menu_nav > ul > li > ul > li > a:after {
+  display: none;
+}
+
+/* Dropdown indicator arrow — rendered as a real span to avoid a:after conflicts */
+.clv_menu_nav > ul > li.has-children > .nav-arrow {
+  display: inline-block;
+  pointer-events: none; /* desktop: hover handles dropdown, arrow is decorative */
+}
+@media (max-width: 991px) {
+  .clv_menu_nav > ul > li.has-children > .nav-arrow {
+    pointer-events: auto; /* mobile: arrow is the tap target for accordion */
+  }
+}
+
+/* Mobile: accordion nav */
+@media (max-width: 991px) {
+  /* !important needed to beat style.css: .clv_right_header .clv_menu .clv_menu_nav > ul > li { display: block } */
+  .clv_menu_nav > ul > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 2px 0;
+  }
+
+  /* !important needed to beat style.css: .clv_right_header ... > ul > li > a { display: block } */
+  .clv_menu_nav > ul > li > a {
+    flex: 1;
+    padding: 8px 0;
+  }
+
+  /* Arrow is decorative only on mobile — always expanded */
+  .clv_menu_nav > ul > li > .nav-arrow {
+    color: #ffffff;
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  /* Submenus: always visible on mobile */
+  .clv_menu_nav > ul > li > ul {
+    display: block !important;
+    flex-basis: 100%;
+    position: static;
+    visibility: visible;
+    box-shadow: none;
+    border-bottom: none;
+    border-left: 3px solid #1fa12e;
+    border-radius: 0;
+    padding: 0 0 0 12px;
+    margin: 2px 0 6px;
+    min-width: 0;
+    list-style: none;
+  }
 }
