@@ -1,0 +1,32 @@
+uuid: 9e45879d-011d-4db6-97fb-736931d74c3b
+langcode: en
+status: true
+dependencies:
+  config:
+    - simple_block.simple_block.farm_stand_info
+  module:
+    - block_visibility_groups
+    - simple_block
+    - system
+  theme:
+    - mcgreen_acres_theme
+id: mcgreen_acres_theme_farmstandinfo
+theme: mcgreen_acres_theme
+region: help
+weight: -12
+provider: null
+plugin: 'simple_block:farm_stand_info'
+settings:
+  id: 'simple_block:farm_stand_info'
+  label: 'Farm Stand Info'
+  label_display: '0'
+  provider: simple_block
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: /product

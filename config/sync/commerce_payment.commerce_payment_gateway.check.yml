@@ -1,17 +1,17 @@
-uuid: 02381b14-329e-4826-95eb-0cc7e58b5bb2
+uuid: 6e462e18-4761-47d8-adad-651c51071045
 langcode: en
 status: true
 dependencies: {  }
-id: zelle
-label: Zelle
-weight: -7
+id: check
+label: Check
+weight: -9
 plugin: manual
 configuration:
-  display_label: Zelle
+  display_label: Check
   mode: n/a
   payment_method_types:
     - credit_card
-  collect_billing_information: false
+  collect_billing_information: true
   instructions:
     value: ''
     format: plain_text
