@@ -1117,10 +1117,10 @@ this.Revolution();
   };
 
 
-  // Close the honey newsletter modal after successful Ajax submission.
-  Drupal.behaviors.honeyNewsletterModal = {
+  // Close the newsletter modal after successful Ajax submission.
+  Drupal.behaviors.NewsletterModal = {
     attach(context, settings) {
-      once('honeyNewsletterModal', '#honeyNewsletterModal', context).forEach((modalEl) => {
+      once('NewsletterModal', '#NewsletterModal', context).forEach((modalEl) => {
         const observer = new MutationObserver(function () {
           if (modalEl.querySelector('.webform-confirmation')) {
             observer.disconnect();
