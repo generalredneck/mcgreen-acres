@@ -1037,19 +1037,19 @@ th.views-field-remove-button {
   }
 }
 
-/* Honey Newsletter Modal — transparent dialog with visible close button */
-#honeyNewsletterModal .modal-content {
+/* Newsletter Modal — transparent dialog with visible close button */
+#NewsletterModal .modal-content {
   background: transparent;
   border: none;
   box-shadow: none;
 }
 
-#honeyNewsletterModal .modal-header {
+#NewsletterModal .modal-header {
   position: relative;
   padding: 0;
 }
 
-#honeyNewsletterModal .close {
+#NewsletterModal .close {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -1070,8 +1070,8 @@ th.views-field-remove-button {
   border: none;
 }
 
-#honeyNewsletterModal .close:hover,
-#honeyNewsletterModal .close:focus {
+#NewsletterModal .close:hover,
+#NewsletterModal .close:focus {
   background: #222;
   color: #fff;
   opacity: 1;
