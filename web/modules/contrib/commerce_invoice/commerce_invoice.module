@@ -1,0 +1,340 @@
+<?php
+
+/**
+ * @file
+ * Defines the Invoice entity and associated features.
+ */
+
+use Drupal\commerce\EntityHelper;
+use Drupal\commerce\PurchasableEntityInterface;
+use Drupal\commerce_invoice\Entity\Invoice;
+use Drupal\commerce_invoice\Entity\InvoiceInterface;
+use Drupal\commerce_invoice\Entity\InvoiceType;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\language\Entity\ContentLanguageSettings;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function commerce_invoice_entity_type_alter(array &$entity_types) {
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
+  if (isset($entity_types['commerce_order'])) {
+    $entity_types['commerce_order']->setLinkTemplate('invoices', '/admin/commerce/orders/{commerce_order}/invoices');
+    $entity_types['commerce_order']->setLinkTemplate('credit-memos', '/admin/commerce/orders/{commerce_order}/credit-memos');
+    $entity_types['commerce_order']->setLinkTemplate('invoice-add-form', '/admin/commerce/orders/{commerce_order}/invoice/add/{commerce_invoice_type}');
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info().
+ */
+function commerce_invoice_entity_bundle_info() {
+  $purchasable_entity_types = commerce_invoice_get_purchasable_entity_types();
+  $bundles = [];
+  foreach ($purchasable_entity_types as $entity_type_id => $entity_type) {
+    $bundles['commerce_invoice_item'][$entity_type_id] = [
+      'label' => $entity_type->getLabel(),
+      'translatable' => FALSE,
+      'provider' => 'commerce_invoice',
+    ];
+  }
+  return $bundles;
+}
+
+/**
+ * Gets the purchasable entity types.
+ *
+ * @return \Drupal\Core\Entity\EntityTypeInterface[]
+ *   The purchasable entity types, keyed by entity type ID.
+ */
+function commerce_invoice_get_purchasable_entity_types() {
+  $entity_types = \Drupal::entityTypeManager()->getDefinitions();
+  return array_filter($entity_types, function (EntityTypeInterface $entity_type) {
+    return $entity_type->entityClassImplements(PurchasableEntityInterface::class);
+  });
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for 'commerce_order_type_form'.
+ */
+function commerce_invoice_form_commerce_order_type_form_alter(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
+  $order_type = $form_state->getFormObject()->getEntity();
+  $invoice_type_storage = \Drupal::entityTypeManager()->getStorage('commerce_invoice_type');
+  $invoice_types = EntityHelper::extractLabels($invoice_type_storage->loadMultiple());
+  $invoice_type_id = $order_type->getThirdPartySetting('commerce_invoice', 'invoice_type');
+  $order_placed_generation = $order_type->getThirdPartySetting('commerce_invoice', 'order_placed_generation', FALSE);
+
+  $form['commerce_invoice'] = [
+    '#type' => 'details',
+    '#title' => t('Invoice settings'),
+    '#weight' => 6,
+    '#open' => TRUE,
+  ];
+  $form['commerce_invoice']['enable_invoice'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Invoice orders of this type'),
+    '#default_value' => !empty($invoice_type_id),
+  ];
+  $form['commerce_invoice']['invoice_type'] = [
+    '#type' => 'select',
+    '#title' => t('Invoice type'),
+    '#options' => $invoice_types,
+    '#default_value' => $invoice_type_id ?: key($invoice_types),
+    '#required' => TRUE,
+    '#states' => [
+      'visible' => [
+        ':input[name="commerce_invoice[enable_invoice]"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+  $form['commerce_invoice']['order_placed_generation'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Invoice when the order is placed'),
+    '#default_value' => $order_placed_generation,
+    '#states' => [
+      'visible' => [
+        ':input[name="commerce_invoice[enable_invoice]"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+  $form['actions']['submit']['#submit'][] = 'commerce_invoice_order_type_form_submit';
+}
+
+/**
+ * Submission handler for commerce_invoice_form_commerce_order_type_form_alter().
+ */
+function commerce_invoice_order_type_form_submit($form, FormStateInterface $form_state) {
+  $settings = $form_state->getValue(['commerce_invoice']);
+  /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
+  $order_type = $form_state->getFormObject()->getEntity();
+  $invoice_type = $settings['enable_invoice'] ? $settings['invoice_type'] : NULL;
+  $order_placed_generation = $settings['enable_invoice'] ? $settings['order_placed_generation'] : FALSE;
+  $order_type->setThirdPartySetting('commerce_invoice', 'invoice_type', $invoice_type);
+  $order_type->setThirdPartySetting('commerce_invoice', 'order_placed_generation', $order_placed_generation);
+  $order_type->save();
+}
+
+/**
+ * Submit handler for the commerce_invoice_language_configuration element.
+ */
+function commerce_invoice_language_configuration_element_submit(&$form, FormStateInterface $form_state) {
+  // Iterate through all the language_configuration elements and save their
+  // values.
+  // In case we are editing a bundle, we must check the new bundle name,
+  // because e.g. hook_ENTITY_update fired before.
+  if ($language = $form_state->get('language')) {
+    foreach ($language as $element_name => $values) {
+      $entity_type_id = $values['entity_type'];
+      $bundle = $values['bundle'];
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof EntityFormInterface) {
+        /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+        $entity = $form_object->getEntity();
+        if ($entity->getEntityType()->getBundleOf()) {
+          $bundle = $entity->id();
+          $language[$element_name]['bundle'] = $bundle;
+        }
+      }
+      $config = ContentLanguageSettings::loadByEntityTypeBundle($entity_type_id, $bundle);
+      $values = $form_state->getValue([$element_name]);
+      $config->setDefaultLangcode($values['langcode']);
+      $config->setThirdPartySetting('commerce_invoice', 'generate_translations', $values['generate_translations']);
+      $config->setLanguageAlterable(FALSE);
+      $config->save();
+
+      // Set the form_state language with the updated bundle.
+      $form_state->set('language', $language);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for 'state_machine_transition_form'.
+ */
+function commerce_invoice_form_state_machine_transition_form_alter(array &$form, FormStateInterface $form_state) {
+  $entity = $form_state->getFormObject()->getEntity();
+  if ($entity instanceof InvoiceInterface) {
+    foreach (Element::children($form['actions']) as $action) {
+      // Append the invoice type label to the transition label.
+      $form['actions'][$action]['#value'] = t('@transition_label @invoice_bundle', [
+        '@transition_label' => $form['actions'][$action]['#value'],
+        // @todo Stop using mb_strtolower() when
+        //   https://www.drupal.org/project/drupal/issues/2765065 is fixed.
+        '@invoice_bundle' => mb_strtolower($entity->get('type')->entity->label()),
+      ]);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for 'log_comment_form'.
+ */
+function commerce_invoice_form_log_comment_form_alter(array &$form, FormStateInterface $form_state) {
+  // Use the invoice type label instead of the generic 'Invoice' label for the
+  // activity form.
+  if ($form['log_comment']['source_entity_type']['#value'] === 'commerce_invoice') {
+    $invoice = Invoice::load($form['log_comment']['source_entity_id']['#value']);
+    $form['log_comment']['#title'] = t('Comment on this @label', [
+      '@label' => $invoice->get('type')->entity->label(),
+    ]);
+  }
+}
+
+/**
+ * Implements hook_field_widget_multivalue_form_alter().
+ */
+function commerce_invoice_field_widget_multivalue_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
+  $field_definition = $context['items']->getFieldDefinition();
+  if ($field_definition->getTargetEntityTypeId() === 'commerce_invoice_item' && $field_definition->getName() === 'adjustments') {
+    // Invoice item adjustments can be modified, just like their quantity and
+    // unit price, but users shouldn't be able to add new adjustments at that
+    // level.
+    foreach ($context['items'] as $delta => $item) {
+      if ($item->isEmpty()) {
+        unset($elements[$delta]);
+        $elements['#max_delta']--;
+      }
+    }
+    $elements['add_more']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function commerce_invoice_views_data_alter(array &$data) {
+  $data['commerce_invoice_field_data']['store_id']['field']['id'] = 'commerce_store';
+  $data['commerce_invoice_field_data']['state']['filter']['id'] = 'state_machine_state';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function commerce_invoice_theme() {
+  return [
+    'commerce_invoice' => [
+      'render element' => 'elements',
+    ],
+    'commerce_invoice__admin' => [
+      'base hook' => 'commerce_invoice',
+      'render element' => 'elements',
+    ],
+    'commerce_invoice_total_summary' => [
+      'variables' => [
+        'invoice_entity' => NULL,
+        'totals' => NULL,
+      ],
+    ],
+    'commerce_invoice_confirmation' => [
+      'variables' => [
+        'invoice_entity' => NULL,
+        'totals' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function commerce_invoice_theme_suggestions_commerce_invoice(array $variables) {
+  return _commerce_entity_theme_suggestions('commerce_invoice', $variables);
+}
+
+/**
+ * Implements hook_theme_suggestions_commerce_invoice_confirmation().
+ */
+function commerce_invoice_theme_suggestions_commerce_invoice_confirmation(array $variables) {
+  $suggestions = [];
+  if (isset($variables['invoice_entity'])) {
+    $invoice = $variables['invoice_entity'];
+    $suggestions[] = $variables['theme_hook_original'] . '__' . $invoice->bundle();
+  }
+  return $suggestions;
+}
+
+/**
+ * Prepares variables for invoice templates.
+ *
+ * Default template: commerce-invoice.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing rendered fields.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_commerce_invoice(array &$variables) {
+  /** @var Drupal\commerce_invoice\Entity\InvoiceInterface $invoice */
+  $invoice = $variables['elements']['#commerce_invoice'];
+  $token = \Drupal::token();
+  $invoice_type_data = $invoice->getData('invoice_type', []);
+  $invoice_type = InvoiceType::create($invoice_type_data);
+
+  // Replace the tokens in the footer text + the payment terms.
+  $data = ['commerce_invoice' => $invoice];
+  $footer_text = $invoice_type->getFooterText();
+  if ($footer_text) {
+    $variables['footer_text'] = $token->replace($footer_text, $data);
+  }
+  $payment_terms = $invoice_type->getPaymentTerms();
+  if ($payment_terms) {
+    $variables['payment_terms'] = $token->replace($payment_terms, $data);
+  }
+  if ($invoice_type->getLogoUrl()) {
+    $variables['logo_url'] = $invoice_type->getLogoUrl();
+  }
+
+  $variables['invoice_entity'] = $invoice;
+  $variables['invoice'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['invoice'][$key] = $variables['elements'][$key];
+  }
+  if ($invoice->getBillingProfile()) {
+    $profile_view_builder = \Drupal::entityTypeManager()->getViewBuilder('profile');
+    $variables['invoice']['billing_information'] = $profile_view_builder->view($invoice->getBillingProfile());
+  }
+  /** @var \Drupal\commerce_invoice\InvoiceTotalSummaryInterface $invoice_total_summary */
+  $invoice_total_summary = \Drupal::service('commerce_invoice.invoice_total_summary');
+  $variables['totals'] = $invoice_total_summary->buildTotals($invoice);
+
+  if (\Drupal::moduleHandler()->moduleExists('commerce_log')) {
+    $variables['invoice']['activity'] = [
+      '#type' => 'view',
+      '#name' => 'commerce_activity',
+      '#display_id' => 'default',
+      '#arguments' => [$invoice->id(), 'commerce_invoice'],
+      '#embed' => TRUE,
+      '#title' => t('Invoice activity'),
+    ];
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function commerce_invoice_entity_operation(EntityInterface $entity) {
+  // Only show the "Invoices" operation link for orders.
+  if ($entity->getEntityTypeId() !== 'commerce_order') {
+    return;
+  }
+  /** @var \Drupal\commerce_order\Entity\OrderInterface $entity */
+  // Do not show the "Invoices" operation for draft orders.
+  if ($entity->getState()->getId() == 'draft') {
+    return;
+  }
+  // Only show if the user has the "administer commerce_invoice" permission.
+  if (!\Drupal::currentUser()->hasPermission('administer commerce_invoice')) {
+    return;
+  }
+  $operations['invoices'] = [
+    'title' => t('Invoices'),
+    'url' => $entity->toUrl('invoices'),
+    'weight' => 50,
+  ];
+  return $operations;
+}

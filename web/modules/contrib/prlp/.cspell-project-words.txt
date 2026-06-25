@@ -1,0 +1,7 @@
+# User names: contributors, maintainers, users, etc.
+Jitesh
+Doshi
+Kämper
+Leymann
+
+# Custom variable names, ids, keys or identifiers in paths or yaml files.

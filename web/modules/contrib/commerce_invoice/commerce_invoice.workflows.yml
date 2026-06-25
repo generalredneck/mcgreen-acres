@@ -1,0 +1,34 @@
+invoice_default:
+  id: invoice_default
+  group: commerce_invoice
+  label: 'Default'
+  states:
+    draft:
+      label: Draft
+    pending:
+      label: Pending
+    paid:
+      label: Paid
+    refund_pending:
+      label: Pending refund
+    refunded:
+      label: Refunded
+    canceled:
+      label: Canceled
+  transitions:
+    confirm:
+      label: 'Confirm'
+      from: [draft]
+      to: pending
+    pay:
+      label: 'Pay'
+      from: [draft, pending]
+      to: paid
+    refund:
+      label: 'Refund'
+      from: [refund_pending]
+      to: refunded
+    cancel:
+      label: 'Cancel'
+      from: [pending]
+      to:   canceled

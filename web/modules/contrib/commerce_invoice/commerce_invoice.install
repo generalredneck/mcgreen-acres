@@ -1,0 +1,150 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update functions for Commerce Invoice.
+ */
+
+use Drupal\commerce_invoice\Entity\Invoice;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StreamWrapper\PrivateStream;
+
+/**
+ * Implements hook_requirements().
+ */
+function commerce_invoice_requirements($phase) {
+  $requirements = [];
+
+  // Ensure the private file system path is configured.
+  if (in_array($phase, ['install', 'runtime']) && !PrivateStream::basePath()) {
+    $requirements['commerce_invoice_private_path'] = [
+      'title' => t('Private file system path'),
+      'description' => t('Commerce Invoice requires the private file system path to be configured.'),
+      'severity' => REQUIREMENT_ERROR,
+    ];
+  }
+
+  return $requirements;
+}
+
+/**
+ * Mark the invoice owner field as non translatable.
+ */
+function commerce_invoice_update_8200() {
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definition = $definition_update_manager->getFieldStorageDefinition('uid', 'commerce_invoice');
+  if ($field_definition) {
+    $field_definition->setTranslatable(FALSE);
+    $definition_update_manager->updateFieldStorageDefinition($field_definition);
+  }
+}
+
+/**
+ * Update the 'uid' field.
+ */
+function commerce_invoice_update_8201() {
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $base_field_override_storage = \Drupal::entityTypeManager()->getStorage('base_field_override');
+  $storage_definition = $definition_update_manager->getFieldStorageDefinition('uid', 'commerce_invoice');
+  if (!$storage_definition) {
+    \Drupal::logger('commerce_invoice')->notice('Skipping update 8201: "uid" field storage definition not found.');
+    return;
+  }
+  $default_value_callback = Invoice::class . '::getCurrentUserId';
+
+  $base_field_overrides = $base_field_override_storage->loadByProperties([
+    'entity_type' => 'commerce_invoice',
+    'field_name' => 'uid',
+  ]);
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface $base_field_override */
+  foreach ($base_field_overrides as $base_field_override) {
+    if ($base_field_override->getDefaultValueCallback() !== $storage_definition->getDefaultValueCallback()) {
+      continue;
+    }
+    // Update the "default_value_callback" for base field overrides, as long
+    // as they're using the default one.
+    $base_field_override->setDefaultValueCallback($default_value_callback);
+    $base_field_override->save();
+  }
+
+  $storage_definition->setDefaultValueCallback($default_value_callback);
+  $definition_update_manager->updateFieldStorageDefinition($storage_definition);
+}
+
+/**
+ * Add a file field to invoices that holds a reference to the PDF file.
+ */
+function commerce_invoice_update_8202() {
+  $storage_definition = BaseFieldDefinition::create('entity_reference')
+    ->setLabel(t('Invoice PDF'))
+    ->setSetting('target_type', 'file')
+    ->setDescription(t('The invoice PDF file.'))
+    ->setDisplayConfigurable('view', TRUE);
+
+  $definition_manager = \Drupal::entityDefinitionUpdateManager();
+  $existing_definition = $definition_manager->getFieldStorageDefinition('invoice_file', 'commerce_invoice');
+  if ($existing_definition) {
+    \Drupal::logger('commerce_invoice')->notice('Skipping update 8202: invoice_file field already exists.');
+    return;
+  }
+  $definition_manager->installFieldStorageDefinition('invoice_file', 'commerce_invoice', 'commerce_invoice', $storage_definition);
+}
+
+/**
+ * Convert the invoice_file from entity_reference to file field.
+ */
+function commerce_invoice_update_8203() {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $bundle_of = 'commerce_invoice';
+
+  $storage = $entity_type_manager->getStorage($bundle_of);
+  $bundle_definition = $entity_type_manager->getDefinition($bundle_of);
+  // Sometimes the primary key isn't 'id'. e.g. 'eid' or 'item_id'.
+  $id_key = $bundle_definition->getKey('id');
+  // If there is no data table defined then use the base table.
+  $table_name = $storage->getDataTable() ?: $storage->getBaseTable();
+  $database = \Drupal::database();
+  if (!$database->schema()->tableExists($table_name)) {
+    \Drupal::logger('commerce_invoice')->notice("Skipping update 8203: Table @table_name does not exist.", [
+      '@table_name' => $table_name,
+    ]);
+    return;
+  }
+  $definition_manager = \Drupal::entityDefinitionUpdateManager();
+
+  // Store the existing values.
+  $file_values = $database->select($table_name)
+    ->fields($table_name, [$id_key, 'invoice_file'])
+    ->execute()
+    ->fetchAllKeyed();
+
+  // Clear out the values.
+  $database->update($table_name)
+    ->fields(['invoice_file' => NULL])
+    ->execute();
+
+  // Uninstall the field.
+  $field_storage_definition = $definition_manager->getFieldStorageDefinition('invoice_file', $bundle_of);
+  if (!$field_storage_definition) {
+    \Drupal::logger('commerce_invoice')->notice('Skipping update 8203: invoice_file field storage definition not found.');
+    return;
+  }
+  $definition_manager->uninstallFieldStorageDefinition($field_storage_definition);
+
+  // Create a new field definition.
+  $new_invoice_file = BaseFieldDefinition::create('file')
+    ->setLabel(t('Invoice PDF'))
+    ->setDescription(t('The invoice PDF file.'))
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Install the new definition.
+  $definition_manager->installFieldStorageDefinition('invoice_file', $bundle_of, $bundle_of, $new_invoice_file);
+
+  // Restore the values.
+  foreach ($file_values as $id => $value) {
+    $database->update($table_name)
+      ->fields(['invoice_file__target_id' => $value])
+      ->condition($id_key, $id)
+      ->execute();
+  }
+}

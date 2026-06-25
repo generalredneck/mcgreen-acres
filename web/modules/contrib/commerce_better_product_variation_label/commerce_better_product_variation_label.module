@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Commerce Better Product Variation Label module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\commerce_better_product_variation_label\Entity\ProductVariation;
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function commerce_better_product_variation_label_entity_type_alter(&$entity_types) {
+  // Override the class by our implementation:
+  $entity_types['commerce_product_variation']->setClass(ProductVariation::class);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for \Drupal\node\NodeTypeForm.
+ *
+ * Adds node keep default options for newly created nodes, to the node type
+ * form.
+ */
+function commerce_better_product_variation_label_form_commerce_product_variation_type_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_product\ProductVariationTypeInterface $type */
+  $type = $form_state->getFormObject()->getEntity();
+
+  $form['commerce_better_product_variation_label'] = [
+    '#type' => 'details',
+    '#title' => 'Commerce Better Product Variation Label settings',
+    '#open' => FALSE,
+  ];
+  $form['commerce_better_product_variation_label']['product_label_prefix'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Use parent product label as prefix'),
+    '#default_value' => $type->getThirdPartySetting('commerce_better_product_variation_label', 'product_label_prefix', FALSE),
+    '#description' => t('Prefix the product variation title with the parent product title (if they are not equal).'),
+  ];
+  $form['commerce_better_product_variation_label']['product_label_prefix_separator'] = [
+    '#type' => 'textfield',
+    '#title' => t('Prefix separator'),
+    '#required' => TRUE,
+    '#default_value' => $type->getThirdPartySetting('commerce_better_product_variation_label', 'product_label_prefix_separator', ' '),
+    '#description' => t('The separator for the label prefix, typically a space or characters like ",:-"'),
+  ];
+
+  $form['actions']['submit']['#submit'][] = 'commerce_better_product_variation_label_form_commerce_product_variation_type_form_submit';
+}
+
+/**
+ * Form submission handler for 'commerce_better_product_variation_label_form_commerce_product_variation_type_form_alter'.
+ */
+function commerce_better_product_variation_label_form_commerce_product_variation_type_form_submit($form, FormStateInterface $form_state) {
+  /** @var \Drupal\commerce_product\ProductVariationTypeInterface $type */
+  $order_type = $form_state->getFormObject()->getEntity();
+  $order_type->setThirdPartySetting('commerce_better_product_variation_label', 'product_label_prefix', !empty($form_state->getValue('product_label_prefix')));
+  $order_type->setThirdPartySetting('commerce_better_product_variation_label', 'product_label_prefix_separator', $form_state->getValue('product_label_prefix_separator'));
+  $order_type->save();
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function commerce_better_product_variation_label_token_info() {
+  $info = [];
+
+  // Provide the label token:
+  $info['tokens']['commerce_product_variation']['label'] = [
+    'name' => t('Product Variation Label'),
+    'description' => t('Provides the label of a product variation.'),
+  ];
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function commerce_better_product_variation_label_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  if ($type === 'commerce_product_variation' && !empty($data['commerce_product_variation'])) {
+    $commerceProductVariation = $data['commerce_product_variation'];
+    assert($commerceProductVariation instanceof ProductVariationInterface);
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        // Provide :label token for commerce_product_variation entities:
+        case 'label':
+          $replacements[$original] = $commerceProductVariation->label();
+          break;
+      }
+    }
+  }
+
+  return $replacements;
+}
