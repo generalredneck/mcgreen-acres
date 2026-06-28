@@ -1,0 +1,68 @@
+diff --git a/redirect_or_410.module b/redirect_or_410.module
+index aaeafa9..92a1ba3 100644
+--- a/redirect_or_410.module
++++ b/redirect_or_410.module
+@@ -52,7 +52,10 @@ function redirect_or_410_form_redirect_redirect_form_alter(&$form, \Drupal\Core\
+   if ((int) $status === 410) {
+     $form['status_code']['#default_value'] = 410;
+   }
+-  redirect_or_410_apply_redirect_widget_state($form, (int) $form['status_code']['#default_value']);
++  $input = $form_state->getUserInput();
++  $current_status = isset($input['status_code']) ? (int) $input['status_code'] : (int) $form['status_code']['#default_value'];
++  redirect_or_410_apply_redirect_widget_state($form, $current_status);
++  array_unshift($form['#validate'], 'redirect_or_410_redirect_form_validate');
+ }
+ 
+ /**
+@@ -60,7 +63,24 @@ function redirect_or_410_form_redirect_redirect_form_alter(&$form, \Drupal\Core\
+  */
+ function redirect_or_410_form_redirect_redirect_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id): void {
+   $form['status_code']['#options'][410] = t('410 Gone');
+-  redirect_or_410_apply_redirect_widget_state($form, (int) $form['status_code']['#default_value']);
++  $input = $form_state->getUserInput();
++  $current_status = isset($input['status_code']) ? (int) $input['status_code'] : (int) $form['status_code']['#default_value'];
++  redirect_or_410_apply_redirect_widget_state($form, $current_status);
++  array_unshift($form['#validate'], 'redirect_or_410_redirect_form_validate');
++}
++
++/**
++ * Validate handler for 410 Gone redirects.
++ */
++function redirect_or_410_redirect_form_validate(array &$form, \Drupal\Core\Form\FormStateInterface $form_state): void {
++  if ((int) $form_state->getUserInput()['status_code'] !== 410) {
++    return;
++  }
++  $form_state->setValue(['redirect_redirect', 0, 'uri'], 'route:<nolink>');
++  $input = $form_state->getUserInput();
++  if (!empty($input['redirect_source'][0]['path'])) {
++    $form_state->set('redirect_source_warning', $input['redirect_source'][0]['path']);
++  }
+ }
+ 
+ /**
+@@ -98,7 +118,11 @@ function redirect_or_410_apply_redirect_widget_state(array &$form, int $status_c
+     return;
+   }
+ 
+-  $form['redirect_redirect']['widget'][0]['uri']['#disabled'] = $status_code === 410;
++  $is_410 = $status_code === 410;
++  $form['redirect_redirect']['widget'][0]['uri']['#disabled'] = $is_410;
++  if ($is_410) {
++    $form['redirect_redirect']['widget'][0]['uri']['#required'] = FALSE;
++  }
+   $form['redirect_redirect']['widget'][0]['uri']['#states']['disabled'] = [
+     ':input[name="status_code"]' => ['value' => '410'],
+   ];
+diff --git a/src/EventSubscriber/RedirectRequestSubscriber.php b/src/EventSubscriber/RedirectRequestSubscriber.php
+index 241a55a..dab60aa 100644
+--- a/src/EventSubscriber/RedirectRequestSubscriber.php
++++ b/src/EventSubscriber/RedirectRequestSubscriber.php
+@@ -230,7 +230,7 @@ class RedirectRequestSubscriber implements EventSubscriberInterface {
+         'X-Redirect-ID' => $redirect->id(),
+       ];
+ 
+-      $statusCode = $redirect->getStatusCode();
++      $statusCode = (int) $redirect->getStatusCode();
+       if ($statusCode === 410) {
+         $response = $this->get410Response($request, $headers, $cacheable_metadata);
+       }

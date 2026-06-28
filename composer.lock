@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f042b40e7f718354ef9cb8cf362e11b",
+    "content-hash": "a80583aa7442065d090cf5637e5b4872",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -10292,6 +10292,36 @@
             }
         },
         {
+            "name": "drupal/redirect_or_410",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/redirect_or_410.git",
+                "reference": "b82f908dd9ac8485ac87c2e2cd7b3b00604402a4"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "ext-json": "*"
+            },
+            "default-branch": true,
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Extends Redirect by adding HTTP 410 Gone as a status option in the Redirect UI.",
+            "homepage": "https://www.drupal.org/project/redirect_or_410",
+            "keywords": [
+                "Drupal",
+                "Redirect",
+                "SEOt"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/redirect_or_410",
+                "source": "https://git.drupalcode.org/project/redirect_or_410"
+            },
+            "time": "2026-06-19T14:10:00+00:00"
+        },
+        {
             "name": "drupal/responsive_favicons",
             "version": "4.0.0",
             "source": {
@@ -20403,6 +20433,7 @@
         "drupal/logging_alerts": 10,
         "drupal/phone_number": 15,
         "drupal/realname": 10,
+        "drupal/redirect_or_410": 20,
         "drupal/simple_block": 10,
         "drupal/simplenews_stats": 20,
         "drupal/visitors": 20,

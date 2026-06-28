@@ -157,6 +157,7 @@ module:
   realname: 0
   recipe_tracker: 0
   redirect: 0
+  redirect_or_410: 0
   responsive_image: 0
   rest: 0
   scheduler: 0
