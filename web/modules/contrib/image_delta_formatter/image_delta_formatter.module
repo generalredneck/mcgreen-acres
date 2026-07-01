@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * This module supports optional loading of the Media delta formatter.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\image_delta_formatter\OptionalPlugin\Field\FieldFormatter\MediaDeltaFormatter;
+use Drupal\image_delta_formatter\OptionalPlugin\Field\FieldFormatter\ResponsiveImageDeltaFormatter;
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ *
+ * @phpstan-param array<string,array<string,mixed>> $info
+ */
+function image_delta_formatter_field_formatter_info_alter(array &$info): void {
+  /** @var \Drupal\Core\Extension\ModuleHandlerInterface $mh */
+  $mh = \Drupal::service('module_handler');
+  $provider = basename(__DIR__);
+  if ($mh->moduleExists('media')) {
+    $info['media_delta_formatter'] = [
+      'class' => MediaDeltaFormatter::class,
+      'description' => new TranslatableMarkup('Display specific deltas of a media:image field.'),
+      'field_types' => ['entity_reference'],
+      'id' => 'media_delta_formatter',
+      'label' => new TranslatableMarkup('Media delta'),
+      'provider' => $provider,
+    ];
+  }
+
+  if ($mh->moduleExists('responsive_image')) {
+    $info['responsive_image_delta_formatter'] = [
+      'class' => ResponsiveImageDeltaFormatter::class,
+      'description' => new TranslatableMarkup('Display specific deltas of an image field using responsive styles.'),
+      'field_types' => ['image'],
+      'id' => 'responsive_image_delta_formatter',
+      'label' => new TranslatableMarkup('Responsive image delta'),
+      'provider' => $provider,
+    ];
+  }
+}

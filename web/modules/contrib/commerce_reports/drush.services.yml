@@ -1,0 +1,5 @@
+services:
+  commerce_reports.commands:
+    class: Drupal\commerce_reports\Commands\CommerceReportsCommands
+    tags:
+      - { name: drush.command }

@@ -1,0 +1,20 @@
+{
+    "name": "drupal/redirect_or_410",
+    "type": "drupal-module",
+    "description": "Extends Redirect by adding HTTP 410 Gone as a status option in the Redirect UI.",
+    "keywords": [
+        "Drupal",
+        "Redirect",
+        "SEOt"
+    ],
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/redirect_or_410",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/redirect_or_410",
+        "source": "https://git.drupalcode.org/project/redirect_or_410"
+    },
+    "require": {
+        "ext-json": "*",
+        "drupal/core": "^10 || ^11"
+    }
+}

@@ -1,0 +1,15 @@
+name: 'Commerce Stepped Proportional Prorater'
+type: module
+description: 'Provides a prorater for Commerce Recurring which gives prices at regular intervals.'
+core_version_requirement: ^10.1 || ^11
+package: 'Commerce (contrib)'
+dependencies:
+  - commerce:commerce
+  - commerce:commerce_price
+  - commerce_recurring:commerce_recurring
+  - interval:interval
+
+# Information added by Drupal.org packaging script on 2023-11-23
+version: '2.0.0'
+project: 'commerce_prorater_stepped_proportional'
+datestamp: 1700768254
