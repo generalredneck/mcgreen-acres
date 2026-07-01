@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Sales chart module — provides an interactive revenue chart block.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function sales_chart_theme(): array {
+  return [
+    'sales_chart' => [
+      'variables' => [
+        'stats' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ *
+ * Injects the sales chart block into the monthly display between the exposed
+ * form and the results by prepending to attachment_before.
+ */
+function sales_chart_preprocess_views_view(array &$variables): void {
+  if ($variables['id'] == 'sales_report' && in_array($variables['display_id'], ['monthly', 'daily', 'weekly'])) {
+    $block = \Drupal::entityTypeManager()->getStorage('block')->load('claro_saleschart');
+    if (!$block) {
+      return;
+    }
+
+    $chart = \Drupal::entityTypeManager()->getViewBuilder('block')->view($block);
+
+    // Prepend the chart ahead of any existing attachment_before content.
+    $variables['attachment_before'] = [
+      'sales_chart' => $chart,
+      'existing'    => $variables['attachment_before'],
+    ];
+  }
+}

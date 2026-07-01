@@ -1,0 +1,39 @@
+.sales-chart-wrapper {
+  padding: 1rem 0;
+}
+
+.sales-chart-stats {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sales-chart-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.sales-chart-stat__label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+}
+
+.sales-chart-stat__value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.sales-chart-date-range {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 0.75rem;
+}
+
+.sales-chart-canvas-wrapper {
+  position: relative;
+  width: 100%;
+}

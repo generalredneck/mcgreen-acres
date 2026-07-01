@@ -160,6 +160,7 @@ module:
   redirect_or_410: 0
   responsive_image: 0
   rest: 0
+  sales_chart: 0
   scheduler: 0
   schema_article: 0
   schema_image_object: 0

@@ -1,0 +1,32 @@
+uuid: c9411709-1c41-4d9e-9384-a7068caf7255
+langcode: en
+status: false
+dependencies:
+  module:
+    - block_visibility_groups
+    - sales_chart
+    - system
+  theme:
+    - claro
+id: claro_saleschart
+theme: claro
+region: content
+weight: 0
+provider: null
+plugin: sales_chart_block
+settings:
+  id: sales_chart_block
+  label: 'Sales Chart'
+  label_display: '0'
+  provider: sales_chart
+  days: 180
+  currency_code: USD
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: /admin/commerce/reports/sales

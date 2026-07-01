@@ -6,6 +6,9 @@ dependencies:
     - field.storage.commerce_product.field_product_department
     - system.menu.admin
     - taxonomy.vocabulary.product_department
+    - taxonomy.vocabulary.product_tags
+  content:
+    - 'taxonomy_term:product_tags:36cda43a-bc5d-4faa-833c-9471f180f8b8'
   module:
     - better_exposed_filters
     - commerce
@@ -32,7 +35,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Purchased items report'
+      title: 'Taxable items'
       fields:
         purchased_entity:
           id: purchased_entity
@@ -546,6 +549,52 @@ display:
           hierarchy: true
           limit: true
           error_message: true
+        product_tags_target_id:
+          id: product_tags_target_id
+          table: commerce_product__product_tags
+          field: product_tags_target_id
+          relationship: product_id
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            45: 45
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: product_tags
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       style:
         type: table
         options:
@@ -1042,10 +1091,62 @@ display:
         default: '0'
       filename: purchased-items.csv
       automatic_download: true
+      export_filesystem: private
       custom_redirect_path: false
       redirect_to_display: none
       include_query_params: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
+        - user.permissions
+      tags:
+        - 'config:field.storage.commerce_product.field_product_department'
+  data_export_2:
+    id: data_export_2
+    display_title: 'Taxable Items Report CSV'
+    display_plugin: data_export
+    position: 1
+    display_options:
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+            output_header: true
+          xml_settings:
+            encoding: UTF-8
+            root_node_name: response
+            item_node_name: item
+            format_output: false
+      display_description: ''
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/commerce/reports/taxable-items/csv
+      displays:
+        taxable: taxable
+        default: '0'
+        page_1: '0'
+      filename: ''
+      automatic_download: true
       export_filesystem: private
+      custom_redirect_path: false
+      redirect_to_display: none
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -1070,6 +1171,36 @@ display:
       menu:
         type: normal
         title: 'Purchased items report'
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: admin
+        parent: commerce_reports.overview
+        context: '0'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user.permissions
+      tags:
+        - 'config:field.storage.commerce_product.field_product_department'
+  taxable:
+    id: taxable
+    display_title: 'Taxable Items Report'
+    display_plugin: page
+    position: 1
+    display_options:
+      display_description: ''
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/commerce/reports/taxable-items
+      menu:
+        type: normal
+        title: 'Taxable items report'
         description: ''
         weight: 0
         expanded: false
