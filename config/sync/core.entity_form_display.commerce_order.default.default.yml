@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - commerce_order.commerce_order_type.default
+    - field.field.commerce_order.default.field_cover_stripe_fees
     - field.field.commerce_order.default.field_order_contact
   module:
     - commerce_order
@@ -44,6 +45,13 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_cover_stripe_fees:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_order_contact:
     type: phone_number_default

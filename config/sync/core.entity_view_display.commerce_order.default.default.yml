@@ -4,11 +4,14 @@ status: true
 dependencies:
   config:
     - commerce_order.commerce_order_type.default
+    - field.field.commerce_order.default.field_cover_stripe_fees
     - field.field.commerce_order.default.field_order_contact
   module:
+    - advanced_text_formatter
     - commerce_order
     - commerce_payment
     - commerce_price
+    - mcgreen_acres_store
     - phone_number
     - state_machine
     - user
@@ -26,7 +29,7 @@ content:
       strip_trailing_zeroes: false
       currency_display: symbol
     third_party_settings: {  }
-    weight: 9
+    weight: 11
     region: content
   billing_profile:
     type: commerce_billing_information
@@ -35,7 +38,7 @@ content:
       profile_view_mode: admin
       show_payment_information: true
     third_party_settings: {  }
-    weight: 5
+    weight: 7
     region: content
   changed:
     type: timestamp
@@ -44,6 +47,15 @@ content:
       date_format: short
       custom_date_format: ''
       timezone: ''
+      tooltip:
+        date_format: long
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
     third_party_settings: {  }
     weight: 4
     region: content
@@ -54,6 +66,15 @@ content:
       date_format: short
       custom_date_format: ''
       timezone: ''
+      tooltip:
+        date_format: long
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
     third_party_settings: {  }
     weight: 2
     region: content
@@ -63,7 +84,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 11
+    weight: 13
     region: content
   created:
     type: timestamp
@@ -82,15 +103,31 @@ content:
         granularity: 2
         refresh: 60
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   customer_comments:
-    type: string
+    type: advanced_text
     label: above
     settings:
       link_to_entity: false
+      trim_length: 600
+      ellipsis: 1
+      word_boundary: 1
+      token_replace: 0
+      filter: input
+      format: plain_text
+      allowed_html: '<a> <b> <br> <dd> <dl> <dt> <em> <i> <li> <ol> <p> <strong> <u> <ul>'
+      autop: 0
+      use_summary: 0
     third_party_settings: {  }
-    weight: 10
+    weight: 12
+    region: content
+  field_cover_stripe_fees:
+    type: mcgreen_acres_store_cover_fees_form
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
   field_order_contact:
     type: phone_number_international
@@ -98,7 +135,7 @@ content:
     settings:
       as_link: false
     third_party_settings: {  }
-    weight: 12
+    weight: 14
     region: content
   ip_address:
     type: string
@@ -106,14 +143,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 7
+    weight: 9
     region: content
   mail:
     type: basic_string
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 8
     region: content
   order_items:
     type: commerce_order_item_table
@@ -122,7 +159,7 @@ content:
       view: commerce_order_item_table_admin
       show_add_items_link: true
     third_party_settings: {  }
-    weight: 14
+    weight: 15
     region: content
   placed:
     type: timestamp
@@ -131,6 +168,15 @@ content:
       date_format: short
       custom_date_format: ''
       timezone: ''
+      tooltip:
+        date_format: long
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
     third_party_settings: {  }
     weight: 3
     region: content
@@ -141,7 +187,7 @@ content:
       require_confirmation: true
       use_modal: true
     third_party_settings: {  }
-    weight: 8
+    weight: 10
     region: content
   store_id:
     type: entity_reference_label
@@ -156,7 +202,7 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
 hidden:
   order_number: true

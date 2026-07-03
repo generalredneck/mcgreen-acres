@@ -15,6 +15,24 @@ use Drupal\mcgreen_acres_store\Plugin\Commerce\Fee\CreditCardProcessingFee;
 use Drupal\views\ViewExecutable;
 
 /**
+ * Implements hook_commerce_order_create().
+ *
+ * Defaults "Cover Stripe fees" to off for orders created via the admin
+ * "Create a new order" form (used for manually-entered cash orders), since
+ * field_cover_stripe_fees' own field default (opted-in) is meant for
+ * customer checkout, not staff-entered orders. Scoped to this specific route
+ * rather than a role check, since the route already requires
+ * "create commerce_order" access and this only needs to affect this one
+ * entry point, not every order a staff member might otherwise touch.
+ */
+function mcgreen_acres_store_commerce_order_create(OrderInterface $order) {
+  if ($order->hasField('field_cover_stripe_fees')
+    && \Drupal::routeMatch()->getRouteName() === 'entity.commerce_order.add_page') {
+    $order->set('field_cover_stripe_fees', FALSE);
+  }
+}
+
+/**
  * Implements hook_module_implements_alter().
  */
 function mcgreen_acres_store_module_implements_alter(&$implementations, $hook) {
