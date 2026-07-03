@@ -1,0 +1,21 @@
+diff --git a/disqusapi/disqusapi.php b/disqusapi/disqusapi.php
+index 00ff7eb..aa6c6a8 100644
+--- a/disqusapi/disqusapi.php
++++ b/disqusapi/disqusapi.php
+@@ -46,6 +46,7 @@ class DisqusAPIError extends Exception {
+     }
+ }
+ 
++#[\AllowDynamicProperties]
+ class DisqusResource {
+     public function __construct($api, $interface=null, $node=null, $tree=array()) {
+         global $DISQUS_API_INTERFACES;
+@@ -119,7 +120,7 @@ class DisqusResource {
+     }
+ }
+ 
+-
++#[\AllowDynamicProperties]
+ class DisqusAPI extends DisqusResource {
+     public $formats = array(
+         'json' => 'dsq_json_decode'

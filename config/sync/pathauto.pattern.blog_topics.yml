@@ -2,8 +2,10 @@ uuid: 908dcb89-47a0-43dd-a7cf-4a4dbcc46c55
 langcode: en
 status: true
 dependencies:
+  config:
+    - taxonomy.vocabulary.blog_topics
+    - taxonomy.vocabulary.tags
   module:
-    - ctools
     - taxonomy
 id: blog_topics
 label: 'Blog Topics / Tags'
@@ -13,7 +15,6 @@ selection_criteria:
   3ad15caf-f256-465c-9976-6e6f6f544a0e:
     id: 'entity_bundle:taxonomy_term'
     negate: false
-    uuid: 3ad15caf-f256-465c-9976-6e6f6f544a0e
     context_mapping:
       taxonomy_term: taxonomy_term
     bundles:

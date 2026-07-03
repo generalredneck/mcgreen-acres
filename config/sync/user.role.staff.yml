@@ -51,6 +51,7 @@ dependencies:
     - paragraphs_previewer
     - path
     - pathauto
+    - prlp
     - profile
     - redirect
     - scheduler
@@ -126,6 +127,7 @@ permissions:
   - 'administer media'
   - 'administer menu'
   - 'administer nodes'
+  - 'administer prlp settings'
   - 'administer profile'
   - 'administer profile types'
   - 'administer redirect settings'

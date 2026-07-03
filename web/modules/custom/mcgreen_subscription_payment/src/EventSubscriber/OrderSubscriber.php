@@ -22,6 +22,35 @@ class OrderSubscriber extends BaseOrderSubscriber {
   /**
    * {@inheritdoc}
    */
+  public static function getSubscribedEvents(): array {
+    $events = parent::getSubscribedEvents();
+    $events['commerce_order.mark_paid.pre_transition'] = 'onRecurringOrderMarkPaid';
+    return $events;
+  }
+
+  /**
+   * Triggers renewal when a recurring order is manually marked paid.
+   *
+   * Cron sets commerce_recurring_queued=TRUE before enqueuing the renew job, so
+   * we only act when that flag is FALSE — meaning the admin completed the order
+   * before cron's billing-period-expiry check could fire the queue-based renewal.
+   */
+  public function onRecurringOrderMarkPaid(WorkflowTransitionEvent $event) {
+    /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
+    $order = $event->getEntity();
+    if ($order->bundle() !== 'recurring') {
+      return;
+    }
+    // Cron already queued a renew job — let the queue handle it.
+    if ($order->get('commerce_recurring_queued')->value) {
+      return;
+    }
+    $this->recurringOrderManager->renewOrder($order);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function onPlace(WorkflowTransitionEvent $event) {
     /** @var \Drupal\commerce_recurring\SubscriptionStorageInterface $subscription_storage */
     $subscription_storage = $this->entityTypeManager->getStorage('commerce_subscription');

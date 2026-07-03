@@ -1,0 +1,7 @@
+name: 'Sales Chart'
+type: module
+description: 'Interactive daily/weekly/monthly revenue chart block for Commerce.'
+core_version_requirement: ^11
+package: Custom
+dependencies:
+  - drupal:block

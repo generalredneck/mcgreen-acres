@@ -114,6 +114,7 @@ module:
   link: 0
   link_attributes: 0
   link_attributes_menu_link_content: 0
+  login_emailusername: 0
   mailchimp: 0
   mailer_transport: 0
   maxlength: 0
@@ -135,8 +136,10 @@ module:
   metatag_twitter_cards: 0
   metatag_verification: 0
   metatag_views: 0
+  ms_clarity: 0
   mysql: 0
   node: 0
+  optimize_database_tables: 0
   options: 0
   page_cache: 0
   paragraphs_edit: 0
@@ -154,8 +157,10 @@ module:
   realname: 0
   recipe_tracker: 0
   redirect: 0
+  redirect_or_410: 0
   responsive_image: 0
   rest: 0
+  sales_chart: 0
   scheduler: 0
   schema_article: 0
   schema_image_object: 0

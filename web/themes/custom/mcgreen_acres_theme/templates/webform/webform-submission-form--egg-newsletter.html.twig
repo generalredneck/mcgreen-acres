@@ -1,0 +1,54 @@
+{#
+/**
+ * @file
+ * Template for the honey newsletter webform — renders a trigger button and
+ * a modal dialog containing the form. On successful Ajax submission the
+ * modal is closed automatically via the honeyNewsletterModal Drupal behavior.
+ *
+ * Available variables:
+ * - form: The webform submission form.
+ */
+#}
+
+<div class="container">
+  <div class="row g-4 g-lg-5 align-items-center">
+    <div class="col text-center">
+      <h2 class="mca-hero-form-title">Download 5 Egg Facts that Actually Matter</h2>
+      <p class="mca-hero-form-sub font-italic">Sign up for updates from our farm and learn some really interesting facts about a power food!</p>
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#NewsletterModal">
+        Sign up &amp; Get Your Free Egg Facts
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="NewsletterModal" tabindex="-1" role="dialog" aria-labelledby="NewsletterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pt-0">
+        <div id="newsletter" class="clv_newsletter_wrapper">
+          <div class="newsletter_text">
+            <h2>Download 5 Egg Facts that Actually Matter</h2>
+          </div>
+          <div class="newsletter_field mc-field-group">
+            <h3>Learn some really interesting facts about eggs!</h3>
+            <p>Sign up and also receive updates and special offers from McGreen Acres.</p>
+            <div class="newsletter_field_block">
+              {{ form }}
+            </div>
+            <div id="mce-responses" class="clear foot">
+              <div class="response alert alert-danger" id="mce-error-response" style="display: none;"></div>
+              <div class="response alert alert-success" id="mce-success-response" style="display: none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

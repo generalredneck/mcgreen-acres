@@ -17,5 +17,16 @@
         // Example: field--node--field-image--article--teaser.html.twig
         $suggestions[] = 'field__' . $entity_type . '__' . str_replace('-', '_', $field_name) . '__' . $bundle . '__' . $view_mode ;
         $suggestions[] = 'field__' . $entity_type . '__' . str_replace('-', '_', $field_name) . '__' . $view_mode ;
+
+        // Add ID-based suggestions for product variation fields.
+        if (isset($element['#object']) && $entity_type === 'commerce_product_variation') {
+          $variation = $element['#object'];
+          $variation_id = $variation->id();
+          $base = 'field__' . $entity_type . '__' . str_replace('-', '_', $field_name) . '__' . $bundle . '__' . $view_mode;
+          $suggestions[] = $base . '__variation_' . $variation_id;
+          if (method_exists($variation, 'getProduct') && $product = $variation->getProduct()) {
+            $suggestions[] = $base . '__product_' . $product->id();
+          }
+        }
       }
     }

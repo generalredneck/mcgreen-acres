@@ -1,0 +1,20 @@
+<div class="sales-chart-wrapper">
+  <div class="sales-chart-stats">
+    <div class="sales-chart-stat">
+      <span class="sales-chart-stat__label">Total Revenue</span>
+      <span class="sales-chart-stat__value">{{ stats.currency }} {{ stats.total_revenue }}</span>
+    </div>
+    <div class="sales-chart-stat">
+      <span class="sales-chart-stat__label">Overall Daily Avg</span>
+      <span class="sales-chart-stat__value">{{ stats.currency }} {{ stats.daily_avg }}</span>
+    </div>
+    <div class="sales-chart-stat">
+      <span class="sales-chart-stat__label">Days Analyzed</span>
+      <span class="sales-chart-stat__value">{{ stats.days_analyzed }}</span>
+    </div>
+  </div>
+  <div class="sales-chart-date-range">{{ stats.date_range }}</div>
+  <div class="sales-chart-canvas-wrapper">
+    <canvas id="sales-chart"></canvas>
+  </div>
+</div>

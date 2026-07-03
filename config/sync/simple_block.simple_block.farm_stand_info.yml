@@ -1,0 +1,11 @@
+uuid: 5b30f216-bf1c-4747-a166-73268a0c32f8
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+id: farm_stand_info
+title: 'Farm Stand Info'
+content:
+  value: '<div class="alert alert-info"><p>Merchandise available from the farm stand are free to take upon purchase as Self Serve.<br>Other products are available via pickup at the farm at <strong>2414 Westmoreland Rd. Red Oak, TX 75154</strong> via appointment.</p></div>'
+  format: full_html

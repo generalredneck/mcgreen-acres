@@ -2,6 +2,9 @@ uuid: 360602d2-8945-4886-98a0-9f4cf4acdf82
 langcode: en
 status: true
 dependencies:
+  config:
+    - commerce_product.commerce_product_type.physical
+    - commerce_product.commerce_product_type.subscription
   module:
     - commerce_product
 id: products
@@ -12,7 +15,6 @@ selection_criteria:
   f1263c06-7504-4a39-b649-0b62d8d12747:
     id: 'entity_bundle:commerce_product'
     negate: false
-    uuid: f1263c06-7504-4a39-b649-0b62d8d12747
     context_mapping:
       commerce_product: commerce_product
     bundles:

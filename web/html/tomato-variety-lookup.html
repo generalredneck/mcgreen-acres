@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>McGreen Acres Tomato Variety Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #005D28;
+    --green-lime: #ABCC20;
+    --green-bright: #66C430;
+    --green-soft: #CDEB89;
+    --cream: #F7F4EE;
+    --warm-gray: #E8E4DA;
+    --text-dark: #1A1A14;
+    --text-mid: #4A4A3A;
+    --text-light: #7A7A6A;
+    --border: #D4CFC2;
+    --red-accent: #C0392B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background-color: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  header {
+    background-color: var(--green-deep);
+    color: white;
+    padding: 28px 40px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  header p {
+    font-size: 0.875rem;
+    color: var(--green-soft);
+    font-weight: 400;
+  }
+
+  .controls {
+    background: var(--warm-gray);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 340px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 8px 12px 8px 34px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem;
+    background: white;
+    color: var(--text-dark);
+    outline: none;
+  }
+
+  .search-wrap input:focus {
+    border-color: var(--green-bright);
+    box-shadow: 0 0 0 3px rgba(102,196,48,0.15);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
+
+  .filter-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    white-space: nowrap;
+  }
+
+  .filter-btn {
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: white;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover { border-color: var(--green-bright); color: var(--green-deep); }
+  .filter-btn.active {
+    background: var(--green-deep);
+    border-color: var(--green-deep);
+    color: white;
+  }
+
+  .count-badge {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .table-wrap {
+    padding: 24px 40px 48px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  thead {
+    background: var(--green-deep);
+    color: white;
+  }
+
+  thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  thead th:hover { background: rgba(255,255,255,0.1); }
+
+  thead th .sort-arrow {
+    margin-left: 4px;
+    opacity: 0.5;
+    font-size: 0.7rem;
+  }
+
+  thead th.sorted .sort-arrow { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid #F0EDE6;
+    transition: background 0.12s ease;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #F7FCF2; }
+
+  tbody tr.hidden { display: none; }
+
+  td {
+    padding: 12px 16px;
+    vertical-align: middle;
+  }
+
+  td.col-img {
+    width: 80px;
+    padding: 8px 12px;
+  }
+
+  td.col-img a {
+    display: block;
+    width: 62px;
+    height: 62px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--warm-gray);
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+
+  td.col-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  td.col-img a:hover img { transform: scale(1.08); }
+
+  td.col-img .no-img {
+    width: 62px;
+    height: 62px;
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+    background: var(--warm-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  td.col-name {
+    min-width: 150px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+  }
+
+  td.col-name a {
+    color: var(--green-deep);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  td.col-name a:hover { text-decoration: underline; }
+
+  .variety-type {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-top: 3px;
+  }
+
+  .type-cherry    { background: #FFE5E5; color: #9B1C1C; }
+  .type-slicer    { background: #E5F0FF; color: #1A3A6B; }
+  .type-paste     { background: #FFF4E5; color: #7A3B00; }
+  .type-grape     { background: #F3E5FF; color: #5A1A7A; }
+  .type-specialty { background: #E5F9F0; color: #0A5A2A; }
+  .type-heirloom  { background: #FFF8E5; color: #7A5A00; }
+  .type-cocktail  { background: #FEE5F4; color: #7A0048; }
+  .type-unknown   { background: #EEEEEE; color: #555555; }
+
+  td.col-color {
+    min-width: 110px;
+    font-size: 0.88rem;
+    color: var(--text-mid);
+  }
+
+  .color-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    border: 1px solid rgba(0,0,0,0.12);
+  }
+
+  td.col-desc {
+    font-size: 0.875rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+    min-width: 280px;
+    max-width: 520px;
+  }
+
+  td.col-source {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    white-space: nowrap;
+  }
+
+  td.col-source a {
+    color: var(--green-deep);
+    text-decoration: none;
+  }
+
+  td.col-source a:hover { text-decoration: underline; }
+
+  .source-note {
+    font-size: 0.72rem;
+    color: #999;
+    font-style: italic;
+  }
+
+  .no-results {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+    font-size: 1rem;
+  }
+
+  .no-results.visible { display: block; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 768px) {
+    header, .controls, .table-wrap { padding-left: 16px; padding-right: 16px; }
+    .controls { flex-direction: column; align-items: flex-start; }
+    .count-badge { margin-left: 0; }
+    td.col-desc { min-width: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍅 Tomato Variety Reference</h1>
+  <p>McGreen Acres · Variety descriptions sourced primarily from Johnny's Selected Seeds</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search variety name or description…" oninput="filterTable()">
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Type:</span>
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('cherry', this)">Cherry</button>
+    <button class="filter-btn" onclick="setFilter('slicer', this)">Slicer</button>
+    <button class="filter-btn" onclick="setFilter('paste', this)">Paste</button>
+    <button class="filter-btn" onclick="setFilter('grape', this)">Grape</button>
+    <button class="filter-btn" onclick="setFilter('cocktail', this)">Cocktail</button>
+    <button class="filter-btn" onclick="setFilter('specialty', this)">Specialty</button>
+    <button class="filter-btn" onclick="setFilter('heirloom', this)">Heirloom</button>
+  </div>
+  <span class="count-badge" id="countBadge">31 varieties</span>
+</div>
+
+<div class="table-wrap">
+  <table id="varietyTable">
+    <thead>
+      <tr>
+        <th style="width:82px">Photo</th>
+        <th onclick="sortTable(1)" id="th-name">Variety <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(2)" id="th-color">Color <span class="sort-arrow">⇅</span></th>
+        <th>Description</th>
+        <th onclick="sortTable(4)" id="th-source">Source <span class="sort-arrow">⇅</span></th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+
+      <!-- BLACK ANGEL -->
+      <tr data-type="slicer">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/black-angel-organic-f1-tomato-seed-5162G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/dw3d9f6c2a/images/products/vegetables/05162G_01_blackangel.jpg?sw=200" alt="Black Angel" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/black-angel-organic-f1-tomato-seed-5162G.html" target="_blank">Black Angel</a><br>
+          <span class="variety-type type-slicer">Slicer</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#3D1A1A"></span>Dark Crimson</td>
+        <td class="col-desc">Early producer of clean, 6–10 oz. lightly ribbed fruits with excellent flavor. Compact, high-yielding plants are easy to trellis for tunnel or field. Dark interior even at an early stage due to the crimson gene. A striking addition to any market display alongside red varieties. Determinate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/black-angel-organic-f1-tomato-seed-5162G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- BLACK CHERRY -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/black-cherry-organic-tomato-seed-88G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/dw9d4f3e2b/images/products/vegetables/00088G_01_blackcherry.jpg?sw=200" alt="Black Cherry" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/black-cherry-organic-tomato-seed-88G.html" target="_blank">Black Cherry</a><br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#4A2020"></span>Purple-Brown</td>
+        <td class="col-desc">Sweet and robust heirloom bred in Florida by the late Vince Sapp. Round, 20 gm. fruits are a pleasant purple-brown color, regarded as one of the best-tasting black cherry tomatoes available. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/black-cherry-organic-tomato-seed-88G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- BRONZE TORCH -->
+      <tr data-type="specialty">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/bronze-torch-f1-tomato-seed-4153.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/04153_01_bronzetorch.jpg?sw=200" alt="Bronze Torch" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/bronze-torch-f1-tomato-seed-4153.html" target="_blank">Bronze Torch</a><br>
+          <span class="variety-type type-specialty">Specialty</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#8B4513"></span>Brick Red / Bronze Stripe</td>
+        <td class="col-desc">Delicious small saladette in the Juliet size class. Fruits average 1½ oz. in a beautiful shade of brick red with bronze stripes. Prolific early producer, crack-resistant, and performs well under heavy disease pressure. A dramatic offering at market, great for specialty mixes. Earlier and more productive than Pink Tiger. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/bronze-torch-f1-tomato-seed-4153.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- CANDY BELL -->
+      <tr data-type="grape">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/grape-tomatoes/candy-bell-f1-tomato-seed-4942.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/04942_01_candybell.jpg?sw=200" alt="Candy Bell" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/grape-tomatoes/candy-bell-f1-tomato-seed-4942.html" target="_blank">Candy Bell</a><br>
+          <span class="variety-type type-grape">Grape</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC2200"></span>Red</td>
+        <td class="col-desc">A labor-saving determinate grape tomato with great taste and a manageable plant. Maintains good fruit size and consistent production. Ideal for growers who want a sweet, prolific grape tomato without the sprawl of indeterminate types. Determinate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/grape-tomatoes/candy-bell-f1-tomato-seed-4942.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- CARBON -->
+      <tr data-type="heirloom">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/carbon-organic-tomato-seed-3763G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03763G_01_carbon.jpg?sw=200" alt="Carbon" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/carbon-organic-tomato-seed-3763G.html" target="_blank">Carbon</a><br>
+          <span class="variety-type type-heirloom">Heirloom</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#2D1010"></span>Black / Deep Purple</td>
+        <td class="col-desc">Delicious, highly productive black heirloom. Resists cracking and cat-facing better than other large black heirlooms, producing a higher proportion of market-quality fruit. Rich, complex flavor with a sweet finish. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/carbon-organic-tomato-seed-3763G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- CHERRY BOMB -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/cherry-bomb-organic-f1-tomato-seed-3263G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03263G_01_cherrybomb.jpg?sw=200" alt="Cherry Bomb" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/cherry-bomb-organic-f1-tomato-seed-3263G.html" target="_blank">Cherry Bomb</a><br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1111"></span>Red</td>
+        <td class="col-desc">Late blight-resistant field cherry, ideal for organic growers who need strong late blight protection. Vigorous plants produce high yields of well-flavored red cherry tomatoes. A reliable workhorse for field production. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/cherry-bomb-organic-f1-tomato-seed-3263G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- CITRINE -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/citrine-organic-f1-tomato-seed-4025G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/04025G_01_citrine.jpg?sw=200" alt="Citrine" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/citrine-organic-f1-tomato-seed-4025G.html" target="_blank">Citrine</a><br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#FFAA00"></span>Tangerine Orange</td>
+        <td class="col-desc">Johnny's-bred tangerine cherry developed to solve Sun Gold's cracking problem. Exceptional snacker with rich, balanced flavor, a meaty bite, and strong resistance to splitting. Ideal cherry size at 20 gm. Vigorous plant selected for low-input systems under heavy disease pressure. Developed in collaboration with NC State University. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/citrine-organic-f1-tomato-seed-4025G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- CLEMENTINE -->
+      <tr data-type="cocktail">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/clementine-organic-f1-tomato-seed-3991G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03991G_01_clementine.jpg?sw=200" alt="Clementine" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/clementine-organic-f1-tomato-seed-3991G.html" target="_blank">Clementine</a><br>
+          <span class="variety-type type-cocktail">Cocktail</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#F4820A"></span>Orange</td>
+        <td class="col-desc">Johnny's-bred orange cocktail tomato with a unique sweet-tart flavor derived from the Beta gene — the same orange trait found in Sun Gold. Polite, open plant habit fits well in close quarters and ventilates well. Pairs beautifully with Mountain Magic. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/clementine-organic-f1-tomato-seed-3991G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- DEFIANT -->
+      <tr data-type="slicer">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/slicing-tomatoes/defiant-phr-organic-f1-tomato-seed-2525G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/02525G_01_defiant.jpg?sw=200" alt="Defiant" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/slicing-tomatoes/defiant-phr-organic-f1-tomato-seed-2525G.html" target="_blank">Defiant PhR</a><br>
+          <span class="variety-type type-slicer">Slicer</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1111"></span>Red</td>
+        <td class="col-desc">Bred for earliness, disease resistance, and flavor. This mid-size slicer has high resistance to late blight (Ph resistance) and delivers great flavor even under heavy disease pressure. A dependable go-to for organic and conventional growers in blight-prone regions. Determinate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/slicing-tomatoes/defiant-phr-organic-f1-tomato-seed-2525G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- ESTIVA -->
+      <tr data-type="slicer">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/slicing-tomatoes/estiva-f1-tomato-seed-2087.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/02087_01_estiva.jpg?sw=200" alt="Estiva" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/slicing-tomatoes/estiva-f1-tomato-seed-2087.html" target="_blank">Estiva</a><br>
+          <span class="variety-type type-slicer">Slicer</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#BB1100"></span>Deep Red</td>
+        <td class="col-desc">Bred in the Mediterranean region for low-tech tunnel production, Estiva produces remarkably uniform 7–9 oz. fruits that resist cracking. Known for an uncanny ability to set fruit in excessive heat, with fully loaded trusses over a long season. Outstanding flavor and texture. Well balanced for high tunnels and field. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/slicing-tomatoes/estiva-f1-tomato-seed-2087.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- GALAHAD -->
+      <tr data-type="slicer">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/beefsteak-tomatoes/galahad-organic-f1-tomato-seed-4055G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/04055G_01_galahad.jpg?sw=200" alt="Galahad" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/beefsteak-tomatoes/galahad-organic-f1-tomato-seed-4055G.html" target="_blank">Galahad</a><br>
+          <span class="variety-type type-slicer">Slicer</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1100"></span>Red</td>
+        <td class="col-desc">Fantastic flavor with an impressive disease resistance profile covering regions from the Midwest to the Deep South. Round, 7–12 oz. fruits can be harvested with green shoulders and ripened in storage, or ripened on the vine. Resistance to early blight makes it a strong contender in the North. AAS Regional Winner (Heartland, West/Northwest). Determinate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/beefsteak-tomatoes/galahad-organic-f1-tomato-seed-4055G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- GLACIER -->
+      <tr data-type="heirloom">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/glacier-organic-tomato-seed-3750G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03750G_01_glacier.jpg?sw=200" alt="Glacier" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/glacier-organic-tomato-seed-3750G.html" target="_blank">Glacier</a><br>
+          <span class="variety-type type-heirloom">Heirloom</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#DD2200"></span>Red</td>
+        <td class="col-desc">Tasty first-early heirloom variety. Cocktail-sized 1–2 oz. red fruits borne on a compact determinate plant. Sweetness combines with moderate acidity to create a well-balanced flavor. A classic for short-season growing. Determinate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/glacier-organic-tomato-seed-3750G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- GHOST CHERRY -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <div class="no-img">🍅</div>
+        </td>
+        <td class="col-name">
+          Ghost Cherry<br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#F5F0E0; border:1px solid #ccc"></span>Ivory / Cream</td>
+        <td class="col-desc">Prolific heirloom white cherry tomato producing high yields of 2–3 oz. ivory-yellow fruits with a slightly fuzzy, soft skin. Excellent sweet flavor. Striking visual contrast in a mixed harvest basket. Indeterminate. <span class="source-note">(Not currently listed at Johnny's — general description.)</span></td>
+        <td class="col-source"><span class="source-note">Not at Johnny's</span></td>
+      </tr>
+
+      <!-- GRANADERO -->
+      <tr data-type="paste">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/granadero-organic-f1-tomato-seed-2584G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/02584G_01_granadero.jpg?sw=200" alt="Granadero" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/granadero-organic-f1-tomato-seed-2584G.html" target="_blank">Granadero</a><br>
+          <span class="variety-type type-paste">Paste</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1100"></span>Bright Red</td>
+        <td class="col-desc">Very high yields of uniform, attractive, bright red 4–5 oz. plum tomatoes with excellent flavor. Thick-walled fruits ideal for fresh tomato sauces, salsas, and salads. Broad disease resistance keeps Granadero healthy even under heavy disease pressure. Low susceptibility to blossom end rot. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/granadero-organic-f1-tomato-seed-2584G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- JOLENE -->
+      <tr data-type="slicer">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/beefsteak-tomatoes/jolene-f1-tomato-seed-4778.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/04778_01_jolene.jpg?sw=200" alt="Jolene" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/beefsteak-tomatoes/jolene-f1-tomato-seed-4778.html" target="_blank">Jolene</a><br>
+          <span class="variety-type type-slicer">Slicer</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC0000"></span>Deep Red</td>
+        <td class="col-desc">Excels in the Southern U.S. Smooth, deep red beefsteak that sets fruit in heat when other tomatoes will not. Round, clean, 8–10 oz. lightly ribbed fruits. An exceptional choice for Texas and Gulf Coast growers dealing with extended summer heat. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/beefsteak-tomatoes/jolene-f1-tomato-seed-4778.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- JULIET -->
+      <tr data-type="paste">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/juliet-f1-tomato-seed-707.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/00707_01_juliet.jpg?sw=200" alt="Juliet" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/juliet-f1-tomato-seed-707.html" target="_blank">Juliet</a><br>
+          <span class="variety-type type-paste">Paste</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1100"></span>Deep Red</td>
+        <td class="col-desc">Great flavor fresh or cooked. One of the most disease-resistant varieties in Johnny's trials. Deep red, shiny, small plum-shaped fruits averaging 1–2 oz. in large clusters. Prolific producer with exceptional shelf life. An AAS Award winner and perennial grower favorite. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/juliet-f1-tomato-seed-707.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- MAGIC BULLET -->
+      <tr data-type="specialty">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/magic-bullet-organic-tomato-seed-5854G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/05854G_01_magicbullet.jpg?sw=200" alt="Magic Bullet" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/magic-bullet-organic-tomato-seed-5854G.html" target="_blank">Magic Bullet</a><br>
+          <span class="variety-type type-specialty">Specialty</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#228B22"></span>Green / Yellow / Pink / Indigo</td>
+        <td class="col-desc">Very productive and tasty multicolored snacking tomato with dark indigo shoulders over green, yellow, and pink base colors. Striking visual appeal at market. A head-turning Indigo-type variety with improved plant habit. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/magic-bullet-organic-tomato-seed-5854G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- MARMALADE SKIES -->
+      <tr data-type="specialty">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/marmalade-skies-organic-f1-tomato-seed-4498G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/04498G_01_marmaladeskies.jpg?sw=200" alt="Marmalade Skies" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/marmalade-skies-organic-f1-tomato-seed-4498G.html" target="_blank">Marmalade Skies</a><br>
+          <span class="variety-type type-specialty">Specialty</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#F4820A"></span>Orange</td>
+        <td class="col-desc">Orange tomato with late blight resistance. Clean, blemish-free fruits ripen uniformly with no green shoulder. A standout at farm stands for its vibrant color and consistent appearance. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/specialty-tomatoes/marmalade-skies-organic-f1-tomato-seed-4498G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- MIDNIGHT ROMA -->
+      <tr data-type="paste">
+        <td class="col-img">
+          <div class="no-img">🍅</div>
+        </td>
+        <td class="col-name">
+          Midnight Roma<br>
+          <span class="variety-type type-paste">Paste</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#2E0A3A"></span>Deep Purple / Black</td>
+        <td class="col-desc">Dark purple-black Roma-type developed at Oregon State University by crossing Indigo Rose and Oregon Star. Rich in anthocyanins — the same antioxidant pigments found in blueberries. Thick-walled paste tomato with surprisingly intense flavor for the type. Excellent for sauces and striking on a market table. Indeterminate. <span class="source-note">(OSU variety; not currently listed at Johnny's.)</span></td>
+        <td class="col-source"><span class="source-note">OSU / Not at Johnny's</span></td>
+      </tr>
+
+      <!-- MIMOSA -->
+      <tr data-type="grape">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/videos/videos-vegetable-crops-and-varieties/video-v442.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/mimosa_01.jpg?sw=200" alt="Mimosa" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          Mimosa<br>
+          <span class="variety-type type-grape">Grape</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#F4A800"></span>Orange</td>
+        <td class="col-desc">Orange grape tomato with fruity flavor, leaf blight resistance, and a long harvest window. A Johnny's-developed variety. Eye-catching color and sweet flavor make it a favorite for snacking and market display. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/videos/videos-vegetable-crops-and-varieties/video-v442.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- MOSKVICH -->
+      <tr data-type="heirloom">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/moskvich-organic-tomato-seed-756.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/00756_01_moskvich.jpg?sw=200" alt="Moskvich" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/moskvich-organic-tomato-seed-756.html" target="_blank">Moskvich</a><br>
+          <span class="variety-type type-heirloom">Heirloom</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#BB1100"></span>Deep Red</td>
+        <td class="col-desc">One of the most appealing extra-early heirloom tomatoes. Early, deep red, and cold-tolerant fruits with rich flavor. Smooth and globe-shaped, 4–6 oz., with a small stem scar. A Russian heirloom well suited for short growing seasons and early market production. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/moskvich-organic-tomato-seed-756.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- OX HEART -->
+      <tr data-type="heirloom">
+        <td class="col-img">
+          <div class="no-img">🍅</div>
+        </td>
+        <td class="col-name">
+          Ox Heart<br>
+          <span class="variety-type type-heirloom">Heirloom</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC3366"></span>Pink-Red</td>
+        <td class="col-desc">Classic large heirloom oxheart-type tomato with a distinctive heart-shaped profile. Meaty flesh, few seeds, and low gel content make it excellent for slicing, sauces, and canning. Rich, full flavor uncommon in modern hybrids. Fruits typically 8–16 oz. Indeterminate. <span class="source-note">(Heirloom type; not currently listed at Johnny's — general description.)</span></td>
+        <td class="col-source"><span class="source-note">Heirloom / Not at Johnny's</span></td>
+      </tr>
+
+      <!-- OZARK PINK -->
+      <tr data-type="heirloom">
+        <td class="col-img">
+          <div class="no-img">🍅</div>
+        </td>
+        <td class="col-name">
+          Ozark Pink<br>
+          <span class="variety-type type-heirloom">Heirloom</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#E87070"></span>Pink</td>
+        <td class="col-desc">Heat-tolerant Southern heirloom producing large, meaty pink beefsteak fruits with excellent flavor. Developed for reliability in hot, humid climates like the Ozark region. Sweet, low-acid flesh. A strong performer in Texas summers. Indeterminate. <span class="source-note">(Not currently listed at Johnny's — general description.)</span></td>
+        <td class="col-source"><span class="source-note">Not at Johnny's</span></td>
+      </tr>
+
+      <!-- RED PEARL -->
+      <tr data-type="grape">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/grape-tomatoes/red-pearl-organic-tomato-seed-97G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/00097G_01_redpearl.jpg?sw=200" alt="Red Pearl" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/grape-tomatoes/red-pearl-organic-tomato-seed-97G.html" target="_blank">Red Pearl</a><br>
+          <span class="variety-type type-grape">Grape</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1100"></span>Red</td>
+        <td class="col-desc">Tender and nearly seedless grape tomato with intermediate resistance to late blight. Fruits weigh 15–20 gm. with good flavor and meaty texture. A clean, blemish-free market grape tomato with reliable production. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/grape-tomatoes/red-pearl-organic-tomato-seed-97G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- SUN GOLD -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/sun-gold-f1-tomato-seed-3985.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03985_01_sungold.jpg?sw=200" alt="Sun Gold" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/sun-gold-f1-tomato-seed-3985.html" target="_blank">Sun Gold</a><br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#FFAA00"></span>Golden Orange</td>
+        <td class="col-desc">The gold standard of orange cherry tomatoes — introduced by Johnny's to the U.S. in 1991. Delectably sweet and fruity with a tropical flavor no other cherry matches. Prolific producer of small orange-gold fruits. Note: ripe fruits tend to crack and drop if not harvested promptly. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/sun-gold-f1-tomato-seed-3985.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- SUNPEACH -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/sunpeach-f1-tomato-seed-3084.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03084_01_sunpeach.jpg?sw=200" alt="Sunpeach" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/sunpeach-f1-tomato-seed-3084.html" target="_blank">Sunpeach</a><br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#E87090"></span>Deep Pink</td>
+        <td class="col-desc">Delicious pink cherry tomato with leaf mold resistance. A loyal customer favorite at Johnny's for its productivity, crack resistance, and incredible flavor. Deep pink, shiny, 15–20 gm. cherries borne on long trusses. Vigorous, healthy, high-yielding plants. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/sunpeach-f1-tomato-seed-3084.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- SUPERSWEET 100 -->
+      <tr data-type="cherry">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/supersweet-100-f1-tomato-seed-3981.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03981_01_supersweet100.jpg?sw=200" alt="Supersweet 100" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/supersweet-100-f1-tomato-seed-3981.html" target="_blank">Supersweet 100</a><br>
+          <span class="variety-type type-cherry">Cherry</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1111"></span>Red</td>
+        <td class="col-desc">The classic sweet red cherry tomato. Reliable producer with prolific yields of great-tasting, 15–20 gm. fruits produced in large clusters. Widely adapted and consistently popular with both growers and customers. A proven market standard. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/cherry-tomatoes/supersweet-100-f1-tomato-seed-3981.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- UNKNOWN -->
+      <tr data-type="unknown">
+        <td class="col-img">
+          <div class="no-img">❓</div>
+        </td>
+        <td class="col-name">
+          Unknown<br>
+          <span class="variety-type type-unknown">Unknown</span>
+        </td>
+        <td class="col-color">—</td>
+        <td class="col-desc">Variety not yet identified. Observe plant habit, fruit shape, color, and flavor at harvest to narrow down candidates for future identification.</td>
+        <td class="col-source"><span class="source-note">Unlabeled</span></td>
+      </tr>
+
+      <!-- VALENCIA -->
+      <tr data-type="heirloom">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/valencia-organic-tomato-seed-749.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/00749_01_valencia.jpg?sw=200" alt="Valencia" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/valencia-organic-tomato-seed-749.html" target="_blank">Valencia</a><br>
+          <span class="variety-type type-heirloom">Heirloom</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#F47800"></span>Orange</td>
+        <td class="col-desc">Sunny orange heirloom beefsteak with full tomato flavor. Round, smooth fruits average 8–10 oz. with meaty interiors and few seeds. A midseason tomato among the best for orange color and classic tomato taste. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/heirloom-tomatoes/valencia-organic-tomato-seed-749.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- VERONA -->
+      <tr data-type="paste">
+        <td class="col-img">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/verona-organic-f1-tomato-seed-3811G.html" target="_blank">
+            <img src="https://www.johnnyseeds.com/dw/image/v2/BHHZ_PRD/on/demandware.static/-/Sites-jss-master/default/images/products/vegetables/03811G_01_verona.jpg?sw=200" alt="Verona" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\'no-img\'>🍅</div>'">
+          </a>
+        </td>
+        <td class="col-name">
+          <a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/verona-organic-f1-tomato-seed-3811G.html" target="_blank">Verona</a><br>
+          <span class="variety-type type-paste">Paste</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#CC1100"></span>Deep Red</td>
+        <td class="col-desc">Larger, more flavorful Juliet type. Similar to Juliet, but with tastier, somewhat more plump, deep red "cocktail plum" fruits averaging 2½ oz. An upgrade from Juliet where size and flavor depth matter. Indeterminate.</td>
+        <td class="col-source"><a href="https://www.johnnyseeds.com/vegetables/tomatoes/paste-tomatoes/verona-organic-f1-tomato-seed-3811G.html" target="_blank">Johnny's</a></td>
+      </tr>
+
+      <!-- WOOLLY KATE -->
+      <tr data-type="specialty">
+        <td class="col-img">
+          <div class="no-img">🍅</div>
+        </td>
+        <td class="col-name">
+          Woolly Kate<br>
+          <span class="variety-type type-specialty">Specialty</span>
+        </td>
+        <td class="col-color"><span class="color-dot" style="background:#F5C842"></span>Yellow</td>
+        <td class="col-desc">A rare, fuzzy-skinned yellow tomato with a distinctive velvety texture similar to a peach. Small to medium fruits with sweet, mild flavor. The unusual fuzzy skin (due to the "woolly" gene) makes it a conversation piece at market. Indeterminate. <span class="source-note">(Specialty heirloom; not currently listed at Johnny's — general description.)</span></td>
+        <td class="col-source"><span class="source-note">Not at Johnny's</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="no-results" id="noResults">No varieties match your search.</div>
+</div>
+
+<footer>McGreen Acres · Variety Reference · Descriptions sourced from Johnny's Selected Seeds where available · Varieties not listed at Johnny's are noted with general descriptions.</footer>
+
+<script>
+  let currentFilter = 'all';
+  let sortCol = -1;
+  let sortAsc = true;
+
+  function filterTable() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#tableBody tr');
+    let visible = 0;
+
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      const type = row.dataset.type;
+      const matchesSearch = !query || text.includes(query);
+      const matchesFilter = currentFilter === 'all' || type === currentFilter;
+      if (matchesSearch && matchesFilter) {
+        row.classList.remove('hidden');
+        visible++;
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('countBadge').textContent = visible + ' variet' + (visible === 1 ? 'y' : 'ies');
+    const noResults = document.getElementById('noResults');
+    noResults.classList.toggle('visible', visible === 0);
+  }
+
+  function setFilter(type, btn) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterTable();
+  }
+
+  function sortTable(col) {
+    if (sortCol === col) sortAsc = !sortAsc;
+    else { sortCol = col; sortAsc = true; }
+
+    // Update header arrows
+    document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+    const headers = document.querySelectorAll('thead th');
+
+    const tbody = document.getElementById('tableBody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a, b) => {
+      const aText = a.querySelectorAll('td')[col].textContent.trim();
+      const bText = b.querySelectorAll('td')[col].textContent.trim();
+      return sortAsc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+    });
+
+    rows.forEach(r => tbody.appendChild(r));
+
+    if (headers[col]) {
+      headers[col].classList.add('sorted');
+      const arrow = headers[col].querySelector('.sort-arrow');
+      if (arrow) arrow.textContent = sortAsc ? ' ↑' : ' ↓';
+    }
+  }
+</script>
+</body>
+</html>
