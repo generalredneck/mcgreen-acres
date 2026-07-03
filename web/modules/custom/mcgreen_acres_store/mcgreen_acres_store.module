@@ -71,6 +71,14 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
       // slow and would otherwise leave them looking at an unresponsive
       // cart page.
       $form['#attached']['library'][] = 'mcgreen_acres_store/express_checkout_overlay';
+
+      // Without a label, the buttons just look like an unexplained stack of
+      // buttons sitting above the "Support the Farm" checkbox and the
+      // regular cart actions. Label them and mark where they end, so it's
+      // clear they're an alternate, faster checkout path rather than part
+      // of the normal cart controls.
+      $form['stripe_express_checkout_buttons']['#prefix'] = '<div class="express-checkout-group"><p class="express-checkout-group__label">' . t('Express Checkout') . '</p>';
+      $form['stripe_express_checkout_buttons']['#suffix'] = '<p class="express-checkout-group__divider"><span>' . t('or checkout with card below') . '</span></p></div>';
     }
   }
 

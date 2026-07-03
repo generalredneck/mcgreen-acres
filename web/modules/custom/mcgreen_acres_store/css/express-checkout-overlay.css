@@ -1,3 +1,59 @@
+.express-checkout-group {
+  margin-bottom: 1.5rem;
+}
+
+.express-checkout-group__label {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #666;
+}
+
+.express-checkout-group__divider {
+  display: flex;
+  align-items: center;
+  color: #999;
+  font-size: 0.85rem;
+  margin: 1rem 0 0;
+}
+
+.express-checkout-group__divider::before,
+.express-checkout-group__divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.express-checkout-group__divider span {
+  padding: 0 0.75rem;
+}
+
+/*
+ * Skeleton shown while Stripe's JS is still loading/mounting the Express
+ * Checkout buttons. The container is a plain empty div until Stripe.js
+ * inserts the mounted element into it, so :empty alone tracks "not ready
+ * yet" with no JS required and can't get stuck in a loading state.
+ */
+[id^='stripe-express-checkout-element']:empty {
+  display: block;
+  min-height: 48px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background-size: 200% 100%;
+  animation: mcgreen-express-checkout-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes mcgreen-express-checkout-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 #mcgreen-express-checkout-overlay {
   display: none;
   position: fixed;

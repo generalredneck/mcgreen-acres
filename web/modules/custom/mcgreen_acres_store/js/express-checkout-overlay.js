@@ -15,11 +15,6 @@
 
   let overlayTimeoutId = null;
 
-  function onBeforeUnload(event) {
-    event.preventDefault();
-    event.returnValue = '';
-  }
-
   function buildOverlay() {
     let overlay = document.getElementById(OVERLAY_ID);
     if (overlay) {
@@ -41,7 +36,6 @@
 
   function showOverlay() {
     buildOverlay().classList.add('is-visible');
-    window.addEventListener('beforeunload', onBeforeUnload);
     overlayTimeoutId = window.setTimeout(hideOverlay, OVERLAY_TIMEOUT);
   }
 
@@ -50,7 +44,6 @@
     if (overlay) {
       overlay.classList.remove('is-visible');
     }
-    window.removeEventListener('beforeunload', onBeforeUnload);
     if (overlayTimeoutId) {
       window.clearTimeout(overlayTimeoutId);
       overlayTimeoutId = null;
