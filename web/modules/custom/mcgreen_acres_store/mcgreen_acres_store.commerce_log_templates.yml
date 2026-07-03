@@ -1,0 +1,4 @@
+order_placed_express_checkout:
+  category: commerce_order
+  label: 'Order placed via Express Checkout'
+  template: '<p>Order placed via Stripe Express Checkout (Apple Pay, Google Pay, etc.).</p>'
