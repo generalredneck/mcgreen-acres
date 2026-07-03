@@ -1,0 +1,16 @@
+--- a/src/Plugin/Commerce/PaymentGateway/StripePaymentElement.php
++++ b/src/Plugin/Commerce/PaymentGateway/StripePaymentElement.php
+@@ -826,6 +826,13 @@
+       if (empty($order->getEmail())) {
+         $order->setEmail($billing_details['email']);
+       }
++      // Store the phone number collected via Express Checkout (if any),
++      // using the same order field the site's regular checkout phone pane
++      // populates, so Express Checkout orders get the same downstream
++      // phone-profile handling.
++      if ($order->hasField('field_order_contact') && $order->get('field_order_contact')->isEmpty() && !empty($billing_details['phone'])) {
++        $order->set('field_order_contact', $billing_details['phone']);
++      }
+       // Create a billing profile, if allowed.
+       if ($this->collectsBillingInformation()) {
+         $billing_profile = $this->entityTypeManager->getStorage('profile')
