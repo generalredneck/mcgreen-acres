@@ -60,8 +60,18 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
   // and its payment gateway selection, so it can't be allowed to pay for a
   // subscription; only the regular checkout's Stripe Payment Element pane
   // should handle that. Remove the buttons commerce_stripe just injected.
-  if ($order && isset($form['stripe_express_checkout_buttons']) && _mcgreen_acres_store_cart_has_subscription($order)) {
-    unset($form['stripe_express_checkout_buttons']);
+  if ($order && isset($form['stripe_express_checkout_buttons'])) {
+    if (_mcgreen_acres_store_cart_has_subscription($order)) {
+      unset($form['stripe_express_checkout_buttons']);
+    }
+    else {
+      // Show a blocking overlay from the moment the customer confirms
+      // payment in the Apple Pay/Google Pay sheet until the browser
+      // navigates away, since the checkout-return request that follows is
+      // slow and would otherwise leave them looking at an unresponsive
+      // cart page.
+      $form['#attached']['library'][] = 'mcgreen_acres_store/express_checkout_overlay';
+    }
   }
 
   // Let the customer opt out of the "Support the Farm" contribution here,

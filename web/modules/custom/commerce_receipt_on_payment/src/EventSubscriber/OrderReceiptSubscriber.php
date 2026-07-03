@@ -13,6 +13,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Replaces commerce_order.order_receipt_subscriber via ServiceProvider. When
  * the order type has send_receipt_on_paid enabled, this subscriber skips
  * sending so that OrderPaidReceiptSubscriber can send it on the paid event.
+ *
+ * The "order_receipt" sub-type of the "commerce" mailer policy has the
+ * symfony_mailer_queue adjuster applied, so this send is queued rather than
+ * blocking the request (e.g. a checkout gateway's onReturn()) that triggers
+ * it. See the symfony_mailer.mailer_policy.commerce.order_receipt config.
  */
 class OrderReceiptSubscriber implements EventSubscriberInterface {
 

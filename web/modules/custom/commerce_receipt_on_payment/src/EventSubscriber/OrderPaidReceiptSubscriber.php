@@ -14,6 +14,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Only fires when the order type has send_receipt_on_paid enabled. The
  * commerce_order.order.paid event is guaranteed to fire at most once per order
  * (when the balance first reaches zero).
+ *
+ * The "order_receipt" sub-type of the "commerce" mailer policy has the
+ * symfony_mailer_queue adjuster applied, so this send is queued rather than
+ * blocking the request (e.g. a checkout gateway's onReturn()) that triggers
+ * it. See the symfony_mailer.mailer_policy.commerce.order_receipt config.
  */
 class OrderPaidReceiptSubscriber implements EventSubscriberInterface {
 

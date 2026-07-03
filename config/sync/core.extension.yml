@@ -184,6 +184,7 @@ module:
   simplenews_stats: 0
   state_machine: 0
   symfony_mailer: 0
+  symfony_mailer_queue: 0
   system: 0
   taxonomy: 0
   term_condition: 0

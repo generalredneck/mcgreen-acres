@@ -1,0 +1,14 @@
+uuid: c1bbc7ba-e0b0-4a70-b9c9-0cb24f0c2431
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce
+    - symfony_mailer_queue
+id: commerce.order_receipt
+configuration:
+  queue_sending:
+    queue_behavior: delayed
+    requeue_delay: '60'
+    maximum_attempts: '5'
+    send_wait_time: '0'

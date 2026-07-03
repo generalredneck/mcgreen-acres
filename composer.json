@@ -150,6 +150,7 @@
         "drupal/simplenews": "^4.1",
         "drupal/simplenews_stats": "4.x-dev",
         "drupal/symfony_mailer": "^1.6",
+        "drupal/symfony_mailer_queue": "^1.2",
         "drupal/term_condition": "^2.0",
         "drupal/twig_tweak": "^3.3",
         "drupal/universal_device_detection": "^2.1",
