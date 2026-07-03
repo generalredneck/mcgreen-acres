@@ -4,10 +4,30 @@
  * @file
  */
 
+use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
+use Drupal\mcgreen_acres_store\Plugin\Commerce\Fee\CreditCardProcessingFee;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function mcgreen_acres_store_module_implements_alter(&$implementations, $hook) {
+  // Force our cart form alter to run after commerce_stripe's, since it needs
+  // to remove the "stripe_express_checkout_buttons" element that
+  // commerce_stripe_form_views_form_commerce_cart_form_default_alter()
+  // injects, rather than relying on module name alphabetical ordering.
+  if ($hook === 'form_views_form_commerce_cart_form_default_alter' && isset($implementations['mcgreen_acres_store'])) {
+    $group = $implementations['mcgreen_acres_store'];
+    unset($implementations['mcgreen_acres_store']);
+    $implementations['mcgreen_acres_store'] = $group;
+  }
+}
 
 /**
  *
@@ -31,6 +51,89 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
     ],
     '#weight' => -10,
   ];
+
+  $order = _mcgreen_acres_store_get_cart_form_order($form_state);
+
+  // A herd share (subscription product) can be purchased alongside physical
+  // products in the same "default" cart order (both use the "physical_product"
+  // order item type). Stripe Express Checkout skips the normal checkout flow
+  // and its payment gateway selection, so it can't be allowed to pay for a
+  // subscription; only the regular checkout's Stripe Payment Element pane
+  // should handle that. Remove the buttons commerce_stripe just injected.
+  if ($order && isset($form['stripe_express_checkout_buttons']) && _mcgreen_acres_store_cart_has_subscription($order)) {
+    unset($form['stripe_express_checkout_buttons']);
+  }
+
+  // Let the customer opt out of the "Support the Farm" contribution here,
+  // before they can reach the Stripe Express Checkout buttons, which skip
+  // the regular checkout flow (and its own opt-out checkbox) entirely.
+  $order = _mcgreen_acres_store_get_cart_form_order($form_state);
+  if ($order && $order->bundle() === 'default') {
+    $subtotal = CreditCardProcessingFee::getSubtotalExcludingFee($order);
+    if (!$subtotal->isZero()) {
+      $cover_fees = $order->get('field_cover_stripe_fees')->value;
+      $checked = ($cover_fees === NULL || (bool) $cover_fees);
+      $fee_amount = CreditCardProcessingFee::calculateFee((float) $subtotal->getNumber());
+
+      $form['cover_stripe_fees'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Support the Farm (+@amount)', ['@amount' => '$' . number_format($fee_amount, 2)]),
+        '#description' => t('100% optional. This helps offset the cost of accepting card payments.'),
+        '#default_value' => $checked,
+        // 60: renders after the view's own output (weight 50, which includes
+        // the item rows and the Subtotal/Total footer area) but before the
+        // actions buttons (weight 100, Drupal's default for #type actions).
+        '#weight' => 60,
+        '#ajax' => [
+          'callback' => '_mcgreen_acres_store_cart_cover_fees_ajax',
+          'progress' => ['type' => 'throbber', 'message' => NULL],
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Ajax callback for the cart page "Support the Farm" checkbox.
+ *
+ * Saves the opt-in/out choice to the cart order (which recalculates the fee
+ * adjustment via order refresh) and reloads the page so the updated total is
+ * visible, since the Views cart form isn't otherwise ajax-enabled.
+ */
+function _mcgreen_acres_store_cart_cover_fees_ajax(array $form, FormStateInterface $form_state): AjaxResponse {
+  $order = _mcgreen_acres_store_get_cart_form_order($form_state);
+  if ($order) {
+    $order->set('field_cover_stripe_fees', (bool) $form_state->getValue('cover_stripe_fees'));
+    $order->save();
+  }
+  $response = new AjaxResponse();
+  $response->addCommand(new RedirectCommand(Url::fromRoute('commerce_cart.page')->toString()));
+  return $response;
+}
+
+/**
+ * Checks whether any order item's purchased entity is a subscription.
+ */
+function _mcgreen_acres_store_cart_has_subscription(OrderInterface $order): bool {
+  foreach ($order->getItems() as $order_item) {
+    $purchased_entity = $order_item->getPurchasedEntity();
+    if ($purchased_entity && $purchased_entity->bundle() === 'subscription') {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Gets the order backing the current commerce_cart_form_default view.
+ */
+function _mcgreen_acres_store_get_cart_form_order(FormStateInterface $form_state): ?OrderInterface {
+  $view = $form_state->getBuildInfo()['args'][0] ?? NULL;
+  if (!$view instanceof ViewExecutable || empty($view->result)) {
+    return NULL;
+  }
+  $entity = $view->result[0]->_entity ?? NULL;
+  return $entity instanceof OrderInterface ? $entity : NULL;
 }
 
 /**

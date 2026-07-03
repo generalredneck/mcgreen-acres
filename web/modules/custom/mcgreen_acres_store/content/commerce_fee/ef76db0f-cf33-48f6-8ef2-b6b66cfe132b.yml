@@ -8,13 +8,13 @@ _meta:
 default:
   name:
     -
-      value: 'Credit Card Processing Fee'
+      value: 'Farm Support Contribution'
   display_name:
     -
-      value: 'Credit Card Processing Fee'
+      value: 'Support the Farm'
   description:
     -
-      value: 'Covers the 2.9% + $0.30 Stripe processing fee so the full amount goes to the farm.'
+      value: 'Optional customer contribution (2.9% + $0.30) to offset card processing costs. Worded as a voluntary tip rather than a surcharge, since Texas law (Tex. Bus. & Com. Code §604A.002) prohibits credit card surcharges.'
   order_types:
     -
       target_id: default

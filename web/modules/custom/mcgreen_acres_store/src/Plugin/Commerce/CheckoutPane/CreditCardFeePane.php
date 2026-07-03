@@ -4,21 +4,22 @@ namespace Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane;
 
 use Drupal\commerce_checkout\Attribute\CommerceCheckoutPane;
 use Drupal\commerce_checkout\Plugin\Commerce\CheckoutPane\CheckoutPaneBase;
-use Drupal\commerce_price\Price;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\mcgreen_acres_store\Plugin\Commerce\Fee\CreditCardProcessingFee;
 
 /**
- * Provides an opt-out checkbox for the credit card processing fee.
+ * Provides an opt-out checkbox for the "Support the Farm" processing fee.
  *
  * The fee is applied automatically by FeeOrderProcessor. This pane lets the
- * customer remove it during regular checkout. Express Checkout always includes
- * the fee since this pane is not shown in that flow.
+ * customer remove it during regular checkout. Express Checkout skips this
+ * step (it jumps straight to the review step), so those orders rely on the
+ * cart-page checkbox in mcgreen_acres_store.module to capture the opt-out
+ * before checkout starts; field_cover_stripe_fees defaults to opted-in.
  */
 #[CommerceCheckoutPane(
   id: 'credit_card_fee',
-  label: new TranslatableMarkup('Credit Card Processing Fee'),
+  label: new TranslatableMarkup("Cover farmer's processing fees"),
   default_step: '_disabled',
   wrapper_element: 'container',
 )]
@@ -45,15 +46,14 @@ class CreditCardFeePane extends CheckoutPaneBase {
     $checked = ($cover_fees === NULL || (bool) $cover_fees);
 
     // Calculate the current fee amount for the label.
-    $total = $this->order->getTotalPrice();
-    $subtotal = $this->getSubtotalExcludingFee($total);
+    $subtotal = CreditCardProcessingFee::getSubtotalExcludingFee($this->order);
     $fee_amount = CreditCardProcessingFee::calculateFee((float) $subtotal->getNumber());
     $formatted = '$' . number_format($fee_amount, 2);
 
     $pane_form['cover_fees'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Cover credit card processing fees (@amount)', ['@amount' => $formatted]),
-      '#description' => $this->t('Checking this box adds the 2.9% + $0.30 Stripe processing fee to your order so the full amount goes to the farm.'),
+      '#title' => $this->t("Cover farmer's processing fees (+@amount)", ['@amount' => $formatted]),
+      '#description' => $this->t('100% optional. This voluntary contribution helps offset the cost of accepting card payments, so more of your order goes directly to the farm.'),
       '#default_value' => $checked,
     ];
 
@@ -66,24 +66,6 @@ class CreditCardFeePane extends CheckoutPaneBase {
   public function submitPaneForm(array &$pane_form, FormStateInterface $form_state, array &$complete_form): void {
     $values = $form_state->getValue($pane_form['#parents']);
     $this->order->set('field_cover_stripe_fees', (bool) $values['cover_fees']);
-  }
-
-  /**
-   * Returns the order subtotal with any existing processing fee excluded.
-   *
-   * This prevents the fee from compounding on itself if the pane rebuilds.
-   *
-   * @param \Drupal\commerce_price\Price $total
-   *   The current order total.
-   *
-   * @return \Drupal\commerce_price\Price
-   *   The subtotal before the processing fee.
-   */
-  protected function getSubtotalExcludingFee(Price $total): Price {
-    foreach ($this->order->getAdjustments(['fee']) as $adjustment) {
-      $total = $total->subtract($adjustment->getAmount());
-    }
-    return $total;
   }
 
 }

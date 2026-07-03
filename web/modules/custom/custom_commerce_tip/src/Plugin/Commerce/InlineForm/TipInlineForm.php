@@ -27,22 +27,8 @@ class TipInlineForm extends TipInlineFormBase {
     /** @var \Drupal\commerce_order\Entity\Order $order */
     $order_amount = $order->getTotalPrice();
     $order_amount_number = (float) $order_amount->getNumber();
-    // Fees are 2.9% + $0.30 with a minimum of $0.50.
-    $original_credit_card_fees_amount = ($order_amount_number * 0.029) + 0.30;
-    // Calculate a 2nd round because this will be closer to what the payment
-    // processor would take after someone gave a tip because they take from the
-    // tip as well. The difference would be somewhere around 3% of the tip.
-    $new_credit_card_fees_amount = (($order_amount_number + $original_credit_card_fees_amount) * 0.029) + 0.30;
-    if ($new_credit_card_fees_amount < 0.50) {
-      $new_credit_card_fees_amount = 0.50;
-    }
-    $tip_to_cover_fees = $new_credit_card_fees_amount / $order_amount_number;
     $options = $inline_form['tip_info']['tip_options']['#value'];
-    $tip_value_formatter = $this->currencyFormatter->format(
-      round($new_credit_card_fees_amount, 2),
-      $order_amount->getCurrencyCode()
-    );
-    $new_options = [(string) round($tip_to_cover_fees, 4) => "Cover farmer's processing fees (" . $tip_value_formatter . ")" ];
+    $new_options = [];
     foreach ([0.05, 0.10, 0.15] as $percentage) {
       $new_options[(string) $percentage] = $this->t(
         '@percentage% (@tip_total)',
@@ -63,7 +49,7 @@ class TipInlineForm extends TipInlineFormBase {
     );
     $inline_form['tip_info']['tip']['#options'] = $options;
     $inline_form['tip_info']['tip_options']['#value'] = $options;
-    $inline_form['tip_info']['tip']['#default_value'] = (string) round($tip_to_cover_fees, 4);
+    $inline_form['tip_info']['tip']['#default_value'] = 'none';
     unset($inline_form['tip_info']['add_tip']);
     return $inline_form;
   }

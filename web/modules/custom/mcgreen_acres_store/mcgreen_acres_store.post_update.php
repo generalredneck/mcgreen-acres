@@ -32,9 +32,9 @@ function mcgreen_acres_store_post_update_create_credit_card_processing_fee(): vo
 
   Fee::create([
     'uuid' => $uuid,
-    'name' => 'Credit Card Processing Fee',
-    'display_name' => 'Credit Card Processing Fee',
-    'description' => 'Covers the 2.9% + $0.30 Stripe processing fee so the full amount goes to the farm.',
+    'name' => 'Farm Support Contribution',
+    'display_name' => 'Support the Farm',
+    'description' => 'Optional customer contribution (2.9% + $0.30) to offset card processing costs. Worded as a voluntary tip rather than a surcharge, since Texas law (Tex. Bus. & Com. Code §604A.002) prohibits credit card surcharges.',
     'order_types' => ['default'],
     'stores' => array_keys($store),
     'plugin' => [
