@@ -1,0 +1,91 @@
+diff --git a/commerce_stripe.commerce_log_templates.yml b/commerce_stripe.commerce_log_templates.yml
+index 812bd2acdfdc06208093dc04f57fdd4dbf2ff3fb..df1c7bbc1f23881e5f51564810b57c1d0c03e9b0 100644
+--- a/commerce_stripe.commerce_log_templates.yml
++++ b/commerce_stripe.commerce_log_templates.yml
+@@ -2,3 +2,7 @@ commerce_stripe_order_placed_notify:
+   category: commerce_stripe
+   label: 'Order placed'
+   template: '<p>The order was placed by the Stripe webhook "{{ webhook_event_type }}". </p>'
++order_placed_express_checkout:
++  category: commerce_order
++  label: 'Order placed via Express Checkout'
++  template: '<p>Order placed via Stripe Express Checkout.</p>'
+diff --git a/commerce_stripe.services.yml b/commerce_stripe.services.yml
+index 5c35efed4c7cdfe4cf70f105be96c3701ac5c882..bd50e6436c03db740ff55412384a0de32eb1a65f 100644
+--- a/commerce_stripe.services.yml
++++ b/commerce_stripe.services.yml
+@@ -35,3 +35,9 @@ services:
+     arguments:
+       - '@commerce_price.minor_units_converter'
+       - '@commerce_order.order_total_summary'
++
++  commerce_stripe.express_checkout_log_subscriber:
++    class: Drupal\commerce_stripe\EventSubscriber\ExpressCheckoutLogSubscriber
++    arguments: ['@entity_type.manager']
++    tags:
++      - { name: event_subscriber }
+diff --git a/src/EventSubscriber/ExpressCheckoutLogSubscriber.php b/src/EventSubscriber/ExpressCheckoutLogSubscriber.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..6df4dbaa67539b4ea7219ca51201c199f7eb56e2
+--- /dev/null
++++ b/src/EventSubscriber/ExpressCheckoutLogSubscriber.php
+@@ -0,0 +1,59 @@
++<?php
++
++namespace Drupal\commerce_stripe\EventSubscriber;
++
++use Drupal\commerce_checkout\Event\CheckoutEvents;
++use Drupal\commerce_order\Event\OrderEvent;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Symfony\Component\EventDispatcher\EventSubscriberInterface;
++
++/**
++ * Logs an order activity entry when an order is placed via Express Checkout.
++ *
++ * StripePaymentElement::onPaymentConfirm() sets the "stripe_express_checkout"
++ * order data key when the customer pays via the Express Checkout Element
++ * (Apple Pay/Google Pay/etc.), which skips the regular checkout steps
++ * entirely. This makes that distinction visible on the order's Activity tab.
++ */
++class ExpressCheckoutLogSubscriber implements EventSubscriberInterface {
++
++  /**
++   * The commerce_log storage.
++   *
++   * @var \Drupal\commerce_log\LogStorageInterface
++   */
++  protected $logStorage;
++
++  /**
++   * Constructs a new object.
++   *
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
++   *   The entity type manager.
++   */
++  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
++    $this->logStorage = $entity_type_manager->getStorage('commerce_log');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function getSubscribedEvents(): array {
++    return [
++      CheckoutEvents::COMPLETION => ['onCompletion', -1000],
++    ];
++  }
++
++  /**
++   * Logs the order activity entry.
++   *
++   * @param \Drupal\commerce_order\Event\OrderEvent $event
++   *   The order event.
++   */
++  public function onCompletion(OrderEvent $event) {
++    $order = $event->getOrder();
++    if ($order->getData('stripe_express_checkout', FALSE)) {
++      $this->logStorage->generate($order, 'order_placed_express_checkout')->save();
++    }
++  }
++
++}
