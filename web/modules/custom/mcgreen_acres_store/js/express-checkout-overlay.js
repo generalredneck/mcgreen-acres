@@ -6,6 +6,13 @@
  * customers land back on the cart page while the checkout-return request
  * does its (slow, synchronous) work, and may click around and disrupt
  * their own order.
+ *
+ * Also toggles a "loading skeleton" on the Express Checkout container: the
+ * container is only actually empty for a moment, since Stripe's mount()
+ * inserts an iframe into it right away, long before the wallet buttons
+ * inside that iframe are ready. So instead of a CSS :empty hook, this
+ * listens for Stripe's own 'ready' event (same pattern the Payment Element
+ * uses) and adds a class once the buttons are genuinely renderable.
  */
 ((Drupal, once) => {
   const OVERLAY_ID = 'mcgreen-express-checkout-overlay';
@@ -50,6 +57,13 @@
     }
   }
 
+  function markReady(instance) {
+    const container = document.getElementById(instance.settings.elementId);
+    if (container) {
+      container.classList.add('is-ready');
+    }
+  }
+
   Drupal.behaviors.mcgreenAcresExpressCheckoutOverlay = {
     attach(context) {
       once('mcgreen-express-checkout-overlay', 'body', context).forEach(() => {
@@ -70,6 +84,10 @@
               instance.expressCheckoutElement.addEventListener(
                 'cancel',
                 hideOverlay,
+              );
+              instance.expressCheckoutElement.addEventListener(
+                'ready',
+                () => markReady(instance),
               );
             }
           });

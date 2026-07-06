@@ -31,18 +31,26 @@
 }
 
 /*
- * Skeleton shown while Stripe's JS is still loading/mounting the Express
- * Checkout buttons. The container is a plain empty div until Stripe.js
- * inserts the mounted element into it, so :empty alone tracks "not ready
- * yet" with no JS required and can't get stuck in a loading state.
+ * Skeleton shown while Stripe is still resolving which wallets are
+ * available and rendering their buttons. Stripe's mount() inserts an
+ * iframe into the container almost immediately, well before the buttons
+ * inside it are visible, so :empty can't detect "not ready yet" here.
+ * express-checkout-overlay.js adds .is-ready once Stripe's 'ready' event
+ * actually fires.
  */
-[id^='stripe-express-checkout-element']:empty {
+[id^='stripe-express-checkout-element'] {
   display: block;
   min-height: 48px;
   border-radius: 6px;
   background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
   background-size: 200% 100%;
   animation: mcgreen-express-checkout-shimmer 1.2s ease-in-out infinite;
+}
+
+[id^='stripe-express-checkout-element'].is-ready {
+  min-height: 0;
+  background: none;
+  animation: none;
 }
 
 @keyframes mcgreen-express-checkout-shimmer {
