@@ -97,7 +97,7 @@ class CreditCardProcessingFee extends OrderFeeBase {
   public static function calculateFee(float $order_total): float {
     $first_pass = ($order_total * 0.029) + 0.30;
     $fee = round((($order_total + $first_pass) * 0.029) + 0.30, 2);
-    return max($fee, 0.50);
+    return $fee;
   }
 
 }

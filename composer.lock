@@ -6223,20 +6223,20 @@
         },
         {
             "name": "drupal/entity_browser_generic_embed",
-            "version": "10.1.0-alpha2",
+            "version": "10.1.2",
             "require": {
-                "drupal/core": ">=11.1",
+                "drupal/core": "~11.4.0",
                 "drupal/entity_browser": "*",
                 "drupal/varbase_media": "^10"
             },
             "type": "metapackage",
             "extra": {
                 "drupal": {
-                    "version": "10.1.0-alpha2",
-                    "datestamp": "1746298649",
+                    "version": "10.1.2",
+                    "datestamp": "1783525851",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -11754,21 +11754,22 @@
         },
         {
             "name": "drupal/varbase_bootstrap_paragraphs",
-            "version": "10.1.0-alpha1",
+            "version": "10.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/varbase_bootstrap_paragraphs.git",
-                "reference": "10.1.0-alpha1"
+                "reference": "10.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/varbase_bootstrap_paragraphs-10.1.0-alpha1.zip",
-                "reference": "10.1.0-alpha1",
-                "shasum": "38eed75ab46aef0e221531d7ba22dc1166582f86"
+                "url": "https://ftp.drupal.org/files/projects/varbase_bootstrap_paragraphs-10.1.1.zip",
+                "reference": "10.1.1",
+                "shasum": "dba740ced7eb65d97dd46ceeb84b4572637c1def"
             },
             "require": {
                 "drupal/advanced_text_formatter": "~3",
-                "drupal/core": ">=11.1",
+                "drupal/core": "~11.4.0",
+                "drupal/entity_reference_revisions": "~1",
                 "drupal/entity_usage": "~2",
                 "drupal/field_group": "~4",
                 "drupal/maxlength": "~3",
@@ -11779,17 +11780,16 @@
                 "drupal/viewsreference": "~2",
                 "drupal/webform": "~6.3.0",
                 "vardot/entity-definition-update-manager": "~1",
-                "vardot/module-installer-factory": "~1",
-                "vardot/varbase-patches": "~10.1.0"
+                "vardot/module-installer-factory": "~1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "10.1.0-alpha1",
-                    "datestamp": "1744886559",
+                    "version": "10.1.1",
+                    "datestamp": "1783537561",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -11825,23 +11825,23 @@
         },
         {
             "name": "drupal/varbase_media",
-            "version": "10.1.0-alpha2",
+            "version": "10.1.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/varbase_media.git",
-                "reference": "10.1.0-alpha2"
+                "reference": "10.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/varbase_media-10.1.0-alpha2.zip",
-                "reference": "10.1.0-alpha2",
-                "shasum": "ecd210b3a8feb4321da1976e8aac6a6c2ee9da51"
+                "url": "https://ftp.drupal.org/files/projects/varbase_media-10.1.2.zip",
+                "reference": "10.1.2",
+                "shasum": "7dee727c7723c6f43757b7a30a8771b756320c8a"
             },
             "require": {
                 "drupal/advanced_text_formatter": "~3",
                 "drupal/better_exposed_filters": "~7",
                 "drupal/blazy": "~3",
-                "drupal/core": ">=11.1",
+                "drupal/core": "~11.4.0",
                 "drupal/crop": "~2",
                 "drupal/drimage_improved": "~1",
                 "drupal/dropzonejs": "~2",
@@ -11872,8 +11872,7 @@
                 "drupal/views_bulk_operations": "~4",
                 "drupal/views_infinite_scroll": "~2",
                 "drupal/webp": "~1",
-                "vardot/entity-definition-update-manager": "~1",
-                "vardot/module-installer-factory": "~1",
+                "vardot/module-installer-factory": "~1.0",
                 "vardot/varbase-patches": "~10.1.0"
             },
             "require-dev": {
@@ -11885,11 +11884,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "10.1.0-alpha2",
-                    "datestamp": "1746298649",
+                    "version": "10.1.2",
+                    "datestamp": "1783525851",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -12272,7 +12271,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/issue/visitors-3589175.git",
-                "reference": "3a33a0aa13652a474f84b9ec4af5568854fee770"
+                "reference": "6f6288b97c01a9b10bc98f2ae80364bf3596bfb0"
             },
             "require": {
                 "drupal/charts": "^5",
@@ -12310,7 +12309,7 @@
                 "docs": "https://www.drupal.org/docs/8/modules/visitors",
                 "forum": "https://drupal.stackexchange.com/questions/tagged/visitors"
             },
-            "time": "2026-05-08T14:36:24+00:00"
+            "time": "2026-07-08T02:50:53+00:00"
         },
         {
             "name": "drupal/webform",
@@ -12370,7 +12369,7 @@
             "extra": {
                 "drupal": {
                     "version": "6.3.0",
-                    "datestamp": "1783438699",
+                    "datestamp": "1783604819",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13562,22 +13561,22 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.13.2",
+            "version": "7.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "bcd989ad36c92d42a3715379af91f2defee5b8dd"
+                "reference": "aef242412e13128b5049864867bb49fc37dd39de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/bcd989ad36c92d42a3715379af91f2defee5b8dd",
-                "reference": "bcd989ad36c92d42a3715379af91f2defee5b8dd",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/aef242412e13128b5049864867bb49fc37dd39de",
+                "reference": "aef242412e13128b5049864867bb49fc37dd39de",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^2.5",
-                "guzzlehttp/psr7": "^2.12.3",
+                "guzzlehttp/promises": "^2.5.1",
+                "guzzlehttp/psr7": "^2.12.4",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
                 "symfony/deprecation-contracts": "^2.5 || ^3.0",
@@ -13670,7 +13669,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.13.2"
+                "source": "https://github.com/guzzle/guzzle/tree/7.14.0"
             },
             "funding": [
                 {
@@ -13686,20 +13685,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-05T19:00:11+00:00"
+            "time": "2026-07-08T22:54:09+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "4360e982f87f5f258bf872d094647791db2f4c8e"
+                "reference": "9ad1e4fc607446a055b95870c7f668e93b5cff29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/4360e982f87f5f258bf872d094647791db2f4c8e",
-                "reference": "4360e982f87f5f258bf872d094647791db2f4c8e",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/9ad1e4fc607446a055b95870c7f668e93b5cff29",
+                "reference": "9ad1e4fc607446a055b95870c7f668e93b5cff29",
                 "shasum": ""
             },
             "require": {
@@ -13754,7 +13753,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.5.0"
+                "source": "https://github.com/guzzle/promises/tree/2.5.1"
             },
             "funding": [
                 {
@@ -13770,20 +13769,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-02T12:23:43+00:00"
+            "time": "2026-07-08T15:48:39+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.3",
+            "version": "2.12.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "7ec62dc3f44aa218487dbed81a9bf9bc647be55d"
+                "reference": "51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/7ec62dc3f44aa218487dbed81a9bf9bc647be55d",
-                "reference": "7ec62dc3f44aa218487dbed81a9bf9bc647be55d",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c",
+                "reference": "51e27f9e2b332ab3e72f4520d5ff4f3c68c3577c",
                 "shasum": ""
             },
             "require": {
@@ -13873,7 +13872,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.3"
+                "source": "https://github.com/guzzle/psr7/tree/2.12.4"
             },
             "funding": [
                 {
@@ -13889,7 +13888,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-23T15:21:08+00:00"
+            "time": "2026-07-08T15:56:20+00:00"
         },
         {
             "name": "html2text/html2text",
@@ -20886,16 +20885,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.2",
+            "version": "2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a"
+                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a004701b11273a26cd7955a61d67a7f1e525a45a",
-                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
+                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
                 "shasum": ""
             },
             "require": {
@@ -20927,9 +20926,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.2"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.3"
             },
-            "time": "2026-01-25T14:56:51+00:00"
+            "time": "2026-07-08T07:01:06+00:00"
         },
         {
             "name": "sirbrillig/phpcs-variable-analysis",
