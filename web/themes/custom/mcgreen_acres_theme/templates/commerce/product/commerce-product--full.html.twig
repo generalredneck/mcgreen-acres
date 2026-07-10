@@ -43,6 +43,11 @@
       </div>
       {{- product.brand -}}
       <div class="fs-4 font-weight-bold">{{- product.variation_price -}}</div>
+      {% if farmstand_available %}
+        <div class="fulfillment-status fulfillment-status--farmstand">{{ 'Available at the Farm Stand today'|t }}</div>
+      {% else %}
+        <div class="fulfillment-status fulfillment-status--appointment">{{ 'Pickup by appointment only'|t }}</div>
+      {% endif %}
       <hr/>
       {% if product.special_categories|render is not empty %}
         <div class="mb-3">

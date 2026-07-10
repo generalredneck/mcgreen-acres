@@ -1,0 +1,23 @@
+uuid: cee8e2ba-de6f-4a30-aac0-9c4518403fbe
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.physical
+    - field.storage.commerce_product.field_farmstand_available
+id: commerce_product.physical.field_farmstand_available
+field_name: field_farmstand_available
+entity_type: commerce_product
+bundle: physical
+label: 'Available at the Farm Stand'
+description: 'Check this if customers can pick this item up in person at the farm stand today. Leave unchecked for items that require an appointment (e.g. gift boxes, vanilla, livestock).'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

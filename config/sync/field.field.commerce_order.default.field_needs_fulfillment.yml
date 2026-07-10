@@ -1,0 +1,23 @@
+uuid: a9fa1e00-d96c-433f-aa18-ba63912fd000
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - field.storage.commerce_order.field_needs_fulfillment
+  module:
+    - commerce_order
+id: commerce_order.default.field_needs_fulfillment
+field_name: field_needs_fulfillment
+entity_type: commerce_order
+bundle: default
+label: 'Needs Fulfillment'
+description: 'Leave unset for orders placed through checkout - fulfillment is determined automatically from the items purchased. For orders you enter manually, this defaults to already fulfilled; check it only if the item still needs to be picked up or delivered.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

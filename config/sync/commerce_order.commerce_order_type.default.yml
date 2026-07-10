@@ -24,7 +24,8 @@ id: default
 label: Default
 traits: {  }
 locked: false
-workflow: order_default
+workflow: order_fulfillment
+showOrderEditLinks: null
 numberPattern: order_default
 refresh_mode: customer
 refresh_frequency: 300

@@ -42,6 +42,11 @@
         {{ 'Featured' }}
       </div>
     {% endif %}
+    {% if farmstand_available %}
+      <div class="farmstand-flag d-flex flex-column align-items-center justify-content-center position-absolute">
+        {{ 'Farm Stand'|t }}
+      </div>
+    {% endif %}
     {{- product.images -}}
     {{- product.variation_images -}}
 

@@ -23,6 +23,19 @@
   border-radius: 3px;
 }
 
+.farmstand-flag {
+  background-color: var(--mca-green, #40a03a);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 2;
+  padding: 5px 8px;
+  border-radius: 3px;
+}
+
 .product-info {
   height: 4rem;
   border-bottom: 2px solid currentcolor;

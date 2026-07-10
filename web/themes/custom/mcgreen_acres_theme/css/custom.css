@@ -1223,3 +1223,25 @@ th.views-field-remove-button {
     list-style: none;
   }
 }
+
+.fulfillment-status {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+.fulfillment-status--farmstand {
+  background-color: #e7f2e2;
+  border: 1px solid var(--mca-green, #40a03a);
+  color: var(--mca-green-dark, #2f5e29);
+}
+
+.fulfillment-status--appointment {
+  background-color: #fbf0dc;
+  border: 1px solid var(--mca-amber, #c8902a);
+  color: #6b4d16;
+}

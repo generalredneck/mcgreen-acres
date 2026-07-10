@@ -1,0 +1,18 @@
+uuid: 2508e2ce-7a04-477e-8616-e86c40691325
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_product
+id: commerce_product.field_farmstand_available
+field_name: field_farmstand_available
+entity_type: commerce_product
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

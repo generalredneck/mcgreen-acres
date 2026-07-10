@@ -5,6 +5,7 @@ dependencies:
   config:
     - commerce_order.commerce_order_type.default
     - field.field.commerce_order.default.field_cover_stripe_fees
+    - field.field.commerce_order.default.field_needs_fulfillment
     - field.field.commerce_order.default.field_order_contact
   module:
     - advanced_text_formatter
@@ -128,6 +129,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_needs_fulfillment:
+    type: mcgreen_acres_store_needs_fulfillment_form
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: -1
     region: content
   field_order_contact:
     type: phone_number_international

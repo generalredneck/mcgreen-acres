@@ -14,8 +14,9 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 /**
  * Calculates the Stripe processing fee (2.9% + $0.30) and adds it to the order.
  *
- * Uses a second pass to account for Stripe also taking fees from the fee itself.
- * Skipped when the order's field_cover_stripe_fees is explicitly set to FALSE.
+ * Uses a second pass to account for Stripe also taking fees from the fee
+ * itself.Skipped when the order's field_cover_stripe_fees is explicitly set to
+ * FALSE.
  *
  * Presented to customers as a voluntary "Support the Farm" contribution
  * rather than a credit card surcharge, since Texas (Tex. Bus. & Com. Code

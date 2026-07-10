@@ -1,0 +1,18 @@
+uuid: cc58cb3c-c832-485d-b614-c6bc0bdb8fc4
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: commerce_order.field_needs_fulfillment
+field_name: field_needs_fulfillment
+entity_type: commerce_order
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

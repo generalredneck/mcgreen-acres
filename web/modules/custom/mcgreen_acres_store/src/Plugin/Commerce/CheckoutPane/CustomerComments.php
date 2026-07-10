@@ -25,7 +25,10 @@ class CustomerComments extends CheckoutPaneCustomerComments {
    */
   public function buildPaneForm(array $pane_form, FormStateInterface $form_state, array &$complete_form) {
     $form = parent::buildPaneForm($pane_form, $form_state, $complete_form);
-    $form['comments']['#prefix'] = Markup::create('<p>' . $this->t('This is a great place to add pickup appointment requests, special requests about the product or other important information.') . '</p>');
+    $hint = _mcgreen_acres_store_cart_needs_fulfillment($this->order)
+      ? $this->t('This is a great place to add pickup appointment requests, special requests about the product or other important information.')
+      : $this->t('This is a great place to add special requests about the product or other important information.');
+    $form['comments']['#prefix'] = Markup::create('<p>' . $hint . '</p>');
     return $form;
   }
 

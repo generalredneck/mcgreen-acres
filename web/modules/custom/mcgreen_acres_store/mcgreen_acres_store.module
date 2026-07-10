@@ -26,9 +26,20 @@ use Drupal\views\ViewExecutable;
  * entry point, not every order a staff member might otherwise touch.
  */
 function mcgreen_acres_store_commerce_order_create(OrderInterface $order) {
-  if ($order->hasField('field_cover_stripe_fees')
-    && \Drupal::routeMatch()->getRouteName() === 'entity.commerce_order.add_page') {
-    $order->set('field_cover_stripe_fees', FALSE);
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.commerce_order.add_page') {
+    if ($order->hasField('field_cover_stripe_fees')) {
+      $order->set('field_cover_stripe_fees', FALSE);
+    }
+    // Manually-entered orders (Zelle/cash/Square sales logged after the
+    // fact) default to already fulfilled, since the owner is typically
+    // entering the sale because it already happened. Explicitly set to
+    // FALSE (rather than left empty) so OrderFulfillmentSubscriber treats
+    // this as a deliberate choice instead of falling back to the
+    // farmstand-availability check used for checkout orders; staff can
+    // still flip it on the order form for the rare ahead-of-time sale.
+    if ($order->hasField('field_needs_fulfillment')) {
+      $order->set('field_needs_fulfillment', FALSE);
+    }
   }
 }
 
@@ -77,9 +88,13 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
   // order item type). Stripe Express Checkout skips the normal checkout flow
   // and its payment gateway selection, so it can't be allowed to pay for a
   // subscription; only the regular checkout's Stripe Payment Element pane
-  // should handle that. Remove the buttons commerce_stripe just injected.
+  // should handle that. The same applies to a cart that isn't fully
+  // available at the farm stand: express checkout has no step in it to ask
+  // "today or later?", so any cart requiring appointment fulfillment has to
+  // go through the regular checkout flow instead. Remove the buttons
+  // commerce_stripe just injected in both cases.
   if ($order && isset($form['stripe_express_checkout_buttons'])) {
-    if (_mcgreen_acres_store_cart_has_subscription($order)) {
+    if (_mcgreen_acres_store_cart_has_subscription($order) || _mcgreen_acres_store_cart_needs_fulfillment($order)) {
       unset($form['stripe_express_checkout_buttons']);
     }
     else {
@@ -92,11 +107,20 @@ function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$
 
       // Without a label, the buttons just look like an unexplained stack of
       // buttons sitting above the "Support the Farm" checkbox and the
-      // regular cart actions. Label them and mark where they end, so it's
-      // clear they're an alternate, faster checkout path rather than part
-      // of the normal cart controls.
-      $form['stripe_express_checkout_buttons']['#prefix'] = '<div class="express-checkout-group"><p class="express-checkout-group__label">' . t('Express Checkout') . '</p>';
-      $form['stripe_express_checkout_buttons']['#suffix'] = '<p class="express-checkout-group__divider"><span>' . t('or checkout with card below') . '</span></p></div>';
+      // regular cart actions. Label them, so it's clear they're an
+      // alternate, faster checkout path rather than part of the normal
+      // cart controls.
+      $form['stripe_express_checkout_buttons']['#prefix'] = '<div class="express-checkout-group"><p class="express-checkout-group__label">' . t('Express Checkout') . '</p><p class="express-checkout-group__caption">' . t('For picking up today at the Farm Stand') . '</p>';
+      $form['stripe_express_checkout_buttons']['#suffix'] = '</div>';
+
+      // The "ordering ahead" alternative is placed after the "Support the
+      // Farm" checkbox (weight 60) rather than right under the express
+      // buttons, so it reads as pointing at the Checkout button below it
+      // rather than cluttering the express group itself.
+      $form['express_checkout_ordering_ahead_notice'] = [
+        '#markup' => '<p class="express-checkout-group__callout">' . t('Ordering ahead or need to schedule pickup? Use Checkout below.') . '</p>',
+        '#weight' => 70,
+      ];
     }
   }
 
@@ -154,6 +178,30 @@ function _mcgreen_acres_store_cart_has_subscription(OrderInterface $order): bool
   foreach ($order->getItems() as $order_item) {
     $purchased_entity = $order_item->getPurchasedEntity();
     if ($purchased_entity && $purchased_entity->bundle() === 'subscription') {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Checks whether an order needs appointment fulfillment rather than
+ * immediate farm stand pickup.
+ *
+ * An order is considered fulfilled immediately only if every item in it is
+ * available at the farm stand; a single item that isn't (e.g. a gift box,
+ * vanilla, or livestock, which require an appointment) means the whole
+ * order needs to be scheduled, since a customer buying a mixed cart is
+ * already ordering ahead rather than standing at the stand.
+ */
+function _mcgreen_acres_store_cart_needs_fulfillment(OrderInterface $order): bool {
+  foreach ($order->getItems() as $order_item) {
+    $purchased_entity = $order_item->getPurchasedEntity();
+    if (!$purchased_entity instanceof \Drupal\commerce_product\Entity\ProductVariationInterface) {
+      continue;
+    }
+    $product = $purchased_entity->getProduct();
+    if (!$product || !$product->hasField('field_farmstand_available') || !$product->get('field_farmstand_available')->value) {
       return TRUE;
     }
   }
@@ -255,6 +303,8 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
     return;
   }
 
+  $variables['farmstand_available'] = $product->hasField('field_farmstand_available') && (bool) $product->get('field_farmstand_available')->value;
+
   $variations = $product->getVariations();
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
@@ -290,6 +340,18 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_commerce_product__full().
+ */
+function mcgreen_acres_store_preprocess_commerce_product__full(&$variables) {
+  /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
+  $product = $variables['product_entity'];
+  if (!$product) {
+    return;
+  }
+
+  $variables['farmstand_available'] = $product->hasField('field_farmstand_available') && (bool) $product->get('field_farmstand_available')->value;
+}
 
 function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
   if (!empty($definitions['customer_comments'])) {
@@ -297,5 +359,11 @@ function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
   }
   if (!empty($definitions['profile_form'])) {
     $definitions['profile_form']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomProfileForm';
+  }
+  if (!empty($definitions['completion_message'])) {
+    $definitions['completion_message']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CompletionMessage';
+  }
+  if (!empty($definitions['custom_checkout_message'])) {
+    $definitions['custom_checkout_message']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomCheckoutMessage';
   }
 }
