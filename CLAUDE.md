@@ -61,11 +61,15 @@ find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o
 | `custom_user_tokens` | Custom token provider for conditional user data output |
 | `juicer_capture` | Caches Juicer.io social feed markup |
 | `duplicate_modal_block` | Renders an existing block inside a Bootstrap modal |
+| `sales_chart` | Interactive daily/weekly/monthly revenue chart block for Commerce |
+| `commerce_uom` | Decimal quantity support for Commerce products; foundation for units of measure |
 
 ### Custom Theme (`web/themes/custom/mcgreen_acres_theme/`)
 
-- Based on `stable9`; no build pipeline — CSS/JS are plain files in `css/` and `js/`
+- **Active theme** (per `system.theme:default`): `mcgreen_acres_theme`. Based on `stable9`; no build pipeline — CSS/JS are plain files in `css/` and `js/`
 - Libraries defined in `mcgreen_acres_theme.libraries.yml`
+- `mcgreen_acres_theme.old/` is a committed backup of a prior version — not in use, don't edit
+- `mcgreen_acres_2026/` is an in-progress redesign (untracked, CSS-only so far, no `.info.yml` — not a registered Drupal theme yet)
 
 ### Key Contrib Dependencies
 
