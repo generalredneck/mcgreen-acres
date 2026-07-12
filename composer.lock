@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f60d465fe49fcf7fd58eb4df57ac48ab",
+    "content-hash": "736b12b8952e04bc548326f192eb27ac",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3581,6 +3581,48 @@
             }
         },
         {
+            "name": "drupal/commerce_log",
+            "version": "3.3.6",
+            "require": {
+                "drupal/commerce": "*",
+                "drupal/core": "^10.3 || ^11"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "3.3.6",
+                    "datestamp": "1780503017",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "centarro",
+                    "homepage": "https://www.drupal.org/user/3661446"
+                },
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
+                    "name": "rszrama",
+                    "homepage": "https://www.drupal.org/user/49344"
+                }
+            ],
+            "description": "Provides activity logs for Commerce entities.",
+            "homepage": "https://www.drupal.org/project/commerce",
+            "support": {
+                "source": "https://git.drupalcode.org/project/commerce"
+            }
+        },
+        {
             "name": "drupal/commerce_number_pattern",
             "version": "3.3.6",
             "require": {
@@ -4036,6 +4078,53 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/commerce_recurring",
                 "issues": "https://www.drupal.org/project/issues/commerce_recurring"
+            }
+        },
+        {
+            "name": "drupal/commerce_recurring_log",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/commerce_recurring_log.git",
+                "reference": "1.0.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/commerce_recurring_log-1.0.7.zip",
+                "reference": "1.0.7",
+                "shasum": "b576a18670a606a51fa5bc87392e456f3b087bd7"
+            },
+            "require": {
+                "drupal/commerce_log": "*",
+                "drupal/commerce_recurring": "*",
+                "drupal/core": "^9.2 || ^10 || ^11 || ^12"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.7",
+                    "datestamp": "1781457245",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "qusai taha",
+                    "homepage": "https://www.drupal.org/user/3623814"
+                }
+            ],
+            "description": "This module provides visibility into subscription workflows, improving transparency, debugging, and overall reliability of Commerce Recurring subscriptions.",
+            "homepage": "http://drupal.org/project/commerce_recurring_log",
+            "support": {
+                "source": "http://cgit.drupalcode.org/commerce_recurring_log",
+                "issues": "https://www.drupal.org/project/issues/commerce_recurring_log"
             }
         },
         {

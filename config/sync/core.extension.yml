@@ -41,6 +41,7 @@ module:
   commerce_prorater_stepped_proportional: 0
   commerce_receipt_on_payment: 0
   commerce_recurring: 0
+  commerce_recurring_log: 0
   commerce_reports: 0
   commerce_shipping: 0
   commerce_stock: 0

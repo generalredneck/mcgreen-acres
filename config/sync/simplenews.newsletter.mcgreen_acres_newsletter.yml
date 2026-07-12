@@ -1,0 +1,20 @@
+uuid: 1d8c4e2b-73eb-4d7c-b782-9d128a1191bf
+langcode: en
+status: true
+dependencies: {  }
+name: 'McGreen Acres Newsletter'
+id: mcgreen_acres_newsletter
+description: ''
+format: html
+priority: 3
+receipt: false
+from_name: 'McGreen Acres'
+subject: '[node:title]'
+from_address: info@mcgreenacres.com
+hyperlinks: true
+allowed_handlers:
+  simplenews_all: '0'
+new_account: 'on'
+access: default
+reason: ''
+weight: 0
