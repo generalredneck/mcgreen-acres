@@ -15,6 +15,11 @@ function sales_chart_theme(): array {
         'stats' => [],
       ],
     ],
+    'sales_chart_weekday' => [
+      'variables' => [
+        'stats' => [],
+      ],
+    ],
   ];
 }
 
@@ -26,16 +31,24 @@ function sales_chart_theme(): array {
  */
 function sales_chart_preprocess_views_view(array &$variables): void {
   if ($variables['id'] == 'sales_report' && in_array($variables['display_id'], ['monthly', 'daily', 'weekly'])) {
-    $block = \Drupal::entityTypeManager()->getStorage('block')->load('claro_saleschart');
-    if (!$block) {
-      return;
+    $block_view_builder = \Drupal::entityTypeManager()->getViewBuilder('block');
+    $block_storage = \Drupal::entityTypeManager()->getStorage('block');
+
+    $chart = NULL;
+    if ($block = $block_storage->load('claro_saleschart')) {
+      $chart = $block_view_builder->view($block);
     }
 
-    $chart = \Drupal::entityTypeManager()->getViewBuilder('block')->view($block);
+    // The day-of-week breakdown only makes sense next to the daily display.
+    $weekday_chart = NULL;
+    if ($variables['display_id'] === 'daily' && ($weekday_block = $block_storage->load('claro_saleschart_weekday'))) {
+      $weekday_chart = $block_view_builder->view($weekday_block);
+    }
 
-    // Prepend the chart ahead of any existing attachment_before content.
+    // Prepend the chart(s) ahead of any existing attachment_before content.
     $variables['attachment_before'] = [
       'sales_chart' => $chart,
+      'sales_chart_weekday' => $weekday_chart,
       'existing'    => $variables['attachment_before'],
     ];
   }

@@ -1,0 +1,32 @@
+uuid: c10d04d1-6ac8-44ae-86e3-6bf744ee80b3
+langcode: en
+status: false
+dependencies:
+  module:
+    - block_visibility_groups
+    - sales_chart
+    - system
+  theme:
+    - claro
+id: claro_saleschart_weekday
+theme: claro
+region: content
+weight: 1
+provider: null
+plugin: sales_chart_weekday_block
+settings:
+  id: sales_chart_weekday_block
+  label: 'Sales Chart - Average by Day of Week'
+  label_display: '0'
+  provider: sales_chart
+  days: 90
+  currency_code: USD
+visibility:
+  condition_group:
+    id: condition_group
+    negate: false
+    block_visibility_group: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: /admin/commerce/reports/sales/daily
