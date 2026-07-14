@@ -1,8 +1,14 @@
+chartjs:
+  version: 1.x
+  js:
+    # Chart.js 4 UMD build, shared by all charts in this module.
+    https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js: { type: external, minified: true, weight: -2 }
+  dependencies:
+    - core/drupal
+
 chart:
   version: 1.x
   js:
-    # Chart.js 4 UMD build — must load before the annotation plugin.
-    https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js: { type: external, minified: true, weight: -2 }
     # Auto-registers itself with Chart.js when loaded after it.
     https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js: { type: external, minified: true, weight: -1 }
     js/sales-chart.js: { weight: 0 }
@@ -10,6 +16,20 @@ chart:
     component:
       css/sales-chart.css: {}
   dependencies:
+    - sales_chart/chartjs
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+weekday_chart:
+  version: 1.x
+  js:
+    js/sales-chart-weekday.js: { weight: 0 }
+  css:
+    component:
+      css/sales-chart.css: {}
+  dependencies:
+    - sales_chart/chartjs
     - core/drupal
     - core/drupalSettings
     - core/once
