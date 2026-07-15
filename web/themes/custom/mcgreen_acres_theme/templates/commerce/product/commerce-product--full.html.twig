@@ -54,7 +54,14 @@
           {{- product.special_categories -}}
         </div>
       {% endif %}
-      {{- product|without('variation_attributes', 'images', 'variation_images', 'title', 'variation_price', 'product_categories', 'brand', 'special_categories') -}}
+      {{- product.variations -}}
+      {{- product.variation_stock -}}
+      {% if farmstand_available %}
+        <div class="alert alert-info"><p class="lead"><strong>Available at the Farm Stand — self serve, free to take upon purchase.</strong></p><p>Pickup only, at our address:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a>. Not available for delivery or shipping.</p></div>
+      {% else %}
+        <div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p></div>
+      {% endif %}
+      {{- product|without('variation_attributes', 'images', 'variation_images', 'title', 'variation_price', 'product_categories', 'brand', 'special_categories', 'variations', 'variation_stock') -}}
     </div>
   </div>
 
