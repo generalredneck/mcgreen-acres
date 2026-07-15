@@ -43,8 +43,29 @@ class OrderFulfillmentSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    if (!_mcgreen_acres_store_order_needs_fulfillment($order)) {
+    $needs_fulfillment = _mcgreen_acres_store_order_needs_fulfillment($order);
+    $save = FALSE;
+
+    // Nothing has explicitly answered yet - most notably Express
+    // Checkout, which bypasses the PickupTiming pane (and every other
+    // checkout step) entirely. Persist the resolved answer so the
+    // receipt and admin views show something real instead of nothing.
+    // This re-derives from the cart rather than assuming Express always
+    // means "today": Express is only ever offered for an all-farm-stand
+    // cart, but if a mixed cart somehow reached this point with the
+    // field still unset, it must still resolve to TRUE here, never be
+    // forced to FALSE just because of how it got placed.
+    if ($order->hasField('field_needs_fulfillment') && $order->get('field_needs_fulfillment')->isEmpty()) {
+      $order->set('field_needs_fulfillment', $needs_fulfillment);
+      $save = TRUE;
+    }
+
+    if (!$needs_fulfillment) {
       $order->getState()->applyTransitionById('fulfill');
+      $save = TRUE;
+    }
+
+    if ($save) {
       $order->save();
     }
   }
