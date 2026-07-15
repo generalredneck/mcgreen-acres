@@ -209,6 +209,23 @@ function _mcgreen_acres_store_cart_needs_fulfillment(OrderInterface $order): boo
 }
 
 /**
+ * Resolves whether an order needs fulfillment, preferring an explicit answer.
+ *
+ * field_needs_fulfillment is set explicitly either by the customer
+ * (PickupTiming checkout pane, for a farm-stand-eligible cart) or by staff
+ * (OrderNeedsFulfillmentForm, for a manually-entered order); either way,
+ * that deliberate choice should win over composition. Only falls back to
+ * _mcgreen_acres_store_cart_needs_fulfillment() when nothing has explicitly
+ * answered yet.
+ */
+function _mcgreen_acres_store_order_needs_fulfillment(OrderInterface $order): bool {
+  if ($order->hasField('field_needs_fulfillment') && !$order->get('field_needs_fulfillment')->isEmpty()) {
+    return (bool) $order->get('field_needs_fulfillment')->value;
+  }
+  return _mcgreen_acres_store_cart_needs_fulfillment($order);
+}
+
+/**
  * Gets the order backing the current commerce_cart_form_default view.
  */
 function _mcgreen_acres_store_get_cart_form_order(FormStateInterface $form_state): ?OrderInterface {
@@ -316,6 +333,7 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
   }
 
   $variables['farmstand_available'] = $product->hasField('field_farmstand_available') && (bool) $product->get('field_farmstand_available')->value;
+  $variables['is_subscription'] = $product->bundle() === 'subscription';
 
   $variations = $product->getVariations();
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();

@@ -10,10 +10,10 @@ use Drupal\commerce_checkout\Plugin\Commerce\CheckoutPane\CompletionMessage as C
  *
  * The configured message (in the checkout flow admin UI) describes the
  * appointment-pickup process and is shown as-is for any order that still
- * needs fulfillment. An order made entirely of farm-stand-available items
- * has already been handed over, so showing appointment instructions there
- * would be actively wrong; this swaps in a short farm-stand-specific
- * message instead.
+ * needs fulfillment. Once the PickupTiming pane has resolved whether this
+ * order is being picked up immediately, showing appointment instructions
+ * to someone who already confirmed they're at the stand would be actively
+ * wrong; this swaps in a short farm-stand-specific message instead.
  */
 class CompletionMessage extends CheckoutPaneCompletionMessage {
 
@@ -23,7 +23,7 @@ class CompletionMessage extends CheckoutPaneCompletionMessage {
   public function buildPaneForm(array $pane_form, FormStateInterface $form_state, array &$complete_form) {
     $pane_form = parent::buildPaneForm($pane_form, $form_state, $complete_form);
 
-    if (!_mcgreen_acres_store_cart_needs_fulfillment($this->order)) {
+    if (!_mcgreen_acres_store_order_needs_fulfillment($this->order)) {
       $message = $this->token->replace($this->farmstandMessage(), ['commerce_order' => $this->order]);
       $pane_form['message']['#message'] = [
         '#type' => 'processed_text',
@@ -36,12 +36,12 @@ class CompletionMessage extends CheckoutPaneCompletionMessage {
   }
 
   /**
-   * Builds the message shown when the order is already fulfilled.
+   * Builds the message shown once immediate pickup is confirmed.
    */
   protected function farmstandMessage(): string {
     return '<h2>' . $this->t('Your order is complete!') . '</h2>'
       . '<div class="alert alert-success"><p class="lead"><strong>'
-      . $this->t('Head to the Farm Stand to pick this up.')
+      . $this->t('Feel free to take your items from the Farm Stand!')
       . '</strong></p></div>'
       . '<p>' . $this->t('Your order number is [commerce_order:order_number].') . '</p>'
       . '<p>' . $this->t('An email has been sent with your receipt.') . '</p>'

@@ -15,16 +15,31 @@
 .featured-flag {
   background-color: rgba(255, 255, 255, 0.9);
   color: black;
+  font-weight: 600;
+  font-size: 0.8rem;
   position: absolute;
   top: 5px;
   right: 5px;
   z-index: 2;
-  padding: 5px;
+  padding: 5px 8px;
   border-radius: 3px;
 }
 
 .farmstand-flag {
   background-color: var(--mca-green, #40a03a);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 2;
+  padding: 5px 8px;
+  border-radius: 3px;
+}
+
+.subscription-flag {
+  background-color: var(--mca-amber, #c8902a);
   color: #fff;
   font-weight: 600;
   font-size: 0.8rem;

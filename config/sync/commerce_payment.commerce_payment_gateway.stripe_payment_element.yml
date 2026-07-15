@@ -52,21 +52,21 @@ configuration:
       discover: discover
       mastercard: mastercard
       visa: visa
-      klarna: '0'
-      wechat_pay: '0'
-      link: '0'
-      alipay: '0'
       affirm: '0'
-      us_bank_account: '0'
-      amazon_pay: '0'
-      cashapp: '0'
-      paypal: '0'
       dinersclub: '0'
       jcb: '0'
       maestro: '0'
       unionpay: '0'
       applepay: '0'
       googlepay: '0'
+      amazon_pay: '0'
+      alipay: '0'
+      link: '0'
+      cashapp: '0'
+      paypal: '0'
+      us_bank_account: '0'
+      klarna: '0'
+      wechat_pay: '0'
 conditions:
   -
     plugin: order_type

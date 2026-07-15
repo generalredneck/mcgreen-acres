@@ -4,6 +4,7 @@ status: false
 dependencies:
   module:
     - block_visibility_groups
+    - sales_chart
     - system
   theme:
     - claro

@@ -47,6 +47,11 @@
         {{ 'Farm Stand'|t }}
       </div>
     {% endif %}
+    {% if is_subscription %}
+      <div class="subscription-flag d-flex flex-column align-items-center justify-content-center position-absolute">
+        {{ 'Subscription'|t }}
+      </div>
+    {% endif %}
     {{- product.images -}}
     {{- product.variation_images -}}
 

@@ -35,6 +35,16 @@
             {% if (order_entity.getPlacedTime) %}
               <div style="margin-top: 5px;"><span style="font-weight: bold;">{{ 'Order date:'|t }}</span> {{ order_entity.getPlacedTime|format_date('short') }}</div>
             {% endif %}
+            {% if order_entity.hasField('field_needs_fulfillment') and not order_entity.field_needs_fulfillment.isEmpty %}
+              <div style="margin-top: 5px;">
+                <span style="font-weight: bold;">{{ 'Pickup:'|t }}</span>
+                {% if order_entity.field_needs_fulfillment.value %}
+                  {{ 'Ordering ahead / scheduled pickup'|t }}
+                {% else %}
+                  {{ "I'm at the Farm Stand"|t }}
+                {% endif %}
+              </div>
+            {% endif %}
           </td>
         </tr>
         <tr>

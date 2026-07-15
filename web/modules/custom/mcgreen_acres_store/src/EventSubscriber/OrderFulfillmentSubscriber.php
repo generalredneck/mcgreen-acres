@@ -43,16 +43,7 @@ class OrderFulfillmentSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    if ($order->hasField('field_needs_fulfillment') && !$order->get('field_needs_fulfillment')->isEmpty()) {
-      // Staff made an explicit choice on a manually-entered order.
-      $needs_fulfillment = (bool) $order->get('field_needs_fulfillment')->value;
-    }
-    else {
-      // Checkout order: derive it from what's actually in the cart.
-      $needs_fulfillment = _mcgreen_acres_store_cart_needs_fulfillment($order);
-    }
-
-    if (!$needs_fulfillment) {
+    if (!_mcgreen_acres_store_order_needs_fulfillment($order)) {
       $order->getState()->applyTransitionById('fulfill');
       $order->save();
     }

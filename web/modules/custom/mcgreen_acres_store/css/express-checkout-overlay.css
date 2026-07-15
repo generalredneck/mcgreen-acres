@@ -45,6 +45,7 @@
  * actually fires.
  */
 [id^='stripe-express-checkout-element'] {
+  position: relative;
   display: block;
   min-height: 48px;
   border-radius: 6px;
@@ -53,10 +54,27 @@
   animation: mcgreen-express-checkout-shimmer 1.2s ease-in-out infinite;
 }
 
+[id^='stripe-express-checkout-element']::before {
+  content: 'Loading Express Checkout…';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #888;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 [id^='stripe-express-checkout-element'].is-ready {
   min-height: 0;
   background: none;
   animation: none;
+}
+
+[id^='stripe-express-checkout-element'].is-ready::before {
+  content: none;
 }
 
 @keyframes mcgreen-express-checkout-shimmer {
