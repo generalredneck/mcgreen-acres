@@ -241,7 +241,7 @@ display:
         options:
           offset: 0
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Apply
           reset_button: false
@@ -250,6 +250,65 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: basic_html
+          bef:
+            general:
+              autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              secondary_open: false
+              reset_button_always_show: false
+            filter:
+              created:
+                plugin_id: bef_datepicker
+                advanced:
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              payment_gateway:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              order_type:
+                plugin_id: bef
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
+                scrollable: false
+                scrollable_height: 300
       access:
         type: perm
         options:
@@ -967,7 +1026,7 @@ display:
       tags: {  }
   data_export_2:
     id: data_export_2
-    display_title: 'Data export 2'
+    display_title: 'Transactional export'
     display_plugin: data_export
     position: 5
     display_options:
@@ -1338,6 +1397,7 @@ display:
         group_by: false
         fields: false
       group_by: false
+      display_description: ''
       display_extenders:
         metatag_display_extender:
           metatags: {  }
@@ -1417,6 +1477,29 @@ display:
                   is_secondary: false
                   hide_label: false
                   field_classes: ''
+              order_type:
+                plugin_id: bef
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: false
+                soft_limit: 0
+                soft_limit_label_less: 'Show less'
+                soft_limit_label_more: 'Show more'
+                scrollable: false
+                scrollable_height: 300
       defaults:
         exposed_form: false
       display_description: ''
@@ -1450,7 +1533,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Page
+    display_title: Transactional
     display_plugin: page
     position: 5
     display_options:
@@ -1731,118 +1814,28 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-      filters:
-        type:
-          id: type
-          table: commerce_order_report
-          field: type
-          entity_type: commerce_order_report
-          entity_field: type
-          plugin_id: commerce_entity_bundle
-          value:
-            order_report: order_report
-        created:
-          id: created
-          table: commerce_order_report
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: commerce_order_report
-          entity_field: created
-          plugin_id: date
-          operator: between
-          value:
-            min: '-11 months'
-            max: 'last day of this month'
-            value: ''
-            type: offset
-          group: 1
-          exposed: true
-          expose:
-            operator_id: created_op
-            label: 'Order date'
-            description: ''
-            use_operator: false
-            operator: created_op
-            identifier: date
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        payment_gateway:
-          id: payment_gateway
-          table: commerce_order
-          field: payment_gateway
-          relationship: order_id
-          group_type: group
-          admin_label: ''
-          entity_type: commerce_order
-          entity_field: payment_gateway
-          plugin_id: string
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: payment_gateway_op
-            label: 'Payment gateway'
-            description: ''
-            use_operator: false
-            operator: payment_gateway_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: payment_gateway
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
       defaults:
         title: false
         group_by: false
         fields: false
-        filters: false
-        filter_groups: false
+        filters: true
+        filter_groups: true
       group_by: false
+      display_description: ''
       display_extenders:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
       path: admin/commerce/reports/sales/transactional
+      menu:
+        type: tab
+        title: Transactional
+        description: ''
+        weight: 50
+        expanded: false
+        menu_name: admin
+        parent: commerce_reports.overview
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
