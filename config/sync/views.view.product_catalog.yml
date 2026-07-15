@@ -182,11 +182,13 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+              reset_button_always_show: false
             sort:
               plugin_id: default
               advanced:
                 combine: true
                 combine_rewrite: "Relevance Asc|\r\nRelevance Desc|Relevance\r\nTitle Asc|A -> Z\r\nTitle Desc|Z -> A\r\nCreated Desc|Newest first\r\nCreated Asc|Oldest first\r\nPrice Asc|Price: Low to High\r\nPrice Desc|Price: High to Low"
+                combine_param: sort_bef_combine
                 reset: false
                 reset_label: ''
                 collapsible: false
@@ -196,8 +198,6 @@ display:
               search_api_fulltext:
                 plugin_id: default
                 advanced:
-                  sort_options_method: alphabetical_asc
-                  sort_options_natural: true
                   placeholder_text: ''
                   rewrite:
                     filter_rewrite_values: ''
@@ -208,6 +208,22 @@ display:
                   is_secondary: false
                   hide_label: false
                   field_classes: ''
+              field_farmstand_available:
+                plugin_id: bef_single
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+                treat_as_false: false
       access:
         type: none
         options: {  }
@@ -244,6 +260,19 @@ display:
           id: field_featured
           table: search_api_index_products
           field: field_featured
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+        field_farmstand_available:
+          id: field_farmstand_available
+          table: search_api_index_products
+          field: field_farmstand_available
           relationship: none
           group_type: group
           admin_label: ''
@@ -385,6 +414,44 @@ display:
             operator_limit_selection: false
             operator_list: {  }
             identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_farmstand_available:
+          id: field_farmstand_available
+          table: search_api_index_products
+          field: field_farmstand_available
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'At the Farm Stand'
+            description: ''
+            use_operator: false
+            operator: field_farmstand_available_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_farmstand_available
             required: false
             remember: false
             multiple: false
