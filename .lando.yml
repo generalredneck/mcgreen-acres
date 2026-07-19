@@ -13,6 +13,8 @@ services:
     environment:
       LD_PRELOAD: /usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 # Preloads the library
       #FAKETIME: "@2026-05-02 09:00:00" # Sets the faked time and starts the clock
+      # PHPUnit configuration for `lando phpunit`. See https://www.drupal.org/docs/develop/automated-testing/phpunit-in-drupal/running-phpunit-tests-in-lando
+      SYMFONY_DEPRECATIONS_HELPER: "disabled"
   mail:
     type: mailpit
     mailFrom:
@@ -24,6 +26,11 @@ tooling:
   drush:
     service: appserver
     cmd: "drush --root=/app/web --uri=http://mcgreen-acres.lndo.site"
+  phpunit:
+    service: appserver
+    description: Run PHPUnit tests (e.g. `lando phpunit web/modules/contrib/simplenews/tests/src/Functional/SimplenewsAdministrationTest.php`)
+    cmd:
+      - sh /app/.lando/scripts/phpunit.sh
   build:
     service: appserver
     cmd:

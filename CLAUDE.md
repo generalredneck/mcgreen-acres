@@ -33,6 +33,13 @@ PHP linting (no build tools — theme CSS/JS is plain, no compilation):
 find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o -iname '*.module' -o -iname '*.install' -o -iname '*.theme' \) '!' -path '*/node_modules/*' -print0 | xargs -0 -n1 -P8 php -l
 ```
 
+### Running PHPUnit tests
+
+`lando phpunit <path>` runs PHPUnit via `.lando/scripts/phpunit.sh` (e.g. `lando phpunit web/modules/contrib/simplenews/tests/src/Functional/SomeTest.php --filter testFoo`). Two gotchas:
+
+- **`web/core/tests` is stripped by `drupal-core-vendor-hardening`** (see `composer.json` `extra.drupal-core-vendor-hardening.drupal/core`) to keep hosting inodes down. This directory contains `bootstrap.php`, so PHPUnit cannot run at all without it. Before testing, temporarily remove `"tests"` from that array, run `lando composer reinstall drupal/core --no-progress` to restore it, run tests, then put `"tests"` back and reinstall again to re-strip it. Don't leave it un-hardened.
+- **`SIMPLETEST_BASE_URL` must be `https://localhost`, not the `.lndo.site` domain.** Using the proxied `lndo.site` URL causes an HTTP→HTTPS redirect mid-test (e.g. during one-time-login links), which desyncs Drupal's `SESS`/`SSESS` session cookie naming and makes `drupalLogin()` assertions fail even though the login actually succeeded. `https://localhost` hits the container's Apache directly and avoids the redirect. This is already configured in `.lando/scripts/phpunit.sh` — don't change it without re-testing.
+
 ## Architecture
 
 ### Hosting & Deployment

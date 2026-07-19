@@ -6,6 +6,12 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\user\UserInterface;
+
+/**
+ * Newsletter that all accounts should be auto-subscribed to.
+ */
+const MCGREEN_ACRES_CUSTOM_DEFAULT_NEWSLETTER = 'default';
 
 /**
  * Implements hook_help().
@@ -38,4 +44,50 @@ function mcgreen_acres_custom_theme() {
       'render element' => 'children',
     ],
   ];
+}
+
+/**
+ * Implements hook_user_insert().
+ *
+ * Subscribes every new account to the default newsletter.
+ */
+function mcgreen_acres_custom_user_insert(UserInterface $account) {
+  if ($account->getEmail()) {
+    \Drupal::service('simplenews.subscription_manager')->subscribe(
+      $account->getEmail(),
+      MCGREEN_ACRES_CUSTOM_DEFAULT_NEWSLETTER,
+      $account->getPreferredLangcode()
+    );
+  }
+}
+
+/**
+ * Implements hook_user_update().
+ *
+ * Unsubscribes accounts from the default newsletter when they are blocked
+ * or canceled (account cancellation sets the status to blocked before any
+ * eventual deletion).
+ */
+function mcgreen_acres_custom_user_update(UserInterface $account) {
+  $original = $account->original ?? NULL;
+  if ($original && $original->isActive() && $account->isBlocked() && $account->getEmail()) {
+    \Drupal::service('simplenews.subscription_manager')->unsubscribe(
+      $account->getEmail(),
+      MCGREEN_ACRES_CUSTOM_DEFAULT_NEWSLETTER
+    );
+  }
+}
+
+/**
+ * Implements hook_user_delete().
+ *
+ * Unsubscribes accounts from the default newsletter when they are deleted.
+ */
+function mcgreen_acres_custom_user_delete(UserInterface $account) {
+  if ($account->getEmail()) {
+    \Drupal::service('simplenews.subscription_manager')->unsubscribe(
+      $account->getEmail(),
+      MCGREEN_ACRES_CUSTOM_DEFAULT_NEWSLETTER
+    );
+  }
 }

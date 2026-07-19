@@ -193,7 +193,10 @@
             "drupal/drupal-library-installer-plugin": true,
             "mglaman/composer-drupal-lenient": true,
             "oomphinc/composer-installers-extender": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/runtime": true,
+            "tbachert/spi": true,
             "vardot/varbase-patches": true,
             "zaporylie/composer-drupal-optimizations": true
         }
@@ -316,6 +319,9 @@
             "drupal/ms_clarity": {
                 "3509189: wsod D11": "patches/ms_clarity-3509189-wsod_d11_admin-5.patch"
             },
+            "drupal/simplenews": {
+                "#2111981: Add 'manage simplenews hidden subscriptions' permission for managing hidden newsletter subscriptions": "patches/simplenews-2111981-hidden_newsletter_admin_access.patch"
+            },
             "drupal/simplenews_stats": {
                 "#3268515: Allow Capturing the device type": "patches/simplenews_stats-Allow_capturing_the_device_type-MR23-3268515-223907ef.patch"
             },
@@ -384,6 +390,7 @@
     },
     "require-dev": {
         "drupal/coder": "^8.3",
+        "drupal/core-dev": "11.4.4",
         "drupal/devel": "^5.4",
         "phpcompatibility/php-compatibility": "^9.3"
     }

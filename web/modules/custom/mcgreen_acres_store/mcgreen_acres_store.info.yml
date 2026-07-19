@@ -8,6 +8,8 @@ dependencies:
   - commerce_checkout:commerce_checkout
   - commerce_fee:commerce_fee
   - commerce_log:commerce_log
+  - commerce_recurring:commerce_recurring
+  - simplenews:simplenews
 default_content:
   commerce_fee:
     - d123b32d-37a8-4cca-a0d0-0a655db3c5c6

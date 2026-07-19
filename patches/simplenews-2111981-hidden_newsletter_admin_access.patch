@@ -1,0 +1,160 @@
+--- a/simplenews.permissions.yml
++++ b/simplenews.permissions.yml
+@@ -2,6 +2,9 @@
+   title: 'Administer newsletters'
+ administer simplenews subscriptions:
+   title: 'Administer simplenews subscriptions'
++manage simplenews hidden subscriptions:
++  title: 'Manage hidden newsletter subscriptions'
++  description: 'Allows subscribing or unsubscribing any user to/from newsletters with a "hidden" access setting, in addition to the permissions granted by "Administer simplenews subscriptions".'
+ view simplenews subscriptions:
+   title: 'View simplenews subscriptions'
+ administer simplenews settings:
+--- a/src/Plugin/Field/FieldWidget/SubscriptionWidget.php
++++ b/src/Plugin/Field/FieldWidget/SubscriptionWidget.php
+@@ -6,6 +6,8 @@
+ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsButtonsWidget;
+ use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Session\AccountProxyInterface;
++use Drupal\simplenews\Entity\Newsletter;
+ use Drupal\simplenews\SubscriptionWidgetInterface;
+ 
+ /**
+@@ -32,8 +34,30 @@
+   /**
+    * {@inheritdoc}
+    */
++  public function __construct(
++    $plugin_id,
++    $plugin_definition,
++    FieldDefinitionInterface $field_definition,
++    array $settings,
++    array $third_party_settings,
++    protected AccountProxyInterface $currentUser,
++  ) {
++    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
+   public function setAvailableNewsletterIds(?array $newsletter_ids = NULL) {
+-    $this->newsletterIds = array_keys(simplenews_newsletter_get_visible());
++    // Users with the "manage simplenews hidden subscriptions" permission may
++    // manage subscriptions to newsletters with a "hidden" access setting too
++    // (e.g. from the account subscriptions form or the subscriber add/edit
++    // forms), not just publicly visible ones.
++    // See https://www.drupal.org/project/simplenews/issues/2111981.
++    $newsletters = $this->currentUser->hasPermission('manage simplenews hidden subscriptions')
++      ? simplenews_newsletter_get_all()
++      : simplenews_newsletter_get_visible();
++    $this->newsletterIds = array_keys($newsletters);
+     if (isset($newsletter_ids)) {
+       $this->newsletterIds = array_intersect($newsletter_ids, $this->newsletterIds);
+     }
+@@ -53,7 +77,19 @@
+    * {@inheritdoc}
+    */
+   protected function getOptions(FieldableEntityInterface $entity) {
+-    return array_intersect_key(parent::getOptions($entity), array_flip($this->getAvailableNewsletterIds()));
++    $options = array_intersect_key(parent::getOptions($entity), array_flip($this->getAvailableNewsletterIds()));
++
++    // Flag hidden newsletters in the label. They are only ever included in
++    // $options for users with the "manage simplenews hidden subscriptions"
++    // permission, so make it obvious these are not normally subscriber
++    // facing.
++    foreach (Newsletter::loadMultiple(array_keys($options)) as $id => $newsletter) {
++      if (!$newsletter->isAccessible()) {
++        $options[$id] = $this->t('@label (hidden)', ['@label' => $options[$id]]);
++      }
++    }
++
++    return $options;
+   }
+ 
+   /**
+--- a/tests/src/Functional/SimplenewsAdministrationTest.php
++++ b/tests/src/Functional/SimplenewsAdministrationTest.php
+@@ -1050,4 +1050,81 @@
+     $this->assertSession()->pageTextContains($user->getEmail());
+   }
+ 
++  /**
++   * Tests the "manage simplenews hidden subscriptions" permission.
++   *
++   * Only users with this permission should be able to see and manage
++   * subscriptions to a "hidden" newsletter, whether from a user's own
++   * subscriptions page or from the subscriber admin forms. Users without it
++   * should not see the hidden newsletter in either place, matching the
++   * behavior for all other subscribers-facing forms.
++   *
++   * @see https://www.drupal.org/project/simplenews/issues/2111981
++   */
++  public function testHiddenNewsletterSubscriptionManagement() {
++    $hidden_newsletter = Newsletter::create([
++      'id' => 'hidden_test',
++      'name' => 'Hidden test newsletter',
++      'access' => 'hidden',
++    ]);
++    $hidden_newsletter->save();
++
++    $target_user = $this->drupalCreateUser(['subscribe to newsletters']);
++    Subscriber::create([
++      'mail' => $target_user->getEmail(),
++      'uid' => $target_user->id(),
++    ])->save();
++    $subscriber = Subscriber::loadByMail($target_user->getEmail());
++
++    $field_id = $this->getNewsletterFieldId('hidden_test');
++    $field_name = 'subscriptions[hidden_test]';
++
++    // An administrator without the new permission must not see or be able
++    // to manage the hidden newsletter, either from the account subscriptions
++    // page or from the subscriber admin forms.
++    $admin_user = $this->drupalCreateUser([
++      'administer simplenews subscriptions',
++    ]);
++    $this->drupalLogin($admin_user);
++
++    $this->drupalGet('user/' . $target_user->id() . '/simplenews');
++    $this->assertSession()->fieldNotExists($field_id);
++
++    $this->drupalGet('admin/people/simplenews/edit/' . $subscriber->id());
++    $this->assertSession()->fieldNotExists($field_id);
++
++    $this->drupalGet('admin/people/simplenews/create');
++    $this->assertSession()->fieldNotExists($field_id);
++
++    // Grant the new permission: the hidden newsletter should now appear,
++    // labeled as hidden, and be manageable from both forms.
++    $hidden_admin = $this->drupalCreateUser([
++      'administer simplenews subscriptions',
++      'manage simplenews hidden subscriptions',
++    ]);
++    $this->drupalLogin($hidden_admin);
++
++    $this->drupalGet('user/' . $target_user->id() . '/simplenews');
++    $this->assertSession()->fieldExists($field_id);
++    $this->assertSession()->pageTextContains('Hidden test newsletter (hidden)');
++    $this->assertSession()->checkboxNotChecked($field_id);
++
++    $this->submitForm([$field_name => TRUE], 'Save');
++    \Drupal::entityTypeManager()->getStorage('simplenews_subscriber')->resetCache();
++    $subscriber = Subscriber::loadByMail($target_user->getEmail());
++    $this->assertTrue($subscriber->isSubscribed('hidden_test'));
++
++    // The subscriber admin edit form should also show the hidden newsletter,
++    // reflect its current (now subscribed) state, and allow toggling it.
++    $this->drupalGet('admin/people/simplenews/edit/' . $subscriber->id());
++    $this->assertSession()->fieldExists($field_id);
++    $this->assertSession()->pageTextContains('Hidden test newsletter (hidden)');
++    $this->assertSession()->checkboxChecked($field_id);
++
++    $this->submitForm([$field_name => FALSE], 'Save');
++    \Drupal::entityTypeManager()->getStorage('simplenews_subscriber')->resetCache();
++    $subscriber = Subscriber::loadByMail($target_user->getEmail());
++    $this->assertTrue($subscriber->isUnsubscribed('hidden_test'));
++  }
++
+ }

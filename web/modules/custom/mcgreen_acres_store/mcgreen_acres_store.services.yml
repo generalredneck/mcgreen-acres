@@ -17,3 +17,7 @@ services:
     class: Drupal\mcgreen_acres_store\EventSubscriber\OrderFulfillmentSubscriber
     tags:
       - { name: event_subscriber }
+  mcgreen_acres_store.product_subscription_newsletter_subscriber:
+    class: Drupal\mcgreen_acres_store\EventSubscriber\ProductSubscriptionNewsletterSubscriber
+    tags:
+      - { name: event_subscriber }

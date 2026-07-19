@@ -251,3 +251,243 @@ function mcgreen_acres_custom_update_10007() {
   }
   return t('Update 10007 completed successfully.');
 }
+
+/**
+ * Reconciles the default and herd share newsletter subscriptions.
+ *
+ * Update 10007 subscribed every user to the "default" newsletter
+ * unconditionally (regardless of account status) and only ever subscribed
+ * users to "herd_share_updates" (never unsubscribed them if their herd
+ * share subscription later became canceled). This corrects both newsletters
+ * for all existing users to match the ongoing behavior implemented in
+ * mcgreen_acres_custom_user_update() and
+ * \Drupal\mcgreen_acres_store\EventSubscriber\HerdShareNewsletterSubscriber.
+ */
+function mcgreen_acres_custom_update_10008() {
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+
+  // Reconcile "default": subscribed only for active (non-blocked) accounts.
+  $uids = $user_storage->getQuery()->accessCheck(FALSE)->execute();
+  foreach ($user_storage->loadMultiple($uids) as $user) {
+    $subscriber = Subscriber::loadByUid($user->id(), TRUE);
+    if (!$subscriber) {
+      continue;
+    }
+    if ($user->isActive()) {
+      $subscriber->subscribe('default');
+    }
+    else {
+      $subscriber->unsubscribe('default');
+    }
+    $subscriber->save();
+  }
+
+  // Reconcile "herd_share_updates": subscribed only for users whose herd
+  // share (product variation 28) commerce_subscription is currently active.
+  // Consider every user who has ever had one of these subscriptions, not
+  // just currently-active ones, so canceled subscribers get unsubscribed.
+  $subscription_storage = \Drupal::entityTypeManager()->getStorage('commerce_subscription');
+  $subscription_ids = $subscription_storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('purchased_entity.target_id', '28')
+    ->execute();
+
+  $active_uids = [];
+  $all_uids = [];
+  foreach ($subscription_storage->loadMultiple($subscription_ids) as $subscription) {
+    $uid = $subscription->getOwnerId();
+    $all_uids[$uid] = TRUE;
+    if ($subscription->getState()->getId() === 'active') {
+      $active_uids[$uid] = TRUE;
+    }
+  }
+
+  foreach (array_keys($all_uids) as $uid) {
+    $subscriber = Subscriber::loadByUid($uid, TRUE);
+    if (!$subscriber) {
+      continue;
+    }
+    if (isset($active_uids[$uid])) {
+      $subscriber->subscribe('herd_share_updates');
+    }
+    else {
+      $subscriber->unsubscribe('herd_share_updates');
+    }
+    $subscriber->save();
+  }
+
+  return t('Reconciled default and herd share newsletter subscriptions for all users.');
+}
+
+/**
+ * Subscribes or unsubscribes every user to a product subscription newsletter.
+ *
+ * A user is subscribed if they have ever had a commerce_subscription for
+ * $variation_id and at least one of those is currently active; otherwise
+ * they are unsubscribed. Users who never had one of these subscriptions are
+ * left untouched.
+ *
+ * @param int $variation_id
+ *   The product variation ID the commerce_subscription is purchasing.
+ * @param string $newsletter_id
+ *   The simplenews newsletter ID to keep in sync.
+ */
+function _mcgreen_acres_custom_reconcile_product_subscription_newsletter($variation_id, $newsletter_id) {
+  $subscription_storage = \Drupal::entityTypeManager()->getStorage('commerce_subscription');
+  $subscription_ids = $subscription_storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('purchased_entity.target_id', $variation_id)
+    ->execute();
+
+  $active_uids = [];
+  $all_uids = [];
+  foreach ($subscription_storage->loadMultiple($subscription_ids) as $subscription) {
+    $uid = $subscription->getOwnerId();
+    $all_uids[$uid] = TRUE;
+    if ($subscription->getState()->getId() === 'active') {
+      $active_uids[$uid] = TRUE;
+    }
+  }
+
+  foreach (array_keys($all_uids) as $uid) {
+    $subscriber = Subscriber::loadByUid($uid, TRUE);
+    if (!$subscriber) {
+      continue;
+    }
+    if (isset($active_uids[$uid])) {
+      $subscriber->subscribe($newsletter_id);
+    }
+    else {
+      $subscriber->unsubscribe($newsletter_id);
+    }
+    $subscriber->save();
+  }
+}
+
+/**
+ * Reconciles the "The Weekly Dozen" newsletter subscription.
+ *
+ * Mirrors mcgreen_acres_custom_update_10008()'s herd share reconciliation
+ * for the newly added \Drupal\mcgreen_acres_store\EventSubscriber\
+ * ProductSubscriptionNewsletterSubscriber entry for product variation 45
+ * (/product/weekly-dozen), which keeps "the_weekly_dozen_updates" in sync
+ * going forward.
+ */
+function mcgreen_acres_custom_update_10009() {
+  _mcgreen_acres_custom_reconcile_product_subscription_newsletter(45, 'the_weekly_dozen_updates');
+
+  return t('Reconciled "The Weekly Dozen" newsletter subscriptions for all users.');
+}
+
+/**
+ * Adds fields to simplenews_subscriber for the Mailchimp CSV import.
+ *
+ * Adds a "Subscriber Tags" taxonomy vocabulary plus first/last name, phone,
+ * location, opt-in IP and tags fields on simplenews_subscriber, so legacy
+ * Mailchimp subscriber data (most of whom have no Drupal user account) has
+ * somewhere to live. See simplenews_subscriber's own subscribe/unsubscribe
+ * history for opt-in/confirm timestamps; "created" is used directly for the
+ * original Mailchimp opt-in date.
+ */
+function mcgreen_acres_custom_update_10010() {
+  // Subscriber Tags vocabulary, kept separate from the "tags" vocabulary
+  // (which is for blog/content, not subscriber segmentation).
+  $vocabulary_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary');
+  if (!$vocabulary_storage->load('subscriber_tags')) {
+    $vocabulary_storage->create([
+      'vid' => 'subscriber_tags',
+      'name' => 'Subscriber Tags',
+      'description' => 'Segmentation tags for newsletter subscribers, imported from Mailchimp.',
+    ])->save();
+  }
+
+  $entity_type = 'simplenews_subscriber';
+  $bundle = 'simplenews_subscriber';
+
+  $fields = [
+    'field_first_name' => [
+      'type' => 'string',
+      'label' => 'First name',
+      'settings' => ['max_length' => 255],
+    ],
+    'field_last_name' => [
+      'type' => 'string',
+      'label' => 'Last name',
+      'settings' => ['max_length' => 255],
+    ],
+    'field_phone' => [
+      'type' => 'string',
+      'label' => 'Phone',
+      'settings' => ['max_length' => 255],
+    ],
+    'field_location' => [
+      'type' => 'string',
+      'label' => 'Location',
+      'description' => 'Free-text city/state/zip, imported from Mailchimp. Not a full postal address.',
+      'settings' => ['max_length' => 255],
+    ],
+    'field_optin_ip' => [
+      'type' => 'string',
+      'label' => 'Opt-in IP address',
+      'description' => 'IP address recorded at original opt-in, imported from Mailchimp as a minimal consent record.',
+      'settings' => ['max_length' => 128],
+    ],
+  ];
+
+  foreach ($fields as $field_name => $field_info) {
+    $field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load("{$entity_type}.{$field_name}");
+    if (!$field_storage) {
+      $field_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+        'field_name' => $field_name,
+        'entity_type' => $entity_type,
+        'type' => $field_info['type'],
+        'settings' => $field_info['settings'],
+      ]);
+      $field_storage->save();
+    }
+
+    $field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load("{$entity_type}.{$bundle}.{$field_name}");
+    if (!$field_config) {
+      \Drupal\field\Entity\FieldConfig::create([
+        'field_name' => $field_name,
+        'entity_type' => $entity_type,
+        'bundle' => $bundle,
+        'label' => $field_info['label'],
+        'description' => $field_info['description'] ?? '',
+        'required' => FALSE,
+      ])->save();
+    }
+  }
+
+  $tags_field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load("{$entity_type}.field_tags");
+  if (!$tags_field_storage) {
+    $tags_field_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+      'field_name' => 'field_tags',
+      'entity_type' => $entity_type,
+      'type' => 'entity_reference',
+      'cardinality' => -1,
+      'settings' => ['target_type' => 'taxonomy_term'],
+    ]);
+    $tags_field_storage->save();
+  }
+
+  $tags_field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load("{$entity_type}.{$bundle}.field_tags");
+  if (!$tags_field_config) {
+    \Drupal\field\Entity\FieldConfig::create([
+      'field_name' => 'field_tags',
+      'entity_type' => $entity_type,
+      'bundle' => $bundle,
+      'label' => 'Tags',
+      'required' => FALSE,
+      'settings' => [
+        'handler' => 'default:taxonomy_term',
+        'handler_settings' => [
+          'target_bundles' => ['subscriber_tags' => 'subscriber_tags'],
+          'auto_create' => TRUE,
+        ],
+      ],
+    ])->save();
+  }
+
+  return t('Added Mailchimp import fields and the Subscriber Tags vocabulary.');
+}

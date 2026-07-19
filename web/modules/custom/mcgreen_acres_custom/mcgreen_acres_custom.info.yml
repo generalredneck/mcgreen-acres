@@ -3,3 +3,6 @@ type: module
 description: 'Custom functionality for McGreen Acres site.'
 core_version_requirement:  ^9 || ^10 || ^11
 package: 'McGreen Acres'
+dependencies:
+  - simplenews:simplenews
+  - commerce_recurring:commerce_recurring
