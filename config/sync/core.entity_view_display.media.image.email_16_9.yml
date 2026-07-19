@@ -1,0 +1,37 @@
+uuid: c0417e3c-6b57-4101-ac98-3b5903540314
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.email_16_9
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_media_in_library
+    - image.style.d06_standard
+    - media.type.image
+  module:
+    - image
+_core:
+  default_config_hash: jOwnt_yq6AKAfqU6f0xKnxEkFQ2eTPJWxrk3WMLbL68
+id: media.image.email_16_9
+targetEntityType: media
+bundle: image
+mode: email_16_9
+content:
+  field_media_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: d06_standard
+      image_loading:
+        attribute: eager
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  created: true
+  field_media_in_library: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

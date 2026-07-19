@@ -1,0 +1,11 @@
+uuid: 93e94e71-d4da-4c77-a455-3c9c9891dd62
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.email_4_3
+label: 'Email 4:3'
+description: null
+targetEntityType: media
+cache: true

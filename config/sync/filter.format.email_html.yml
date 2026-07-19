@@ -1,10 +1,39 @@
 uuid: 91363329-7bb4-4420-8c67-f8094df62442
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - entity_embed
 _core:
   default_config_hash: 8UYEKlWeJ8cK8V-9ojit-_9SwBjQKk0SU-UkiuvlWKI
 name: 'Email HTML'
 format: email_html
 weight: 10
-filters: {  }
+filters:
+  entity_embed:
+    id: entity_embed
+    provider: entity_embed
+    status: true
+    weight: 100
+    settings: {  }
+  filter_align:
+    id: filter_align
+    provider: filter
+    status: true
+    weight: 0
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: true
+    weight: -48
+    settings: {  }
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: false
+    weight: -10
+    settings:
+      allowed_html: ''
+      filter_html_help: true
+      filter_html_nofollow: false

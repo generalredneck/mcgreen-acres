@@ -1,0 +1,37 @@
+uuid: 7b7c20e5-84de-4fbf-9b8b-1e80f557532a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.email_16_9
+    - core.entity_view_mode.media.email_1_1
+    - core.entity_view_mode.media.email_4_3
+    - core.entity_view_mode.media.email_auto
+    - core.entity_view_mode.media.original
+    - entity_browser.browser.editor_media_browser
+    - media.type.image
+  module:
+    - entity_embed
+    - media
+label: 'Email Image'
+id: email_image
+type_id: entity
+type_settings:
+  entity_type: media
+  bundles:
+    - image
+  display_plugins:
+    - 'view_mode:media.email_16_9'
+    - 'view_mode:media.email_1_1'
+    - 'view_mode:media.email_4_3'
+    - 'view_mode:media.email_auto'
+    - 'view_mode:media.original'
+  entity_browser: editor_media_browser
+  entity_browser_settings:
+    display_review: false
+  inline_entity_form: false
+  inline_entity_form_settings:
+    entity_form_display: default
+    display_review: false
+icon: {  }
+icon_uuid: null

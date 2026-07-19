@@ -1,0 +1,11 @@
+uuid: 01fef44c-e216-40fa-ac5e-817830afbf76
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.email_1_1
+label: 'Email 1:1'
+description: null
+targetEntityType: media
+cache: true

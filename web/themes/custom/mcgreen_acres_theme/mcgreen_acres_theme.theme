@@ -384,3 +384,15 @@ function mcgreen_acres_theme_preprocess_links__container__actions(array &$variab
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for simplenews-newsletter-body.
+ *
+ * Shortens the unsubscribe link text from "Unsubscribe from this
+ * newsletter" to just "Unsubscribe".
+ */
+function mcgreen_acres_theme_preprocess_simplenews_newsletter_body(array &$variables) {
+  if (!empty($variables['unsubscribe_text'])) {
+    $variables['unsubscribe_text'] = t('Unsubscribe', [], ['langcode' => $variables['language']]);
+  }
+}

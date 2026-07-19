@@ -1,0 +1,11 @@
+uuid: c11663d9-91e2-43a9-b5d6-b740895005c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.email_auto
+label: 'Email Auto'
+description: null
+targetEntityType: media
+cache: true

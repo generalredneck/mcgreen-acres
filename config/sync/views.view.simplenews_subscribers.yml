@@ -2,6 +2,10 @@ uuid: 5769649e-e226-4678-8452-a49882a17dbd
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.storage.simplenews_subscriber.field_first_name
+    - field.storage.simplenews_subscriber.field_last_name
+    - field.storage.simplenews_subscriber.field_tags
   module:
     - options
     - simplenews
@@ -76,6 +80,130 @@ display:
           action_title: Action
           include_exclude: exclude
           selected_actions: {  }
+        field_first_name:
+          id: field_first_name
+          table: simplenews_subscriber__field_first_name
+          field: field_first_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'First name'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_last_name:
+          id: field_last_name
+          table: simplenews_subscriber__field_last_name
+          field: field_last_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Last name'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         mail:
           id: mail
           table: simplenews_subscriber
@@ -240,6 +368,69 @@ display:
           multi_type: ul
           separator: ', '
           field_api_classes: false
+        field_tags:
+          id: field_tags
+          table: simplenews_subscriber__field_tags
+          field: field_tags
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Tags
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         status:
           id: status
           table: simplenews_subscriber
@@ -358,6 +549,32 @@ display:
           date_format: fallback
           custom_date_format: ''
           timezone: ''
+          click_sort_column: value
+          type: timestamp
+          settings:
+            time_diff:
+              enabled: 0
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: '2'
+              refresh: '60'
+              description: ''
+            date_format: html_date
+            custom_date_format: ''
+            timezone: ''
+            tooltip:
+              date_format: long
+              custom_date_format: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: 0
         operations:
           id: operations
           table: simplenews_subscriber
@@ -413,7 +630,8 @@ display:
         type: full
         options:
           offset: 0
-          items_per_page: 30
+          pagination_heading_level: h4
+          items_per_page: 100
           total_pages: null
           id: 0
           tags:
@@ -463,34 +681,33 @@ display:
       sorts: {  }
       arguments: {  }
       filters:
-        mail:
-          id: mail
-          table: simplenews_subscriber
-          field: mail
+        combine:
+          id: combine
+          table: views
+          field: combine
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: simplenews_subscriber
-          entity_field: mail
-          plugin_id: string
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: mail_op
-            label: Email
+            operator_id: combine_op
+            label: Search
             description: ''
             use_operator: false
-            operator: mail_op
+            operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: mail
+            identifier: combine
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -503,6 +720,11 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          fields:
+            field_first_name: field_first_name
+            field_last_name: field_last_name
+            mail: mail
+            user_name: user_name
         subscriptions_target_id:
           id: subscriptions_target_id
           table: simplenews_subscriber__subscriptions
@@ -584,8 +806,98 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            simplenews_subscriber_bulk_form: simplenews_subscriber_bulk_form
+            field_first_name: field_first_name
+            field_last_name: field_last_name
+            mail: mail
+            user_name: user_name
+            subscriptions_target_id: subscriptions_target_id
+            field_tags: field_tags
+            status: status
+            created: created
+            operations: operations
+          default: created
+          info:
+            simplenews_subscriber_bulk_form:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_first_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_last_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            mail:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            user_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            subscriptions_target_id:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_tags:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            status:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            created:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -601,14 +913,17 @@ display:
       footer: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.simplenews_subscriber.field_first_name'
+        - 'config:field.storage.simplenews_subscriber.field_last_name'
+        - 'config:field.storage.simplenews_subscriber.field_tags'
       cacheable: false
   page_1:
     id: page_1
@@ -616,15 +931,21 @@ display:
     display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: admin/people/simplenews
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.simplenews_subscriber.field_first_name'
+        - 'config:field.storage.simplenews_subscriber.field_last_name'
+        - 'config:field.storage.simplenews_subscriber.field_tags'
       cacheable: false

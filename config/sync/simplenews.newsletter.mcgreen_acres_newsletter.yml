@@ -13,8 +13,9 @@ subject: '[node:title]'
 from_address: info@mcgreenacres.com
 hyperlinks: true
 allowed_handlers:
+  0: '0'
   simplenews_all: '0'
 new_account: 'on'
 access: default
-reason: ''
+reason: 'You are receiving this email because you opted in via our website, requested additional information about our products, or are an existing customer.'
 weight: 0

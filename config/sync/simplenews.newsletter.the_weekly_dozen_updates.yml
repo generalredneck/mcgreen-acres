@@ -13,8 +13,9 @@ subject: '[node:title]'
 from_address: info@mcgreenacres.com
 hyperlinks: true
 allowed_handlers:
+  0: '0'
   simplenews_all: '0'
 new_account: none
 access: hidden
-reason: ''
+reason: 'You are receiving this email because you are a part of our "The Weekly Dozen" program. To discontinue receiving these emails, you must cancel your subscription.'
 weight: 0

@@ -1,0 +1,20 @@
+--- a/src/Hook/VarbaseMediaHooks.php
++++ b/src/Hook/VarbaseMediaHooks.php
+@@ -342,10 +342,13 @@
+             $form['attributes']['data-align']['#description'] = $this->t('Choose the positioning of the image.');
+             $form['attributes']['data-align']['#weight'] = -10;
+ 
+-            // Add description for the caption field.
+-            $form['attributes']['data-caption'] += [
+-              '#description' => $this->t('A caption will be displayed under the image, to describe it in context of your content.'),
+-            ];
++            // Add description for the caption field. Only present when the
++            // text format has the filter_caption filter enabled.
++            if (isset($form['attributes']['data-caption'])) {
++              $form['attributes']['data-caption'] += [
++                '#description' => $this->t('A caption will be displayed under the image, to describe it in context of your content.'),
++              ];
++            }
+ 
+             // Adding the updated alt text to the media entity.
+             if (isset($entity_element['alt'])) {

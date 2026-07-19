@@ -42,7 +42,20 @@
  * @see template_preprocess_simplenews_newsletter_body()
  */
 #}
+
+{% set site_name = 'McGreen Acres' %}
+{% set site_address = url('<front>') %}
+{% set support_email = 'info@mcgreenacres.com' %}
+
 {% if format == 'html' %}
+<table role="presentation" cellpadding="0" cellspacing="0" class="container" style="background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+
+  <tr>
+    <td style="padding:8px 24px 18px 24px; color:#505050; font-size:16px; line-height:22px;">
+      <!-- main content area -->
+
+
+
   {% if test_message %}
     <p class="simplenews-test-message" style="color: red; font-weight: bold;">{{ test_message }}</p>
   {% endif %}
@@ -55,14 +68,43 @@
 {{ build }}
 
 {% if format == 'html' %}
-  {% if reason or unsubscribe_text %}
-    <p class="newsletter-footer">
-      {{ reason }}
-      {% if unsubscribe_text %}
-        <a href="[simplenews-subscriber:unsubscribe-url]">{{ unsubscribe_text }}</a>
-      {% endif %}
-    </p>
-  {% endif %}
+
+      </td>
+    </tr>
+    <!-- Footer -->
+    <!-- Header -->
+    <tr>
+      <td style="padding:20px 24px; background-color:#ffffff; text-align:center; width:100%;">
+        <img src="{{ site_address }}/themes/custom/mcgreen_acres_theme/logo.png" alt="McGreen Acres Logo" width="120" style="border:0; display:inline-block; max-width:195px; height:auto;">
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 24px; background-color:#F4F9FF; color:#707070; font-size:13px; line-height:18px; text-align:center;">
+        {% if reason or unsubscribe_text %}
+          <p class="newsletter-footer" style="margin:0 0 8px 0;">
+            {{ reason }}
+            {% if unsubscribe_text %}
+              <a href="[simplenews-subscriber:unsubscribe-url]">{{ unsubscribe_text }}</a>
+            {% endif %}
+          </p>
+        {% endif %}
+        <p style="margin:0 0 8px 0;">
+          McGreen Acres LLC 2414 Westmoreland Rd Red Oak, TX 75154-5816 USA
+        </p>
+        <p style="margin:0 0 8px 0;">
+          <a href="{{ site_address }}" style="color:#707070; text-decoration:underline;">{{ site_address }}</a>
+        </p>
+        <p style="margin:0 0 8px 0;">
+           (469) 248-5703
+        </p>
+        <p style="margin:0 0 8px 0;">Copyright &copy; {{ "now"|date('Y') }} McGreen Acres LLC. All rights reserved.</p>
+        <p> This email was intended for {{ simplenews_subscriber.getMail }}. If you have received this in error, please ignore it.</p>
+        <p style="margin:0;">If you have questions, reply to this email or contact us at <a href="mailto:{{support_email}}" style="color:#707070; text-decoration:underline;">{{support_email}}</a>.</p>
+
+      </td>
+    </tr>
+
+  </table>
 {% else %}
   {{ reason }}
   {% if unsubscribe_text %}

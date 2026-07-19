@@ -1,0 +1,11 @@
+uuid: 86662cd8-b224-4011-8f65-f110e592afd7
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.email_16_9
+label: 'Email 16:9'
+description: null
+targetEntityType: media
+cache: true
