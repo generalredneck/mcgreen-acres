@@ -1,0 +1,315 @@
+--- a/src/Plugin/WebformHandler/SubmissionSimplenewsWebformHandler.php
++++ b/src/Plugin/WebformHandler/SubmissionSimplenewsWebformHandler.php
+@@ -90,6 +90,22 @@
+   protected $subscriptionManager;
+ 
+   /**
++   * The entity field manager.
++   *
++   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
++   */
++  protected $entityFieldManager;
++
++  /**
++   * Subscriber entity field types eligible for webform value mapping.
++   *
++   * Kept to simple text-like field types: complex targets (entity
++   * references such as field_tags, computed/base management fields like
++   * status or uid) are intentionally out of scope for a raw value mapping.
++   */
++  const MAPPABLE_FIELD_TYPES = ['string', 'string_long', 'email', 'telephone'];
++
++  /**
+    * {@inheritdoc}
+    */
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+@@ -105,6 +121,7 @@
+     $instance->tokenManager = $container->get('webform.token_manager');
+     $instance->elementManager = $container->get('plugin.manager.webform.element');
+     $instance->subscriptionManager = $container->get('simplenews.subscription_manager');
++    $instance->entityFieldManager = $container->get('entity_field.manager');
+ 
+     return $instance;
+   }
+@@ -116,7 +133,11 @@
+     return [
+       'states' => [WebformSubmissionInterface::STATE_COMPLETED],
+       'newsletters_lst' => [],
++      // Deprecated: superseded by field_mapping_source['mail']. Kept so
++      // existing exported webform config continues to work unmodified.
+       'token' => 'default',
++      'field_mapping_source' => [],
++      'field_mapping_value' => [],
+       'action' => '',
+       'debug' => FALSE,
+     ];
+@@ -187,12 +208,99 @@
+     ];
+     $settings['states'] = array_intersect_key($states, array_combine($settings['states'], $settings['states']));
+ 
++    $field_labels = $this->getSubscriberFieldOptions();
++    $field_mapping = [];
++    foreach ($this->getFieldMapping() as $field_name => $source) {
++      $label = $field_labels[$field_name] ?? $field_name;
++      $field_mapping[(string) $label] = $source;
++    }
++    $settings['field_mapping'] = $field_mapping;
++    unset($settings['field_mapping_source'], $settings['field_mapping_value'], $settings['token']);
++
+     return [
+       '#settings' => $settings,
+     ] + parent::getSummary();
+   }
+ 
+   /**
++   * Get simplenews_subscriber fields eligible for webform value mapping.
++   *
++   * @return array
++   *   An associative array of field labels, keyed by field name.
++   */
++  protected function getSubscriberFieldOptions() {
++    $options = [];
++    $field_definitions = $this->entityFieldManager->getFieldDefinitions('simplenews_subscriber', 'simplenews_subscriber');
++    foreach ($field_definitions as $field_name => $field_definition) {
++      if (in_array($field_definition->getType(), static::MAPPABLE_FIELD_TYPES, TRUE)) {
++        $options[$field_name] = $field_definition->getLabel();
++      }
++    }
++    return $options;
++  }
++
++  /**
++   * Get the resolved field mapping.
++   *
++   * Collapses the source/value form storage into a single map of subscriber
++   * field name to a webform element key or a literal/token string, falling
++   * back to the legacy 'token' setting for the mail field.
++   *
++   * @return array
++   *   An associative array of webform element keys or literal/token strings,
++   *   keyed by subscriber field name.
++   */
++  protected function getFieldMapping() {
++    $sources = $this->configuration['field_mapping_source'] ?? [];
++    $custom_values = $this->configuration['field_mapping_value'] ?? [];
++
++    if (empty($sources['mail'])) {
++      $legacy_token = $this->configuration['token'] ?? '';
++      if ($legacy_token === 'default') {
++        $legacy_token = $this->getDefaultConfigurationValue('token');
++      }
++      if ($legacy_token !== '') {
++        $sources['mail'] = $legacy_token;
++      }
++    }
++
++    $mapping = [];
++    foreach ($sources as $field_name => $source) {
++      if ($source === '' || $source === NULL) {
++        continue;
++      }
++      if ($source === '_other') {
++        if (isset($custom_values[$field_name]) && $custom_values[$field_name] !== '') {
++          $mapping[$field_name] = $custom_values[$field_name];
++        }
++        continue;
++      }
++      $mapping[$field_name] = $source;
++    }
++
++    return $mapping;
++  }
++
++  /**
++   * Resolve a field mapping source to its submitted value.
++   *
++   * @param string $source
++   *   A webform element key, or a literal string that may contain tokens.
++   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
++   *   The webform submission.
++   *
++   * @return string|null
++   *   The resolved value.
++   */
++  protected function resolveFieldMappingValue($source, WebformSubmissionInterface $webform_submission) {
++    $elements = $this->webform->getElementsInitializedAndFlattened();
++    if (isset($elements[$source])) {
++      return $webform_submission->getElementData($source);
++    }
++    return $this->tokenManager->replace($source, $webform_submission);
++  }
++
++  /**
+    * Get mail configuration values.
+    *
+    * @return array
+@@ -251,6 +359,10 @@
+ 
+     $values = $form_state->getValues();
+ 
++    if (($values['field_mapping_source']['mail'] ?? '') === '_other' && trim($values['field_mapping_value']['mail'] ?? '') === '') {
++      $form_state->setError($form['submission_newsletter']['field_mapping']['mail']['custom'], $this->t('A custom value or token is required when Mail is mapped to "Other".'));
++    }
++
+     $form_state->setValues($values);
+     $this->applyFormStateToConfiguration($form_state);
+   }
+@@ -304,19 +416,59 @@
+       '#open' => TRUE,
+     ];
+ 
+-    $token_options = [];
+-    $token_options['default'] = $this->t('Default');
+-    $token_options[(string) $this->t('Elements')] = $element_options_value;
++    // Map webform element values (or a custom literal/token string) onto
++    // simplenews_subscriber fields. The 'mail' row is required: it replaces
++    // the legacy single 'token' select, whose value is still honored as a
++    // fallback default for 'mail' when no mapping has been saved yet.
++    $mapping_sources = $this->configuration['field_mapping_source'];
++    $mapping_values = $this->configuration['field_mapping_value'];
++    if (empty($mapping_sources['mail'])) {
++      $legacy_token = ($this->configuration['token'] === 'default')
++        ? $this->getDefaultConfigurationValue('token')
++        : $this->configuration['token'];
++      if ($legacy_token !== '') {
++        $mapping_sources['mail'] = $legacy_token;
++      }
++    }
+ 
+-    // Build body select menu.
+-    $form['submission_newsletter']['token'] = [
+-      '#type' => 'select',
+-      '#title' => $this->t('Token'),
+-      '#options' => $token_options,
+-      '#required' => TRUE,
+-      '#default_value' => $this->configuration['token'],
++    $form['submission_newsletter']['field_mapping'] = [
++      '#type' => 'container',
+     ];
+ 
++    foreach ($this->getSubscriberFieldOptions() as $field_name => $field_label) {
++      $default_source = $mapping_sources[$field_name] ?? '';
++
++      $form['submission_newsletter']['field_mapping'][$field_name] = [
++        '#type' => 'container',
++        '#attributes' => ['class' => ['webform-simplenews-handler-field-mapping-row']],
++      ];
++      $form['submission_newsletter']['field_mapping'][$field_name]['source'] = [
++        '#type' => 'select',
++        '#title' => $field_label,
++        '#options' => [
++          '' => $this->t('- None -'),
++          (string) $this->t('Elements') => $element_options_value,
++          '_other' => $this->t('- Other (custom value or token) -'),
++        ],
++        '#required' => ($field_name === 'mail'),
++        '#default_value' => $default_source,
++        '#parents' => ['settings', 'field_mapping_source', $field_name],
++      ];
++      $form['submission_newsletter']['field_mapping'][$field_name]['custom'] = [
++        '#type' => 'textfield',
++        '#title' => $this->t('@field custom value or token', ['@field' => $field_label]),
++        '#title_display' => 'invisible',
++        '#placeholder' => $this->t('Custom value or token'),
++        '#default_value' => $mapping_values[$field_name] ?? '',
++        '#parents' => ['settings', 'field_mapping_value', $field_name],
++        '#states' => [
++          'visible' => [
++            ':input[name="settings[field_mapping_source][' . $field_name . ']"]' => ['value' => '_other'],
++          ],
++        ],
++      ];
++    }
++
+     $form['submission_newsletter']['newsletters_lst'] = [
+       '#type' => 'checkboxes',
+       '#title' => $this->t('Newsletters'),
+@@ -363,32 +515,48 @@
+   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE): void {
+     $state = $webform_submission->getWebform()->getSetting('results_disabled') ? WebformSubmissionInterface::STATE_COMPLETED : $webform_submission->getState();
+ 
+-    if (in_array($state, $this->configuration['states'])) {
+-      $newsletter_lst = $this->configuration['newsletters_lst'];
++    if (!in_array($state, $this->configuration['states'])) {
++      return;
++    }
+ 
+-      // We take the name's key.
+-      $token_field_key = $this->configuration['token'];
+-      $email_value = $webform_submission->getElementData($token_field_key);
+-
+-      if ($email_value && $newsletter_lst) {
+-        foreach ($newsletter_lst as $newsletter_id) {
+-          if ($newsletter_id != '0') {
+-            $action = $this->configuration['action'];
+-            $this->subscriptionManager->$action($email_value, $newsletter_id, NULL);
+-
+-            // Get subscriber entity.
+-            $subscriber = Subscriber::loadByMail($email_value);
+-            if (!$subscriber::skipConfirmation()) {
+-              // Set new (anonymous) subscribers to unconfirmed.
+-              $subscriber->setStatus(SubscriberInterface::UNCONFIRMED);
+-            }
+-            $subscriber->sendConfirmation();
+-            $subscriber->save();
++    $newsletter_lst = $this->configuration['newsletters_lst'];
++    $field_mapping = $this->getFieldMapping();
+ 
+-          }
+-        }
++    if (empty($field_mapping['mail']) || empty($newsletter_lst)) {
++      return;
++    }
++
++    $email_value = $this->resolveFieldMappingValue($field_mapping['mail'], $webform_submission);
++    if (!$email_value) {
++      return;
++    }
++
++    $action = $this->configuration['action'];
++    foreach ($newsletter_lst as $newsletter_id) {
++      if ($newsletter_id != '0') {
++        $this->subscriptionManager->$action($email_value, $newsletter_id, NULL);
+       }
+     }
++
++    // Get subscriber entity.
++    $subscriber = Subscriber::loadByMail($email_value);
++    if (!$subscriber::skipConfirmation()) {
++      // Set new (anonymous) subscribers to unconfirmed.
++      $subscriber->setStatus(SubscriberInterface::UNCONFIRMED);
++    }
++
++    foreach ($field_mapping as $field_name => $source) {
++      if ($field_name === 'mail' || !$subscriber->hasField($field_name)) {
++        continue;
++      }
++      $value = $this->resolveFieldMappingValue($source, $webform_submission);
++      if ($value !== NULL && $value !== '') {
++        $subscriber->set($field_name, $value);
++      }
++    }
++
++    $subscriber->sendConfirmation();
++    $subscriber->save();
+   }
+ 
+ }
+--- a/templates/webform-handler-submission-newsletter-summary.html.twig
++++ b/templates/webform-handler-submission-newsletter-summary.html.twig
+@@ -11,7 +11,14 @@
+  */
+ #}
+ 
+-{% if settings.token %}<b>{{ 'Token:'|t }}</b> {{ settings.token }}<br />{% endif %}
++{% if settings.field_mapping %}
++  <b>{{ 'Field mapping:'|t }}</b><br />
++  <ul>
++  {% for field_label, source in settings.field_mapping %}
++    <li>{{ field_label }}: {{ source }}</li>
++  {% endfor %}
++  </ul>
++{% endif %}
+ <b>{{ 'Newsletters:'|t }}</b> {{ settings.newsletters_lst|join('; ') }}<br />
+ <b>{{ 'Action:'|t }}</b> {{ settings.action }}<br />
+ <b>{{ 'Execute when:'|t }}</b> {{ settings.states|join('; ') }}<br />

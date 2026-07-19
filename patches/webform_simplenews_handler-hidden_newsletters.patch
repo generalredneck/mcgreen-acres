@@ -1,0 +1,26 @@
+--- a/src/Plugin/WebformHandler/SubmissionSimplenewsWebformHandler.php
++++ b/src/Plugin/WebformHandler/SubmissionSimplenewsWebformHandler.php
+@@ -497,11 +497,21 @@
+    */
+   public function getNewsletterOptions() {
+     $newsletter_options = [];
+-    $newsletters = simplenews_newsletter_get_visible();
++    // Users with the "manage simplenews hidden subscriptions" permission may
++    // also subscribe/unsubscribe submitters to newsletters with a "hidden"
++    // access setting, not just publicly visible ones.
++    // @see https://www.drupal.org/project/simplenews/issues/2111981
++    $newsletters = $this->currentUser->hasPermission('manage simplenews hidden subscriptions')
++      ? simplenews_newsletter_get_all()
++      : simplenews_newsletter_get_visible();
+ 
+     if (!empty($newsletters)) {
+       foreach ($newsletters as $key => $newsletter) {
+-        $newsletter_options[$key] = $newsletter->name;
++        $label = $newsletter->name;
++        if (!$newsletter->isAccessible()) {
++          $label = $this->t('@label (hidden)', ['@label' => $label]);
++        }
++        $newsletter_options[$key] = $label;
+       }
+     }
+ 
