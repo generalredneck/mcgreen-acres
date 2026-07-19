@@ -1,0 +1,20 @@
+uuid: 8c63122b-f390-4b91-ab96-7d834b35968f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.simplenews_subscriber.field_first_name
+  module:
+    - simplenews
+id: simplenews_subscriber.simplenews_subscriber.field_first_name
+field_name: field_first_name
+entity_type: simplenews_subscriber
+bundle: simplenews_subscriber
+label: 'First name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

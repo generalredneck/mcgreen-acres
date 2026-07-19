@@ -1,0 +1,9 @@
+uuid: 664e3754-0ee9-4052-968e-cc8668a19e09
+langcode: en
+status: true
+dependencies: {  }
+name: 'Subscriber Tags'
+vid: subscriber_tags
+description: 'Segmentation tags for newsletter subscribers, imported from Mailchimp.'
+weight: 0
+new_revision: false

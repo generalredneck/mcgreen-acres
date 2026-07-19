@@ -1,0 +1,20 @@
+uuid: 68b56946-db00-4440-a9ee-5087cb17a10d
+langcode: en
+status: true
+dependencies:
+  module:
+    - simplenews
+    - taxonomy
+id: simplenews_subscriber.field_tags
+field_name: field_tags
+entity_type: simplenews_subscriber
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

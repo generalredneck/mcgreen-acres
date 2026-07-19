@@ -1,0 +1,21 @@
+uuid: 22423e61-b488-41ef-b6b4-7e4966c5e16c
+langcode: en
+status: true
+dependencies:
+  module:
+    - simplenews
+id: simplenews_subscriber.field_phone
+field_name: field_phone
+entity_type: simplenews_subscriber
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

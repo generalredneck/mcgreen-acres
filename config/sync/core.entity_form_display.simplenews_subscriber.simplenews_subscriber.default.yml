@@ -2,6 +2,13 @@ uuid: 887f1376-8a87-42ef-ae00-3aa0d01c71f8
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.field.simplenews_subscriber.simplenews_subscriber.field_first_name
+    - field.field.simplenews_subscriber.simplenews_subscriber.field_last_name
+    - field.field.simplenews_subscriber.simplenews_subscriber.field_location
+    - field.field.simplenews_subscriber.simplenews_subscriber.field_optin_ip
+    - field.field.simplenews_subscriber.simplenews_subscriber.field_phone
+    - field.field.simplenews_subscriber.simplenews_subscriber.field_tags
   module:
     - simplenews
 _core:
@@ -32,4 +39,10 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_first_name: true
+  field_last_name: true
+  field_location: true
+  field_optin_ip: true
+  field_phone: true
+  field_tags: true
   uid: true

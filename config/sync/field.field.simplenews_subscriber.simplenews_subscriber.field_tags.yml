@@ -1,0 +1,26 @@
+uuid: 72e60c6d-dc40-431a-947b-672bb07c8dba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.simplenews_subscriber.field_tags
+    - taxonomy.vocabulary.subscriber_tags
+  module:
+    - simplenews
+id: simplenews_subscriber.simplenews_subscriber.field_tags
+field_name: field_tags
+entity_type: simplenews_subscriber
+bundle: simplenews_subscriber
+label: Tags
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subscriber_tags: subscriber_tags
+    auto_create: true
+field_type: entity_reference

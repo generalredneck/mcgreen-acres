@@ -1,0 +1,21 @@
+uuid: a65eb5c6-4524-49eb-b2b1-d9d9a8697ad9
+langcode: en
+status: true
+dependencies:
+  module:
+    - simplenews
+id: simplenews_subscriber.field_optin_ip
+field_name: field_optin_ip
+entity_type: simplenews_subscriber
+type: string
+settings:
+  max_length: 128
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

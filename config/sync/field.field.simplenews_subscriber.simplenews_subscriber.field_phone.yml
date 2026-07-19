@@ -1,0 +1,20 @@
+uuid: 7ad6a8b0-c382-41d1-9ec1-d4cd3290ab0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.simplenews_subscriber.field_phone
+  module:
+    - simplenews
+id: simplenews_subscriber.simplenews_subscriber.field_phone
+field_name: field_phone
+entity_type: simplenews_subscriber
+bundle: simplenews_subscriber
+label: Phone
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

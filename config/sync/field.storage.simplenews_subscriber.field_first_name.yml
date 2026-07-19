@@ -1,0 +1,21 @@
+uuid: 40d9e3a5-d72f-4391-90d4-c7bf17bdb2fc
+langcode: en
+status: true
+dependencies:
+  module:
+    - simplenews
+id: simplenews_subscriber.field_first_name
+field_name: field_first_name
+entity_type: simplenews_subscriber
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

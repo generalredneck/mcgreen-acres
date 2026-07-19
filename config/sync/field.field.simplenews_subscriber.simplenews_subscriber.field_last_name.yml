@@ -1,0 +1,20 @@
+uuid: 15ab29dc-28ae-41bd-bc0e-2ad712f570b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.simplenews_subscriber.field_last_name
+  module:
+    - simplenews
+id: simplenews_subscriber.simplenews_subscriber.field_last_name
+field_name: field_last_name
+entity_type: simplenews_subscriber
+bundle: simplenews_subscriber
+label: 'Last name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
