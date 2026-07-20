@@ -318,6 +318,10 @@
             "drupal/entity_delta_formatter": {
                 "d11": "https://www.drupal.org/files/issues/2024-03-17/entity_delta_formatter.8.x-2.1.rector.patch"
             },
+            "drupal/entity_embed": {
+                "#3416529: False-positive recursive rendering detected when the same entity is embedded many times across a single request (e.g. simplenews sending one newsletter to many recipients)": "patches/entity_embed-3416529-recursive_rendering_leak.patch",
+                "Don't log 'Invalid display settings' warning for an empty data-entity-embed-display-settings attribute, which the CKEditor embed button legitimately emits for display plugins that take no settings": "patches/entity_embed-empty_display_settings_warning.patch"
+            },
             "drupal/facebook_pixel": {
                 "php 8.4": "patches/facebook_pixel-3558063-mr27.patch"
             },

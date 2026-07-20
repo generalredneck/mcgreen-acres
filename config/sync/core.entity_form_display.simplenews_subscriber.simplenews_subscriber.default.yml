@@ -18,31 +18,60 @@ targetEntityType: simplenews_subscriber
 bundle: simplenews_subscriber
 mode: default
 content:
+  field_first_name:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_last_name:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_location:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_phone:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   mail:
     type: email_default
     weight: 0
     region: content
     settings:
       placeholder: ''
+      size: 60
     third_party_settings: {  }
   status:
     type: options_select
-    weight: 1
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   subscriptions:
     type: simplenews_subscription_select
-    weight: 0
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
-  field_first_name: true
-  field_last_name: true
-  field_location: true
   field_optin_ip: true
-  field_phone: true
   field_tags: true
   uid: true

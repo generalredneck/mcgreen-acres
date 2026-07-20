@@ -33,11 +33,14 @@
  * - key: email key [node|test|extra]
  * - simplenews_subscriber: object(Drupal\simplenews\Entity\Subscriber)
  *   The subscriber for which the newsletter is built.
- *     {{ simplenews_subscriber.getMail  }}: string: subscriber's email address
- *   Note that depending on the used caching strategy, the generated body might
- *   be used for multiple subscribers. If you created personalized newsletters
- *   and can't use tokens for that, make sure to disable caching or write a
- *   custom caching strategy implementation.
+ *   Do NOT print subscriber properties directly (e.g. simplenews_subscriber.getMail)
+ *   in this template. Depending on the caching strategy in use
+ *   (MailCacheBuild caches this templated body once per newsletter+language
+ *   and reuses it for every subscriber rendered without an authenticated
+ *   Drupal session), any subscriber-specific value printed here directly
+ *   gets baked into that shared cache and leaks to other recipients. Use the
+ *   simplenews tokens instead (e.g. [simplenews-subscriber:mail]) — those are
+ *   replaced after the cached body is retrieved, once per recipient.
  *
  * @see template_preprocess_simplenews_newsletter_body()
  */
@@ -98,7 +101,7 @@
            (469) 248-5703
         </p>
         <p style="margin:0 0 8px 0;">Copyright &copy; {{ "now"|date('Y') }} McGreen Acres LLC. All rights reserved.</p>
-        <p> This email was intended for {{ simplenews_subscriber.getMail }}. If you have received this in error, please ignore it.</p>
+        <p> This email was intended for [simplenews-subscriber:mail]. If you have received this in error, please ignore it.</p>
         <p style="margin:0;">If you have questions, reply to this email or contact us at <a href="mailto:{{support_email}}" style="color:#707070; text-decoration:underline;">{{support_email}}</a>.</p>
 
       </td>

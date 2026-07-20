@@ -1,0 +1,25 @@
+--- a/src/EntityEmbedBuilder.php
++++ b/src/EntityEmbedBuilder.php
+@@ -63,11 +63,17 @@
+     // otherwise we'll encounter a fatal error when calling
+     // $this->buildEntityEmbedDisplayPlugin() further down the line.
+     if (!is_array($context['data-entity-embed-display-settings'])) {
+-      \Drupal::logger('entity_embed')->warning('Invalid display settings encountered. Could not process following settings for entity type "@entity_type" with the uuid "@uuid": @settings', [
+-        '@settings' => $context['data-entity-embed-display-settings'],
+-        '@entity_type' => $entity->getEntityTypeId(),
+-        '@uuid' => $entity->uuid(),
+-      ]);
++      // An empty string is not malformed data: display plugins that don't
++      // accept settings (e.g. "view_mode:") legitimately emit
++      // data-entity-embed-display-settings="" from the CKEditor embed
++      // button. Only warn when there's actually something we're discarding.
++      if ($context['data-entity-embed-display-settings'] !== '') {
++        \Drupal::logger('entity_embed')->warning('Invalid display settings encountered. Could not process following settings for entity type "@entity_type" with the uuid "@uuid": @settings', [
++          '@settings' => $context['data-entity-embed-display-settings'],
++          '@entity_type' => $entity->getEntityTypeId(),
++          '@uuid' => $entity->uuid(),
++        ]);
++      }
+       $context['data-entity-embed-display-settings'] = [];
+     }
+ 

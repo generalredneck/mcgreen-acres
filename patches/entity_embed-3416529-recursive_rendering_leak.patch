@@ -1,0 +1,50 @@
+--- a/src/Plugin/Filter/EntityEmbedFilter.php
++++ b/src/Plugin/Filter/EntityEmbedFilter.php
+@@ -211,20 +211,33 @@
+             $entity_output = '';
+           }
+           else {
+-            $build = $this->builder->buildEntityEmbed($entity, $context);
+-            // We need to render the embedded entity:
+-            // - without replacing placeholders, so that the placeholders are
+-            //   only replaced at the last possible moment. Hence we cannot use
+-            //   either renderPlain() or renderRoot(), so we must use render().
+-            // - without bubbling beyond this filter, because filters must
+-            //   ensure that the bubbleable metadata for the changes they make
+-            //   when filtering text makes it onto the FilterProcessResult
+-            //   object that they return ($result). To prevent that bubbling, we
+-            //   must wrap the call to render() in a render context.
+-            $entity_output = $this->renderer->executeInRenderContext(new RenderContext(), function () use (&$build) {
+-              return $this->renderer->render($build);
+-            });
+-            $result = $result->merge(BubbleableMetadata::createFromRenderArray($build));
++            try {
++              $build = $this->builder->buildEntityEmbed($entity, $context);
++              // We need to render the embedded entity:
++              // - without replacing placeholders, so that the placeholders are
++              //   only replaced at the last possible moment. Hence we cannot use
++              //   either renderPlain() or renderRoot(), so we must use render().
++              // - without bubbling beyond this filter, because filters must
++              //   ensure that the bubbleable metadata for the changes they make
++              //   when filtering text makes it onto the FilterProcessResult
++              //   object that they return ($result). To prevent that bubbling, we
++              //   must wrap the call to render() in a render context.
++              $entity_output = $this->renderer->executeInRenderContext(new RenderContext(), function () use (&$build) {
++                return $this->renderer->render($build);
++              });
++              $result = $result->merge(BubbleableMetadata::createFromRenderArray($build));
++            }
++            finally {
++              // The counter only needs to track genuine recursion within a
++              // single top-level render (this entity embedding itself down
++              // the tree). Once this render has completed, release the slot
++              // so unrelated, sequential top-level renders of the same
++              // entity within one request (e.g. simplenews rendering a
++              // newsletter body once per recipient) don't exhaust the limit
++              // and falsely trigger the recursion guard.
++              // @see https://www.drupal.org/node/3416529
++              static::$recursiveRenderDepth[$recursive_render_id]--;
++            }
+           }
+         }
+ 
