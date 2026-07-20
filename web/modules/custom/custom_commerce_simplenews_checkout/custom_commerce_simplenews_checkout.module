@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Custom Commerce Simplenews Checkout module file.
+ */
+
+/**
+ * Implements hook_commerce_checkout_pane_info_alter().
+ */
+function custom_commerce_simplenews_checkout_commerce_checkout_pane_info_alter(&$definitions) {
+  if (isset($definitions['simplenews_subscription'])) {
+    $definitions['simplenews_subscription']['class'] = 'Drupal\custom_commerce_simplenews_checkout\Plugin\Commerce\CheckoutPane\SimplenewsSubscription';
+  }
+}

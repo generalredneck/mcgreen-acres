@@ -94,6 +94,7 @@
         "drupal/commerce_recurring_log": "^1.0",
         "drupal/commerce_reports": "^1.0@RC",
         "drupal/commerce_shipping": "^3.0",
+        "drupal/commerce_simplenews_checkout": "^2.0@RC",
         "drupal/commerce_stock": "^3.0@beta",
         "drupal/commerce_stripe": "^2.0",
         "drupal/commerce_tip": "^1.0",
@@ -285,6 +286,9 @@
             },
             "drupal/commerce_reports": {
                 "#2974570: Drush support": "patches/commerce_reports-2974570-drush_support-15.patch"
+            },
+            "drupal/commerce_simplenews_checkout": {
+                "hook_install()/hook_uninstall() still call removed Drupal 7 Variable API functions (variable_set/variable_del/db_query against {variable}), fatals on install": "patches/commerce_simplenews_checkout-remove_d7_variable_api_calls.patch"
             },
             "drupal/commerce_stripe": {
                 "#3564625: Reusable payment method is not usable": "patches/commerce_stripe-Reusable_payment_method_is_not_usable-3564625-11-MR199.patch",

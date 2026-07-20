@@ -10,6 +10,7 @@ dependencies:
     - commerce_payment
     - commerce_promotion
     - commerce_shipping
+    - commerce_simplenews_checkout
     - commerce_stripe
     - commerce_tip
     - custom_commerce_login_pane
@@ -37,6 +38,7 @@ configuration:
       allow_registration: false
       registration_form_mode: commerce_register
     pickup_timing:
+      display_label: null
       step: order_information
       weight: 1
       wrapper_element: container
@@ -103,12 +105,22 @@ configuration:
       setup_future_usage: ''
     newsletter_subscribe:
       display_label: null
+      step: _disabled
+      weight: 17
+      wrapper_element: container
+      mailchimp_list_id: ''
+      tags: ''
+      subscribe_text: 'Keep me updated with news and offers.'
+    simplenews_subscription:
+      display_label: null
       step: review
       weight: 11
       wrapper_element: container
-      mailchimp_list_id: e31f5f79c4
-      tags: Customer
-      subscribe_text: 'Keep me updated with news and offers.'
+      newsletters:
+        - mcgreen_acres_newsletter
+      label: 'Keep me updated with news and offers.'
+      review: 0
+      review_label: 'Subscribe to newsletters: @newsletters'
     customer_comments:
       display_label: 'Comments & Special Requests'
       step: review
@@ -144,14 +156,14 @@ configuration:
     shipping_information:
       display_label: null
       step: _disabled
-      weight: 17
+      weight: 18
       wrapper_element: fieldset
       auto_recalculate: true
       require_shipping_profile: true
     agree_terms:
       display_label: null
       step: _disabled
-      weight: 18
+      weight: 19
       wrapper_element: container
       link_text: 'Terms and Conditions'
       prefix_text: 'I agree with the %terms'
@@ -162,5 +174,5 @@ configuration:
     completion_register:
       display_label: null
       step: _disabled
-      weight: 19
+      weight: 20
       wrapper_element: null

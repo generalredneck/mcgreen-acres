@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74ec9f59f764953759a7f3174d63e4a7",
+    "content-hash": "c86c214485b618eead333f45fdeb4079",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2869,17 +2869,17 @@
         },
         {
             "name": "drupal/commerce",
-            "version": "3.3.6",
+            "version": "3.3.8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/commerce.git",
-                "reference": "3.3.6"
+                "reference": "3.3.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce-3.3.6.zip",
-                "reference": "3.3.6",
-                "shasum": "f24284baa909731a047dfdbadde03099ca79a3f0"
+                "url": "https://ftp.drupal.org/files/projects/commerce-3.3.8.zip",
+                "reference": "3.3.8",
+                "shasum": "faef0a4d2e0495ae46fcacf1cefd52230177f9b5"
             },
             "require": {
                 "commerceguys/intl": "^2.0.6",
@@ -2915,8 +2915,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.3.6",
-                    "datestamp": "1780503017",
+                    "version": "3.3.8",
+                    "datestamp": "1784272833",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4252,6 +4252,64 @@
             "homepage": "https://drupal.org/project/commerce_shipping",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce_shipping"
+            }
+        },
+        {
+            "name": "drupal/commerce_simplenews_checkout",
+            "version": "2.0.0-rc3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/commerce_simplenews_checkout.git",
+                "reference": "2.0.0-rc3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/commerce_simplenews_checkout-2.0.0-rc3.zip",
+                "reference": "2.0.0-rc3",
+                "shasum": "028d0b61dcf47a4bed22a7c6353d39614694faf0"
+            },
+            "require": {
+                "drupal/commerce": "~2.0 || ~3.1",
+                "drupal/core": "^8 || ^10.2 || ^11",
+                "drupal/simplenews": "~4"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0-rc3",
+                    "datestamp": "1752761922",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "afagioli",
+                    "homepage": "https://www.drupal.org/user/50680"
+                },
+                {
+                    "name": "anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
+                    "name": "thomas.frobieter",
+                    "homepage": "https://www.drupal.org/user/409335"
+                }
+            ],
+            "description": "Adds a simplenews newsletter subscription integration to Drupal Commerce checkout process.",
+            "homepage": "https://www.drupal.org/project/commerce_simplenews_checkout",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/commerce_simplenews_checkout",
+                "issues": "https://www.drupal.org/project/issues/commerce_simplenews_checkout"
             }
         },
         {
@@ -26096,6 +26154,7 @@
         "drupal/commerce_better_product_variation_label": 10,
         "drupal/commerce_recurring": 5,
         "drupal/commerce_reports": 5,
+        "drupal/commerce_simplenews_checkout": 5,
         "drupal/commerce_stock": 10,
         "drupal/default_content": 15,
         "drupal/diff": 10,
