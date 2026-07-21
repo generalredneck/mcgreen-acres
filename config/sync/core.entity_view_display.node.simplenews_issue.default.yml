@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.simplenews_issue.body
+    - field.field.node.simplenews_issue.field_exclude_tags
+    - field.field.node.simplenews_issue.field_send_to_tags
     - field.field.node.simplenews_issue.simplenews_issue
     - node.type.simplenews_issue
   module:
@@ -29,5 +31,7 @@ content:
     weight: 1
     region: content
 hidden:
+  field_exclude_tags: true
+  field_send_to_tags: true
   search_api_excerpt: true
   simplenews_issue: true

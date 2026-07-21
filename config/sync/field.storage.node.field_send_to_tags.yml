@@ -1,0 +1,20 @@
+uuid: 41b3d9ed-1c20-429c-b86b-25c7c5c92c32
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_send_to_tags
+field_name: field_send_to_tags
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

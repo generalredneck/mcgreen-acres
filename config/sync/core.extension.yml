@@ -122,6 +122,7 @@ module:
   mailer_transport: 0
   maxlength: 0
   mcgreen_acres_custom: 0
+  mcgreen_acres_newsletter_segments: 0
   mcgreen_acres_store: 0
   mcgreen_subscription_payment: 0
   media: 0

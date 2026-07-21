@@ -1,0 +1,27 @@
+uuid: 17098bb8-bc85-4e3d-a30a-7338eb9101ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_send_to_tags
+    - node.type.simplenews_issue
+    - taxonomy.vocabulary.subscriber_tags
+  module:
+    - simplenews
+id: node.simplenews_issue.field_send_to_tags
+field_name: field_send_to_tags
+entity_type: node
+bundle: simplenews_issue
+label: 'Send to tags'
+description: 'Restrict this issue to subscribers who have at least one of these tags. Leave empty to send to all subscribers of the newsletter as usual.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subscriber_tags: subscriber_tags
+    auto_create: false
+field_type: entity_reference
