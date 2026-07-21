@@ -2,11 +2,9 @@ uuid: 9e45879d-011d-4db6-97fb-736931d74c3b
 langcode: en
 status: true
 dependencies:
-  config:
-    - simple_block.simple_block.farm_stand_info
   module:
     - block_visibility_groups
-    - simple_block
+    - mcgreen_acres_store
     - system
   theme:
     - mcgreen_acres_theme
@@ -15,12 +13,12 @@ theme: mcgreen_acres_theme
 region: help
 weight: -12
 provider: null
-plugin: 'simple_block:farm_stand_info'
+plugin: farmstand_info_block
 settings:
-  id: 'simple_block:farm_stand_info'
+  id: farmstand_info_block
   label: 'Farm Stand Info'
   label_display: '0'
-  provider: simple_block
+  provider: mcgreen_acres_store
 visibility:
   condition_group:
     id: condition_group

@@ -19,6 +19,8 @@ class FarmstandSettingsForm extends FormBase {
 
   const STATE_KEY = 'mcgreen_acres_store.farmstand_closed';
 
+  const REASON_STATE_KEY = 'mcgreen_acres_store.farmstand_closure_reason';
+
   /**
    * The state service.
    *
@@ -55,6 +57,19 @@ class FarmstandSettingsForm extends FormBase {
       '#default_value' => $this->state->get(self::STATE_KEY, FALSE),
     ];
 
+    $form['closure_reason'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Closure reason'),
+      '#description' => $this->t('Optional. Shown to customers as "…currently closed due to [reason]." Leave blank to just say "…currently closed."'),
+      '#default_value' => $this->state->get(self::REASON_STATE_KEY, ''),
+      '#maxlength' => 255,
+      '#states' => [
+        'visible' => [
+          ':input[name="farmstand_closed"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
@@ -70,6 +85,7 @@ class FarmstandSettingsForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $closed = (bool) $form_state->getValue('farmstand_closed');
     $this->state->set(self::STATE_KEY, $closed);
+    $this->state->set(self::REASON_STATE_KEY, trim((string) $form_state->getValue('closure_reason')));
 
     $this->messenger()->addMessage($closed
       ? $this->t('Farm stand marked closed. All products now show as order-ahead only.')
