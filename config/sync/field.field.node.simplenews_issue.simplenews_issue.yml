@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.simplenews_issue
     - node.type.simplenews_issue
+    - simplenews.newsletter.mcgreen_acres_newsletter
   module:
     - simplenews
 _core:
@@ -19,9 +20,8 @@ required: true
 translatable: false
 default_value:
   -
-    target_id: default
+    target_uuid: 1d8c4e2b-73eb-4d7c-b782-9d128a1191bf
     handler: simplenews_all
-    handler_settings: {  }
     status: 0
     sent_count: 0
     error_count: 0
@@ -31,4 +31,5 @@ settings:
   handler: 'default:simplenews_newsletter'
   handler_settings:
     target_bundles: null
+    auto_create: false
 field_type: simplenews_issue

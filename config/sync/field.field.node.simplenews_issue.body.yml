@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
+    - filter.format.email_html
     - node.type.simplenews_issue
   module:
     - text
@@ -17,10 +18,15 @@ label: Body
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: '<p>Hey there [simplenews-subscriber:field_first_name|"friend"],</p><p>&nbsp;</p><p>Best,<br>Allan<br><br>McGreen Acres</p>'
+    summary: ''
+    format: email_html
 default_value_callback: ''
 settings:
   display_summary: false
   required_summary: false
-  allowed_formats: {  }
+  allowed_formats:
+    - email_html
 field_type: text_with_summary
