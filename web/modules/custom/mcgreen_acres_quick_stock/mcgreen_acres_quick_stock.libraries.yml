@@ -1,0 +1,16 @@
+quick_stock:
+  css:
+    theme:
+      css/quick-stock.css: {}
+  js:
+    js/quick-stock.js: {}
+  dependencies:
+    - core/jquery
+    - core/once
+
+quick_stock_link:
+  css:
+    theme:
+      css/quick-stock.css: {}
+  dependencies:
+    - core/drupal.dialog.ajax

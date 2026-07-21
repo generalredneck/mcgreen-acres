@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @file
+ * Adds a quick stock-adjustment link next to the stock level on product pages.
+ */
+
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_preprocess_field().
+ *
+ * Exposes a `quick_stock_link` variable to the 'stock' field template on
+ * commerce_product_variation entities, for users with the
+ * 'quick edit product variation stock' permission. Kept out of the theme so
+ * the permission check and route/link generation live with the module that
+ * owns the underlying stock-adjustment behavior.
+ */
+function mcgreen_acres_quick_stock_preprocess_field(array &$variables) {
+  if ($variables['element']['#entity_type'] !== 'commerce_product_variation' || $variables['element']['#field_name'] !== 'stock') {
+    return;
+  }
+
+  if (!\Drupal::currentUser()->hasPermission('quick edit product variation stock')) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Field\FieldItemListInterface $items */
+  $items = $variables['element']['#items'] ?? NULL;
+  if (!$items instanceof FieldItemListInterface) {
+    return;
+  }
+  $variation = $items->getEntity();
+  if (!$variation || $variation->isNew() || $variation->getEntityTypeId() !== 'commerce_product_variation') {
+    return;
+  }
+
+  $url = Url::fromRoute('mcgreen_acres_quick_stock.adjust_form', [
+    'commerce_product_variation' => $variation->id(),
+  ], [
+    'attributes' => [
+      'class' => ['use-ajax', 'quick-stock-edit-link', 'btn', 'btn-sm', 'btn-outline-secondary'],
+      'data-dialog-type' => 'modal',
+      'data-dialog-options' => json_encode(['width' => 400, 'title' => t('Adjust stock')]),
+    ],
+  ]);
+
+  $variables['quick_stock_link'] = [
+    '#type' => 'link',
+    '#title' => t('Adjust stock'),
+    '#url' => $url,
+    '#attached' => [
+      'library' => ['mcgreen_acres_quick_stock/quick_stock_link'],
+    ],
+  ];
+}

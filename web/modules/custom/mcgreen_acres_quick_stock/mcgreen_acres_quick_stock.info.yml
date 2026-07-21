@@ -1,0 +1,9 @@
+name: McGreen Acres Quick Stock
+type: module
+description: 'Adds a permission-gated modal to quickly add or remove stock from a product variation, right from the product page.'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - commerce_stock:commerce_stock
+  - commerce_stock:commerce_stock_field
+  - commerce:commerce_product

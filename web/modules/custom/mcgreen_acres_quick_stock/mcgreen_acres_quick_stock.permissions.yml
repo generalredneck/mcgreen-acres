@@ -1,0 +1,4 @@
+quick edit product variation stock:
+  title: 'Quickly adjust product variation stock'
+  description: 'Allows adding/removing stock for a product variation from a modal on the product page, without going through the full variation edit form.'
+  restrict access: true

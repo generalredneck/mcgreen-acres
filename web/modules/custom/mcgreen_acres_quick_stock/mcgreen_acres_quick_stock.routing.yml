@@ -1,0 +1,13 @@
+mcgreen_acres_quick_stock.adjust_form:
+  path: '/quick-stock/{commerce_product_variation}/adjust'
+  defaults:
+    _form: '\Drupal\mcgreen_acres_quick_stock\Form\QuickStockAdjustForm'
+    _title: 'Adjust stock'
+  requirements:
+    _permission: 'quick edit product variation stock'
+    commerce_product_variation: \d+
+  options:
+    parameters:
+      commerce_product_variation:
+        type: entity:commerce_product_variation
+    _admin_route: true
