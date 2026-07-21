@@ -1,0 +1,9 @@
+mcgreen_acres_store.farmstand_settings:
+  path: '/admin/commerce/config/farmstand'
+  defaults:
+    _form: '\Drupal\mcgreen_acres_store\Form\FarmstandSettingsForm'
+    _title: 'Farm Stand availability'
+  requirements:
+    _permission: 'administer farmstand availability'
+  options:
+    _admin_route: true

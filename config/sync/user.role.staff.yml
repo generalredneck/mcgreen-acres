@@ -45,6 +45,7 @@ dependencies:
     - filter
     - help
     - mcgreen_acres_quick_stock
+    - mcgreen_acres_store
     - media
     - media_bulk_upload
     - node
@@ -125,6 +126,7 @@ permissions:
   - 'administer commerce_store_type'
   - 'administer commerce_subscription'
   - 'administer commerce_subscription_type'
+  - 'administer farmstand availability'
   - 'administer media'
   - 'administer menu'
   - 'administer nodes'

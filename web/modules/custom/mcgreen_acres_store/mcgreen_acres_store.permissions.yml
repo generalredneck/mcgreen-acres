@@ -1,0 +1,4 @@
+administer farmstand availability:
+  title: 'Turn farm stand pickup on or off site-wide'
+  description: 'Allows temporarily closing the farm stand so every product is treated as order-ahead/appointment-only, without editing individual products.'
+  restrict access: true

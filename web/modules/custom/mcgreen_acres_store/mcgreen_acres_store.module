@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
+use Drupal\mcgreen_acres_store\Form\FarmstandSettingsForm;
 use Drupal\mcgreen_acres_store\Plugin\Commerce\Fee\CreditCardProcessingFee;
 use Drupal\views\ViewExecutable;
 
@@ -195,6 +196,9 @@ function _mcgreen_acres_store_cart_has_subscription(OrderInterface $order): bool
  * already ordering ahead rather than standing at the stand.
  */
 function _mcgreen_acres_store_cart_needs_fulfillment(OrderInterface $order): bool {
+  if (\Drupal::state()->get(FarmstandSettingsForm::STATE_KEY, FALSE)) {
+    return TRUE;
+  }
   foreach ($order->getItems() as $order_item) {
     $purchased_entity = $order_item->getPurchasedEntity();
     if (!$purchased_entity instanceof \Drupal\commerce_product\Entity\ProductVariationInterface) {
@@ -332,7 +336,9 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
     return;
   }
 
-  $variables['farmstand_available'] = $product->hasField('field_farmstand_available') && (bool) $product->get('field_farmstand_available')->value;
+  $variables['farmstand_available'] = $product->hasField('field_farmstand_available')
+    && (bool) $product->get('field_farmstand_available')->value
+    && !\Drupal::state()->get(FarmstandSettingsForm::STATE_KEY, FALSE);
   $variables['is_subscription'] = $product->bundle() === 'subscription';
 
   $variations = $product->getVariations();
@@ -380,7 +386,9 @@ function mcgreen_acres_store_preprocess_commerce_product__full(&$variables) {
     return;
   }
 
-  $variables['farmstand_available'] = $product->hasField('field_farmstand_available') && (bool) $product->get('field_farmstand_available')->value;
+  $variables['farmstand_available'] = $product->hasField('field_farmstand_available')
+    && (bool) $product->get('field_farmstand_available')->value
+    && !\Drupal::state()->get(FarmstandSettingsForm::STATE_KEY, FALSE);
 }
 
 function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
