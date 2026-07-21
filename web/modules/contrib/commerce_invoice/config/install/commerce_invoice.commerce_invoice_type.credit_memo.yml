@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+label: 'Credit memo'
+id: credit_memo
+numberPattern: invoice_credit_memo
+footerText: ''
+paymentTerms: ''
+workflow: invoice_default
+sendConfirmation: false
+confirmationBcc: ''
+traits: {  }

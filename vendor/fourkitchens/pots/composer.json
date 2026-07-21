@@ -1,0 +1,15 @@
+{
+    "name": "fourkitchens/pots",
+    "description": "Push On To Site. Scripts to help aid in deployment for Drupal sites.",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Allan Chappell",
+            "email": "allan@fourkitchens.com"
+        }
+    ],
+    "conflict": {
+        "fourkitchens/project_ci": "*"
+    },
+    "require": {}
+}

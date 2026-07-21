@@ -1,0 +1,13 @@
+name: Webform Simplenews Handler
+type: module
+description: Webform Simplenews Handler give the possibility to automatically subscribe to the newsletter
+core_version_requirement: ^9 || ^10 || ^11
+package: Webform
+dependencies:
+  - webform:webform
+  - simplenews:simplenews
+
+# Information added by Drupal.org packaging script on 2025-09-20
+version: '2.0.4'
+project: 'webform_simplenews_handler'
+datestamp: 1758387545

@@ -1,0 +1,4 @@
+'administer commerce_invoice_type':
+  title: 'Administer invoice types'
+  description: 'Maintain the types of invoices available and the fields that are associated with those types.'
+  'restrict access': TRUE

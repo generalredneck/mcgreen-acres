@@ -1,0 +1,17 @@
+{
+  "name": "drupal/commerce_simplenews_checkout",
+  "type": "drupal-module",
+  "description": "Adds a simplenews newsletter subscription integration to Drupal Commerce checkout process.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/commerce_simplenews_checkout",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/commerce_simplenews_checkout",
+    "source": "http://cgit.drupalcode.org/commerce_simplenews_checkout"
+  },
+  "require": {
+      "drupal/commerce": "~2.0 || ~3.1",
+      "drupal/simplenews": "~4"
+  }
+}

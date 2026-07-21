@@ -1,0 +1,10 @@
+condition.plugin.term:
+  type: condition.plugin
+  mapping:
+    term_uuids:
+      label: 'Term UUIDs'
+      type: sequence
+      orderby: value
+      sequence:
+        type: uuid
+        label: 'Term UUID'

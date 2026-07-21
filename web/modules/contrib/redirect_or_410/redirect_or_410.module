@@ -1,0 +1,148 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\redirect_or_410\Plugin\views\field\Redirect410Operations;
+
+/**
+ * Add the config options (/admin/config/search/redirect/settings)
+ */
+function redirect_or_410_form_redirect_settings_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $config = \Drupal::configFactory()->getEditable('redirect_or_410.settings');
+  $form['fast_410_settings'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Redirect or 410 settings.'),
+
+  ];
+  $form['fast_410'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Fast 410 enabled'),
+    '#default_value' => $config->get('fast_410'),
+    '#description' => t('Displays a message in the same style as the fast_404 does. When not checked a default 410 will be send.'),
+    '#group' => 'fast_410_settings',
+  ];
+  $form['fast_410_message'] = [
+    '#type' => 'textarea',
+    '#title' => t('Fast 410 response message'),
+    '#default_value' => $config->get('fast_410_message'),
+    '#description' => t('The content of the fast 410 message.'),
+    '#group' => 'fast_410_settings',
+  ];
+
+  $form['fast_410_page'] = [
+    '#type' => 'textfield',
+    '#title' => t('Default 410 (gone) page'),
+    '#default_value' => $config->get('fast_410_page'),
+    '#size' => 40,
+    '#description' => t('This page is displayed when a URL is marked as gone. Leave blank to display the site-wide 404 page.'),
+    '#group' => 'fast_410_settings',
+  ];
+  $form['fast_410_description'] = [
+    '#group' => 'fast_410_settings',
+    '#markup' => t("If 'Fast 410' is enabled, it takes priority and the 'Default 410 (Gone) page' will not be used.")
+  ];
+  $form['#submit'][] = 'redirect_or_410_settings_submit';
+}
+
+/**
+ * Patch redirect add form (/admin/config/search/redirect/add)
+ */
+function redirect_or_410_form_redirect_redirect_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form['status_code']['#options'][410] = t('410 Gone');
+  $status = \Drupal::request()->query->get('status');
+  if ((int) $status === 410) {
+    $form['status_code']['#default_value'] = 410;
+  }
+  redirect_or_410_prepare_redirect_form($form, $form_state);
+}
+
+/**
+ * Patch redirect edit form (/admin/config/search/redirect/edit/)
+ */
+function redirect_or_410_form_redirect_redirect_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  $form['status_code']['#options'][410] = t('410 Gone');
+  redirect_or_410_prepare_redirect_form($form, $form_state);
+}
+
+/**
+ * Validate handler for 410 Gone redirects.
+ */
+function redirect_or_410_redirect_form_validate(array &$form, FormStateInterface $form_state): void {
+  $input = $form_state->getUserInput();
+    if ((int) $input['status_code'] !== 410) {
+    return;
+  }
+  $form_state->setValue(['redirect_redirect', 0, 'uri'], 'route:<nolink>');
+  if (!empty($input['redirect_source'][0]['path'])) {
+    $form_state->set('redirect_source_warning', $input['redirect_source'][0]['path']);
+  }
+}
+
+/**
+ * Implements hook_views_plugins_field_alter().
+ *
+ * Overrides the contrib redirect_404 operations field handler so the 404
+ * report can also offer an "Add 410 gone" operation. Repointing the existing
+ * plugin's class (rather than registering a duplicate plugin ID) keeps the
+ * override deterministic and leaves the saved view configuration untouched.
+ */
+function redirect_or_410_views_plugins_field_alter(array &$plugins): void {
+  if (isset($plugins['redirect_404_operations'])) {
+    $plugins['redirect_404_operations']['class'] = Redirect410Operations::class;
+    $plugins['redirect_404_operations']['provider'] = 'redirect_or_410';
+  }
+}
+
+/**
+ * Submit handler for the redirect settings form.
+ */
+function redirect_or_410_settings_submit($form, FormStateInterface $form_state): void {
+  \Drupal::configFactory()
+    ->getEditable('redirect_or_410.settings')
+    ->set('fast_410', $form_state->getValue('fast_410'))
+    ->set('fast_410_message', $form_state->getValue('fast_410_message'))
+    ->set('fast_410_page', $form_state->getValue('fast_410_page'))
+    ->save();
+}
+
+/**
+ * Shared preparation for the redirect add/edit forms.
+ *
+ * Derives the active status code, applies the 410 state to the redirect
+ * target widget, and registers the 410 validate handler.
+ */
+function redirect_or_410_prepare_redirect_form(array &$form, FormStateInterface $form_state): void {
+  $input = $form_state->getUserInput();
+  $status_code = isset($input['status_code']) ? (int) $input['status_code'] : (int) $form['status_code']['#default_value'];
+
+  if (isset($form['redirect_redirect']['widget'][0]['uri'])) {
+    $is_410 = $status_code === 410;
+    $form['redirect_redirect']['widget'][0]['uri']['#disabled'] = $is_410;
+    if ($is_410) {
+      $form['redirect_redirect']['widget'][0]['uri']['#required'] = FALSE;
+    }
+    $form['redirect_redirect']['widget'][0]['uri']['#states']['disabled'] = [
+      ':input[name="status_code"]' => ['value' => '410'],
+    ];
+    $form['redirect_redirect']['widget'][0]['uri']['#states']['visible'] = [
+      ':input[name="status_code"]' => ['!value' => '410'],
+    ];
+
+    $form['redirect_redirect']['widget'][0]['redirect_or_410_message'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['messages', 'messages--warning'],
+        'role' => 'alert',
+      ],
+      'text' => [
+        '#markup' => t(' 410 Gone is not a redirect, so a target URL cannot be used.'),
+      ],
+      '#states' => [
+        'visible' => [
+          ':input[name="status_code"]' => ['value' => '410'],
+        ],
+      ],
+    ];
+  }
+
+  array_unshift($form['#validate'], 'redirect_or_410_redirect_form_validate');
+}
