@@ -50,6 +50,16 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   mail:
     type: email_default
     weight: 0
@@ -60,18 +70,17 @@ content:
     third_party_settings: {  }
   status:
     type: options_select
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   subscriptions:
     type: simplenews_subscription_select
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
   field_optin_ip: true
-  field_tags: true
   uid: true
