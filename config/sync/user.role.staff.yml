@@ -44,6 +44,7 @@ dependencies:
     - file_delete
     - filter
     - help
+    - mcgreen_acres_quick_stock
     - media
     - media_bulk_upload
     - node
@@ -300,6 +301,7 @@ permissions:
   - 'manage recurring_product_variation commerce_order_item'
   - 'manage recurring_standalone commerce_order_item'
   - 'manage subscription commerce_product_variation'
+  - 'quick edit product variation stock'
   - 'reassign commerce_order'
   - 'rebuild node access permissions'
   - 'revert all revisions'
