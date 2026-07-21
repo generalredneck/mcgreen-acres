@@ -2,6 +2,7 @@
 
 namespace Drupal\mcgreen_acres_store\Form;
 
+use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\State\StateInterface;
@@ -22,21 +23,43 @@ class FarmstandSettingsForm extends FormBase {
   const REASON_STATE_KEY = 'mcgreen_acres_store.farmstand_closure_reason';
 
   /**
+   * Cache tag invalidated whenever the flag or reason changes.
+   *
+   * Bubbled onto the product teaser/full render arrays (see the
+   * mcgreen_acres_store_preprocess_commerce_product__* hooks) so cached
+   * markup - including Views row caches on the product catalog - is
+   * evicted immediately instead of lingering until an unrelated cache
+   * clear (e.g. `drush cr`).
+   */
+  const CACHE_TAG = 'mcgreen_acres_store:farmstand_availability';
+
+  /**
    * The state service.
    *
    * @var \Drupal\Core\State\StateInterface
    */
   protected $state;
 
-  public function __construct(StateInterface $state) {
+  /**
+   * The cache tags invalidator.
+   *
+   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
+   */
+  protected $cacheTagsInvalidator;
+
+  public function __construct(StateInterface $state, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
     $this->state = $state;
+    $this->cacheTagsInvalidator = $cache_tags_invalidator;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('state'));
+    return new static(
+      $container->get('state'),
+      $container->get('cache_tags.invalidator')
+    );
   }
 
   /**
@@ -86,6 +109,7 @@ class FarmstandSettingsForm extends FormBase {
     $closed = (bool) $form_state->getValue('farmstand_closed');
     $this->state->set(self::STATE_KEY, $closed);
     $this->state->set(self::REASON_STATE_KEY, trim((string) $form_state->getValue('closure_reason')));
+    $this->cacheTagsInvalidator->invalidateTags([self::CACHE_TAG]);
 
     $this->messenger()->addMessage($closed
       ? $this->t('Farm stand marked closed. All products now show as order-ahead only.')

@@ -339,6 +339,12 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
   $variables['farmstand_available'] = $product->hasField('field_farmstand_available')
     && (bool) $product->get('field_farmstand_available')->value
     && !\Drupal::state()->get(FarmstandSettingsForm::STATE_KEY, FALSE);
+  // The state flag isn't a cache context/tag Drupal knows about on its own,
+  // so without this the rendered teaser/full markup (and any Views row
+  // cache built from it, e.g. the product catalog) would keep showing the
+  // stale badge until an unrelated cache clear evicted it. Paired with the
+  // invalidateTags() call in FarmstandSettingsForm::submitForm().
+  $variables['#cache']['tags'][] = FarmstandSettingsForm::CACHE_TAG;
   $variables['is_subscription'] = $product->bundle() === 'subscription';
 
   $variations = $product->getVariations();
@@ -389,6 +395,12 @@ function mcgreen_acres_store_preprocess_commerce_product__full(&$variables) {
   $variables['farmstand_available'] = $product->hasField('field_farmstand_available')
     && (bool) $product->get('field_farmstand_available')->value
     && !\Drupal::state()->get(FarmstandSettingsForm::STATE_KEY, FALSE);
+  // The state flag isn't a cache context/tag Drupal knows about on its own,
+  // so without this the rendered teaser/full markup (and any Views row
+  // cache built from it, e.g. the product catalog) would keep showing the
+  // stale badge until an unrelated cache clear evicted it. Paired with the
+  // invalidateTags() call in FarmstandSettingsForm::submitForm().
+  $variables['#cache']['tags'][] = FarmstandSettingsForm::CACHE_TAG;
 }
 
 function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
