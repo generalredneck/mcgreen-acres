@@ -4,6 +4,7 @@ status: open
 dependencies:
   module:
     - webform_mailchimp
+    - webform_simplenews_handler
 weight: 0
 open: null
 close: null
@@ -330,5 +331,41 @@ handlers:
       theme_name: ''
       langcode: ''
       parameters: {  }
+      debug: false
+  submission_newsletter:
+    id: submission_newsletter
+    handler_id: submission_newsletter
+    label: 'Submission Newsletter'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        completed: completed
+        draft: 0
+        converted: 0
+        updated: 0
+      newsletters_lst:
+        mcgreen_acres_newsletter: mcgreen_acres_newsletter
+        herd_share_updates: 0
+        default: 0
+        the_weekly_dozen_updates: 0
+      token: default
+      field_mapping_source:
+        mail: email
+        field_first_name: fname
+        field_last_name: lname
+        field_location: submission_location
+        field_optin_ip: _other
+        field_phone: phone
+      field_mapping_value:
+        mail: ''
+        field_first_name: ''
+        field_last_name: ''
+        field_location: ''
+        field_optin_ip: '[webform_submission:ip-address]'
+        field_phone: ''
+      action: subscribe
       debug: false
 variants: {  }
