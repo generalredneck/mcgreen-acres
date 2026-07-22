@@ -1,0 +1,17 @@
+--- a/src/Controller/Visitors.php
++++ b/src/Controller/Visitors.php
+@@ -452,10 +452,10 @@
+       return NULL;
+     }
+ 
+-    $fields['location_continent'] = $location->continent->code;
+-    $fields['location_country']   = $location->country->isoCode;
+-    $fields['location_region']    = $location->subdivisions[0]->isoCode;
+-    $fields['location_city']      = $location->city->name;
++    $fields['location_continent'] = $location->continent->code ?? '';
++    $fields['location_country']   = $location->country->isoCode ?? '';
++    $fields['location_region']    = $location->subdivisions[0]->isoCode ?? '';
++    $fields['location_city']      = $location->city->name ?? '';
+     $fields['location_latitude']  = $location->location->latitude;
+     $fields['location_longitude'] = $location->location->longitude;
+ 

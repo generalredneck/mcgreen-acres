@@ -341,6 +341,9 @@
                 "Role upgrade fix": "patches/varbase_media_role_upgrade_100005.patch",
                 "TypeError on entity_embed_dialog when filter_caption is disabled": "patches/varbase_media-data_caption_null_typeerror.patch"
             },
+            "drupal/visitors": {
+                "GeoIP2 lookup can leave location fields null causing fatal on insert": "patches/visitors-geoip_null_location_fields.patch"
+            },
             "drupal/webform_ip_geo": {
                 "php 8.4": "patches/webform_ip_geo-3542116-3-MR5.patch",
                 "drupal 11": "patches/webform_ip_geo-3435648-5-mr4.patch"

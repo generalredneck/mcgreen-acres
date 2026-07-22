@@ -846,6 +846,11 @@ if ($environment == 'local') {
   $config['stage_file_proxy.settings']['origin'] = 'https://mcgreenacres.com';  // no trailing slash
 }
 
+// Fail fast on stalled outbound sockets (e.g. SMTP auth hangs) so a slow mail
+// server doesn't tie up the request long enough to exceed the DB connection's
+// wait_timeout and cascade into unrelated "MySQL server has gone away" errors.
+ini_set('default_socket_timeout', 10);
+
 
 /**
  * Load local development override configuration, if available.
