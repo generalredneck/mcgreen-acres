@@ -62,6 +62,26 @@ function mcgreen_acres_theme_preprocess_html(array &$variables) {
   /*if (isset($variables['head_title_array']['title']) && isset($variables['head_title_array']['name']) && ($variables['head_title_array']['title'] == $variables['head_title_array']['name'])) {
     $variables['head_title'] = $variables['head_title_array']['name'];
   }*/
+
+  if (_mcgreen_acres_theme_is_landing()) {
+    $variables['attributes']['class'][] = 'path-landingpage';
+  }
+}
+
+/**
+ * Determines whether the current page should get landing-page treatment.
+ *
+ * True for the site front page, or for a "page" node with
+ * field_landing_page checked.
+ */
+function _mcgreen_acres_theme_is_landing(?\Drupal\node\NodeInterface $node = NULL): bool {
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
+    return TRUE;
+  }
+  $node = $node ?: \Drupal::routeMatch()->getParameter('node');
+  return $node instanceof \Drupal\node\NodeInterface
+    && $node->hasField('field_landing_page')
+    && (bool) $node->get('field_landing_page')->value;
 }
 
 /**
@@ -95,7 +115,13 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
     '/checkout/*',
     '/cart',
   ];
-  if (!empty($variables['node']) && empty($variables['is_front']) && $variables['node']->bundle() == 'page') {
+
+  // A "landing page" gets the same visual treatment as the home page,
+  // either because it is the home page or because it has been flagged
+  // as a landing page via field_landing_page on the page content type.
+  $variables['is_landing'] = _mcgreen_acres_theme_is_landing($variables['node'] ?? NULL);
+
+  if (!empty($variables['node']) && empty($variables['is_landing']) && $variables['node']->bundle() == 'page') {
     $variables['force_container'] = TRUE;
   }
   if (\Drupal::service('path.matcher')->matchPath($current_path, implode("\n", $container_paths))) {
@@ -113,9 +139,8 @@ function mcgreen_acres_theme_preprocess_page(array &$variables) {
     $variables['user_name'] = $user->getDisplayName();
     $variables['user_initials'] = substr($variables['user_name'], 0, 1);
   }
-  // Check if the current page is the front page.
-  if ($variables['is_front']) {
-    // Attach the library for the home page.
+  if ($variables['is_landing']) {
+    // Attach the library for the home/landing page.
     $variables['#attached']['library'][] = 'mcgreen_acres_theme/home-page';
   }
 

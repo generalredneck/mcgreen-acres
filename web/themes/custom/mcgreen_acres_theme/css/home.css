@@ -88,6 +88,9 @@
   max-width: 820px;
 }
 
+.mca-hero-pig {
+  background-image: url('../images/hero-bg-pig.jpg');
+}
 /* ─────────────────────────────────────────────
 DIFFERENTIATOR STRIP
 ───────────────────────────────────────────── */
@@ -128,12 +131,13 @@ DIFFERENTIATOR STRIP
 ───────────────────────────────────────────── */
 .mca-section-label {
   font-family: var(--mca-font-sans);
-  font-size: .6875rem;
-  letter-spacing: .18em;
+  font-size: 1rem;
+  letter-spacing: .09em;
   text-transform: uppercase;
-  color: var(--mca-tan-dark);
+  color: var(--mca-green);
   margin-bottom: .5rem;
   display: block;
+  font-weight: bold;
 }
 .mca-section-img img {
   width: 100%;
@@ -475,7 +479,7 @@ body.toolbar-fixed.toolbar-tray-open .mca-sticky-header { top: 79px; }
 ───────────────────────────────────────────── */
 .mca-hiw-card {
   text-align: center;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
 }
 .mca-hiw-num {
   width: 44px;
@@ -489,7 +493,53 @@ body.toolbar-fixed.toolbar-tray-open .mca-sticky-header { top: 79px; }
   font-family: var(--mca-font-sans);
   font-size: 1.125rem;
   font-weight: bold;
-  margin: 0 auto 1rem;
+  margin-bottom: 1rem;
 }
 .mca-hiw-card h3 { font-size: 1.25rem; color: var(--mca-green-dark); margin-bottom: .625rem; }
 .mca-hiw-card p  { font-size: .9375rem; line-height: 1.65; color: #5a5040; }
+
+.note {
+  margin-top: 1rem;
+  font-size: .8125rem;
+  color: #3d4a3e;
+  padding: .8125rem 1rem;
+  border-left: 3px solid var(--mca-green);
+  background: #fff;
+}
+
+  /* cut breakdown grid */
+  .cut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:8px;}
+  .cut-item{
+    background:#fff;border:1px solid var(--mca-cream-dark);border-radius:6px;padding:18px;
+  }
+  .cut-item .amt{font-size:22px;font-weight:900;color:var(--mca-green-dark);}
+  .cut-item .label{font-size:14px;font-weight:700;margin:4px 0 6px;}
+  .cut-item .desc{font-size:13px;color:#5b6b5c;}
+  .yield-note{font-size:14px;color:#3d4a3e;margin-top:20px;padding:14px 16px;background:var(--paper-alt);border-left:3px solid var(--bright-green);}
+
+  /* pricing table */
+  table.pricing{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px;}
+  table.pricing th{
+    text-align:left;background:var(--mca-green-dark);color:#fff;padding:12px 14px;font-size:13px;
+    text-transform:uppercase;letter-spacing:.04em;
+  }
+  table.pricing td{padding:12px 14px;border-bottom:1px solid var(--mca-cream-dark);}
+  table.pricing tr:nth-child(even) td{background:var(--mca-cream-dark);}
+  table.pricing td.paidto{color:#5b6b5c;font-size:13px;}
+
+  /* cost example callout */
+  .example-box{
+    background:#fff;border:1px solid var(--mca-cream-dark);border-left:4px solid var(--mca-green-dark);
+    border-radius:4px;padding:26px 28px;margin-top:8px;
+  }
+  .example-box h3{margin:0 0 14px;font-size:18px;}
+  .example-row{display:flex;justify-content:space-between;font-size:15px;padding:6px 0;border-bottom:1px dashed var(--mca-cream-dark);}
+  .example-row.total{font-weight:900;color:var(--mca-green-dark);font-size:17px;border-bottom:none;padding-top:12px;}
+
+  /* final cta */
+  .final-cta{
+    background:var(--primary);color:#fff;text-align:center;padding:56px 24px;border-radius:8px;
+    max-width:720px;margin:0 auto 32px;
+  }
+  .final-cta h2{font-weight:bold; color:#fff; margin-bottom: 1.25rem;}
+  .final-cta p{max-width:520px;margin:0 auto 26px;}

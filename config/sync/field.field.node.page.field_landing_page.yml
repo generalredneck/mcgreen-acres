@@ -1,0 +1,21 @@
+uuid: d0d5f6e8-f44b-4487-861a-f0c29dfb9123
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_landing_page
+    - node.type.page
+id: node.page.field_landing_page
+field_name: field_landing_page
+entity_type: node
+bundle: page
+label: 'Landing Page'
+description: 'Check this box to display this page with the landing page layout (same as the site home page) instead of the standard basic page layout.'
+required: false
+translatable: null
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

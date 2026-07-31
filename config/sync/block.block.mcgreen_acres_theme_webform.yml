@@ -33,7 +33,7 @@ visibility:
   request_path:
     id: request_path
     negate: true
-    pages: "/user/*\r\n/cart\r\n/cart/*\r\n/checkout/*\r\n/admin/*"
+    pages: "/user/*\r\n/cart\r\n/cart/*\r\n/checkout/*\r\n/admin/*\r\n/pigs"
   webform:
     id: webform
     negate: true
