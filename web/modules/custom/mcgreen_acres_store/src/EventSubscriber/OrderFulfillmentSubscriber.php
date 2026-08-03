@@ -3,43 +3,45 @@
 namespace Drupal\mcgreen_acres_store\EventSubscriber;
 
 use Drupal\commerce_order\Entity\OrderInterface;
-use Drupal\state_machine\Event\WorkflowTransitionEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Auto-completes orders that don't need appointment fulfillment.
  *
  * Placing a "default" bundle order always moves it from draft into the
  * "fulfillment" state first (see the order_fulfillment workflow). This
- * subscriber immediately fulfills it from there unless it actually needs to
- * wait on a pickup/delivery: either because the customer entered checkout
- * with something not available at the farm stand, or because staff marked
- * a manually-entered order as needing fulfillment.
+ * resolves field_needs_fulfillment and, if nothing is left to wait on,
+ * immediately fulfills the order from there.
+ *
+ * This used to run as an event subscriber on
+ * commerce_order.place.post_transition and call $order->save() from
+ * inside that handler. That's unsafe: the state field's transition
+ * bookkeeping (StateItem::$transitionToApply / $originalValue) isn't
+ * reset until *after* post_transition dispatch finishes, so a save
+ * triggered from inside it sees the still-pending "place" transition and
+ * replays commerce_order.place.post_transition a second time - double
+ * order-confirmation emails, double commerce_reports entries, etc.
+ * (Confirmed via the order activity log showing two "Place order"
+ * transitions and two receipt-email attempts per checkout.) This is now
+ * invoked from hook_commerce_order_insert()/update() instead, which run
+ * after the entity's full save lifecycle (including field postSave())
+ * has completed, so a save from here is safe.
  */
-class OrderFulfillmentSubscriber implements EventSubscriberInterface {
+class OrderFulfillmentSubscriber {
 
   /**
-   * {@inheritdoc}
-   */
-  public static function getSubscribedEvents(): array {
-    return [
-      'commerce_order.place.post_transition' => 'onPlace',
-    ];
-  }
-
-  /**
-   * Reacts to an order being placed.
+   * Reacts to an order being saved.
    *
-   * @param \Drupal\state_machine\Event\WorkflowTransitionEvent $event
-   *   The workflow transition event.
+   * @param \Drupal\commerce_order\Entity\OrderInterface $order
+   *   The saved order.
    */
-  public function onPlace(WorkflowTransitionEvent $event) {
-    $order = $event->getEntity();
-    if (!$order instanceof OrderInterface || $order->bundle() !== 'default') {
+  public function reactToOrderSave(OrderInterface $order) {
+    if ($order->bundle() !== 'default') {
       return;
     }
     if ($order->getState()->getId() !== 'fulfillment') {
-      // Only relevant to order types using the order_fulfillment workflow.
+      // Only relevant to order types using the order_fulfillment workflow,
+      // and only while still sitting in the fulfillment state - once it
+      // moves to completed (or anywhere else) there's nothing left to do.
       return;
     }
 

@@ -45,6 +45,29 @@ function mcgreen_acres_store_commerce_order_create(OrderInterface $order) {
 }
 
 /**
+ * Implements hook_commerce_order_insert().
+ */
+function mcgreen_acres_store_commerce_order_insert(OrderInterface $order) {
+  \Drupal::service('mcgreen_acres_store.order_fulfillment_subscriber')->reactToOrderSave($order);
+}
+
+/**
+ * Implements hook_commerce_order_update().
+ *
+ * Resolves field_needs_fulfillment and auto-completes the order once it's
+ * placed. Deliberately a plain entity hook rather than an event subscriber
+ * on commerce_order.place.post_transition: that event fires from inside
+ * the order's own postSave(), before the state field resets its transition
+ * bookkeeping, so saving the order again from in there replays the "place"
+ * post_transition a second time (see OrderFulfillmentSubscriber's
+ * docblock). This hook runs after the full save lifecycle completes, so
+ * a save triggered from here is safe.
+ */
+function mcgreen_acres_store_commerce_order_update(OrderInterface $order) {
+  \Drupal::service('mcgreen_acres_store.order_fulfillment_subscriber')->reactToOrderSave($order);
+}
+
+/**
  * Implements hook_module_implements_alter().
  */
 function mcgreen_acres_store_module_implements_alter(&$implementations, $hook) {
