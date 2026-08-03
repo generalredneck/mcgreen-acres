@@ -1,4 +1,4 @@
-uuid: 95a3198b-19d2-40f2-84c2-6e1d9ae3140c
+uuid: 095ce84a-e2f7-453c-bf9f-76ee1d4180d4
 langcode: en
 status: true
 dependencies:
@@ -19,8 +19,8 @@ dependencies:
     - mcgreen_order_payment
 _core:
   default_config_hash: mj-wWv7nj79DC7uw5I63mZ3ch0PNp4hyonJyhuEwKDc
-label: Default
-id: default
+label: 'Pay Order'
+id: pay_order
 plugin: multistep_default
 configuration:
   display_checkout_progress: true
@@ -32,7 +32,7 @@ configuration:
   panes:
     login:
       display_label: null
-      step: login
+      step: _disabled
       weight: 0
       wrapper_element: container
       allow_guest_checkout: true
@@ -40,12 +40,12 @@ configuration:
       registration_form_mode: commerce_register
     pickup_timing:
       display_label: null
-      step: order_information
+      step: _disabled
       weight: 1
       wrapper_element: container
     contact_information:
       display_label: null
-      step: order_information
+      step: _disabled
       weight: 2
       wrapper_element: fieldset
       double_entry: false
@@ -60,18 +60,18 @@ configuration:
       double_entry: true
     'profile_form:phone':
       display_label: 'Edit profile'
-      step: order_information
+      step: _disabled
       weight: 4
       wrapper_element: container
       form_mode: shipping
     facebook_checkout:
       display_label: null
-      step: order_information
+      step: _disabled
       weight: 5
       wrapper_element: container
     commerce_tip_checkout_pane:
       display_label: 'Support the farm'
-      step: order_information
+      step: _disabled
       weight: 6
       wrapper_element: fieldset
       tip_description:
@@ -85,7 +85,7 @@ configuration:
       wrapper_element: container
     custom_checkout_message:
       display_label: null
-      step: review
+      step: _disabled
       weight: 8
       wrapper_element: container
       message:
@@ -114,7 +114,7 @@ configuration:
       subscribe_text: 'Keep me updated with news and offers.'
     simplenews_subscription:
       display_label: null
-      step: review
+      step: _disabled
       weight: 11
       wrapper_element: container
       newsletters:
@@ -124,7 +124,7 @@ configuration:
       review_label: 'Subscribe to newsletters: @newsletters'
     customer_comments:
       display_label: 'Comments & Special Requests'
-      step: review
+      step: _disabled
       weight: 12
       wrapper_element: fieldset
     payment_process:
@@ -135,11 +135,11 @@ configuration:
       capture: true
     completion_message:
       display_label: null
-      step: complete
+      step: _disabled
       weight: 14
       wrapper_element: null
       message:
-        value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders with items not in the Farm Stand must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
+        value: '<h2>Payment received!</h2><p>Thank you, your payment for order [commerce_order:order_number] has been received.</p>'
         format: full_html
       display_pane_summaries: false
     order_summary:
@@ -150,7 +150,7 @@ configuration:
       view: commerce_checkout_order_summary
     coupon_redemption:
       display_label: null
-      step: _sidebar
+      step: _disabled
       weight: 16
       wrapper_element: container
       allow_multiple: false
@@ -179,6 +179,6 @@ configuration:
       wrapper_element: null
     mcgreen_order_payment_completion_message:
       display_label: null
-      step: _disabled
-      weight: 0
+      step: complete
+      weight: 14
       wrapper_element: container

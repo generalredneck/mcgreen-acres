@@ -1,0 +1,8 @@
+services:
+  mcgreen_order_payment.payment_request_mail:
+    class: Drupal\mcgreen_order_payment\Mail\PaymentRequestMail
+    arguments:
+      - '@entity_type.manager'
+      - '@commerce.mail_handler'
+      - '@commerce_order.order_total_summary'
+      - '@date.formatter'

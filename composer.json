@@ -86,7 +86,6 @@
         "drupal/commerce_custom_checkout_message": "^3.0",
         "drupal/commerce_email": "^1.7",
         "drupal/commerce_fee": "^1.1",
-        "drupal/commerce_invoice": "^2.2",
         "drupal/commerce_profile_pane": "^1.0",
         "drupal/commerce_prorater_stepped_proportional": "^2.0",
         "drupal/commerce_recipe_core": "^1.0",

@@ -1,0 +1,5 @@
+mcgreen_order_payment.send_for_payment:
+  route_name: mcgreen_order_payment.send_for_payment
+  base_route: entity.commerce_order.canonical
+  title: 'Send Invoice'
+  weight: 45

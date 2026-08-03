@@ -7,6 +7,9 @@ dependencies:
     - commerce_promotion
     - commerce_shipping
     - commerce_stripe
+    - custom_commerce_login_pane
+    - mcgreen_acres_store
+    - mcgreen_order_payment
 label: Subscription
 id: subscription
 plugin: multistep_default
@@ -97,3 +100,8 @@ configuration:
       button_id: edit-actions-next
       auto_submit_review_form: false
       setup_future_usage: ''
+    mcgreen_order_payment_completion_message:
+      display_label: null
+      step: _disabled
+      weight: 0
+      wrapper_element: container

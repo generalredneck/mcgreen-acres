@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d88811a46d5cb947c1373fc24d47e31f",
+    "content-hash": "527cd55c4a77f08b2c7f741ed016fa31",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3504,84 +3504,6 @@
             }
         },
         {
-            "name": "drupal/commerce_invoice",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/commerce_invoice.git",
-                "reference": "8.x-2.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce_invoice-8.x-2.2.zip",
-                "reference": "8.x-2.2",
-                "shasum": "239f0a6776e126f0f7e0bb5b0a8b2b3f0265df4a"
-            },
-            "require": {
-                "drupal/commerce": "^2.37 || ^3",
-                "drupal/commerce_number_pattern": "*",
-                "drupal/commerce_order": "*",
-                "drupal/commerce_price": "*",
-                "drupal/commerce_store": "*",
-                "drupal/core": "^10.1 || ^11",
-                "drupal/entity_print": "^2.0",
-                "drupal/profile": "*",
-                "drupal/state_machine": "*",
-                "drupal/token": "*",
-                "php": "^8.1"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-2.2",
-                    "datestamp": "1746433046",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "amateescu",
-                    "homepage": "https://www.drupal.org/user/729614"
-                },
-                {
-                    "name": "bbujisic",
-                    "homepage": "https://www.drupal.org/user/52799"
-                },
-                {
-                    "name": "bojanz",
-                    "homepage": "https://www.drupal.org/user/86106"
-                },
-                {
-                    "name": "centarro",
-                    "homepage": "https://www.drupal.org/user/3661446"
-                },
-                {
-                    "name": "jsacksick",
-                    "homepage": "https://www.drupal.org/user/972218"
-                },
-                {
-                    "name": "mglaman",
-                    "homepage": "https://www.drupal.org/user/2416470"
-                },
-                {
-                    "name": "rszrama",
-                    "homepage": "https://www.drupal.org/user/49344"
-                }
-            ],
-            "description": "Defines the Invoice entity and associated features.",
-            "homepage": "https://drupal.org/project/commerce_invoice",
-            "support": {
-                "source": "https://git.drupalcode.org/project/commerce_invoice"
-            }
-        },
-        {
             "name": "drupal/commerce_log",
             "version": "3.3.6",
             "require": {
@@ -6620,92 +6542,6 @@
             "homepage": "https://www.drupal.org/project/entity_embed",
             "support": {
                 "source": "https://git.drupalcode.org/project/entity_embed"
-            }
-        },
-        {
-            "name": "drupal/entity_print",
-            "version": "2.18.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/entity_print.git",
-                "reference": "8.x-2.18"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_print-8.x-2.18.zip",
-                "reference": "8.x-2.18",
-                "shasum": "4f64e1893269f3fef1ad18d52f1d5681fba4a9a2"
-            },
-            "require": {
-                "dompdf/dompdf": ">=2.0.7",
-                "drupal/core": "^9.4 || ^10.0 || ^11"
-            },
-            "require-dev": {
-                "mikehaertl/phpwkhtmltopdf": "~2.1",
-                "tecnickcom/tcpdf": "~6"
-            },
-            "suggest": {
-                "mikehaertl/phpwkhtmltopdf": "PhpWkhtmlToPdf provides the PHP library to use Wkhtmltopdf"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-2.18",
-                    "datestamp": "1752758007",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Ben Dougherty",
-                    "homepage": "https://www.drupal.org/u/benjy"
-                },
-                {
-                    "name": "benjy",
-                    "homepage": "https://www.drupal.org/user/1852732"
-                },
-                {
-                    "name": "jannakha",
-                    "homepage": "https://www.drupal.org/user/3085703"
-                },
-                {
-                    "name": "jsacksick",
-                    "homepage": "https://www.drupal.org/user/972218"
-                },
-                {
-                    "name": "larowlan",
-                    "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "pameeela",
-                    "homepage": "https://www.drupal.org/user/1431110"
-                },
-                {
-                    "name": "sam152",
-                    "homepage": "https://www.drupal.org/user/1485048"
-                },
-                {
-                    "name": "vladimiraus",
-                    "homepage": "https://www.drupal.org/user/673120"
-                }
-            ],
-            "description": "PDF print solution for any Drupal entity.",
-            "homepage": "http://drupal.org/project/entity_print",
-            "keywords": [
-                "PDF",
-                "drupal",
-                "print",
-                "web"
-            ],
-            "support": {
-                "source": "https://git.drupalcode.org/project/entity_print"
             }
         },
         {

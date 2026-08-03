@@ -1,0 +1,137 @@
+{#
+/**
+ * @file
+ * Template for the "your invoice is ready for payment" email.
+ *
+ * Available variables:
+ * - order_entity: The order entity.
+ * - billing_information: The rendered billing information (optional).
+ * - totals: An array of order totals values with the following keys:
+ *   - subtotal: The order subtotal price.
+ *   - adjustments: An array of adjustment totals:
+ *     - type: The adjustment type.
+ *     - label: The adjustment label.
+ *     - total: The adjustment total price.
+ *     - weight: The adjustment weight.
+ *   - total: The order total price.
+ * - payment_url: The absolute URL the customer should visit to pay.
+ * - customer_email: The email address the customer should log in with.
+ * - deadline_date: The formatted date payment is requested by.
+ *
+ * @ingroup themeable
+ */
+#}
+<table style="margin: 15px auto 0 auto; max-width: 768px; font-family: arial,sans-serif">
+  <tbody>
+  <tr>
+    <td>
+      <table style="margin-left: auto; margin-right: auto; max-width: 768px; text-align: center;">
+        <tbody>
+        <tr>
+          <td>
+            <a href="{{ url('<front>') }}" style="color: #0e69be; text-decoration: none; font-weight: bold; margin-top: 15px;">{{ order_entity.getStore.label }}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <table style="text-align: center; min-width: 450px; margin: 5px auto 0 auto; border: 1px solid #cccccc; border-radius: 5px; padding: 40px 30px 30px 30px;">
+        <tbody>
+        <tr>
+          <td style="font-size: 30px; padding-bottom: 30px">{{ 'Your invoice is ready.'|t }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; padding-top:15px; padding-bottom: 15px; text-align: left; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc">
+            {{ 'Here is your invoice for order #@number. It is ready for payment. Payment is required by @deadline.'|t({'@number': order_number, '@deadline': deadline_date}) }}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top: 20px; padding-bottom: 20px; text-align: center;">
+            <a href="{{ payment_url }}" style="background-color: #0e69be; color: #ffffff; text-decoration: none; font-weight: bold; padding: 14px 28px; border-radius: 5px; display: inline-block;">{{ 'Pay Now'|t }}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top:15px; padding-bottom: 15px; text-align: left; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc">
+            <p style="margin-top: 0;">{{ 'To pay, log in using this email address:'|t }} <strong>{{ customer_email }}</strong></p>
+            <p style="margin-bottom: 0;">{{ "If you don't know your password or don't remember it, use the"|t }} <a href="{{ url('user.pass') }}">{{ 'Forgot password?'|t }}</a> {{ 'link to set a new one.'|t }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; padding-top:15px; padding-bottom: 15px; text-align: left;">
+            {{ 'Order #@number details:'|t({'@number': order_number}) }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% block order_items %}
+              <table style="padding-top: 15px; padding-bottom:15px; width: 100%">
+                <tbody style="text-align: left;">
+                {% for order_item in order_entity.getItems %}
+                  <tr>
+                    <td>{{ order_item.getQuantity|number_format }} x</td>
+                    <td>
+                      <span>{{ order_item.label }}</span>
+                      <span style="float: right;">{{ order_item.getTotalPrice|commerce_price_format }}</span>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            {% endblock %}
+          </td>
+        </tr>
+        {% if billing_information %}
+        <tr>
+          <td>
+            <table style="width: 100%; padding-top:15px; padding-bottom: 15px; text-align: left; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc">
+              <tbody>
+              <tr>
+                <td style="padding-top: 5px; font-weight: bold;">{{ 'Billing Information'|t }}</td>
+              </tr>
+              <tr>
+                <td>
+                  {% block billing_information %}
+                    {{ billing_information }}
+                  {% endblock %}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td>
+            <p style="margin-bottom: 0;">
+              {{ 'Subtotal: @subtotal'|t({'@subtotal': totals.subtotal|commerce_price_format}) }}
+            </p>
+          </td>
+        </tr>
+        {% for adjustment in totals.adjustments %}
+          <tr>
+            <td>
+              <p style="margin-bottom: 0;">
+                {{ adjustment.label }}: {{ adjustment.total|commerce_price_format }}
+              </p>
+            </td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td>
+            <p style="font-size: 24px; padding-top: 15px; padding-bottom: 5px;">
+              {{ 'Amount Due: @total'|t({'@total': order_entity.getTotalPrice|commerce_price_format}) }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% block additional_information %}
+              {{ 'Thank you!'|t }}
+            {% endblock %}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>

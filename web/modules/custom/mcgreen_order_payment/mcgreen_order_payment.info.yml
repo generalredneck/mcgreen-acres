@@ -1,0 +1,8 @@
+name: 'McGreen Order Payment'
+type: module
+description: 'Lets staff prepare an admin-created order (e.g. a custom invoice) for the customer to pay directly, without going through the storefront cart.'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - commerce_order:commerce_order
+  - commerce_checkout:commerce_checkout

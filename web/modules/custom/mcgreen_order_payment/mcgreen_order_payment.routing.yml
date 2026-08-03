@@ -1,0 +1,13 @@
+mcgreen_order_payment.send_for_payment:
+  path: '/admin/commerce/orders/{commerce_order}/send-for-payment'
+  defaults:
+    _form: '\Drupal\mcgreen_order_payment\Form\SendForPaymentForm'
+    _title: 'Prepare for payment'
+  requirements:
+    _permission: 'administer commerce_order'
+    commerce_order: \d+
+  options:
+    parameters:
+      commerce_order:
+        type: 'entity:commerce_order'
+    _admin_route: true

@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Contains mcgreen_order_payment.module.
+ */
+
+use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function mcgreen_order_payment_theme($existing, $type, $theme, $path) {
+  return [
+    'mcgreen_order_payment_request' => [
+      'variables' => [
+        'order_entity' => NULL,
+        'order_number' => NULL,
+        'billing_information' => NULL,
+        'totals' => NULL,
+        'payment_url' => NULL,
+        'customer_email' => NULL,
+        'deadline_date' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function mcgreen_order_payment_entity_operation(EntityInterface $entity) {
+  if (!$entity instanceof OrderInterface) {
+    return;
+  }
+  if ($entity->getState()->getId() !== 'draft') {
+    return;
+  }
+  $customer = $entity->getCustomer();
+  if (!$customer || !$customer->isAuthenticated()) {
+    return;
+  }
+  if (!\Drupal::currentUser()->hasPermission('administer commerce_order')) {
+    return;
+  }
+
+  return [
+    'send_for_payment' => [
+      'title' => t('Send Invoice'),
+      'url' => Url::fromRoute('mcgreen_order_payment.send_for_payment', ['commerce_order' => $entity->id()]),
+      'weight' => 40,
+    ],
+  ];
+}
