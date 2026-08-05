@@ -47,7 +47,9 @@
 <div{{ attributes.addClass('form-item') }}>
   {% if not multiple %}
     {% for item in items %}
-      {% if item.content['#value'] <= 0 %}
+      {% if is_always_in_stock %}
+        <span{{ title_attributes.addClass(title_classes) }}>In stock</span>
+      {% elseif item.content['#value'] <= 0 %}
         <div {{ item.attributes.addClass(['text-danger', 'font-weight-bold']) }}>Out of stock{{ quick_stock_link }}</div>
       {% else %}
         {% if item.content['#value'] < 5 %}
