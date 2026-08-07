@@ -310,9 +310,6 @@
             "drupal/disqus": {
                 "php 8.4": "patches/disqus-3542113-2.patch"
             },
-            "drupal/entity_delta_formatter": {
-                "d11": "https://www.drupal.org/files/issues/2024-03-17/entity_delta_formatter.8.x-2.1.rector.patch"
-            },
             "drupal/entity_embed": {
                 "#3416529: False-positive recursive rendering detected when the same entity is embedded many times across a single request (e.g. simplenews sending one newsletter to many recipients)": "patches/entity_embed-3416529-recursive_rendering_leak.patch",
                 "Don't log 'Invalid display settings' warning for an empty data-entity-embed-display-settings attribute, which the CKEditor embed button legitimately emits for display plugins that take no settings": "patches/entity_embed-empty_display_settings_warning.patch"
@@ -322,9 +319,6 @@
             },
             "drupal/ms_clarity": {
                 "3509189: wsod D11": "patches/ms_clarity-3509189-wsod_d11_admin-5.patch"
-            },
-            "drupal/simplenews": {
-                "#2111981: Add 'manage simplenews hidden subscriptions' permission for managing hidden newsletter subscriptions": "patches/simplenews-2111981-hidden_newsletter_admin_access.patch"
             },
             "drupal/simplenews_stats": {
                 "#3268515: Allow Capturing the device type": "patches/simplenews_stats-Allow_capturing_the_device_type-MR23-3268515-223907ef.patch"

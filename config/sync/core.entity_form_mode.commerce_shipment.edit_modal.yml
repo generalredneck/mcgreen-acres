@@ -1,0 +1,11 @@
+uuid: a5b80a95-ad9c-49db-940d-b8eb973479a8
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_shipping
+id: commerce_shipment.edit_modal
+label: 'Edit modal'
+description: null
+targetEntityType: commerce_shipment
+cache: true
