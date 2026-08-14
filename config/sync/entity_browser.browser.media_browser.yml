@@ -21,6 +21,7 @@ display_configuration:
   height: ''
   link_text: 'Select media'
   auto_open: false
+  use_admin_theme: true
 selection_display: no_display
 selection_display_configuration:
   display: rendered_entity
@@ -70,6 +71,7 @@ widgets:
       resize_method: contain
       thumbnail_method: contain
       media_type: image
+      inherit_settings: true
       form_mode: entity_browser
   c4c8ea33-b84d-49fe-9fb7-0992287b3c9e:
     id: dropzonejs_media_entity_inline_entity_form
@@ -89,4 +91,5 @@ widgets:
       resize_method: contain
       thumbnail_method: contain
       media_type: video
+      inherit_settings: true
       form_mode: entity_browser
