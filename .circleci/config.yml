@@ -309,7 +309,9 @@ workflows:
             - build
           filters:
             branches:
-              ignore: /^deploy-.*$/
+              only:
+                - 'main'
+                - 'master'
       - approve_deploy_to_live:
           type: approval
           filters:
