@@ -1,0 +1,10 @@
+name: 'Entity Delta Formatter'
+type: module
+description: 'Provides a formatter to display a specified range of entities from an entity reference field.'
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+package: Fields
+
+# Information added by Drupal.org packaging script on 2026-07-24
+version: '8.x-2.2'
+project: 'entity_delta_formatter'
+datestamp: 1784935437

@@ -1,0 +1,22 @@
+simplenews_stats.chartjs:
+  remote: http://www.chartjs.org/
+  version: 4.5.0
+  license:
+    name: Chartjs
+    url: https://github.com/chartjs/Chart.js/blob/master/LICENSE.md
+    gpl-compatible: true
+  js:
+    https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js: {}
+
+simplenews_stats.drupal_chartjs:
+  version: 1.0.3
+  js:
+    assets/js/chart.js: {}
+  css:
+    base:
+      assets/css/charts.css: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - simplenews_stats/simplenews_stats.chartjs

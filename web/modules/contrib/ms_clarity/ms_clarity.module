@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Contains ms_clarity.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function ms_clarity_theme($existing, $type, $theme, $path) {
+  return [
+    'script_head' => [
+      'variables' => [
+        'id' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_help().
+ */
+function ms_clarity_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the Microsoft Clarity module.
+    case 'help.page.ms_clarity':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Allows you to analyze how users engage with your website with click tracking, scroll tracking, and heatmaps.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function ms_clarity_page_attachments(array &$page) {
+  /** @var \Drupal\ms_clarity\Helpers\MicrosoftClarityAccounts $msAccount */
+  $msAccount = \Drupal::service('ms_clarity.accounts');
+
+  // The Clarity project ID.
+  $projectID = $msAccount->getProjectId();
+
+  /** @var \Drupal\ms_clarity\Helpers\VisiblityTracker $visibilityTracker */
+  $visibilityTracker = \Drupal::service('ms_clarity.visibility');
+
+  $account = \Drupal::currentUser();
+
+  if ($projectID && $visibilityTracker->getVisibilityPages() && $visibilityTracker->getUserVisibilty($account)) {
+
+    $page['#attached']['html_head'][] = [
+      [
+        '#tag' => 'script',
+        '#id' => $projectID,
+        '#theme' => 'script_head',
+      ],
+      'ms_clarity',
+    ];
+  }
+}

@@ -1,0 +1,235 @@
+<?php
+
+/**
+ * @file
+ * Contains facebook_pixel.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Config\ImmutableConfig;
+
+/**
+ * Implements hook_help().
+ */
+function facebook_pixel_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the facebook_pixel module.
+    case 'help.page.facebook_pixel':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Facebook Pixel') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function facebook_pixel_page_attachments(array &$page) {
+  $config = \Drupal::config('facebook_pixel.settings');
+
+  if (!_facebook_pixel_request_should_be_tracked($config)) {
+    return;
+  }
+
+  $id = $config->get('facebook_id');
+  $jsIdString = Xss::filter($id);
+
+  // Add registered events to the script execution.
+  /** @var \Drupal\facebook_pixel\FacebookEvent $facebook_event */
+  $facebook_event = \Drupal::service('facebook_pixel.facebook_event');
+
+  $events = [];
+  foreach ($facebook_event->getEvents() as $event) {
+    $events[] = [
+      'event' => Xss::filter($event['event']),
+      'data' => Xss::filter(json_encode($event['data'])),
+    ];
+  }
+
+  $page['#attached']['library'][] = "facebook_pixel/facebook_pixel";
+  $page['#attached']['drupalSettings']['facebook_pixel'] = [
+    'facebook_id' => $jsIdString,
+    'events' => $events,
+    'fb_disable_advanced' => $config->get('privacy.fb_disable_advanced'),
+    'eu_cookie_compliance' => $config->get('privacy.eu_cookie_compliance'),
+    'donottrack' => $config->get('privacy.donottrack'),
+  ];
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function facebook_pixel_page_top(array &$page_bottom) {
+  $config = \Drupal::config('facebook_pixel.settings');
+  $id = $config->get('facebook_id');
+  if (empty($id) || $config->get('privacy.disable_noscript_img')) {
+    // Skip the noscript img fallback if there's no id or it is disabled due to
+    // privacy settings.
+    return;
+  }
+  $urlParameter = Xss::filter(urlencode($id));
+  // Empty alt attribute is expected here:
+  // @see https://www.w3.org/WAI/tutorials/images/decorative/
+  $noscript = '<img src="https://www.facebook.com/tr?id=' . $urlParameter . '&ev=PageView&noscript=1" alt="" height="1" width="1" style="display:none" />';
+  $page_bottom[] = [
+    '#markup' => '<noscript>' . $noscript . '</noscript>',
+    '#allowed_tags' => ['noscript', 'img'],
+  ];
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function facebook_pixel_entity_insert(EntityInterface $entity) {
+  $facebook_event = \Drupal::service('facebook_pixel.facebook_event');
+  // Register new user event.
+  if ($entity->getEntityType()->id() == 'user') {
+    /** @var \Drupal\facebook_pixel\FacebookEvent $facebook_event */
+    $facebook_event->addEvent('CompleteRegistration', $entity->id());
+  }
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function facebook_pixel_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  $facebook_event = \Drupal::service('facebook_pixel.facebook_event');
+
+  if ($entity->getEntityType()->id() == 'node' && in_array($view_mode, [
+    'default',
+    'full',
+  ])) {
+    /** @var \Drupal\node\NodeInterface $entity */
+    $data = [
+      'content_name' => $entity->getTitle(),
+      'content_type' => $entity->getType(),
+      'content_ids' => [$entity->id()],
+    ];
+    $facebook_event->addEvent('ViewContent', $data);
+  }
+}
+
+/**
+ * Validate the facebook id configuration.
+ *
+ * @param \Drupal\Core\Config\ImmutableConfig $config
+ *   The config object.
+ *
+ * @return bool
+ *   Whether or not the facebook id is empty.
+ */
+function _facebook_pixel_facebook_id_configured(ImmutableConfig $config) {
+  $facebook_id = $config->get('facebook_id');
+  if (empty($facebook_id)) {
+    return FALSE;
+  }
+  else {
+    return TRUE;
+  }
+}
+
+/**
+ * Tracking visibility check for user roles.
+ *
+ * Based on visibility setting this function returns TRUE if JS code should
+ * be added for the current role and otherwise FALSE.
+ *
+ * @param object $account
+ *   A user object containing an array of roles to check.
+ *
+ * @return bool
+ *   TRUE if JS code should be added for the current role and otherwise FALSE.
+ */
+function _facebook_pixel_visibility_roles($account) {
+  $config = \Drupal::config('facebook_pixel.settings');
+
+  $role_should_be_tracked = &drupal_static(__FUNCTION__);
+  if (!isset($role_should_be_tracked)) {
+    // First we get the user's roles and the ones configured for facebook_pixel.
+    $account_roles = $account->getRoles();
+    $configured_roles = $config->get('visibility.user_role_roles');
+
+    // Now we can get the roles present in both lists
+    // and check if there are any.
+    $matching_roles = array_intersect($account_roles, $configured_roles);
+    $user_has_any_role = count($matching_roles) > 0;
+    $track_all_roles = $config->get('visibility.user_role_mode') === 'all_roles';
+
+    // Either the user has a tracked role or no untracked role.
+    $role_should_be_tracked = ($user_has_any_role xor $track_all_roles);
+  }
+  return $role_should_be_tracked;
+}
+
+/**
+ * Tracking visibility check for pages.
+ *
+ * Based on visibility setting this function returns TRUE if JS code should
+ * be added to the current page and otherwise FALSE.
+ */
+function _facebook_pixel_visibility_pages() {
+  static $page_match;
+
+  // Cache visibility result if function is called more than once.
+  if (!isset($page_match)) {
+    $path_should_be_tracked = &drupal_static(__FUNCTION__);
+
+    // Cache tracking result if function is called more than once.
+    if (!isset($path_should_be_tracked)) {
+      $config = \Drupal::config('facebook_pixel.settings');
+
+      $visible_path_mode = $config->get('visibility.request_path_mode');
+      $visible_path_pages = $config->get('visibility.request_path_pages');
+
+      // Match path if necessary.
+      if (!empty($visible_path_pages)) {
+        // Convert path to lowercase. This allows comparison of the same path
+        // with different case. Ex: /Page, /page, /PAGE.
+        $pages = mb_strtolower($visible_path_pages);
+
+        $path = Drupal::service('path.current')->getPath();
+        $path_alias = \Drupal::service('path_alias.manager')->getAliasByPath($path);
+        if (empty($path_alias)) {
+          $path_alias = mb_strtolower($path);
+        }
+        else {
+          $path_alias = mb_strtolower($path_alias);
+        }
+        $page_match = \Drupal::service('path.matcher')->matchPath($path_alias, $pages) || (($path != $path_alias) && \Drupal::service('path.matcher')->matchPath($path, $pages));
+        // When $visible_path_mode has a value of 'all_pages', the tracking
+        // code is displayed on all pages except those listed in $pages. When
+        // set to 'all_listed', it is displayed only on those pages listed in
+        // $pages.
+        $track_all_paths = ($visible_path_mode == 'all_pages');
+        $path_should_be_tracked = ($track_all_paths xor $page_match);
+      }
+      else {
+        $path_should_be_tracked = TRUE;
+      }
+    }
+    return $path_should_be_tracked;
+  }
+}
+
+/**
+ * Checks the config, if the current request should be tracked.
+ *
+ * @param \Drupal\Core\Config\ImmutableConfig $config
+ *   A config object.
+ *
+ * @return array|bool
+ *   Whether or not the request should be tracked.
+ */
+function _facebook_pixel_request_should_be_tracked(ImmutableConfig $config) {
+  $request_should_be_tracked = &drupal_static(__FUNCTION__);
+  if (!isset($request_should_be_tracked)) {
+    $request_should_be_tracked = _facebook_pixel_facebook_id_configured($config) && _facebook_pixel_visibility_pages() && _facebook_pixel_visibility_roles(\Drupal::currentUser());
+  }
+  return $request_should_be_tracked;
+}
