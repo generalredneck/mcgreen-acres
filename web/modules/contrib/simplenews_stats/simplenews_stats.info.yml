@@ -1,0 +1,8 @@
+name: Simplenews Stats
+type: module
+description: 'Simplenews stats allows you to collect statistics from newsletter sent with simplenews.'
+package: Mail
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - simplenews:simplenews
+configure: entity.simplenews_stats.collection

@@ -1,0 +1,211 @@
+<?php
+
+/**
+ * @file
+ * Install file of simplenews stats module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Database\Database;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Serialization\Yaml;
+use Drupal\Component\Uuid\Php as Uuid;
+use Drupal\Core\Utility\UpdateException;
+
+/**
+ * Implements hook_schema().
+ */
+function simplenews_stats_schema() {
+  $schema['simplenews_stats_allowedlinks'] = [
+    'description' => 'Stores authorized links found in newsletters.',
+    'fields' => [
+      'alid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Allowed link.',
+      ],
+      'entity_type' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The type of the entity used sa simplenews.',
+      ],
+      'entity_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The id of the entity used sa simplenews.',
+      ],
+      'link' => [
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => 'The allowed link.',
+      ],
+    ],
+    'primary key' => ['alid'],
+    'indexes' => [
+      'entity_type' => ['entity_type'],
+      'entity_id' => ['entity_id'],
+      'link' => ['link'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Update entity_type field storage definition for SimplenewsStats entity type.
+ */
+function simplenews_stats_update_8101() {
+  $entity_type_id = 'simplenews_stats';
+  $field_name = 'entity_type';
+  $length = 64;
+
+  /** @var \Drupal\Core\Entity\EntityFieldManager $entity_field_manager */
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $entity_field_manager->useCaches(FALSE);
+  /** @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $schema_repository */
+  $schema_repository = \Drupal::service('entity.last_installed_schema.repository');
+  $base_field_definitions = $entity_field_manager->getBaseFieldDefinitions($entity_type_id);
+
+  // Updates the field storage definition.
+  $schema_repository->setLastInstalledFieldStorageDefinition($base_field_definitions[$field_name]);
+  $field_storage_definitions = $schema_repository->getLastInstalledFieldStorageDefinitions($entity_type_id);
+  $field_storage_definitions[$field_name]['schema'] = $field_storage_definitions[$field_name]->getSchema();
+  $field_storage_definitions[$field_name]['schema']['columns']['value']['length'] = $length;
+  $schema_repository->setLastInstalledFieldStorageDefinitions($entity_type_id, $field_storage_definitions);
+
+  // Updates the storage schema.
+  $key_value = \Drupal::keyValue('entity.storage_schema.sql');
+  $key_name = $entity_type_id . '.field_schema_data.' . $field_name;
+  $storage_schema = $key_value->get($key_name);
+  $storage_schema[$entity_type_id]['fields'][$field_name]['length'] = $length;
+  $key_value->set($key_name, $storage_schema);
+
+  // Updates the base database field.
+  $db_schema = Database::getConnection()->schema();
+  $db_schema->changeField($entity_type_id, $field_name, $field_name, [
+    'type' => 'varchar',
+    'length' => $length,
+    'not null' => !empty($storage_schema[$entity_type_id]['fields'][$field_name]['not null']),
+    'default' => NULL,
+  ]);
+
+  drupal_flush_all_caches();
+}
+
+/**
+ * Provide default views to override simplenews stats overview pages.
+ */
+function simplenews_stats_update_8102() {
+  $output = [];
+  if (\Drupal::moduleHandler()->moduleExists('views')) {
+
+    $viewsStorage = \Drupal::entityTypeManager()->getStorage('view');
+    $config_path = \Drupal::service('extension.list.module')
+      ->getPath('simplenews_stats') . '/config/optional/';
+
+    $views = [
+      'simplenews_stats' => 'views.view.simplenews_stats',
+      'simplenews_stats_items' => 'views.view.simplenews_stats_items',
+    ];
+
+    foreach ($views as $view_name => $conf_name) {
+      if (!$viewsStorage->load($view_name)) {
+        $config_file_path = $config_path . "{$conf_name}.yml";
+        $data = ['uuid' => (new Uuid())->generate()] + Yaml::decode(file_get_contents($config_file_path));
+        \Drupal::configFactory()
+          ->getEditable($conf_name)
+          ->setData($data)
+          ->save(TRUE);
+        $output[] = t('The new view %view_name has been created.', ['%view_name' => $view_name]);
+      }
+      else {
+        $output[] = t('The view %view_name already exists.', ['%view_name' => $view_name]);
+      }
+    }
+  }
+  else {
+    $output[] = t('No view created, the views module is disabled.');
+  }
+
+  return implode('<br>', $output);
+}
+
+/**
+ * Update the size of the "entity_type" field.
+ */
+function simplenews_stats_update_10101(&$sandbox) {
+  $entity_type_id = 'simplenews_stats_item';
+  $field_name = 'entity_type';
+  $new_length = 64;
+
+  $field_storage_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldStorageDefinitions($entity_type_id);
+
+  if (isset($field_storage_definitions[$field_name])) {
+    // Check if there is data longer than 64 characters.
+    $connection = \Drupal::database();
+    $query = $connection
+      ->select($entity_type_id, 't')
+      ->fields('t', [$field_name]);
+    $query->where('LENGTH(t.' . $field_name . ') > :len', [':len' => $new_length]);
+    $results = $query->execute()->fetchCol();
+
+    if (!empty($results)) {
+      throw new UpdateException(
+        "Some rows have data longer than 64 characters. Clean them before running this update."
+      );
+    }
+
+    // Change the table column directly.
+    $schema = \Drupal::database()->schema();
+    $table = 'simplenews_stats_item';
+    $column = 'entity_type';
+    if (!$schema->fieldExists($table, $column)) {
+      throw new UpdateException("Column $table.$column not found.");
+    }
+
+    $spec = [
+      'type' => 'varchar',
+      'length' => $new_length,
+      'not null' => FALSE,
+    ];
+
+    $schema->changeField($table, $column, $column, $spec);
+
+    // Update schema information in the field storage definition.
+    $field_storage_definitions[$field_name]->setSetting('max_length', $new_length);
+    $field_storage_definitions[$field_name]->setSetting('column_changes_handled', TRUE);
+    \Drupal::entityDefinitionUpdateManager()->updateFieldStorageDefinition(
+      $field_storage_definitions[$field_name]
+    );
+  }
+}
+
+/**
+ * Add device field to simplenews_stats_item entity type.
+ */
+function simplenews_stats_update_10102() {
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(t('Device'))
+    ->setDescription(t('The device of the email client.'))
+    ->setSettings(['max_lenght' => 32])
+    ->setDefaultValue('unknown')
+    ->setDisplayOptions('view', [
+      'label' => 'above',
+      'type' => 'string',
+      'weight' => 22,
+    ])
+    ->setDisplayOptions('form', [
+      'type'     => 'string',
+      'settings' => [],
+      'weight'   => 22,
+    ])
+    ->setDisplayConfigurable('form', TRUE);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('device', 'simplenews_stats_item', 'simplenews_stats_item', $storage_definition);
+}

@@ -1,0 +1,8 @@
+services:
+  plugin.manager.interval.intervals:
+    class: Drupal\interval\IntervalPluginManager
+    parent: default_plugin_manager
+
+  Drupal\interval\Hook\IntervalHooks:
+    class: Drupal\interval\Hook\IntervalHooks
+    autowire: true

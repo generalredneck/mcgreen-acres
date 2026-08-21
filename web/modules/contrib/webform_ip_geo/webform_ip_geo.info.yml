@@ -1,0 +1,13 @@
+name: 'Webform IP Geo'
+type: module
+description: 'Retrieves GEO data from the IP of a webform submission.'
+core_version_requirement: ^10.1 || ^11
+package: 'Webform'
+configure: webform_ip_geo.settings_form
+dependencies:
+  - webform:webform
+
+# Information added by Drupal.org packaging script on 2023-09-12
+version: '1.0.5'
+project: 'webform_ip_geo'
+datestamp: 1694539712

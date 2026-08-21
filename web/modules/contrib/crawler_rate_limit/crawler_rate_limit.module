@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains crawler_rate_limit.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function crawler_rate_limit_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the crawler_rate_limit module.
+    case 'help.page.crawler_rate_limit':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Rate limit web crawler (bot) requests') . '</p>';
+      return $output;
+
+    default:
+  }
+}

@@ -1,0 +1,105 @@
+<?php
+
+namespace Drupal\commerce_better_product_variation_label\Plugin\Field\FieldFormatter;
+
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\Attribute\FieldFormatter;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Field\Plugin\Field\FieldFormatter\StringFormatter;
+
+/**
+ * Plugin implementation for the commerce product variation label formatter.
+ */
+#[FieldFormatter(
+  id: 'commerce_better_product_variation_label_string',
+  label: new TranslatableMarkup('Product Variation Label'),
+  field_types: [
+    'string',
+    'uri',
+  ],
+)]
+
+class LabelFormatter extends StringFormatter {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'link' => TRUE,
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements['link'] = [
+      '#title' => $this->t('Link label to the parent product'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('link'),
+    ];
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = [];
+    $summary[] = $this->getSetting('link') ? $this->t('Link to the parent product') : $this->t('No link');
+    return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function viewValue(FieldItemInterface $item) {
+    $output_as_link = $this->getSetting('link');
+    $value = $item->value;
+    $field_set = $item->getParent();
+    if ($field_set) {
+      /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter */
+      $entity_adapter = $field_set->getParent();
+      if ($entity_adapter){
+        /** @var \Drupal\commerce_product\Entity\ProductVariationInterface $commerce_product_variation */
+        $commerce_product_variation = $entity_adapter->getEntity();
+        $value = $commerce_product_variation->label();
+      }
+    }
+    if ($output_as_link && isset($commerce_product_variation)) {
+      $product = $commerce_product_variation->getProduct();
+      $uri = $product->toUrl();
+      $cacheability = CacheableMetadata::createFromObject($product);
+      $uri_access = $uri->access(return_as_object: TRUE);
+      $cacheability->addCacheableDependency($uri_access);
+      if ($uri_access->isAllowed()) {
+        return [
+          '#type' => 'link',
+          '#title' => $value,
+          '#url' => $uri,
+          '#options' => $uri->getOptions(),
+        ];
+      }
+    }
+    return [
+      '#type' => 'inline_template',
+      '#template' => '{{ value|nl2br }}',
+      '#context' => [
+        'value' => $value,
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function isApplicable(FieldDefinitionInterface $field_definition) {
+    return $field_definition->getTargetEntityTypeId() === 'commerce_product_variation';
+  }
+
+}

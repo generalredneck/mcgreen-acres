@@ -1,0 +1,13 @@
+{
+  "name": "drupal/commerce_email",
+  "description": "Provides a UI for defining emails to send in response to various Drupal Commerce events.",
+  "type": "drupal-module",
+  "require": {
+    "drupal/commerce": "^2.0 || ^3.0"
+  },
+  "require-dev": {
+    "drupal/advancedqueue": "^1.0",
+    "drupal/commerce_recurring": "^1.0@rc"
+  },
+  "license": "GPL-2.0-or-later"
+}

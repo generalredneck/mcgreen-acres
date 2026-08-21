@@ -1,0 +1,12 @@
+name: 'Commerce Variation Bundle Attributes'
+type: module
+description: 'Built attributes dynamically from referenced bundle items'
+core_version_requirement: ^10.3 || ^11
+package: 'Commerce (contrib)'
+dependencies:
+  - commerce_variation_bundle:commerce_variation_bundle
+
+# Information added by Drupal.org packaging script on 2026-08-10
+version: '1.0.3'
+project: 'commerce_variation_bundle'
+datestamp: 1786404510

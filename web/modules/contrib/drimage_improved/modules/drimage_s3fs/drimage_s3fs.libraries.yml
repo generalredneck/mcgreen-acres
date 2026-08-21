@@ -1,0 +1,12 @@
+drimage_s3fs:
+  css:
+    component:
+      css/drimage_s3fs.css: {}
+    state:
+      css/drimage_s3fs_loader.css: {}
+  js:
+    js/drimage_s3fs.js: {}
+  dependencies:
+    - core/drupal
+    - core/classList
+    - core/drupalSettings
