@@ -36,3 +36,12 @@ backups
 .lando.local.yml
 .vscode
 .claude
+
+# Stray npm install at repo root (no package.json here)
+/node_modules/
+
+# Local theme/db backup archives
+/*.gz
+
+# Local design mockups (remove this line if you want them versioned)
+/mockups/
