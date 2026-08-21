@@ -5,7 +5,6 @@ quick_stock:
   js:
     js/quick-stock.js: {}
   dependencies:
-    - core/jquery
     - core/once
 
 quick_stock_link:

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c9a7e8440e502912ede737fae823686",
+    "content-hash": "08d5e8ad6c0e926179a0ef5b14ee6b32",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7929,54 +7929,6 @@
             "homepage": "https://www.drupal.org/project/interval",
             "support": {
                 "source": "https://git.drupalcode.org/project/interval"
-            }
-        },
-        {
-            "name": "drupal/jquery_downgrade",
-            "version": "1.0.5",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/jquery_downgrade.git",
-                "reference": "1.0.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/jquery_downgrade-1.0.5.zip",
-                "reference": "1.0.5",
-                "shasum": "6582743e60c6fd41163f50e0431fbbb09a838196"
-            },
-            "require": {
-                "drupal/core": "^11 || ^12"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "1.0.5",
-                    "datestamp": "1778259664",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "joseph.olstad",
-                    "homepage": "https://www.drupal.org/user/1321830"
-                },
-                {
-                    "name": "smulvih2",
-                    "homepage": "https://www.drupal.org/user/795442"
-                }
-            ],
-            "description": "Replaces jQuery 4 with jQuery 3 on specific pages.",
-            "homepage": "https://www.drupal.org/project/jquery_downgrade",
-            "support": {
-                "source": "https://git.drupalcode.org/project/jquery_downgrade"
             }
         },
         {

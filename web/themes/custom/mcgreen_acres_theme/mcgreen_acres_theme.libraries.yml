@@ -29,8 +29,6 @@ global-scripts:
     js/nice-select.min.js: {}
     js/range.js: {}
     js/nav-tabs.js: {}
-  dependencies:
-    - core/jquery
 
 # Product teasers
 product-teaser.belgrade:

@@ -47,6 +47,26 @@ function mcgreen_acres_custom_theme() {
 }
 
 /**
+ * Implements hook_library_info_alter().
+ *
+ * The theme's JS (bootstrap, swiper, isotope, nice-select, jquery.appear,
+ * etc.) targets the jQuery 3 API and breaks under Drupal core's bundled
+ * jQuery 4. Overriding the core/jquery library definition itself, rather
+ * than trying to strip it from already-attached libraries (as the
+ * jquery_downgrade module did), works regardless of whether core/jquery is
+ * pulled in by the theme, a block, or a contrib module: there's nothing to
+ * strip later because core/jquery already resolves to jQuery 3.
+ */
+function mcgreen_acres_custom_library_info_alter(&$libraries, $extension) {
+  if ($extension === 'core' && isset($libraries['jquery']) && \Drupal::theme()->getActiveTheme()->getName() === 'mcgreen_acres_theme') {
+    $libraries['jquery']['version'] = '3.6.4';
+    $libraries['jquery']['js'] = [
+      'https://code.jquery.com/jquery-3.6.4.min.js' => ['type' => 'external', 'weight' => -20],
+    ];
+  }
+}
+
+/**
  * Implements hook_user_insert().
  *
  * Subscribes every new account to the default newsletter.
