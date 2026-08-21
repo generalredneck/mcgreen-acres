@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08d5e8ad6c0e926179a0ef5b14ee6b32",
+    "content-hash": "8d7b2de24f3ce86acbc672b33733c424",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -12279,7 +12279,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/issue/visitors-3589175.git",
-                "reference": "6f6288b97c01a9b10bc98f2ae80364bf3596bfb0"
+                "reference": "052f6df939908ecf6543fb32f31a27259252a8a8"
             },
             "require": {
                 "drupal/charts": "^5",
@@ -12317,7 +12317,7 @@
                 "docs": "https://www.drupal.org/docs/8/modules/visitors",
                 "forum": "https://drupal.stackexchange.com/questions/tagged/visitors"
             },
-            "time": "2026-07-08T02:50:53+00:00"
+            "time": "2026-05-08T14:36:24+00:00"
         },
         {
             "name": "drupal/webform",

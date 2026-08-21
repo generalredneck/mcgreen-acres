@@ -1,0 +1,26 @@
+--- a/visitors_geoip/src/Service/GeoIpService.php
++++ b/visitors_geoip/src/Service/GeoIpService.php
+@@ -6,6 +6,7 @@
+ use Drupal\Core\File\FileSystemInterface;
+ use Drupal\visitors_geoip\VisitorsGeoIpInterface;
+ use GeoIp2\Database\Reader;
++use GeoIp2\Exception\GeoIp2Exception;
+ 
+ /**
+  * GeoIp lookup Service.
+@@ -66,7 +67,14 @@
+     if (is_null($this->reader)) {
+       return NULL;
+     }
+-    $record = $this->reader->city($ip_address);
++    try {
++      $record = $this->reader->city($ip_address);
++    }
++    catch (GeoIp2Exception $e) {
++      // Private/reserved IPs (common in local dev) and other lookup
++      // failures (corrupt database, etc.) aren't in the GeoIP database.
++      return NULL;
++    }
+     return $record;
+   }
+ 
