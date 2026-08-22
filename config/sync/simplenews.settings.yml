@@ -11,7 +11,7 @@ newsletter:
 subscriber:
   sync_fields: true
 subscription:
-  skip_verification: false
+  skip_verification: true
   tidy_unconfirmed: 7
   confirm_subject: 'Confirmation for [site:name]'
   confirm_body: "We have received a request to subscribe [simplenews-subscriber:mail] at [site:url]. To confirm please use the link below.\r\n\r\n[simplenews-subscriber:confirm-url]"
