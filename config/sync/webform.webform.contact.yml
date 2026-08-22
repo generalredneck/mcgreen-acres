@@ -4,6 +4,7 @@ status: open
 dependencies:
   module:
     - advanced_email_validation
+    - mcgreen_acres_newsletter_segments
     - webform_mailchimp
     - webform_simplenews_handler
   enforced:
@@ -363,4 +364,18 @@ handlers:
         field_phone: ''
       action: subscribe
       debug: false
+  subscriber_tags:
+    id: subscriber_tags
+    handler_id: subscriber_tags
+    label: 'Subscriber Tags'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="subscribe_newsletter"]':
+          checked: true
+    weight: 1
+    settings:
+      mail_source: email
+      tags: ContactUs
 variants: {  }

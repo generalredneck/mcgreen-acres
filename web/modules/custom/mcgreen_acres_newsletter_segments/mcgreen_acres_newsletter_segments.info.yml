@@ -1,8 +1,9 @@
 name: 'McGreen Acres Newsletter Segments'
 type: module
-description: 'Adds a Simplenews recipient handler that targets subscribers by taxonomy tag (send-to / exclude), for per-issue segment targeting.'
+description: 'Adds a Simplenews recipient handler that targets subscribers by taxonomy tag (send-to / exclude), for per-issue segment targeting, and a webform handler to tag subscribers on submission.'
 core_version_requirement: ^9 || ^10 || ^11
 package: 'McGreen Acres'
 dependencies:
   - simplenews:simplenews
   - taxonomy:taxonomy
+  - webform:webform

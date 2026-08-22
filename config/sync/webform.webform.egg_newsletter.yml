@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - mcgreen_acres_newsletter_segments
     - webform_mailchimp
     - webform_simplenews_handler
 weight: 0
@@ -332,4 +333,15 @@ handlers:
         field_location: ''
         field_optin_ip: '[webform_submission:ip-address]'
         field_phone: ''
+  subscriber_tags:
+    id: subscriber_tags
+    handler_id: subscriber_tags
+    label: 'Subscriber Tags'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 1
+    settings:
+      mail_source: email
+      tags: 'newsletter, egg facts'
 variants: {  }
