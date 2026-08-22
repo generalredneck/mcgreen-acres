@@ -7379,6 +7379,14 @@ ul.links {
 .form_block input.form-submit {
   width: auto;
 }
+.form_block input[type="checkbox"],
+.form_block input[type="radio"] {
+  height: auto;
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
 .modal-content .form_block .col-lg-8 {
   flex: 0 0 100%;
   max-width: 100%;

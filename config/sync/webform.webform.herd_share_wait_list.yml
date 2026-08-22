@@ -47,6 +47,10 @@ elements: |-
     '#type': ip_geo
     '#title': 'Submission Location'
     '#value': '[city], [region], [region_code]'
+  subscribe_newsletter:
+    '#type': checkbox
+    '#title': 'Keep me updated with news and offers.'
+    '#default_value': true
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -338,7 +342,10 @@ handlers:
     label: 'Submission Newsletter'
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="subscribe_newsletter"]':
+          checked: true
     weight: 0
     settings:
       states:

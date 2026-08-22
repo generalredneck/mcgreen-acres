@@ -5,6 +5,7 @@ dependencies:
   module:
     - advanced_email_validation
     - webform_mailchimp
+    - webform_simplenews_handler
   enforced:
     module:
       - webform
@@ -50,6 +51,10 @@ elements: |-
     '#type': ip_geo
     '#title': 'Submission Location'
     '#value': '[city], [region], [region_code]'
+  subscribe_newsletter:
+    '#type': checkbox
+    '#title': 'Keep me updated with news and offers.'
+    '#default_value': true
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -322,4 +327,40 @@ handlers:
           - ''
       emails:
         '[webform_submission:values:email:html_email]': '[webform_submission:values:email:html_email]'
+  submission_newsletter:
+    id: submission_newsletter
+    handler_id: submission_newsletter
+    label: 'Submission Newsletter'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="subscribe_newsletter"]':
+          checked: true
+    weight: 0
+    settings:
+      states:
+        completed: completed
+        draft: 0
+        converted: 0
+        updated: 0
+      newsletters_lst:
+        mcgreen_acres_newsletter: mcgreen_acres_newsletter
+      token: default
+      field_mapping_source:
+        mail: email
+        field_first_name: fname
+        field_last_name: lname
+        field_location: submission_location
+        field_optin_ip: _other
+        field_phone: ''
+      field_mapping_value:
+        mail: ''
+        field_first_name: ''
+        field_last_name: ''
+        field_location: ''
+        field_optin_ip: '[webform_submission:ip-address]'
+        field_phone: ''
+      action: subscribe
+      debug: false
 variants: {  }
