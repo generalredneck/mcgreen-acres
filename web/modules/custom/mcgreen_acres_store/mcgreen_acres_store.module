@@ -440,3 +440,35 @@ function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
     $definitions['custom_checkout_message']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomCheckoutMessage';
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter() for 'commerce_order_add_form'.
+ *
+ * The commerce_recurring module's own implementation of this hook already
+ * hides the "recurring" option from the Order type radios (orders of that
+ * type are only ever created by the subscription system, never manually),
+ * leaving "Default" as the only real choice. But it does that via an
+ * #after_build, which runs after the radios' individual sub-elements are
+ * already built from #default_value — too late to pre-check one. Setting
+ * #default_value here, before #process runs, is what actually gets
+ * "Default" pre-selected.
+ */
+function mcgreen_acres_store_form_commerce_order_add_form_alter(array &$form, FormStateInterface $form_state) {
+  $form['type']['#default_value'] = 'default';
+}
+
+/**
+ * Implements hook_entity_reference_selection_alter().
+ *
+ * Swaps the class behind commerce_order's "commerce:user" plugin (used by
+ * the "Add order"/"Reassign customer" forms' Customer autocomplete) so it
+ * also matches the site's "Real Name" — the first/last name from the
+ * customer's default 'customer' profile address — not just account name or
+ * email. Keeps the plugin ID unchanged since CustomerFormTrait references
+ * "commerce:user" directly rather than resolving it by weight.
+ */
+function mcgreen_acres_store_entity_reference_selection_alter(&$definitions) {
+  if (!empty($definitions['commerce:user'])) {
+    $definitions['commerce:user']['class'] = 'Drupal\mcgreen_acres_store\Plugin\EntityReferenceSelection\UserSearchWithRealName';
+  }
+}

@@ -8,6 +8,8 @@ dependencies:
   - commerce_checkout:commerce_checkout
   - commerce_fee:commerce_fee
   - commerce_log:commerce_log
+  - commerce:commerce_order
+  - commerce:commerce_product
   - commerce_recurring:commerce_recurring
   - simplenews:simplenews
 default_content:
