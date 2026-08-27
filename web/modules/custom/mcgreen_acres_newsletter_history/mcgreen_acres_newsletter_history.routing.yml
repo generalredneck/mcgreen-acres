@@ -1,0 +1,12 @@
+mcgreen_acres_newsletter_history.subscriber_history:
+  path: '/admin/people/simplenews/edit/{simplenews_subscriber}/history'
+  defaults:
+    _controller: '\Drupal\mcgreen_acres_newsletter_history\Controller\SubscriberHistoryController::view'
+    _title_callback: '\Drupal\mcgreen_acres_newsletter_history\Controller\SubscriberHistoryController::title'
+  requirements:
+    _permission: 'administer simplenews subscriptions+view simplenews subscriptions'
+  options:
+    _admin_route: TRUE
+    parameters:
+      simplenews_subscriber:
+        type: entity:simplenews_subscriber

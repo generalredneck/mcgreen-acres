@@ -1,0 +1,11 @@
+# Give the subscriber edit form a default tab so the History tab has a sibling.
+mcgreen_acres_newsletter_history.subscriber_edit:
+  title: 'Edit'
+  route_name: entity.simplenews_subscriber.edit_form
+  base_route: entity.simplenews_subscriber.edit_form
+
+mcgreen_acres_newsletter_history.subscriber_history:
+  title: 'History'
+  route_name: mcgreen_acres_newsletter_history.subscriber_history
+  base_route: entity.simplenews_subscriber.edit_form
+  weight: 10

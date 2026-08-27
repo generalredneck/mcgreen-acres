@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Surfaces the Simplenews subscriber history log in the admin UI.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function mcgreen_acres_newsletter_history_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.mcgreen_acres_newsletter_history') {
+    return '<p>' . t('Adds a <em>History</em> tab to each Simplenews subscriber (<code>/admin/people/simplenews/edit/ID/history</code>) that shows the subscribe / unsubscribe events Simplenews records in <code>simplenews_subscriber_history</code>: when each change happened, what changed, the route the request came from, and the acting user.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ *
+ * Adds a "History" operation link to rows on /admin/people/simplenews.
+ */
+function mcgreen_acres_newsletter_history_entity_operation(EntityInterface $entity): array {
+  if ($entity->getEntityTypeId() !== 'simplenews_subscriber' || $entity->isNew()) {
+    return [];
+  }
+
+  $account = \Drupal::currentUser();
+  if (!$account->hasPermission('administer simplenews subscriptions') && !$account->hasPermission('view simplenews subscriptions')) {
+    return [];
+  }
+
+  return [
+    'history' => [
+      'title' => t('History'),
+      'weight' => 50,
+      'url' => Url::fromRoute('mcgreen_acres_newsletter_history.subscriber_history', [
+        'simplenews_subscriber' => $entity->id(),
+      ]),
+    ],
+  ];
+}

@@ -1,0 +1,7 @@
+services:
+  mcgreen_acres_newsletter_history.builder:
+    class: Drupal\mcgreen_acres_newsletter_history\SubscriberHistoryBuilder
+    arguments:
+      - '@entity_type.manager'
+      - '@date.formatter'
+      - '@router.route_provider'
