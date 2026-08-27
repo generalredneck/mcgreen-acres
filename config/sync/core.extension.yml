@@ -64,6 +64,7 @@ module:
   custom_commerce_login_pane: 0
   custom_commerce_simplenews_checkout: 0
   custom_commerce_tip: 0
+  custom_mailer_timeout: 0
   custom_user_tokens: 0
   datetime: 0
   datetime_range: 0

@@ -1,0 +1,5 @@
+services:
+  custom_mailer_timeout.transport_factory_manager:
+    class: Drupal\custom_mailer_timeout\TimeoutAwareTransportFactoryManager
+    decorates: symfony_mailer.transport_factory_manager
+    arguments: ['@custom_mailer_timeout.transport_factory_manager.inner']
