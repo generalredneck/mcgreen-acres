@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb0aef916738500c1ec16f681468b796",
+    "content-hash": "d57a2d02cdae307741bafea1c253747e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3254,72 +3254,6 @@
             }
         },
         {
-            "name": "drupal/commerce_checkout_order_fields",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/commerce_checkout_order_fields.git",
-                "reference": "3.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce_checkout_order_fields-3.0.0.zip",
-                "reference": "3.0.0",
-                "shasum": "0f48719a02280edbafdef37d50a8ff13a248f794"
-            },
-            "require": {
-                "drupal/commerce": "^3",
-                "drupal/commerce_checkout": "*",
-                "drupal/core": "^9 || ^10.1 || ^11"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "3.0.0",
-                    "datestamp": "1724409880",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "anybody",
-                    "homepage": "https://www.drupal.org/user/291091"
-                },
-                {
-                    "name": "geek-merlin",
-                    "homepage": "https://www.drupal.org/user/229048"
-                },
-                {
-                    "name": "grevil",
-                    "homepage": "https://www.drupal.org/user/3668491"
-                },
-                {
-                    "name": "harings_rob",
-                    "homepage": "https://www.drupal.org/user/1742028"
-                },
-                {
-                    "name": "thomas.frobieter",
-                    "homepage": "https://www.drupal.org/user/409335"
-                }
-            ],
-            "description": "Exposes a form display for orders to be collected during checkout",
-            "homepage": "https://www.drupal.org/project/commerce_checkout_order_fields",
-            "keywords": [
-                "Drupal"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/commerce_checkout_order_fields",
-                "issues": "https://www.drupal.org/project/issues/commerce_checkout_order_fields"
-            }
-        },
-        {
             "name": "drupal/commerce_custom_checkout_message",
             "version": "3.0.1",
             "source": {
@@ -4471,57 +4405,6 @@
             "homepage": "https://www.drupal.org/project/commerce_tip",
             "support": {
                 "source": "https://git.drupalcode.org/project/commerce_tip"
-            }
-        },
-        {
-            "name": "drupal/commerce_variation_bundle",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/commerce_variation_bundle.git",
-                "reference": "1.0.3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/commerce_variation_bundle-1.0.3.zip",
-                "reference": "1.0.3",
-                "shasum": "9789538f3e881ad407f9d6a9aaf6210e7f9981d0"
-            },
-            "require": {
-                "drupal/commerce": "^2.4 || ^3",
-                "drupal/commerce_product": "*",
-                "drupal/core": "^10.3 || ^11"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "1.0.3",
-                    "datestamp": "1786458337",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "valic",
-                    "homepage": "https://www.drupal.org/user/980550"
-                }
-            ],
-            "description": "Provides a way to group multiple product variants into same",
-            "homepage": "https://www.drupal.org/project/commerce_variation_bundle",
-            "keywords": [
-                "Drupal",
-                "Drupal Commerce"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/commerce_variation_bundle",
-                "issues": "http://drupal.org/project/issues/commerce_variation_bundle"
             }
         },
         {
@@ -8661,86 +8544,6 @@
             }
         },
         {
-            "name": "drupal/mailsystem",
-            "version": "4.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/mailsystem.git",
-                "reference": "8.x-4.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/mailsystem-8.x-4.5.zip",
-                "reference": "8.x-4.5",
-                "shasum": "e52a814a87b343ab69f8d8ef462a9873c1d01158"
-            },
-            "require": {
-                "drupal/core": "^9 || ^10.1 || ^11"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-4.5",
-                    "datestamp": "1723379369",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
-                },
-                {
-                    "name": "emartoni",
-                    "homepage": "https://www.drupal.org/user/3225331"
-                },
-                {
-                    "name": "joseph.olstad",
-                    "homepage": "https://www.drupal.org/user/1321830"
-                },
-                {
-                    "name": "les lim",
-                    "homepage": "https://www.drupal.org/user/84263"
-                },
-                {
-                    "name": "manuel garcia",
-                    "homepage": "https://www.drupal.org/user/213194"
-                },
-                {
-                    "name": "miro_dietiker",
-                    "homepage": "https://www.drupal.org/user/227761"
-                },
-                {
-                    "name": "Nafes",
-                    "homepage": "https://www.drupal.org/user/2489926"
-                },
-                {
-                    "name": "pillarsdotnet",
-                    "homepage": "https://www.drupal.org/user/36148"
-                },
-                {
-                    "name": "renatog",
-                    "homepage": "https://www.drupal.org/user/3326031"
-                },
-                {
-                    "name": "tr",
-                    "homepage": "https://www.drupal.org/user/202830"
-                }
-            ],
-            "description": "Mail System",
-            "homepage": "https://www.drupal.org/project/mailsystem",
-            "support": {
-                "source": "https://git.drupalcode.org/project/mailsystem"
-            }
-        },
-        {
             "name": "drupal/maxlength",
             "version": "3.2.0",
             "source": {
@@ -10441,60 +10244,6 @@
             }
         },
         {
-            "name": "drupal/responsive_favicons",
-            "version": "4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/responsive_favicons.git",
-                "reference": "4.0.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/responsive_favicons-4.0.0.zip",
-                "reference": "4.0.0",
-                "shasum": "75cb90b1bba79bff12cd6d9fa946bf9689b84adf"
-            },
-            "require": {
-                "drupal/core": "^10.3 || ^11"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "4.0.0",
-                    "datestamp": "1757414231",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "mably",
-                    "homepage": "https://www.drupal.org/user/3375160"
-                },
-                {
-                    "name": "wiifm",
-                    "homepage": "https://www.drupal.org/user/358731"
-                }
-            ],
-            "description": "Add responsive favicons to your site based on the code from http://realfavicongenerator.net/",
-            "homepage": "https://www.drupal.org/project/responsive_favicons",
-            "keywords": [
-                "Drupal",
-                "Favicon",
-                "realfavicongenerator"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/responsive_favicons",
-                "issues": "https://www.drupal.org/project/issues/responsive_favicons"
-            }
-        },
-        {
             "name": "drupal/scheduler",
             "version": "2.3.0",
             "source": {
@@ -11606,57 +11355,6 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/twig_tweak",
                 "issues": "https://www.drupal.org/project/issues/twig_tweak"
-            }
-        },
-        {
-            "name": "drupal/universal_device_detection",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/universal_device_detection.git",
-                "reference": "2.1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/universal_device_detection-2.1.0.zip",
-                "reference": "2.1.0",
-                "shasum": "9b81c792aa4cb36f00508bb27f4b612b567a5eff"
-            },
-            "require": {
-                "drupal/core": "^9 || ^10 || ^11",
-                "matomo/device-detector": "~6"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "2.1.0",
-                    "datestamp": "1728989981",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "valic",
-                    "homepage": "https://www.drupal.org/user/980550"
-                }
-            ],
-            "description": "The Universal Device Detection library will parse any User Agent and detect the browser, operating system, device used (desktop, tablet, mobile, tv, cars, console, etc.), brand and model.",
-            "homepage": "https://www.drupal.org/project/universal_device_detection",
-            "keywords": [
-                "Device Detector",
-                "Drupal",
-                "Universal Device detection"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/universal_device_detection",
-                "issues": "https://www.drupal.org/project/issues/universal_device_detection"
             }
         },
         {

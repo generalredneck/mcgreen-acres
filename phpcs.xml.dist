@@ -11,5 +11,5 @@
     <exclude-pattern>*.old/*</exclude-pattern>
     <rule ref="Drupal"/>
     <rule ref="PHPCompatibility"/>
-    <config name="testVersion" value="8.4"/>
+    <config name="testVersion" value="8.5"/>
 </ruleset>

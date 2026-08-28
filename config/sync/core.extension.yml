@@ -83,9 +83,11 @@ module:
   entity_browser_enhanced: 0
   entity_browser_entity_form: 0
   entity_browser_generic_embed: 0
+  entity_clone: 0
   entity_delta_formatter: 0
   entity_embed: 0
   entity_reference_revisions: 0
+  entity_usage: 0
   facebook_pixel: 0
   facebook_pixel_commerce: 0
   facets: 0
@@ -132,6 +134,7 @@ module:
   media_bulk_upload: 0
   media_bulk_upload_dropzonejs: 0
   media_library: 0
+  media_library_edit: 0
   menu_block: 0
   menu_ui: 0
   metatag: 0
