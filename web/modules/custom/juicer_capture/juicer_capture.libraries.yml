@@ -1,7 +1,0 @@
-capture:
-  js:
-    js/capture.js: {}
-  dependencies:
-    - core/drupal
-    - core/drupalSettings
-    - core/once

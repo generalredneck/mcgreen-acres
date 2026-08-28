@@ -1,7 +1,0 @@
-juicer_capture.store:
-  path: '/juicer-capture/store'
-  defaults:
-    _controller: '\Drupal\juicer_capture\Controller\JuicerCaptureController::store'
-  methods: [POST]
-  requirements:
-    _permission: 'access content'
