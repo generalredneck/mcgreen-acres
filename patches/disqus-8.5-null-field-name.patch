@@ -1,0 +1,30 @@
+PHP 8.5: "Using null as an array offset is deprecated" in disqus_entity_update()
+and disqus_entity_delete().
+
+When the updated/deleted entity type has no Disqus field configured,
+DisqusCommentManager::getFields() returns an empty array, so key($field) is NULL.
+Passing NULL to ContentEntityBase::hasField() reaches
+ContentEntityBase::getFieldDefinition(), which uses the value as an array offset
+and triggers the PHP 8.5 deprecation. Guard for NULL before calling hasField().
+
+diff --git a/disqus.module b/disqus.module
+--- a/disqus.module
++++ b/disqus.module
+@@ -109,7 +109,7 @@ function disqus_entity_delete(EntityInterface $entity) {
+   $field = \Drupal::service('disqus.manager')
+     ->getFields($entity->getEntityTypeId());
+   $field_name = key($field);
+-  if (!$entity->hasField($field_name)) {
++  if ($field_name === NULL || !$entity->hasField($field_name)) {
+     return;
+   }
+   $messenger = \Drupal::messenger();
+@@ -181,7 +181,7 @@ function disqus_entity_update(EntityInterface $entity) {
+   $field = \Drupal::service('disqus.manager')
+     ->getFields($entity->getEntityTypeId());
+   $field_name = key($field);
+-  if (!$entity->hasField(key($field))) {
++  if ($field_name === NULL || !$entity->hasField($field_name)) {
+     return;
+   }
+

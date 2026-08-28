@@ -4,7 +4,7 @@ config:
   database: mariadb:11.4
   webroot: web
   xdebug: true
-  php: "8.4"
+  php: "8.5"
   composer_version: 2
 services:
   appserver:

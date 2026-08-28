@@ -304,7 +304,8 @@
                 "reimport": "https://git.drupalcode.org/project/default_content/-/merge_requests/45.diff"
             },
             "drupal/disqus": {
-                "php 8.4": "patches/disqus-3542113-2.patch"
+                "php 8.4": "patches/disqus-3542113-2.patch",
+                "php 8.5: null field name in hook_entity_update/delete": "patches/disqus-8.5-null-field-name.patch"
             },
             "drupal/entity_embed": {
                 "#3416529: False-positive recursive rendering detected when the same entity is embedded many times across a single request (e.g. simplenews sending one newsletter to many recipients)": "patches/entity_embed-3416529-recursive_rendering_leak.patch",
