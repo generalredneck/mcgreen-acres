@@ -99,6 +99,7 @@ module:
   file_to_media: 0
   filter: 0
   focal_point: 0
+  gin_toolbar: 0
   google_analytics: 0
   help: 0
   history: 0
@@ -237,4 +238,6 @@ theme:
   mcgreen_acres_theme: 0
   claro: 0
   stable9: 0
+  default_admin: 0
+  gin: 0
 profile: standard

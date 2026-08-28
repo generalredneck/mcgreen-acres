@@ -13,24 +13,24 @@ logic: or
 conditions:
   d5e1a55a-e37e-4697-8ad8-18cd4cd1254c:
     id: 'entity_bundle:node'
-    negate: false
     uuid: d5e1a55a-e37e-4697-8ad8-18cd4cd1254c
-    context_mapping:
-      node: '@node.node_route_context:node'
+    negate: false
     bundles:
       article: article
+    context_mapping:
+      node: '@node.node_route_context:node'
   179ee528-78f9-4191-b8bb-6bccc26168db:
     id: 'entity_bundle:taxonomy_term'
-    negate: false
     uuid: 179ee528-78f9-4191-b8bb-6bccc26168db
-    context_mapping:
-      taxonomy_term: '@taxonomy_term.taxonomy_term_route_context:taxonomy_term'
+    negate: false
     bundles:
       blog_topics: blog_topics
+    context_mapping:
+      taxonomy_term: '@taxonomy_term.taxonomy_term_route_context:taxonomy_term'
   8331f8ba-d026-4496-9b6e-6146fab44327:
     id: request_path
-    negate: false
     uuid: 8331f8ba-d026-4496-9b6e-6146fab44327
-    context_mapping: {  }
     pages: "/blog\r\n/blog/*"
+    negate: false
+    context_mapping: {  }
 allow_other_conditions: false
