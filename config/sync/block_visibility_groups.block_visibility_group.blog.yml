@@ -6,6 +6,7 @@ dependencies:
     - ctools
     - node
     - system
+    - taxonomy
 id: blog
 label: Blog
 logic: or
@@ -22,7 +23,8 @@ conditions:
     id: 'entity_bundle:taxonomy_term'
     negate: false
     uuid: 179ee528-78f9-4191-b8bb-6bccc26168db
-    context_mapping: {  }
+    context_mapping:
+      taxonomy_term: '@taxonomy_term.taxonomy_term_route_context:taxonomy_term'
     bundles:
       blog_topics: blog_topics
   8331f8ba-d026-4496-9b6e-6146fab44327:
