@@ -2,7 +2,7 @@ name: McGreen Subscription Manual Payment
 type: module
 description: 'Supports manual payment gateways (cash, check) for subscriptions and sends payment due emails at renewal instead of throwing a decline.'
 package: McGreen Acres
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^10 || ^11 || ^12
 dependencies:
   - commerce:commerce_order
   - commerce:commerce_payment

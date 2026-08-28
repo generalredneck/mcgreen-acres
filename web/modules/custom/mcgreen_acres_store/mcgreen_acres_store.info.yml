@@ -2,7 +2,7 @@ name: 'mcgreen_acres_store'
 type: module
 description: 'custom store stuff'
 package: McGreen Acres
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^10 || ^11 || ^12
 dependencies:
   - default_content:default_content
   - commerce_checkout:commerce_checkout

@@ -2,7 +2,7 @@ name: 'Custom Commerce Simplenews Checkout'
 type: module
 description: 'Overrides the Simplenews subscription checkout pane to render as a single opt-in checkbox instead of a labeled list of newsletters.'
 package: Custom
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^10 || ^11 || ^12
 dependencies:
   - commerce_checkout:commerce_checkout
   - commerce_simplenews_checkout:commerce_simplenews_checkout

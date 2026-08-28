@@ -2,6 +2,6 @@ name: Custom Mailer Timeout
 type: module
 description: 'Enforces a short SMTP connection timeout so a hung mail server connection cannot stall an entire cron run.'
 package: Custom
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^10 || ^11 || ^12
 dependencies:
   - symfony_mailer:symfony_mailer

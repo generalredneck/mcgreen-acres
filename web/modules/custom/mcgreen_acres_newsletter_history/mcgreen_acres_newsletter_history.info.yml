@@ -2,6 +2,6 @@ name: 'McGreen Acres Newsletter History'
 type: module
 description: 'Surfaces the Simplenews subscriber history log (signup source, opt-in / opt-out events, acting user) as a "History" tab on each subscriber.'
 package: 'McGreen Acres'
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^10 || ^11 || ^12
 dependencies:
   - simplenews:simplenews
