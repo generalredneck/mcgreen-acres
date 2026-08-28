@@ -5,6 +5,7 @@
  * Functions to support theming in the mcgreen_acres_theme theme.
  */
 
+use Drupal\node\NodeInterface;
 use Drupal\file\Entity\File;
 use Drupal\Core\Render\Element;
 use Drupal\image\Entity\ImageStyle;
@@ -55,14 +56,6 @@ function mcgreen_acres_theme_preprocess_paragraph(&$variables) {
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
 function mcgreen_acres_theme_preprocess_html(array &$variables) {
-  /* Add class to html tag */
-  //$variables['html_attributes']->addClass('no-js');
-
-  // Don't display the site name twice on the front page (and potentially others)
-  /*if (isset($variables['head_title_array']['title']) && isset($variables['head_title_array']['name']) && ($variables['head_title_array']['title'] == $variables['head_title_array']['name'])) {
-    $variables['head_title'] = $variables['head_title_array']['name'];
-  }*/
-
   if (_mcgreen_acres_theme_is_landing()) {
     $variables['attributes']['class'][] = 'path-landingpage';
   }
@@ -74,13 +67,13 @@ function mcgreen_acres_theme_preprocess_html(array &$variables) {
  * True for the site front page, or for a "page" node with
  * field_landing_page checked.
  */
-function _mcgreen_acres_theme_is_landing(?\Drupal\node\NodeInterface $node = NULL): bool {
+function _mcgreen_acres_theme_is_landing(?NodeInterface $node = NULL): bool {
   if (\Drupal::service('path.matcher')->isFrontPage()) {
     return TRUE;
   }
   $node = $node ?: \Drupal::routeMatch()->getParameter('node');
-  return $node instanceof \Drupal\node\NodeInterface
-    && $node->hasField('field_landing_page')
+  return $node instanceof
+  NodeInterface    && $node->hasField('field_landing_page')
     && (bool) $node->get('field_landing_page')->value;
 }
 
@@ -90,12 +83,12 @@ function _mcgreen_acres_theme_is_landing(?\Drupal\node\NodeInterface $node = NUL
 function mcgreen_acres_theme_page_attachments_alter(array &$page) {
   // Tell IE to use latest rendering engine (not to use compatibility mode).
   /*$ie_edge = [
-    '#type' => 'html_tag',
-    '#tag' => 'meta',
-    '#attributes' => [
-    'http-equiv' => 'X-UA-Compatible',
-    'content' => 'IE=edge',
-    ],
+  '#type' => 'html_tag',
+  '#tag' => 'meta',
+  '#attributes' => [
+  'http-equiv' => 'X-UA-Compatible',
+  'content' => 'IE=edge',
+  ],
   ];
   $page['#attached']['html_head'][] = [$ie_edge, 'ie_edge'];*/
 }
@@ -179,21 +172,20 @@ function mcgreen_acres_theme_preprocess_block(array &$variables) {
 
 }
 
-
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for commerce_product templates.
  */
 function mcgreen_acres_theme_theme_suggestions_commerce_product_alter(array &$suggestions, array $variables) {
-  // View mode and theme settings
+  // View mode and theme settings.
   $product = $variables['elements']['#commerce_product'];
   $view_mode = $variables['elements']['#view_mode'];
   if (!empty($product) && $product instanceof ProductInterface && !is_null($view_mode)) {
     _mcgreen_acres_theme_alter_entity_suggestions($suggestions, $product, $view_mode);
   }
-  // Limiting to catalog display mode
+  // Limiting to catalog display mode.
   $display = theme_get_setting('product_teaser');
   if ($display) {
-    switch($view_mode) {
+    switch ($view_mode) {
       case 'teaser':
         $suggestions[] = 'commerce_product__' . $view_mode . '__' . $display;
         break;
@@ -201,8 +193,11 @@ function mcgreen_acres_theme_theme_suggestions_commerce_product_alter(array &$su
   }
 }
 
+/**
+ * Implements hook_preprocess_HOOK() for commerce_product templates.
+ */
 function mcgreen_acres_theme_preprocess_commerce_product(array &$variables) {
-  $stuff=1;
+  $stuff = 1;
 }
 
 /**
@@ -229,7 +224,8 @@ function mcgreen_acres_theme_preprocess_node(array &$variables) {
   if (!empty($result)) {
     // Entities that reference the target entity exist.
     $variables['cta'] = 'mcgreen_acres_theme_webform_herd_share_wait_list';
-  } else {
+  }
+  else {
     // No entities reference the target entity through this field.
   }
 }
@@ -245,14 +241,14 @@ function mcgreen_acres_theme_theme_suggestions_views_view_alter(array &$suggesti
  * Implements hook_preprocess_form().
  */
 function mcgreen_acres_theme_preprocess_form(array &$variables) {
-  //$variables['attributes']['novalidate'] = 'novalidate';
+  // $variables['attributes']['novalidate'] = 'novalidate';
 }
 
 /**
  * Implements hook_preprocess_select().
  */
 function mcgreen_acres_theme_preprocess_select(array &$variables) {
-  //$variables['attributes']['class'][] = 'select-chosen';
+  // $variables['attributes']['class'][] = 'select-chosen';
 }
 
 /**
@@ -316,11 +312,17 @@ function mcgreen_acres_theme_preprocess_menu_local_task(array &$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_HOOK() for menu_local_action templates.
+ */
 function mcgreen_acres_theme_preprocess_menu_local_action(array &$variables) {
   $variables['link']['#options']['attributes']['class'][] = 'btn';
   $variables['link']['#options']['attributes']['class'][] = 'btn-primary';
 }
 
+/**
+ * Implements hook_preprocess_HOOK() for menu templates.
+ */
 function mcgreen_acres_theme_preprocess_menu(&$variables) {
   // To target a specific menu (e.g., main menu):
   if ($variables['menu_name'] == 'account') {
@@ -340,10 +342,9 @@ function mcgreen_acres_theme_preprocess_menu(&$variables) {
 function mcgreen_acres_theme_preprocess_links__node(array &$variables) {
   if (!empty($variables['links']) && !empty($variables['links']['node-readmore'])) {
     $readmore_link = &$variables['links']['node-readmore']['link'];
-    $readmore_link['#title'] = t(
-      '<i class="fa fa-caret-square-o-down" aria-hidden="true"></i> ' . $readmore_link['#title']->getUntranslatedString(),
-      $readmore_link['#title']->getArguments()
-    );
+    $readmore_link['#title'] = t('<i class="fa fa-caret-square-o-down" aria-hidden="true"></i> @title', [
+      '@title' => $readmore_link['#title'],
+    ]);
   }
   if (!empty($variables['links']) && !empty($variables['links']['disqus_comments_num'])) {
     unset($variables['links']['disqus_comments_num']);
@@ -381,7 +382,7 @@ function mcgreen_acres_theme_preprocess_table(&$variables) {
 }
 
 /**
- * Callback to mitigate when class is a string..
+ * Callback to mitigate when class is a string.
  */
 function bootstrap4_covert_classes_string_to_array(&$variables) {
   if (isset($variables['attributes']['class']) && is_string($variables['attributes']['class'])) {

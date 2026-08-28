@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Form-related theme hook implementations for mcgreen_acres_theme.
+ */
+
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Xss;
@@ -105,8 +110,7 @@ function mcgreen_acres_theme_preprocess_input(&$variables) {
         t('Apply')->render() => 'primary',
         t('Checkout')->render() => 'primary',
 
-        // Secondary
-
+        // Secondary.
         // Danger class.
         t('Delete')->render() => 'danger',
         t('Remove')->render() => 'danger',
@@ -165,7 +169,7 @@ function mcgreen_acres_theme_preprocess_input(&$variables) {
       "btn-dark",
     ];
 
-    // Check if classes are already there
+    // Check if classes are already there.
     $add_white_icon = TRUE;
 
     foreach ($classes as $class) {
@@ -174,7 +178,7 @@ function mcgreen_acres_theme_preprocess_input(&$variables) {
       }
     }
 
-    //  Iterate over the array.
+    // Iterate over the array.
     foreach ($text_data as $pattern => $strings) {
       foreach ($strings as $text => $class) {
         switch ($pattern) {
@@ -240,7 +244,7 @@ function mcgreen_acres_theme_form_alter(&$form, FormStateInterface $form_state, 
     $elements_type = $form['elements']['#type'] ?? NULL;
     $elements_tag = $form['elements']['#tag'] ?? NULL;
     if ($elements_type === 'html_tag' && $elements_tag === 'div') {
-      unset ($form['elements']['#type'], $form['elements']['#tag']);
+      unset($form['elements']['#type'], $form['elements']['#tag']);
     }
   }
 
@@ -250,6 +254,7 @@ function mcgreen_acres_theme_form_alter(&$form, FormStateInterface $form_state, 
       $form['keys']['#size'] = 20;
       $form['keys']['#placeholder'] = t('Search');
       break;
+
     case 'views_exposed_form':
       $form['#attributes']['class'][] = 'form-inline';
       $form['search_api_fulltext']['#placeholder'] = t('Search products');
@@ -287,6 +292,7 @@ function mcgreen_acres_theme_theme_suggestions_container_alter(array &$suggestio
 
   return $suggestions;
 }
+
 /**
  * Implements hook_theme_suggestions_fieldset().
  */
@@ -295,7 +301,10 @@ function mcgreen_acres_theme_theme_suggestions_fieldset_alter(array &$suggestion
   $patterns = "/checkout/*\n/user\n/user/login\n/user/password";
   $match = \Drupal::service('path.matcher')->matchPath($current_path, $patterns);
 
-  if (isset($variables['element']['#theme']) && in_array($variables['element']['#theme'], array('bef_radios', 'bef_checkboxes'))) {
+  if (isset($variables['element']['#theme']) && in_array($variables['element']['#theme'], [
+    'bef_radios',
+    'bef_checkboxes',
+  ])) {
     $suggestions[] = 'fieldset__accordion';
   }
 
