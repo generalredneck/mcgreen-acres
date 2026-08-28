@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains hook implementations for the commerce_receipt_on_payment module.
+ */
+
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 

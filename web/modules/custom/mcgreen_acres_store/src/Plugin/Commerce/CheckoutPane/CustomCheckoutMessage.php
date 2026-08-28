@@ -3,7 +3,6 @@
 namespace Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Markup;
 use Drupal\commerce_custom_checkout_message\Plugin\Commerce\CheckoutPane\CustomCheckoutMessage as CheckoutPaneCustomCheckoutMessage;
 
 /**

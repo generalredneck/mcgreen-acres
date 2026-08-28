@@ -1,6 +1,5 @@
 <?php
 
-// file: src/Plugin/QueueWorker/DeleteDuplicatePathAliases.php.
 namespace Drupal\mcgreen_acres_custom\Plugin\QueueWorker;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;

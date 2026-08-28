@@ -16,6 +16,8 @@ class UserAccessCheck implements AccessInterface {
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   Run access checks for this account.
+   * @param \Drupal\user\UserInterface $user
+   *   The user account being accessed.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.

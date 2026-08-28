@@ -143,7 +143,6 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
 
   /**
    * Gets a DateInterval object for this plugin's step configuration.
-   * ``
    *
    * @return \DateInterval
    *   The DateInterval object representing the configured interval.

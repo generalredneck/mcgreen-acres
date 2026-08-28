@@ -2,7 +2,6 @@
 
 namespace Drupal\mcgreen_acres_store\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;

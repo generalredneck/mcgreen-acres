@@ -4,6 +4,9 @@ namespace Drupal\mcgreen_subscription_payment\Mail;
 
 use Drupal\commerce_order\Entity\OrderInterface;
 
+/**
+ * Sends "payment due" emails for manual-payment subscription renewals.
+ */
 interface PaymentDueMailInterface {
 
   /**

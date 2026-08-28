@@ -31,9 +31,10 @@ class OrderSubscriber extends BaseOrderSubscriber {
   /**
    * Triggers renewal when a recurring order is manually marked paid.
    *
-   * Cron sets commerce_recurring_queued=TRUE before enqueuing the renew job, so
-   * we only act when that flag is FALSE — meaning the admin completed the order
-   * before cron's billing-period-expiry check could fire the queue-based renewal.
+   * Cron sets commerce_recurring_queued=TRUE before enqueuing the renew job,
+   * so we only act when that flag is FALSE — meaning the admin completed
+   * the order before cron's billing-period-expiry check could fire the
+   * queue-based renewal.
    */
   public function onRecurringOrderMarkPaid(WorkflowTransitionEvent $event) {
     /** @var \Drupal\commerce_order\Entity\OrderInterface $order */

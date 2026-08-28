@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Adds a phone number profile to the customer on guest checkout completion.
  */
-class GuestCheckoutSetPhoneOnCompletionSubscriber implements EventSubscriberInterface  {
+class GuestCheckoutSetPhoneOnCompletionSubscriber implements EventSubscriberInterface {
 
   /**
    * Constructs a new object.

@@ -89,7 +89,6 @@ class NewsletterSubscribe extends CheckoutPaneBase {
       '#description' => $this->t('Text to display on the subscribe checkbox'),
     ];
 
-
     return $form;
   }
 

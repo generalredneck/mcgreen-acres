@@ -3,13 +3,10 @@
 namespace Drupal\mcgreen_acres_newsletter_segments\Plugin\WebformHandler;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\simplenews\Entity\Subscriber;
 use Drupal\webform\Plugin\WebformHandlerBase;
-use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\WebformSubmissionInterface;
-use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

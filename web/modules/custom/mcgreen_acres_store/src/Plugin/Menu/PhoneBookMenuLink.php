@@ -11,32 +11,15 @@ use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @todo Provide description for this class.
- *
- * @DCG
- * Typically a module-defined menu link relies on
- * \Drupal\Core\Menu\MenuLinkDefault class that builds the link using plugin
- * definitions located in YAML files (MODULE_NAME.links.menu.yml). The purpose
- * of having custom menu link class is to make the link dynamic. Sometimes, the
- * title and the URL of a link should vary based on some context, i.e. user
- * being logged, current page URL, etc. Check out the parent classes for the
- * methods you can override to make the link dynamic.
- *
- * @DCG It is important to supply the link with correct cache metadata.
- * @see self::getCacheContexts()
- * @see self::getCacheTags()
- *
- * @DCG
- * You can apply the class to a link as follows.
- * @code
- * foo.example:
- *   title: Example
- *   route_name: foo.example
- *   menu_name: main
- *   class: \Drupal\foo\Plugin\Menu\FooMenuLink
- * @endcode
+ * Account menu link to the current user's phone numbers page.
  */
 final class PhoneBookMenuLink extends MenuLinkDefault {
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
   protected $currentUser;
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, StaticMenuLinkOverridesInterface $static_override, AccountInterface $current_user) {
@@ -45,6 +28,9 @@ final class PhoneBookMenuLink extends MenuLinkDefault {
     $this->currentUser = $current_user;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -55,6 +41,9 @@ final class PhoneBookMenuLink extends MenuLinkDefault {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getUrlObject($title_attribute = TRUE) {
     return Url::fromUri('internal:/user/' . $this->currentUser->id() . '/phone');
   }

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Contains hook implementations for the mcgreen_subscription_payment module.
+ */
+
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\ManualPaymentGatewayInterface;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
@@ -39,7 +46,7 @@ function mcgreen_subscription_payment_entity_base_field_info(EntityTypeInterface
  */
 function mcgreen_subscription_payment_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
-  if (!($form_object instanceof \Drupal\Core\Entity\EntityFormInterface)) {
+  if (!($form_object instanceof EntityFormInterface)) {
     return;
   }
   $entity = $form_object->getEntity();
@@ -65,7 +72,7 @@ function mcgreen_subscription_payment_form_alter(array &$form, FormStateInterfac
 
   $manual_ids = [];
   foreach ($all_gateways as $gateway) {
-    if ($gateway->getPlugin() instanceof \Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\ManualPaymentGatewayInterface) {
+    if ($gateway->getPlugin() instanceof ManualPaymentGatewayInterface) {
       $manual_ids[$gateway->id()] = TRUE;
     }
   }

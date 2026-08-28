@@ -2,7 +2,6 @@
 
 namespace Drupal\custom_commerce_login_pane\Plugin\Commerce\CheckoutPane;
 
-use Drupal\Component\Utility\Random;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\commerce_checkout\Attribute\CommerceCheckoutPane;

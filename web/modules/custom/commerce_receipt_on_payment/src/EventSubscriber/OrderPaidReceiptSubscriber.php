@@ -23,11 +23,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class OrderPaidReceiptSubscriber implements EventSubscriberInterface {
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * The order receipt mailer.
+   *
    * @var \Drupal\commerce_order\Mail\OrderReceiptMailInterface
    */
   protected $orderReceiptMail;

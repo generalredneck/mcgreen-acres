@@ -31,6 +31,9 @@ class DuplicateModalBlock extends BlockBase implements ContainerFactoryPluginInt
     $this->blockManager = $block_manager;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -40,12 +43,18 @@ class DuplicateModalBlock extends BlockBase implements ContainerFactoryPluginInt
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function defaultConfiguration() {
     return [
       'target_block_id' => '',
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state) {
     $definitions = $this->blockManager->getDefinitions();
     $options = [];
@@ -72,11 +81,17 @@ class DuplicateModalBlock extends BlockBase implements ContainerFactoryPluginInt
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['target_block_id'] = $form_state->getValue('target_block_id');
     $this->configuration['manual_block_id'] = $form_state->getValue('manual_block_id');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     // Manual entry overrides dropdown selection.
     $manual = trim($this->configuration['manual_block_id'] ?? '');

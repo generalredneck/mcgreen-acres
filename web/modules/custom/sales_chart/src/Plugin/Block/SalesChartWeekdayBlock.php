@@ -53,6 +53,9 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new static(
       $configuration,
@@ -74,6 +77,9 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     return new \DateTimeZone(date_default_timezone_get());
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function defaultConfiguration(): array {
     return [
       'days' => 90,
@@ -81,6 +87,9 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state): array {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
@@ -104,11 +113,17 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->setConfigurationValue('days', (int) $form_state->getValue('days'));
     $this->setConfigurationValue('currency_code', $form_state->getValue('currency_code'));
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getCacheContexts(): array {
     // Vary the cached block output whenever date[min]/date[max] or order_type
     // change.
@@ -118,6 +133,9 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     ]);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function build(): array {
     $config = $this->getConfiguration();
     $days = (int) $config['days'];

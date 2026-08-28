@@ -117,7 +117,7 @@ class OutOfStockFieldProcessor extends ProcessorPluginBase implements ContainerF
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function preprocessIndexItems(array $items) {
     foreach ($items as $item) {

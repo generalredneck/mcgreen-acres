@@ -2,13 +2,17 @@
 
 namespace Drupal\mcgreen_subscription_payment\Event;
 
+/**
+ * Defines events for the mcgreen_subscription_payment module.
+ */
 final class ManualPaymentSubscriptionEvents {
 
   /**
-   * Fired when a recurring order for a manual-payment subscription is placed
-   * and awaiting offline payment (cash, check, etc.).
+   * Fired when a manual-payment recurring order awaits offline payment.
    *
-   * Subscribers can send a "payment due" notification to the customer.
+   * This happens when a recurring order for a manual-payment subscription
+   * is placed and awaiting offline payment (cash, check, etc.). Subscribers
+   * can send a "payment due" notification to the customer.
    *
    * @Event
    *

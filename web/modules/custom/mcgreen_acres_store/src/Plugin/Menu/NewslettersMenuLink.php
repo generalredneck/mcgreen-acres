@@ -14,6 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Account menu link to the current user's newsletter subscriptions.
  */
 final class NewslettersMenuLink extends MenuLinkDefault {
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
   protected $currentUser;
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, StaticMenuLinkOverridesInterface $static_override, AccountInterface $current_user) {
@@ -22,6 +28,9 @@ final class NewslettersMenuLink extends MenuLinkDefault {
     $this->currentUser = $current_user;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -32,6 +41,9 @@ final class NewslettersMenuLink extends MenuLinkDefault {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getUrlObject($title_attribute = TRUE) {
     return Url::fromUri('internal:/user/' . $this->currentUser->id() . '/simplenews');
   }

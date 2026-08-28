@@ -12,6 +12,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class PaymentDueSubscriber implements EventSubscriberInterface {
 
+  /**
+   * The payment due mailer.
+   */
   protected PaymentDueMailInterface $paymentDueMail;
 
   public function __construct(PaymentDueMailInterface $payment_due_mail) {

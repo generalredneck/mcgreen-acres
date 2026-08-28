@@ -7,8 +7,9 @@ use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 use Symfony\Component\Mailer\Transport\TransportFactoryInterface;
 
 /**
- * Decorates the transport factory manager to swap in a timeout-aware ESMTP
- * factory in place of Symfony's default one.
+ * Decorates the transport factory manager with a timeout-aware ESMTP factory.
+ *
+ * Swaps in the timeout-aware factory in place of Symfony's default one.
  */
 class TimeoutAwareTransportFactoryManager implements TransportFactoryManagerInterface {
 

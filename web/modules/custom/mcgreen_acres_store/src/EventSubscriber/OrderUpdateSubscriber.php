@@ -8,7 +8,7 @@ use Drupal\commerce_order\Event\OrderEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- *
+ * Reacts to order events during checkout.
  */
 class OrderUpdateSubscriber implements EventSubscriberInterface {
 

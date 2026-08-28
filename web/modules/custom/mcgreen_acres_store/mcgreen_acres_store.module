@@ -2,8 +2,10 @@
 
 /**
  * @file
+ * Contains hook implementations for the mcgreen_acres_store module.
  */
 
+use Drupal\commerce_product\Entity\ProductVariationInterface;
 use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
@@ -83,7 +85,7 @@ function mcgreen_acres_store_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
- *
+ * Implements hook_form_FORM_ID_alter() for the cart views form.
  */
 function mcgreen_acres_store_form_views_form_commerce_cart_form_default_alter(&$form, &$form_state, $form_id) {
   foreach ($form['remove_button'] as &$item) {
@@ -209,10 +211,10 @@ function _mcgreen_acres_store_cart_has_subscription(OrderInterface $order): bool
 }
 
 /**
- * Checks whether an order needs appointment fulfillment rather than
- * immediate farm stand pickup.
+ * Checks whether an order needs appointment fulfillment.
  *
- * An order is considered fulfilled immediately only if every item in it is
+ * This is rather than immediate farm stand pickup. An order is considered
+ * fulfilled immediately only if every item in it is
  * available at the farm stand; a single item that isn't (e.g. a gift box,
  * vanilla, or livestock, which require an appointment) means the whole
  * order needs to be scheduled, since a customer buying a mixed cart is
@@ -224,7 +226,7 @@ function _mcgreen_acres_store_cart_needs_fulfillment(OrderInterface $order): boo
   }
   foreach ($order->getItems() as $order_item) {
     $purchased_entity = $order_item->getPurchasedEntity();
-    if (!$purchased_entity instanceof \Drupal\commerce_product\Entity\ProductVariationInterface) {
+    if (!$purchased_entity instanceof ProductVariationInterface) {
       continue;
     }
     $product = $purchased_entity->getProduct();
@@ -238,7 +240,7 @@ function _mcgreen_acres_store_cart_needs_fulfillment(OrderInterface $order): boo
 /**
  * Resolves whether an order needs fulfillment, preferring an explicit answer.
  *
- * field_needs_fulfillment is set explicitly either by the customer
+ * Field_needs_fulfillment is set explicitly either by the customer
  * (PickupTiming checkout pane, for a farm-stand-eligible cart) or by staff
  * (OrderNeedsFulfillmentForm, for a manually-entered order); either way,
  * that deliberate choice should win over composition. Only falls back to
@@ -322,7 +324,7 @@ function mcgreen_acres_store_mail($key, &$message, $params) {
 }
 
 /**
- *
+ * Implements hook_entity_update().
  */
 function mcgreen_acres_store_entity_update(EntityInterface $entity) {
   mcgreen_acres_store_entity_insert($entity);
@@ -426,6 +428,9 @@ function mcgreen_acres_store_preprocess_commerce_product__full(&$variables) {
   $variables['#cache']['tags'][] = FarmstandSettingsForm::CACHE_TAG;
 }
 
+/**
+ * Implements hook_commerce_checkout_pane_info_alter().
+ */
 function mcgreen_acres_store_commerce_checkout_pane_info_alter(&$definitions) {
   if (!empty($definitions['customer_comments'])) {
     $definitions['customer_comments']['class'] = 'Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane\CustomerComments';

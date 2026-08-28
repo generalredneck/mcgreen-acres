@@ -9,7 +9,9 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
- /**
+/**
+ * Provides a Juicer Capture Block.
+ *
  * @Block(
  *   id = "juicer_capture_block",
  *   admin_label = @Translation("Juicer Capture Block")
@@ -17,6 +19,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
+  /**
+   * The Juicer capture cache bin.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
   protected $cache;
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition, CacheBackendInterface $cache) {
@@ -24,6 +31,9 @@ class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInte
     $this->cache = $cache;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -33,8 +43,10 @@ class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInte
     );
   }
 
-  public function build()
-  {
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
     $cached = $this->cache->get('juicer_capture.cached_feed');
     $token = \Drupal::service('csrf_token')->get('juicer_capture_post');
     $session = \Drupal::request()->getSession();
@@ -44,7 +56,8 @@ class JuicerCaptureBlock extends BlockBase implements ContainerFactoryPluginInte
         '#type' => 'markup',
         '#markup' => Markup::create('<div id="juicer-capture-block-wrapper">' . $cached->data . '</div>'),
         '#cache' => [
-          'max-age' => 86400,        // Page & block can be cached for 1 day
+      // Page & block can be cached for 1 day.
+          'max-age' => 86400,
           'tags' => ['juicer_capture'],
         ],
       ];
@@ -60,7 +73,8 @@ HTML;
       '#type' => 'markup',
       '#markup' => Markup::create('<div id="juicer-capture-block-wrapper">' . $markup . '</div>'),
       '#cache' => [
-        'max-age' => 0,              // Capturing mode → dynamic → no caching
+    // Capturing mode → dynamic → no caching.
+        'max-age' => 0,
       ],
       '#attached' => [
         'library' => ['juicer_capture/capture'],

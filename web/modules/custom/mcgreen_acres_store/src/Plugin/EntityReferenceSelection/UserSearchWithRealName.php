@@ -7,8 +7,9 @@ use Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection;
 use Drupal\commerce_order\Plugin\EntityReferenceSelection\UserSearch;
 
 /**
- * Swaps in for commerce_order's "commerce:user" plugin (see
- * mcgreen_acres_store_entity_reference_selection_alter()) to also match
+ * Swaps in for commerce_order's "commerce:user" plugin to also match names.
+ *
+ * See mcgreen_acres_store_entity_reference_selection_alter(). Matches
  * against the customer's first/last name, taken from the "Real Name" the
  * site builds from the default 'customer' profile's billing address
  * (given_name/family_name), rather than just the account name or email.
@@ -111,8 +112,9 @@ class UserSearchWithRealName extends UserSearch {
   }
 
   /**
-   * Builds "[given_name] [family_name]" for each uid's default 'customer'
-   * profile.
+   * Builds a real name for each uid's default 'customer' profile.
+   *
+   * The name is "[given_name] [family_name]".
    *
    * @param int[] $uids
    *   User IDs to look up.

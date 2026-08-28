@@ -6,11 +6,13 @@ use Drupal\commerce\EventBase;
 use Drupal\commerce_order\Entity\OrderInterface;
 
 /**
- * Fired when a recurring order for a manual-payment subscription needs payment.
+ * Fired when a recurring order for a manual-payment subscription is due.
  */
 class PaymentDueEvent extends EventBase {
 
   /**
+   * The recurring order awaiting manual payment.
+   *
    * @var \Drupal\commerce_order\Entity\OrderInterface
    */
   protected $order;
@@ -19,6 +21,9 @@ class PaymentDueEvent extends EventBase {
     $this->order = $order;
   }
 
+  /**
+   * Gets the recurring order awaiting manual payment.
+   */
   public function getOrder(): OrderInterface {
     return $this->order;
   }

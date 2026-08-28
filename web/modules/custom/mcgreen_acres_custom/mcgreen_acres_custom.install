@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Install, update and uninstall functions for mcgreen_acres_custom.
+ */
+
+use Drupal\profile\Entity\Profile;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\simplenews\Entity\Subscriber;
 
 /**
@@ -32,7 +40,7 @@ function mcgreen_acres_custom_update_10002() {
   // Ensure the field_phone field exists on profile.customer.
   $field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load('profile.field_phone');
   if (!$field_storage) {
-    $field_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+    $field_storage = FieldStorageConfig::create([
       'uuid' => '1d3e044a-4836-43f8-87a0-41b5ef0ab0e5',
       'field_name' => 'field_phone',
       'entity_type' => 'profile',
@@ -53,7 +61,7 @@ function mcgreen_acres_custom_update_10002() {
 
   $field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load('profile.customer.field_phone');
   if (!$field_config) {
-    $field_config = \Drupal\field\Entity\FieldConfig::create([
+    $field_config = FieldConfig::create([
       'uuid' => '52078217-2d9f-4813-8194-58149acc17d2',
       'field_name' => 'field_phone',
       'entity_type' => 'profile',
@@ -189,15 +197,16 @@ function mcgreen_acres_custom_update_10006() {
         $phone_profile = NULL;
         if ($user->hasField('phone_profiles') && !$user->get('phone_profiles')->isEmpty()) {
           $phone_profile = $user->get('phone_profiles')->first()->entity;
-        } else {
+        }
+        else {
           // Create a new phone profile.
-          $phone_profile = \Drupal\profile\Entity\Profile::create([
+          $phone_profile = Profile::create([
             'type' => 'phone',
             'uid' => $user->id(),
           ]);
           $phone_profile->save();
-          // Assuming the phone_profiles field gets updated automatically or we need to set it.
-          // For simplicity, assume it's set.
+          // Assuming the phone_profiles field gets updated automatically
+          // or we need to set it. For simplicity, assume it's set.
         }
 
         if ($phone_profile && $phone_profile->hasField('field_phone')) {
@@ -230,7 +239,8 @@ function mcgreen_acres_custom_update_10007() {
       $subscriber->save();
     }
   }
-  // Load all users with a Commerce Subscription for the herd share and subscribe them to the newsletter as well.
+  // Load all users with a Commerce Subscription for the herd share and
+  // subscribe them to the newsletter as well.
   $newsletter_id = 'herd_share_updates';
   $subscription_ids = \Drupal::entityTypeManager()->getStorage('commerce_subscription')->getQuery()
     ->accessCheck(FALSE)
@@ -437,7 +447,7 @@ function mcgreen_acres_custom_update_10010() {
   foreach ($fields as $field_name => $field_info) {
     $field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load("{$entity_type}.{$field_name}");
     if (!$field_storage) {
-      $field_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+      $field_storage = FieldStorageConfig::create([
         'field_name' => $field_name,
         'entity_type' => $entity_type,
         'type' => $field_info['type'],
@@ -448,7 +458,7 @@ function mcgreen_acres_custom_update_10010() {
 
     $field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load("{$entity_type}.{$bundle}.{$field_name}");
     if (!$field_config) {
-      \Drupal\field\Entity\FieldConfig::create([
+      FieldConfig::create([
         'field_name' => $field_name,
         'entity_type' => $entity_type,
         'bundle' => $bundle,
@@ -461,7 +471,7 @@ function mcgreen_acres_custom_update_10010() {
 
   $tags_field_storage = \Drupal::entityTypeManager()->getStorage('field_storage_config')->load("{$entity_type}.field_tags");
   if (!$tags_field_storage) {
-    $tags_field_storage = \Drupal\field\Entity\FieldStorageConfig::create([
+    $tags_field_storage = FieldStorageConfig::create([
       'field_name' => 'field_tags',
       'entity_type' => $entity_type,
       'type' => 'entity_reference',
@@ -473,7 +483,7 @@ function mcgreen_acres_custom_update_10010() {
 
   $tags_field_config = \Drupal::entityTypeManager()->getStorage('field_config')->load("{$entity_type}.{$bundle}.field_tags");
   if (!$tags_field_config) {
-    \Drupal\field\Entity\FieldConfig::create([
+    FieldConfig::create([
       'field_name' => 'field_tags',
       'entity_type' => $entity_type,
       'bundle' => $bundle,

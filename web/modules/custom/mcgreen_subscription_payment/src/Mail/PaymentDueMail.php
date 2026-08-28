@@ -15,8 +15,19 @@ class PaymentDueMail implements PaymentDueMailInterface {
 
   use StringTranslationTrait;
 
+  /**
+   * The entity type manager.
+   */
   protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * The commerce mail handler.
+   */
   protected MailHandlerInterface $mailHandler;
+
+  /**
+   * The order total summary service.
+   */
   protected OrderTotalSummaryInterface $orderTotalSummary;
 
   public function __construct(EntityTypeManagerInterface $entity_type_manager, MailHandlerInterface $mail_handler, OrderTotalSummaryInterface $order_total_summary) {

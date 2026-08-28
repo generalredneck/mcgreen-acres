@@ -7,20 +7,34 @@ use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Receives and caches Juicer.io social feed markup posted by the client.
+ */
 class JuicerCaptureController extends ControllerBase {
 
+  /**
+   * The Juicer capture cache bin.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
   protected $cache;
 
   public function __construct(CacheBackendInterface $cache) {
     $this->cache = $cache;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create($container) {
     return new static(
       $container->get('cache.juicer_capture')
     );
   }
 
+  /**
+   * Stores posted Juicer feed markup in the cache.
+   */
   public function store(Request $request) {
     $content = $request->getContent();
     $data = json_decode($content, TRUE);

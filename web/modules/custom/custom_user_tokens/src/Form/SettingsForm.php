@@ -33,7 +33,7 @@ class SettingsForm extends ConfigFormBase {
     $form['conditional_display_pattern'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Conditional display pattern'),
-      '#description' => $this->t('Enter a pattern for the conditional display name. This can include tokens. If the result is empty, the user\'s email will be used instead. Available tokens: @tokens', [
+      '#description' => $this->t("Enter a pattern for the conditional display name. This can include tokens. If the result is empty, the user's email will be used instead. Available tokens: @tokens", [
         '@tokens' => '[user:name], [user:mail], [user:field_first_name], etc.',
       ]),
       '#default_value' => $config->get('conditional_display_pattern'),

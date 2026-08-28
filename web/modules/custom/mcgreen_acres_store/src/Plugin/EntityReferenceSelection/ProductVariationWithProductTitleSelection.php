@@ -8,8 +8,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\commerce_product\Plugin\EntityReferenceSelection\ProductVariationSelection;
 
 /**
- * Enables product variation selection by variation title, SKU, or product
- * title.
+ * Enables product variation selection by variation title, SKU, or title.
  *
  * Staff searching the "Add new item" autocomplete on an order naturally type
  * the product name (e.g. "egg"), not the variation title (e.g. "1 Dozen") or

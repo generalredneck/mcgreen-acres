@@ -2,7 +2,6 @@
 
 namespace Drupal\mcgreen_acres_store\Plugin\Commerce\CheckoutPane;
 
-use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_profile_pane\Plugin\Commerce\CheckoutPane\ProfileForm;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -22,7 +21,6 @@ class CustomProfileForm extends ProfileForm {
   /**
    * {@inheritdoc}
    */
-
   public function submitPaneForm(array &$pane_form, FormStateInterface $form_state, array &$complete_form) {
     // Get the profile entity from the form state.
     $profile = $form_state->getValue('profile_form:phone')['profile'];

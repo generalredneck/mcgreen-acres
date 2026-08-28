@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Install, update and uninstall functions for mcgreen_subscription_payment.
+ */
+
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
@@ -31,7 +36,7 @@ function mcgreen_subscription_payment_install() {
 }
 
 /**
- * Installs manual_payment_gateway on existing sites where hook_install already ran.
+ * Installs manual_payment_gateway on sites where hook_install already ran.
  */
 function mcgreen_subscription_payment_update_9001() {
   $schema = \Drupal::database()->schema();
@@ -39,7 +44,7 @@ function mcgreen_subscription_payment_update_9001() {
     return;
   }
 
-  $definition = \Drupal\Core\Field\BaseFieldDefinition::create('entity_reference')
+  $definition = BaseFieldDefinition::create('entity_reference')
     ->setLabel(t('Manual payment gateway'))
     ->setDescription(t('The manual payment gateway (e.g. cash, check) for this subscription.'))
     ->setSetting('target_type', 'commerce_payment_gateway')

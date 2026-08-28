@@ -22,11 +22,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class OrderReceiptSubscriber implements EventSubscriberInterface {
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * The order receipt mailer.
+   *
    * @var \Drupal\commerce_order\Mail\OrderReceiptMailInterface
    */
   protected $orderReceiptMail;
@@ -44,7 +48,7 @@ class OrderReceiptSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Sends an order receipt email on placement, unless "send on paid" takes over.
+   * Sends an order receipt email on placement, unless "send on paid" wins.
    */
   public function sendOrderReceipt(WorkflowTransitionEvent $event) {
     /** @var \Drupal\commerce_order\Entity\OrderInterface $order */

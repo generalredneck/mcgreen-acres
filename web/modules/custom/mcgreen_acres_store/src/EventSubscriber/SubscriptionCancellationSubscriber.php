@@ -15,7 +15,8 @@ class SubscriptionCancellationSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    // This subscribes to the 'update' operation on the 'commerce_subscription' entity type.
+    // This subscribes to the 'update' operation on the
+    // 'commerce_subscription' entity type.
     $events[RecurringEvents::SUBSCRIPTION_UPDATE][] = ['onSubscriptionCancel', 0];
     return $events;
   }

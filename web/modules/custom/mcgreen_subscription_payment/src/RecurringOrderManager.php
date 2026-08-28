@@ -29,6 +29,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class RecurringOrderManager extends BaseRecurringOrderManager {
 
   /**
+   * The event dispatcher.
+   *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
   protected $eventDispatcher;
@@ -193,8 +195,10 @@ class RecurringOrderManager extends BaseRecurringOrderManager {
    * Returns the manual payment gateway entity for the given subscriptions.
    *
    * @param \Drupal\commerce_recurring\Entity\SubscriptionInterface[] $subscriptions
+   *   The subscriptions to select a manual payment gateway for.
    *
    * @return \Drupal\commerce_payment\Entity\PaymentGatewayInterface|null
+   *   The manual payment gateway entity, or NULL if none was found.
    */
   protected function selectManualGateway(array $subscriptions) {
     $gateway_id = $this->selectManualGatewayId($subscriptions);
@@ -208,6 +212,7 @@ class RecurringOrderManager extends BaseRecurringOrderManager {
    * Returns the manual payment gateway ID for the given subscriptions, or NULL.
    *
    * @param \Drupal\commerce_recurring\Entity\SubscriptionInterface[] $subscriptions
+   *   The subscriptions to select a manual payment gateway ID for.
    */
   protected function selectManualGatewayId(array $subscriptions): ?string {
     foreach ($subscriptions as $subscription) {
