@@ -33,6 +33,11 @@ mcgreen_acres_store.orders:
   title: Orders
   class: Drupal\mcgreen_acres_store\Plugin\Menu\OrdersMenuLink
   weight: 2
+mcgreen_acres_store.newsletters:
+  menu_name: account
+  title: Newsletters
+  class: Drupal\mcgreen_acres_store\Plugin\Menu\NewslettersMenuLink
+  weight: 4
 mcgreen_acres_store.farmstand_settings:
   title: 'Farm Stand availability'
   description: 'Temporarily close the farm stand so all products are order-ahead only.'
