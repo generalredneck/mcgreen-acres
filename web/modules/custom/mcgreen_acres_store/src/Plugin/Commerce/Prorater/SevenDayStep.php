@@ -88,7 +88,8 @@ class SevenDayStep extends ProraterBase implements ContainerFactoryPluginInterfa
     $partial_period_start_date = $partial_period->getStartDate();
 
     // Handle a rollover schedule.
-    $billing_schedule = $order_item->getPurchasedEntity()->billing_schedule->entity;
+    /** @var \Drupal\commerce_recurring\Entity\BillingScheduleInterface $billing_schedule */
+    $billing_schedule = $order_item->getPurchasedEntity()->get('billing_schedule')->entity;
     if ($billing_schedule->getPluginId() == 'fixed_with_free_rollover') {
       // If the partial period start date falls outside the full period, then
       // this is a rollover.

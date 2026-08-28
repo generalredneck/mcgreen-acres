@@ -301,7 +301,10 @@ function mcgreen_acres_store_form_alter(&$form, FormStateInterface $form_state, 
     // Remove the "Cancel immediately" button for non-admin users if a
     // cancellation is already scheduled.
     if (isset($form['actions']['submit']['#value'])) {
-      $subscription = $form_state->getFormObject()->getEntity();
+      /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+      $form_object = $form_state->getFormObject();
+      /** @var \Drupal\commerce_recurring\Entity\SubscriptionInterface $subscription */
+      $subscription = $form_object->getEntity();
       if ($subscription->hasScheduledChange('state', 'canceled')) {
         if (!$is_admin) {
           unset($form['actions']['submit']);
@@ -335,17 +338,17 @@ function mcgreen_acres_store_entity_update(EntityInterface $entity) {
  */
 function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
   if ($entity->getEntityTypeId() === 'commerce_product_variation') {
-    /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntityTrackingManager $tracking_manager */
+    /** @var \Drupal\commerce_product\Entity\ProductVariationInterface $entity */
+    /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntityTrackingManager $search_api_tracking_manager */
     $search_api_tracking_manager = \Drupal::service('search_api.entity_datasource.tracking_manager');
+    /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
     $product = $entity->get('product_id')->entity;
     $search_api_tracking_manager->trackEntityChange($product);
     $indexes = $search_api_tracking_manager->getIndexesForEntity($product);
     foreach ($indexes as $index) {
-      if (!empty($indexes)) {
-        $index->trackItemsUpdated($product->getEntityTypeId(), [$product->id() . ':' . $product->language()->getId()]);
-        foreach ($index->getDatasourceIds() as $datasource_id) {
-          $index->indexItems(-1, $datasource_id);
-        }
+      $index->trackItemsUpdated($product->getEntityTypeId(), [$product->id() . ':' . $product->language()->getId()]);
+      foreach ($index->getDatasourceIds() as $datasource_id) {
+        $index->indexItems(-1, $datasource_id);
       }
     }
   }

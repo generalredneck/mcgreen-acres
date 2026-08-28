@@ -61,7 +61,7 @@ class NewsletterSubscribe extends CheckoutPaneBase {
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
-    $lists = mailchimp_get_lists();
+    $lists = \Drupal::service('mailchimp.api')->getAudiences();
 
     $options = [];
     foreach ($lists as $list) {

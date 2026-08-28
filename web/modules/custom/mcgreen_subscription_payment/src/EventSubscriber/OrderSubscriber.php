@@ -118,6 +118,7 @@ class OrderSubscriber extends BaseOrderSubscriber {
    * Returns the manual payment gateway entity from the order, or NULL.
    */
   protected function getManualGateway(OrderInterface $order) {
+    /** @var \Drupal\commerce_payment\Entity\PaymentGatewayInterface|null $gateway_entity */
     $gateway_entity = $order->get('payment_gateway')->entity;
     if ($gateway_entity && $gateway_entity->getPlugin() instanceof ManualPaymentGatewayInterface) {
       return $gateway_entity;

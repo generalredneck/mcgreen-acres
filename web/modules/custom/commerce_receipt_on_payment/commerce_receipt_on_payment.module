@@ -15,8 +15,10 @@ use Drupal\Core\Form\FormStateInterface;
  * type form, stored as a third-party setting on the order type config entity.
  */
 function commerce_receipt_on_payment_form_commerce_order_type_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
   /** @var \Drupal\commerce_order\Entity\OrderTypeInterface $order_type */
-  $order_type = $form_state->getFormObject()->getEntity();
+  $order_type = $form_object->getEntity();
 
   $send_receipt_on_paid = $order_type->getThirdPartySetting('commerce_receipt_on_payment', 'send_receipt_on_paid', FALSE);
 
@@ -50,6 +52,15 @@ function commerce_receipt_on_payment_form_commerce_order_type_form_alter(array &
 
 /**
  * Entity builder: saves the third-party setting on the order type.
+ *
+ * @param string $entity_type
+ *   The entity type ID.
+ * @param \Drupal\commerce_order\Entity\OrderTypeInterface $order_type
+ *   The order type config entity being built.
+ * @param array $form
+ *   The complete form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
  */
 function commerce_receipt_on_payment_order_type_builder($entity_type, EntityInterface $order_type, array &$form, FormStateInterface $form_state) {
   $order_type->setThirdPartySetting(

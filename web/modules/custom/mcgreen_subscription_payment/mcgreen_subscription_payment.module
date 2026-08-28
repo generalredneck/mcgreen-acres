@@ -71,6 +71,7 @@ function mcgreen_subscription_payment_form_alter(array &$form, FormStateInterfac
   $all_gateways = $gateway_storage->loadByProperties(['status' => TRUE]);
 
   $manual_ids = [];
+  /** @var \Drupal\commerce_payment\Entity\PaymentGatewayInterface $gateway */
   foreach ($all_gateways as $gateway) {
     if ($gateway->getPlugin() instanceof ManualPaymentGatewayInterface) {
       $manual_ids[$gateway->id()] = TRUE;

@@ -6,6 +6,7 @@
  */
 
 use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 
@@ -31,7 +32,7 @@ function mcgreen_order_payment_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_entity_operation().
  */
-function mcgreen_order_payment_entity_operation(EntityInterface $entity) {
+function mcgreen_order_payment_entity_operation(EntityInterface $entity, CacheableMetadata $cacheability) {
   if (!$entity instanceof OrderInterface) {
     return;
   }

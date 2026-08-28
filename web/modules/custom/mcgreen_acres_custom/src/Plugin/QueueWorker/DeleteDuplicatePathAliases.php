@@ -26,8 +26,8 @@ class DeleteDuplicatePathAliases extends QueueWorkerBase implements ContainerFac
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private LoggerChannelFactoryInterface $logger,
-    private EntityTypeManagerInterface $entityTypeManager,
+    protected LoggerChannelFactoryInterface $logger,
+    protected EntityTypeManagerInterface $entityTypeManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }

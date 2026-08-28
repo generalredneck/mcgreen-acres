@@ -24,6 +24,8 @@ class TimeoutAwareTransportFactoryManager implements TransportFactoryManagerInte
 
   /**
    * {@inheritdoc}
+   *
+   * @return \Symfony\Component\Mailer\Transport\TransportFactoryInterface[]
    */
   public function getFactories() {
     $factories = array_filter($this->inner->getFactories(), function ($factory) {

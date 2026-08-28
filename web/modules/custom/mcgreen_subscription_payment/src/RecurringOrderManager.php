@@ -137,7 +137,7 @@ class RecurringOrderManager extends BaseRecurringOrderManager {
     }
     foreach ($order_items as $order_item) {
       if ($order_item->isNew()) {
-        $order_item->order_id->entity = $order;
+        $order_item->get('order_id')->entity = $order;
       }
     }
   }

@@ -100,6 +100,7 @@ class EntityReferenceFieldViewFormatter extends EntityReferenceFormatterBase {
     $view_mode = $this->getSetting('view_mode');
     $elements = [];
 
+    /** @var \Drupal\Core\Entity\FieldableEntityInterface $entity */
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
       if ($entity->hasField($field_name)) {
         $elements[$delta] = $entity->get($field_name)->view($view_mode);

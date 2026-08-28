@@ -1,0 +1,16 @@
+parameters:
+  level: 2
+  paths:
+    - web/modules/custom
+  excludePaths:
+    - '*/tests/*'
+  ignoreErrors:
+    -
+      identifier: new.static
+    -
+      identifier: globalDrupalDependencyInjection.useDependencyInjection
+    -
+      # $entity->original is set dynamically by core (EntityStorageBase::save())
+      # before invoking update hooks; no interface declares it.
+      message: '#Access to an undefined property .*::\$original\.#'
+      identifier: property.notFound

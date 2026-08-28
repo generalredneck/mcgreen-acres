@@ -5,6 +5,7 @@
  * Surfaces the Simplenews subscriber history log in the admin UI.
  */
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -23,7 +24,7 @@ function mcgreen_acres_newsletter_history_help($route_name, RouteMatchInterface 
  *
  * Adds a "History" operation link to rows on /admin/people/simplenews.
  */
-function mcgreen_acres_newsletter_history_entity_operation(EntityInterface $entity): array {
+function mcgreen_acres_newsletter_history_entity_operation(EntityInterface $entity, CacheableMetadata $cacheability): array {
   if ($entity->getEntityTypeId() !== 'simplenews_subscriber' || $entity->isNew()) {
     return [];
   }

@@ -88,8 +88,10 @@ class OutOfStockFieldProcessor extends ProcessorPluginBase implements ContainerF
    */
   public function addFieldValues(ItemInterface $item) {
     if ($item->getDatasourceId() === 'entity:commerce_product') {
+      /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $original_object */
+      $original_object = $item->getOriginalObject();
       /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
-      $product = $item->getOriginalObject()->getEntity();
+      $product = $original_object->getEntity();
       $is_out_of_stock = FALSE;
       $variations = $product->getVariations();
       $out_of_stock_tracker = [];

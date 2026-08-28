@@ -94,7 +94,8 @@ function mcgreen_acres_custom_update_10002() {
 
     // Get the first customer profile.
     if ($user->hasField('customer_profiles') && !$user->get('customer_profiles')->isEmpty()) {
-      $profile = $user->get('customer_profiles')->first()->entity;
+      /** @var \Drupal\profile\Entity\ProfileInterface $profile */
+      $profile = $user->get('customer_profiles')->entity;
       if ($profile && $profile->hasField('field_phone')) {
         $profile->set('field_phone', $phone_value);
         $profile->save();
@@ -189,14 +190,16 @@ function mcgreen_acres_custom_update_10006() {
 
     // Get the customer profile.
     if ($user->hasField('customer_profiles') && !$user->get('customer_profiles')->isEmpty()) {
-      $customer_profile = $user->get('customer_profiles')->first()->entity;
+      /** @var \Drupal\profile\Entity\ProfileInterface $customer_profile */
+      $customer_profile = $user->get('customer_profiles')->entity;
       if ($customer_profile && $customer_profile->hasField('field_phone') && !$customer_profile->get('field_phone')->isEmpty()) {
         $phone_value = $customer_profile->get('field_phone')->value;
 
         // Get or create the phone profile.
         $phone_profile = NULL;
         if ($user->hasField('phone_profiles') && !$user->get('phone_profiles')->isEmpty()) {
-          $phone_profile = $user->get('phone_profiles')->first()->entity;
+          /** @var \Drupal\profile\Entity\ProfileInterface $phone_profile */
+          $phone_profile = $user->get('phone_profiles')->entity;
         }
         else {
           // Create a new phone profile.
@@ -248,7 +251,7 @@ function mcgreen_acres_custom_update_10007() {
     ->condition('state', 'active')
     ->execute();
   foreach ($subscription_ids as $subscription_id) {
-    /** @var \Drupal\commerce_recurring\Entity\CommerceSubscription $subscription */
+    /** @var \Drupal\commerce_recurring\Entity\SubscriptionInterface $subscription */
     $subscription = \Drupal::entityTypeManager()->getStorage('commerce_subscription')->load($subscription_id);
     if ($subscription) {
       $uid = $subscription->getOwnerId();
@@ -304,6 +307,7 @@ function mcgreen_acres_custom_update_10008() {
 
   $active_uids = [];
   $all_uids = [];
+  /** @var \Drupal\commerce_recurring\Entity\SubscriptionInterface $subscription */
   foreach ($subscription_storage->loadMultiple($subscription_ids) as $subscription) {
     $uid = $subscription->getOwnerId();
     $all_uids[$uid] = TRUE;
@@ -351,6 +355,7 @@ function _mcgreen_acres_custom_reconcile_product_subscription_newsletter($variat
 
   $active_uids = [];
   $all_uids = [];
+  /** @var \Drupal\commerce_recurring\Entity\SubscriptionInterface $subscription */
   foreach ($subscription_storage->loadMultiple($subscription_ids) as $subscription) {
     $uid = $subscription->getOwnerId();
     $all_uids[$uid] = TRUE;

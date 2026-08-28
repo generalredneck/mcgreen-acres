@@ -6,6 +6,7 @@ use Drupal\Core\Site\Settings;
 use Symfony\Component\Mailer\Transport\AbstractTransportFactory;
 use Symfony\Component\Mailer\Transport\Dsn;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 
@@ -35,9 +36,11 @@ final class TimeoutAwareEsmtpTransportFactory extends AbstractTransportFactory {
     $inner = new EsmtpTransportFactory($this->dispatcher, $this->client, $this->logger);
     $transport = $inner->create($dsn);
 
-    $stream = $transport->getStream();
-    if ($stream instanceof SocketStream) {
-      $stream->setTimeout((float) Settings::get('mailer_smtp_timeout', self::DEFAULT_TIMEOUT));
+    if ($transport instanceof SmtpTransport) {
+      $stream = $transport->getStream();
+      if ($stream instanceof SocketStream) {
+        $stream->setTimeout((float) Settings::get('mailer_smtp_timeout', self::DEFAULT_TIMEOUT));
+      }
     }
 
     return $transport;

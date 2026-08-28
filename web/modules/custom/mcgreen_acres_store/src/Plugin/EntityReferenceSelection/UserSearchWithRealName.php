@@ -99,6 +99,7 @@ class UserSearchWithRealName extends UserSearch {
 
     $options = [];
     $entities = $this->entityTypeManager->getStorage($target_type)->loadMultiple($result);
+    /** @var \Drupal\user\UserInterface $entity */
     foreach ($entities as $entity_id => $entity) {
       $bundle = $entity->bundle();
       $label = $entity->getAccountName() . ' <' . $entity->getEmail() . '>';
