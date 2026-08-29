@@ -15,60 +15,110 @@ no rate limit. It exposes the same tokens as the ipapi.co provider ([city],
 is empty as GeoLite2 lacks the alpha-3 code), so switching provider on the
 settings form is a drop-in change.
 
-The database path is read solely from this module's own configuration
-(webform_ip_geo_geoip2.settings:database), configurable at
-/admin/config/services/webform_ip_geo/geoip2. No other modules are involved.
+The sub-module adds a "MaxMind database path" field to the existing Webform IP
+Geo settings form (admin/config/services/webform_ip_geo) via hook_form_alter,
+shown when the geoip2 provider is selected. The value is stored in the
+sub-module's own config (webform_ip_geo_geoip2.settings:database). No routes,
+menu links or other modules are involved.
 
 diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.info.yml b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.info.yml
 new file mode 100644
-index 000000000..b52df8bef
+index 0000000..17bb514
 --- /dev/null
 +++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.info.yml
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,7 @@
 +name: 'Webform IP Geo: MaxMind GeoIP2'
 +type: module
 +description: 'Local MaxMind GeoIP2/GeoLite2 database provider for Webform IP Geo. Not subject to remote API rate limits.'
 +core_version_requirement: ^10.1 || ^11
 +package: 'Webform'
-+configure: webform_ip_geo_geoip2.settings_form
 +dependencies:
 +  - webform_ip_geo:webform_ip_geo
-diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.routing.yml b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.routing.yml
+diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.module b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.module
 new file mode 100644
-index 000000000..2db166026
+index 0000000..0c08aad
 --- /dev/null
-+++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.routing.yml
-@@ -0,0 +1,9 @@
-+webform_ip_geo_geoip2.settings_form:
-+  path: '/admin/config/services/webform_ip_geo/geoip2'
-+  defaults:
-+    _form: '\Drupal\webform_ip_geo_geoip2\Form\SettingsForm'
-+    _title: 'Webform IP Geo: MaxMind GeoIP2'
-+  requirements:
-+    _permission: 'access webform_ip_geo configuration'
-+  options:
-+    _admin_route: TRUE
-diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.links.menu.yml b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.links.menu.yml
-new file mode 100644
-index 000000000..0a50b1ba1
---- /dev/null
-+++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.links.menu.yml
-@@ -0,0 +1,5 @@
-+webform_ip_geo_geoip2.settings_form:
-+  title: 'Webform IP Geo: MaxMind GeoIP2'
-+  route_name: webform_ip_geo_geoip2.settings_form
-+  description: 'Configure the local MaxMind GeoIP2/GeoLite2 database path.'
-+  parent: webform_ip_geo.settings_form
++++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.module
+@@ -0,0 +1,69 @@
++<?php
++
++/**
++ * @file
++ * Local MaxMind GeoIP2 database provider for Webform IP Geo.
++ */
++
++use Drupal\Core\Form\FormStateInterface;
++
++/**
++ * Implements hook_form_FORM_ID_alter() for the Webform IP Geo settings form.
++ *
++ * Adds the MaxMind database path field directly to the existing settings form
++ * (admin/config/services/webform_ip_geo) rather than a separate page.
++ */
++function webform_ip_geo_geoip2_form_settings_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
++  // The base form's ID ("settings_form") is generic; make sure this is really
++  // the Webform IP Geo settings form before touching it.
++  if (\Drupal::routeMatch()->getRouteName() !== 'webform_ip_geo.settings_form') {
++    return;
++  }
++
++  $form['geoip2'] = [
++    '#type' => 'fieldset',
++    '#title' => t('MaxMind GeoIP2 (local database)'),
++    '#states' => [
++      'visible' => [
++        ':input[name="api_provider"]' => ['value' => 'geoip2'],
++      ],
++    ],
++  ];
++
++  if (!class_exists('GeoIp2\\Database\\Reader')) {
++    $form['geoip2']['#description'] = t('The geoip2/geoip2 PHP library is not installed. Run <code>composer require geoip2/geoip2</code>.');
++  }
++
++  $form['geoip2']['geoip2_database'] = [
++    '#type' => 'textfield',
++    '#title' => t('MaxMind database path'),
++    '#default_value' => \Drupal::config('webform_ip_geo_geoip2.settings')->get('database'),
++    '#description' => t('Absolute path, or a path relative to the Drupal root, to a MaxMind City database file (e.g. GeoLite2-City.mmdb or GeoIP2-City.mmdb). Download from <a href=":url" target="_blank">maxmind.com</a>.', [':url' => 'https://www.maxmind.com/']),
++  ];
++
++  // ConfigFormBase has already registered '::submitForm' on $form['#submit'] by
++  // the time form alters run, so appending here keeps the base save intact.
++  $form['#submit'][] = 'webform_ip_geo_geoip2_settings_form_submit';
++}
++
++/**
++ * Submit callback: persist the MaxMind database path.
++ */
++function webform_ip_geo_geoip2_settings_form_submit(array &$form, FormStateInterface $form_state) {
++  $path = trim((string) $form_state->getValue('geoip2_database'));
++
++  if ($path !== '') {
++    $resolved = $path;
++    if ($path[0] !== '/' && !preg_match('#^[a-zA-Z]:[\\\\/]#', $path)) {
++      $resolved = DRUPAL_ROOT . '/' . $path;
++    }
++    if (!is_file($resolved)) {
++      \Drupal::messenger()->addWarning(t('No file was found at %path. IP lookups will return no data until the database exists.', ['%path' => $resolved]));
++    }
++  }
++
++  \Drupal::configFactory()
++    ->getEditable('webform_ip_geo_geoip2.settings')
++    ->set('database', $path)
++    ->save();
++}
 diff --git a/modules/webform_ip_geo_geoip2/config/install/webform_ip_geo_geoip2.settings.yml b/modules/webform_ip_geo_geoip2/config/install/webform_ip_geo_geoip2.settings.yml
 new file mode 100644
-index 000000000..d87728607
+index 0000000..ba80d95
 --- /dev/null
 +++ b/modules/webform_ip_geo_geoip2/config/install/webform_ip_geo_geoip2.settings.yml
 @@ -0,0 +1 @@
-+database: '../private/geoip2/GeoLite2-City.mmdb'
++database: ''
 diff --git a/modules/webform_ip_geo_geoip2/config/schema/webform_ip_geo_geoip2.schema.yml b/modules/webform_ip_geo_geoip2/config/schema/webform_ip_geo_geoip2.schema.yml
 new file mode 100644
-index 000000000..e16aec544
+index 0000000..e16aec5
 --- /dev/null
 +++ b/modules/webform_ip_geo_geoip2/config/schema/webform_ip_geo_geoip2.schema.yml
 @@ -0,0 +1,7 @@
@@ -79,90 +129,9 @@ index 000000000..e16aec544
 +    database:
 +      type: string
 +      label: 'Path to the MaxMind GeoIP2/GeoLite2 City database (.mmdb)'
-diff --git a/modules/webform_ip_geo_geoip2/src/Form/SettingsForm.php b/modules/webform_ip_geo_geoip2/src/Form/SettingsForm.php
-new file mode 100644
-index 000000000..49c741409
---- /dev/null
-+++ b/modules/webform_ip_geo_geoip2/src/Form/SettingsForm.php
-@@ -0,0 +1,75 @@
-+<?php
-+
-+namespace Drupal\webform_ip_geo_geoip2\Form;
-+
-+use Drupal\Core\Form\ConfigFormBase;
-+use Drupal\Core\Form\FormStateInterface;
-+
-+/**
-+ * Configure the local MaxMind GeoIP2 database path.
-+ */
-+class SettingsForm extends ConfigFormBase {
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  protected function getEditableConfigNames() {
-+    return ['webform_ip_geo_geoip2.settings'];
-+  }
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function getFormId() {
-+    return 'webform_ip_geo_geoip2_settings_form';
-+  }
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function buildForm(array $form, FormStateInterface $form_state) {
-+    $config = $this->config('webform_ip_geo_geoip2.settings');
-+
-+    if (!class_exists('GeoIp2\\Database\\Reader')) {
-+      $this->messenger()->addError($this->t('The geoip2/geoip2 PHP library is not installed. Run <code>composer require geoip2/geoip2</code>.'));
-+    }
-+
-+    $form['database'] = [
-+      '#type' => 'textfield',
-+      '#title' => $this->t('MaxMind database path'),
-+      '#required' => TRUE,
-+      '#default_value' => $config->get('database'),
-+      '#description' => $this->t('Absolute path, or a path relative to the Drupal root, to a MaxMind City database file (e.g. GeoLite2-City.mmdb or GeoIP2-City.mmdb). Download from <a href="https://www.maxmind.com/" target="_blank">maxmind.com</a>.'),
-+    ];
-+
-+    return parent::buildForm($form, $form_state);
-+  }
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function validateForm(array &$form, FormStateInterface $form_state) {
-+    $path = trim((string) $form_state->getValue('database'));
-+    if ($path !== '') {
-+      $resolved = $path;
-+      if ($path[0] !== '/' && !preg_match('#^[a-zA-Z]:[\\\\/]#', $path)) {
-+        $resolved = DRUPAL_ROOT . '/' . $path;
-+      }
-+      if (!is_file($resolved)) {
-+        $form_state->setErrorByName('database', $this->t('No file was found at %path.', ['%path' => $resolved]));
-+      }
-+    }
-+    parent::validateForm($form, $form_state);
-+  }
-+
-+  /**
-+   * {@inheritdoc}
-+   */
-+  public function submitForm(array &$form, FormStateInterface $form_state) {
-+    $this->config('webform_ip_geo_geoip2.settings')
-+      ->set('database', trim((string) $form_state->getValue('database')))
-+      ->save();
-+    parent::submitForm($form, $form_state);
-+  }
-+
-+}
 diff --git a/modules/webform_ip_geo_geoip2/src/Plugin/WebformIpGeoPlugin/GeoIp2Local.php b/modules/webform_ip_geo_geoip2/src/Plugin/WebformIpGeoPlugin/GeoIp2Local.php
 new file mode 100644
-index 000000000..db0c815c3
+index 0000000..89a023e
 --- /dev/null
 +++ b/modules/webform_ip_geo_geoip2/src/Plugin/WebformIpGeoPlugin/GeoIp2Local.php
 @@ -0,0 +1,109 @@
@@ -183,8 +152,8 @@ index 000000000..db0c815c3
 + * subject to any remote API rate limiting (HTTP 429 "Too Many Requests").
 + *
 + * The database path is read from this module's own configuration
-+ * (webform_ip_geo_geoip2.settings:database); there are no cross-module
-+ * dependencies or fallbacks.
++ * (webform_ip_geo_geoip2.settings:database), set on the Webform IP Geo settings
++ * form. There are no cross-module dependencies or fallbacks.
 + *
 + * @WebformIpGeoPlugin(
 + *   id="geoip2",
