@@ -217,6 +217,7 @@ module:
   webform: 0
   webform_attachment: 0
   webform_ip_geo: 0
+  webform_ip_geo_geoip2: 0
   webform_ip_geo_ipapi_co: 0
   webform_mailchimp: 0
   webform_simplenews_handler: 0

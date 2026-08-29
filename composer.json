@@ -334,7 +334,8 @@
             },
             "drupal/webform_ip_geo": {
                 "php 8.4": "patches/webform_ip_geo-3542116-3-MR5.patch",
-                "drupal 11": "patches/webform_ip_geo-3435648-5-mr4.patch"
+                "drupal 11": "patches/webform_ip_geo-3435648-5-mr4.patch",
+                "Local MaxMind GeoIP2 provider to avoid ipapi.co 429 rate limiting (#3556190)": "patches/webform_ip_geo-3556190-geoip2-local-provider.patch"
             },
             "drupal/webform_mailchimp": {
                 "Add Tags": "https://www.drupal.org/files/issues/2023-12-06/add_configurable_tags-3406527-1.patch"

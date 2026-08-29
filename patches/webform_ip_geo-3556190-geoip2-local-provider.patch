@@ -1,0 +1,277 @@
+Add a local MaxMind GeoIP2 provider plugin (no remote rate limiting)
+
+Issue: https://www.drupal.org/project/webform_ip_geo/issues/3556190
+
+The bundled ipapi.co provider performs a remote HTTP lookup for every webform
+submission. On even modestly trafficked sites ipapi.co returns HTTP 429
+"Too Many Requests", surfacing as an uncaught
+GuzzleHttp\Exception\ClientException in the log.
+
+This adds a webform_ip_geo_geoip2 sub-module providing a "geoip2" provider
+plugin backed by an on-disk MaxMind GeoIP2 / GeoLite2 City database (*.mmdb).
+Lookups run locally via the geoip2/geoip2 PHP library, so there is no API and
+no rate limit. It exposes the same tokens as the ipapi.co provider ([city],
+[region], [region_code], [country_code], [country_name]; [country_code_iso3]
+is empty as GeoLite2 lacks the alpha-3 code), so switching provider on the
+settings form is a drop-in change.
+
+The database path is read solely from this module's own configuration
+(webform_ip_geo_geoip2.settings:database), configurable at
+/admin/config/services/webform_ip_geo/geoip2. No other modules are involved.
+
+diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.info.yml b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.info.yml
+new file mode 100644
+index 000000000..b52df8bef
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.info.yml
+@@ -0,0 +1,8 @@
++name: 'Webform IP Geo: MaxMind GeoIP2'
++type: module
++description: 'Local MaxMind GeoIP2/GeoLite2 database provider for Webform IP Geo. Not subject to remote API rate limits.'
++core_version_requirement: ^10.1 || ^11
++package: 'Webform'
++configure: webform_ip_geo_geoip2.settings_form
++dependencies:
++  - webform_ip_geo:webform_ip_geo
+diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.routing.yml b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.routing.yml
+new file mode 100644
+index 000000000..2db166026
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.routing.yml
+@@ -0,0 +1,9 @@
++webform_ip_geo_geoip2.settings_form:
++  path: '/admin/config/services/webform_ip_geo/geoip2'
++  defaults:
++    _form: '\Drupal\webform_ip_geo_geoip2\Form\SettingsForm'
++    _title: 'Webform IP Geo: MaxMind GeoIP2'
++  requirements:
++    _permission: 'access webform_ip_geo configuration'
++  options:
++    _admin_route: TRUE
+diff --git a/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.links.menu.yml b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.links.menu.yml
+new file mode 100644
+index 000000000..0a50b1ba1
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/webform_ip_geo_geoip2.links.menu.yml
+@@ -0,0 +1,5 @@
++webform_ip_geo_geoip2.settings_form:
++  title: 'Webform IP Geo: MaxMind GeoIP2'
++  route_name: webform_ip_geo_geoip2.settings_form
++  description: 'Configure the local MaxMind GeoIP2/GeoLite2 database path.'
++  parent: webform_ip_geo.settings_form
+diff --git a/modules/webform_ip_geo_geoip2/config/install/webform_ip_geo_geoip2.settings.yml b/modules/webform_ip_geo_geoip2/config/install/webform_ip_geo_geoip2.settings.yml
+new file mode 100644
+index 000000000..d87728607
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/config/install/webform_ip_geo_geoip2.settings.yml
+@@ -0,0 +1 @@
++database: '../private/geoip2/GeoLite2-City.mmdb'
+diff --git a/modules/webform_ip_geo_geoip2/config/schema/webform_ip_geo_geoip2.schema.yml b/modules/webform_ip_geo_geoip2/config/schema/webform_ip_geo_geoip2.schema.yml
+new file mode 100644
+index 000000000..e16aec544
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/config/schema/webform_ip_geo_geoip2.schema.yml
+@@ -0,0 +1,7 @@
++webform_ip_geo_geoip2.settings:
++  type: config_object
++  label: 'Webform IP Geo: MaxMind GeoIP2 settings'
++  mapping:
++    database:
++      type: string
++      label: 'Path to the MaxMind GeoIP2/GeoLite2 City database (.mmdb)'
+diff --git a/modules/webform_ip_geo_geoip2/src/Form/SettingsForm.php b/modules/webform_ip_geo_geoip2/src/Form/SettingsForm.php
+new file mode 100644
+index 000000000..49c741409
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/src/Form/SettingsForm.php
+@@ -0,0 +1,75 @@
++<?php
++
++namespace Drupal\webform_ip_geo_geoip2\Form;
++
++use Drupal\Core\Form\ConfigFormBase;
++use Drupal\Core\Form\FormStateInterface;
++
++/**
++ * Configure the local MaxMind GeoIP2 database path.
++ */
++class SettingsForm extends ConfigFormBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function getEditableConfigNames() {
++    return ['webform_ip_geo_geoip2.settings'];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getFormId() {
++    return 'webform_ip_geo_geoip2_settings_form';
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function buildForm(array $form, FormStateInterface $form_state) {
++    $config = $this->config('webform_ip_geo_geoip2.settings');
++
++    if (!class_exists('GeoIp2\\Database\\Reader')) {
++      $this->messenger()->addError($this->t('The geoip2/geoip2 PHP library is not installed. Run <code>composer require geoip2/geoip2</code>.'));
++    }
++
++    $form['database'] = [
++      '#type' => 'textfield',
++      '#title' => $this->t('MaxMind database path'),
++      '#required' => TRUE,
++      '#default_value' => $config->get('database'),
++      '#description' => $this->t('Absolute path, or a path relative to the Drupal root, to a MaxMind City database file (e.g. GeoLite2-City.mmdb or GeoIP2-City.mmdb). Download from <a href="https://www.maxmind.com/" target="_blank">maxmind.com</a>.'),
++    ];
++
++    return parent::buildForm($form, $form_state);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function validateForm(array &$form, FormStateInterface $form_state) {
++    $path = trim((string) $form_state->getValue('database'));
++    if ($path !== '') {
++      $resolved = $path;
++      if ($path[0] !== '/' && !preg_match('#^[a-zA-Z]:[\\\\/]#', $path)) {
++        $resolved = DRUPAL_ROOT . '/' . $path;
++      }
++      if (!is_file($resolved)) {
++        $form_state->setErrorByName('database', $this->t('No file was found at %path.', ['%path' => $resolved]));
++      }
++    }
++    parent::validateForm($form, $form_state);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function submitForm(array &$form, FormStateInterface $form_state) {
++    $this->config('webform_ip_geo_geoip2.settings')
++      ->set('database', trim((string) $form_state->getValue('database')))
++      ->save();
++    parent::submitForm($form, $form_state);
++  }
++
++}
+diff --git a/modules/webform_ip_geo_geoip2/src/Plugin/WebformIpGeoPlugin/GeoIp2Local.php b/modules/webform_ip_geo_geoip2/src/Plugin/WebformIpGeoPlugin/GeoIp2Local.php
+new file mode 100644
+index 000000000..db0c815c3
+--- /dev/null
++++ b/modules/webform_ip_geo_geoip2/src/Plugin/WebformIpGeoPlugin/GeoIp2Local.php
+@@ -0,0 +1,109 @@
++<?php
++
++namespace Drupal\webform_ip_geo_geoip2\Plugin\WebformIpGeoPlugin;
++
++use Drupal\Component\Utility\DeprecationHelper;
++use Drupal\Core\Utility\Error;
++use Drupal\webform_ip_geo\Plugin\WebformIpGeoPluginBase;
++use GeoIp2\Database\Reader;
++
++/**
++ * Provider plugin backed by a local MaxMind GeoIP2 / GeoLite2 database.
++ *
++ * Unlike the ipapi.co provider this performs the lookup against an on-disk
++ * MaxMind binary database (*.mmdb) via the geoip2/geoip2 library, so it is not
++ * subject to any remote API rate limiting (HTTP 429 "Too Many Requests").
++ *
++ * The database path is read from this module's own configuration
++ * (webform_ip_geo_geoip2.settings:database); there are no cross-module
++ * dependencies or fallbacks.
++ *
++ * @WebformIpGeoPlugin(
++ *   id="geoip2",
++ *   label="MaxMind GeoIP2 (local database)"
++ * )
++ */
++class GeoIp2Local extends WebformIpGeoPluginBase {
++
++  /**
++   * {@inheritdoc}
++   *
++   * Not a URL: the base class hands whatever this returns straight to
++   * makeProviderCall(), so it is used as the resolved database file path.
++   */
++  public function getProviderUrl() {
++    return $this->resolveDatabasePath();
++  }
++
++  /**
++   * {@inheritdoc}
++   *
++   * @noinspection PhpComposerExtensionStubsInspection
++   */
++  public function makeProviderCall($url, $ip) {
++    if (empty($url) || !is_file($url) || !class_exists(Reader::class) || empty($ip)) {
++      return [];
++    }
++
++    try {
++      $reader = new Reader($url);
++      $record = $reader->city($ip);
++    }
++    catch (\Throwable $exception) {
++      // AddressNotFoundException (private/reserved IPs, common on local dev),
++      // InvalidDatabaseException (missing/corrupt file) and friends must never
++      // fatal a webform submission.
++      DeprecationHelper::backwardsCompatibleCall(\Drupal::VERSION, '10.1.0',
++        fn() => Error::logException(\Drupal::logger('webform_ip_geo'), $exception),
++        fn() => watchdog_exception('webform_ip_geo', $exception));
++      return [];
++    }
++
++    $subdivision = $record->mostSpecificSubdivision;
++    return [
++      'city' => $record->city->name ?? '',
++      'region' => $subdivision->name ?? '',
++      'region_code' => $subdivision->isoCode ?? '',
++      'country_code' => $record->country->isoCode ?? '',
++      // GeoLite2 does not carry the ISO-3166 alpha-3 code.
++      'country_code_iso3' => '',
++      'country_name' => $record->country->name ?? '',
++    ];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function mapProviderData(array $apiResponse) {
++    return [
++      '[city]' => $apiResponse['city'] ?? '',
++      '[region]' => $apiResponse['region'] ?? '',
++      '[region_code]' => $apiResponse['region_code'] ?? '',
++      '[country_code]' => $apiResponse['country_code'] ?? '',
++      '[country_code_iso3]' => $apiResponse['country_code_iso3'] ?? '',
++      '[country_name]' => $apiResponse['country_name'] ?? '',
++    ];
++  }
++
++  /**
++   * Resolves the absolute path to the configured MaxMind City database file.
++   *
++   * @return string
++   *   The resolved path. May not exist; callers must check.
++   */
++  protected function resolveDatabasePath() {
++    $path = trim((string) \Drupal::config('webform_ip_geo_geoip2.settings')->get('database'));
++    if ($path === '') {
++      return '';
++    }
++
++    // Resolve paths relative to the Drupal root.
++    if ($path[0] !== '/' && !preg_match('#^[a-zA-Z]:[\\\\/]#', $path)) {
++      $path = DRUPAL_ROOT . '/' . $path;
++    }
++
++    $real = realpath($path);
++    return $real !== FALSE ? $real : $path;
++  }
++
++}
