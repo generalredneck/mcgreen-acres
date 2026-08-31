@@ -1,0 +1,4 @@
+services:
+  simplenews_stats_unsubscribe.campaign_hash:
+    class: Drupal\simplenews_stats_unsubscribe\CampaignHash
+    arguments: ['@private_key']

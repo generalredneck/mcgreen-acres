@@ -190,6 +190,7 @@ module:
   simple_block: 0
   simplenews: 0
   simplenews_stats: 0
+  simplenews_stats_unsubscribe: 0
   state_machine: 0
   symfony_mailer: 0
   symfony_mailer_queue: 0

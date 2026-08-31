@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file
+ * Attributes confirmed newsletter unsubscribes to the campaign that
+ * prompted them, and logs them into simplenews_stats.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Markup;
+use Drupal\simplenews\SubscriberInterface;
+
+/**
+ * Implements hook_tokens_alter().
+ *
+ * Appends a signed campaign-attribution query string to the
+ * [simplenews-subscriber:unsubscribe-url] token so a later unsubscribe can
+ * be traced back to the newsletter issue that prompted it. Simplenews's
+ * own unsubscribe hash is bound only to the subscriber + action, so the
+ * same link is reused across every issue; this rides alongside it rather
+ * than replacing it.
+ */
+function simplenews_stats_unsubscribe_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
+  if ($context['type'] !== 'simplenews-subscriber' || empty($context['tokens']['unsubscribe-url'])) {
+    return;
+  }
+
+  $original = $context['tokens']['unsubscribe-url'];
+  if (empty($replacements[$original])) {
+    return;
+  }
+
+  /** @var \Drupal\simplenews\SubscriberInterface|null $subscriber */
+  $subscriber = $context['data']['simplenews_subscriber'] ?? NULL;
+  if (!$subscriber instanceof SubscriberInterface) {
+    return;
+  }
+
+  // The campaign entity (e.g. the node being mailed) is keyed by its own
+  // entity type alongside 'newsletter' and 'simplenews_subscriber' - see
+  // \Drupal\simplenews\Mail\MailEntity::getTokenContext().
+  $entity = NULL;
+  foreach ($context['data'] as $key => $value) {
+    if (in_array($key, ['newsletter', 'simplenews_subscriber'], TRUE)) {
+      continue;
+    }
+    if ($value instanceof ContentEntityInterface) {
+      $entity = $value;
+      break;
+    }
+  }
+  if (!$entity) {
+    return;
+  }
+
+  /** @var \Drupal\simplenews_stats_unsubscribe\CampaignHash $campaign_hash */
+  $campaign_hash = \Drupal::service('simplenews_stats_unsubscribe.campaign_hash');
+  $hash = $campaign_hash->generate($subscriber->getMail(), $entity->getEntityTypeId(), (string) $entity->id());
+
+  $separator = str_contains($replacements[$original], '?') ? '&' : '?';
+  $url = $replacements[$original] . $separator . http_build_query([
+    'campaign_type' => $entity->getEntityTypeId(),
+    'campaign_id' => $entity->id(),
+    'campaign_hash' => $hash,
+  ]);
+
+  // Token::doReplace() HTML-escapes any plain-string replacement (turning
+  // '&' into '&amp;' and corrupting the query string) unless it already
+  // implements MarkupInterface. The base unsubscribe URL never contained
+  // an '&' before, so this was always happening invisibly.
+  $replacements[$original] = Markup::create($url);
+
+  // The link now carries per-subscriber, per-campaign data.
+  $bubbleable_metadata->setCacheMaxAge(0);
+}
+
+/**
+ * Implements hook_simplenews_unsubscribe().
+ *
+ * Fires only once Drupal has actually confirmed and saved the unsubscribe.
+ * The confirm form (\Drupal\simplenews\Form\ConfirmRemovalForm) submits
+ * back to the original unsubscribe link's URL, so our campaign_* query
+ * parameters are still present on the request here.
+ */
+function simplenews_stats_unsubscribe_simplenews_unsubscribe(SubscriberInterface $subscriber, string $newsletter_id) {
+  if (!\Drupal::moduleHandler()->moduleExists('simplenews_stats')) {
+    return;
+  }
+
+  $query = \Drupal::request()->query;
+  $type = $query->get('campaign_type');
+  $id = $query->get('campaign_id');
+  $hash = $query->get('campaign_hash');
+
+  if (!$type || !$id || !$hash) {
+    // Some mail clients follow the raw List-Unsubscribe header rather than
+    // the HTML body link, and this site's mail pipeline HTML-entity-escapes
+    // that header value ('&' becomes '&amp;'), which breaks Symfony's query
+    // parsing since only a literal '&' delimits parameters. Fall back to a
+    // decoded reparse of the raw query string before giving up.
+    parse_str(html_entity_decode((string) \Drupal::request()->getQueryString()), $decoded);
+    $type = $decoded['campaign_type'] ?? NULL;
+    $id = $decoded['campaign_id'] ?? NULL;
+    $hash = $decoded['campaign_hash'] ?? NULL;
+  }
+  if (!$type || !$id || !$hash) {
+    return;
+  }
+
+  /** @var \Drupal\simplenews_stats_unsubscribe\CampaignHash $campaign_hash */
+  $campaign_hash = \Drupal::service('simplenews_stats_unsubscribe.campaign_hash');
+  if (!$campaign_hash->isValid($subscriber->getMail(), $type, $id, $hash)) {
+    return;
+  }
+
+  \Drupal::entityTypeManager()->getStorage('simplenews_stats_item')->create([
+    'uid' => $subscriber->getUserId(),
+    'snid' => $subscriber->id(),
+    'email' => $subscriber->getMail(),
+    'title' => 'unsubscribe',
+    'entity_type' => $type,
+    'entity_id' => $id,
+    'route_path' => NULL,
+    'created' => \Drupal::time()->getRequestTime(),
+  ])->save();
+}

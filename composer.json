@@ -323,7 +323,8 @@
             },
             "drupal/simplenews_stats": {
                 "#3268515: Allow Capturing the device type": "patches/simplenews_stats-Allow_capturing_the_device_type-MR23-3268515-223907ef.patch",
-                "#3273499: Add 'sent' action to stats": "patches/simplenews_stats-3273499-stats_action_sent-3-mr25.patch"
+                "#3273499: Add 'sent' action to stats": "patches/simplenews_stats-3273499-stats_action_sent-3-mr25.patch",
+                "Add 'unsubscribe' action to stats view filter and node detail page/chart (local, pending upstream feature request for a generic hook-based extension point)": "patches/simplenews_stats-add_unsubscribe_action-local.patch"
             },
             "drupal/user_csv_import": {
                 "drupal 11": "https://www.drupal.org/files/issues/2025-10-15/user_csv_import_D11.patch"

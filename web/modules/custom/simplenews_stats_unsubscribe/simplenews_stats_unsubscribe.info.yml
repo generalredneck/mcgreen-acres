@@ -1,0 +1,8 @@
+name: 'Simplenews Stats Unsubscribe'
+type: module
+description: 'Attributes confirmed newsletter unsubscribes to the campaign that prompted them, and logs them as simplenews_stats items.'
+package: Simplenews
+core_version_requirement: ^10 || ^11
+dependencies:
+  - simplenews:simplenews
+  - simplenews_stats:simplenews_stats
