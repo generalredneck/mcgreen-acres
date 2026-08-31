@@ -1,6 +1,6 @@
 diff --git a/config/optional/views.view.simplenews_subscriber_history.yml b/config/optional/views.view.simplenews_subscriber_history.yml
 new file mode 100644
-index 0000000..22566b6
+index 0000000000000000000000000000000000000000..22566b61f9c9d2ba5bd7f7c22a9517f10fc3a5da
 --- /dev/null
 +++ b/config/optional/views.view.simplenews_subscriber_history.yml
 @@ -0,0 +1,587 @@
@@ -592,7 +592,7 @@ index 0000000..22566b6
 +      tags: {  }
 +
 diff --git a/simplenews.install b/simplenews.install
-index c8c2907..0381b6f 100644
+index c8c2907f216bc86c1a734b4b41416b129cd7400d..0381b6f54290741046621a3824e6380c3f22d9a4 100644
 --- a/simplenews.install
 +++ b/simplenews.install
 @@ -17,6 +17,7 @@ use Drupal\simplenews\Entity\Newsletter;
@@ -639,7 +639,7 @@ index c8c2907..0381b6f 100644
 +  return (string) t('Installed the subscriber history GUI at /admin/people/simplenews/history.');
 +}
 diff --git a/simplenews.links.task.yml b/simplenews.links.task.yml
-index 499f8e9..7a6db91 100644
+index 499f8e9bd67e0b15da4d462bbbe81f288df54e8b..7a6db91f32d50dec6fbedc7b31559f47f8d20217 100644
 --- a/simplenews.links.task.yml
 +++ b/simplenews.links.task.yml
 @@ -85,3 +85,10 @@ simplenews.subscriber_export:
@@ -654,7 +654,7 @@ index 499f8e9..7a6db91 100644
 +  parent_id: entity.simplenews_subscriber.collection
 +  weight: 20
 diff --git a/simplenews.routing.yml b/simplenews.routing.yml
-index 63b0e9d..6c28a5b 100644
+index 63b0e9d63f3f3e75ffca3104e39ad211408e4883..6c28a5b184c994c2562fc5015872cfbeacc0d88a 100644
 --- a/simplenews.routing.yml
 +++ b/simplenews.routing.yml
 @@ -135,6 +135,14 @@ simplenews.subscriber_export:
@@ -673,7 +673,7 @@ index 63b0e9d..6c28a5b 100644
    path: '/user/{user}/simplenews'
    defaults:
 diff --git a/src/Entity/SubscriberHistory.php b/src/Entity/SubscriberHistory.php
-index c183447..b0fb35c 100644
+index c183447148f884d620ad1ff49a5d9bfe66402bbe..b0fb35cdeb46fe1566db7ebe02f542e0a328cfea 100644
 --- a/src/Entity/SubscriberHistory.php
 +++ b/src/Entity/SubscriberHistory.php
 @@ -16,9 +16,23 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -733,7 +733,7 @@ index c183447..b0fb35c 100644
      return $source;
 diff --git a/src/Plugin/views/field/SubscriberHistorySource.php b/src/Plugin/views/field/SubscriberHistorySource.php
 new file mode 100644
-index 0000000..49c82df
+index 0000000000000000000000000000000000000000..49c82df14669a8c2e6711727673fa291b26f8394
 --- /dev/null
 +++ b/src/Plugin/views/field/SubscriberHistorySource.php
 @@ -0,0 +1,34 @@
@@ -773,7 +773,7 @@ index 0000000..49c82df
 +}
 diff --git a/src/Storage/SubscriberHistoryStorageSchema.php b/src/Storage/SubscriberHistoryStorageSchema.php
 new file mode 100644
-index 0000000..ad55f20
+index 0000000000000000000000000000000000000000..ad55f20cb69d0572eeaf9f9c89e6f83b216a6a89
 --- /dev/null
 +++ b/src/Storage/SubscriberHistoryStorageSchema.php
 @@ -0,0 +1,33 @@
@@ -812,7 +812,7 @@ index 0000000..ad55f20
 +}
 diff --git a/src/SubscriberHistoryAccessControlHandler.php b/src/SubscriberHistoryAccessControlHandler.php
 new file mode 100644
-index 0000000..b631915
+index 0000000000000000000000000000000000000000..b631915fae5be11a8d583e13ee4a42cf72651048
 --- /dev/null
 +++ b/src/SubscriberHistoryAccessControlHandler.php
 @@ -0,0 +1,44 @@
@@ -862,7 +862,7 @@ index 0000000..b631915
 +}
 diff --git a/src/SubscriberHistoryListBuilder.php b/src/SubscriberHistoryListBuilder.php
 new file mode 100644
-index 0000000..8c7e221
+index 0000000000000000000000000000000000000000..8c7e221a6bf911c6dd1b6923d160cd37a86e8c22
 --- /dev/null
 +++ b/src/SubscriberHistoryListBuilder.php
 @@ -0,0 +1,83 @@
@@ -951,7 +951,7 @@ index 0000000..8c7e221
 +}
 diff --git a/src/SubscriberHistoryViewsData.php b/src/SubscriberHistoryViewsData.php
 new file mode 100644
-index 0000000..ee82d00
+index 0000000000000000000000000000000000000000..ee82d0054e5cba067d44f7798e5714b80835425f
 --- /dev/null
 +++ b/src/SubscriberHistoryViewsData.php
 @@ -0,0 +1,38 @@
@@ -995,7 +995,7 @@ index 0000000..ee82d00
 +}
 diff --git a/tests/src/Functional/SubscriberHistoryTest.php b/tests/src/Functional/SubscriberHistoryTest.php
 new file mode 100644
-index 0000000..d59bd31
+index 0000000000000000000000000000000000000000..d59bd313e3c3e27fc9eafd054c6174b317b266c8
 --- /dev/null
 +++ b/tests/src/Functional/SubscriberHistoryTest.php
 @@ -0,0 +1,129 @@

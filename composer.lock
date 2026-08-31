@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0596a1bf83ce961676f87b1f241a3c27",
+    "content-hash": "a4e3f92f3836a2038b8010942a07f494",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -10621,17 +10621,11 @@
         },
         {
             "name": "drupal/simplenews",
-            "version": "4.1.3",
+            "version": "dev-4.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simplenews.git",
-                "reference": "4.1.3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/simplenews-4.1.3.zip",
-                "reference": "4.1.3",
-                "shasum": "27c729542ee578c7a33d949ae6891ab722c7ac94"
+                "reference": "b88d0412488c62776f854c551abcd1ababb47752"
             },
             "require": {
                 "drupal/core": "^10 || ^11"
@@ -10642,12 +10636,15 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
                 "drupal": {
-                    "version": "4.1.3",
-                    "datestamp": "1785161020",
+                    "version": "4.1.3+6-dev",
+                    "datestamp": "1786694526",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -25718,6 +25715,7 @@
         "drupal/realname": 10,
         "drupal/redirect_or_410": 20,
         "drupal/simple_block": 10,
+        "drupal/simplenews": 20,
         "drupal/simplenews_stats": 10,
         "drupal/visitors": 20,
         "drupal/webform": 10,
