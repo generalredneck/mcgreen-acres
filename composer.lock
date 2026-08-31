@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ba396142537abde43e3e2b11fca9872",
+    "content-hash": "0596a1bf83ce961676f87b1f241a3c27",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -10689,11 +10689,17 @@
         },
         {
             "name": "drupal/simplenews_stats",
-            "version": "dev-4.x",
+            "version": "4.0.0-beta4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/simplenews_stats.git",
-                "reference": "2a9ace50d1f166479f123563ed99012c87417cd3"
+                "reference": "4.0.0-beta4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/simplenews_stats-4.0.0-beta4.zip",
+                "reference": "4.0.0-beta4",
+                "shasum": "9dce3895726dabebe000e8295761c110bd66f683"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11",
@@ -10701,15 +10707,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-4.x": "4.x-dev"
-                },
                 "drupal": {
-                    "version": "4.0.0-beta4+1-dev",
-                    "datestamp": "1787817963",
+                    "version": "4.0.0-beta4",
+                    "datestamp": "1787744626",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -25715,7 +25718,7 @@
         "drupal/realname": 10,
         "drupal/redirect_or_410": 20,
         "drupal/simple_block": 10,
-        "drupal/simplenews_stats": 20,
+        "drupal/simplenews_stats": 10,
         "drupal/visitors": 20,
         "drupal/webform": 10,
         "fourkitchens/pots": 20

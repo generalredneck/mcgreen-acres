@@ -1,0 +1,40 @@
+diff --git a/src/Plugin/views/filter/SimplenewsStatsAction.php b/src/Plugin/views/filter/SimplenewsStatsAction.php
+index 44ba6d7aa0cf27169061b0e9ef886dc43deeb847..a75489de356d6f8954596fd712746a1973043ebe 100644
+--- a/src/Plugin/views/filter/SimplenewsStatsAction.php
++++ b/src/Plugin/views/filter/SimplenewsStatsAction.php
+@@ -37,6 +37,7 @@ class SimplenewsStatsAction extends FilterPluginBase {
+       '#options' => [
+         'click' => $this->t('Click'),
+         'view' => $this->t('View'),
++        'sent' => $this->t('Sent'),
+       ],
+     ];
+   }
+diff --git a/src/SimplenewsStatsEngine.php b/src/SimplenewsStatsEngine.php
+index 86c9d1e862e5e7f958fd8225a587c5d6a34c8e5c..0cbae5cf9813d7133a458fe110c83ea9d12432f1 100644
+--- a/src/SimplenewsStatsEngine.php
++++ b/src/SimplenewsStatsEngine.php
+@@ -127,6 +127,23 @@ class SimplenewsStatsEngine {
+     $simplenews_stats = $this->getSimplenewsStats($subscriber, $entity);
+     $simplenews_stats->increaseTotalMail()
+       ->save();
++    $action = 'sent';
++    $data = [
++      'uid' => $subscriber->getUserId(),
++      'snid' => $subscriber->id(),
++      'email' => $subscriber->getMail(),
++      'title' => $action,
++      'entity_type' => $entity->getEntityTypeId(),
++      'entity_id' => $entity->id(),
++      'route_path' => NULL,
++      'created' => \Drupal::time()->getRequestTime(),
++    ];
++
++    $this->globalStatUpdate($subscriber, $entity, 'TotalMail');
++
++    $storage = $this->entityTypeManager->getStorage('simplenews_stats_item');
++    $simplenews_stat = $storage->create($data);
++    $simplenews_stat->save();
+   }
+ 
+   /**
