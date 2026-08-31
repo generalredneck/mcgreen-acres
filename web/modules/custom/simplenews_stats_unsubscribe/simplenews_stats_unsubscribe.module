@@ -2,8 +2,9 @@
 
 /**
  * @file
- * Attributes confirmed newsletter unsubscribes to the campaign that
- * prompted them, and logs them into simplenews_stats.
+ * Attributes confirmed newsletter unsubscribes to the prompting campaign.
+ *
+ * Logs them into simplenews_stats.
  */
 
 declare(strict_types=1);
