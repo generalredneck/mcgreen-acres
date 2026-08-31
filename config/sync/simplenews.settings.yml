@@ -1,6 +1,6 @@
 _core:
   default_config_hash: MQ_4kFOzBybKzwsUyT-FJLe20MzZj0tGSPLqXTWQJcg
-hash_expiration: 86400
+hash_expiration: 2592000
 newsletter:
   issue_tokens: true
   format: html
