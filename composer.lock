@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4e3f92f3836a2038b8010942a07f494",
+    "content-hash": "15b364b4043dfcf4ce8929c881d7923b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -10686,42 +10686,31 @@
         },
         {
             "name": "drupal/simplenews_stats",
-            "version": "4.0.0-beta4",
+            "version": "dev-pluggable-metrics",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/simplenews_stats.git",
-                "reference": "4.0.0-beta4"
+                "url": "https://github.com/generalredneck/simplenews_stats.git",
+                "reference": "a0a3d71e81d9aeec8c13ec45461c9345274e66a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/simplenews_stats-4.0.0-beta4.zip",
-                "reference": "4.0.0-beta4",
-                "shasum": "9dce3895726dabebe000e8295761c110bd66f683"
+                "url": "https://api.github.com/repos/generalredneck/simplenews_stats/zipball/a0a3d71e81d9aeec8c13ec45461c9345274e66a3",
+                "reference": "a0a3d71e81d9aeec8c13ec45461c9345274e66a3",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "^10.3 || ^11",
-                "drupal/simplenews": "^4.0"
+                "drupal/simplenews": "^4.0",
+                "drupal/universal_device_detection": "^2.1"
             },
             "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "4.0.0-beta4",
-                    "datestamp": "1787744626",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
             "authors": [
                 {
                     "name": "Damien LAGUERRE",
-                    "homepage": "https://www.drupal.org/u/damien-laguerre",
                     "email": "damien.laguerre@gmail.com",
+                    "homepage": "https://www.drupal.org/u/damien-laguerre",
                     "role": "Maintainer"
                 }
             ],
@@ -10732,9 +10721,10 @@
                 "mail"
             ],
             "support": {
-                "source": "https://git.drupalcode.org/project/simplenews_stats",
-                "issues": "https://www.drupal.org/project/issues/simplenews_stats"
-            }
+                "issues": "https://www.drupal.org/project/issues/simplenews_stats",
+                "source": "https://git.drupalcode.org/project/simplenews_stats"
+            },
+            "time": "2026-09-01T13:48:35+00:00"
         },
         {
             "name": "drupal/slick",
@@ -11400,6 +11390,57 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/twig_tweak",
                 "issues": "https://www.drupal.org/project/issues/twig_tweak"
+            }
+        },
+        {
+            "name": "drupal/universal_device_detection",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/universal_device_detection.git",
+                "reference": "2.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/universal_device_detection-2.1.0.zip",
+                "reference": "2.1.0",
+                "shasum": "9b81c792aa4cb36f00508bb27f4b612b567a5eff"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10 || ^11",
+                "matomo/device-detector": "~6"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.0",
+                    "datestamp": "1728989981",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "valic",
+                    "homepage": "https://www.drupal.org/user/980550"
+                }
+            ],
+            "description": "The Universal Device Detection library will parse any User Agent and detect the browser, operating system, device used (desktop, tablet, mobile, tv, cars, console, etc.), brand and model.",
+            "homepage": "https://www.drupal.org/project/universal_device_detection",
+            "keywords": [
+                "Device Detector",
+                "Drupal",
+                "Universal Device detection"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/universal_device_detection",
+                "issues": "https://www.drupal.org/project/issues/universal_device_detection"
             }
         },
         {
@@ -25716,7 +25757,7 @@
         "drupal/redirect_or_410": 20,
         "drupal/simple_block": 10,
         "drupal/simplenews": 20,
-        "drupal/simplenews_stats": 10,
+        "drupal/simplenews_stats": 20,
         "drupal/visitors": 20,
         "drupal/webform": 10,
         "fourkitchens/pots": 20
