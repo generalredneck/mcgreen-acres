@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a summary of a webform submission newsletter handler.
+ *
+ * Available variables:
+ * - settings: The current configuration for this debug handler.
+ * - handler: The submission file handler.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% if settings.field_mapping %}
+  <b>{{ 'Field mapping:'|t }}</b><br />
+  <ul>
+  {% for field_label, source in settings.field_mapping %}
+    <li>{{ field_label }}: {{ source }}</li>
+  {% endfor %}
+  </ul>
+{% endif %}
+<b>{{ 'Newsletters:'|t }}</b> {{ settings.newsletters_lst|join('; ') }}<br />
+<b>{{ 'Action:'|t }}</b> {{ settings.action }}<br />
+<b>{{ 'Execute when:'|t }}</b> {{ settings.states|join('; ') }}<br />

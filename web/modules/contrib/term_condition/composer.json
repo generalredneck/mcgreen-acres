@@ -1,0 +1,35 @@
+{
+  "name": "drupal/term_condition",
+  "description": "Provides a Condition plugin which checks to see if a node references a particular taxonomy term.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "keywords": ["Drupal"],
+  "homepage": "https://www.drupal.org/project/term_condition",
+  "authors": [
+    {
+      "name": "danielveza (danielveza)",
+      "homepage": "https://www.drupal.org/u/danielveza",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Dieuwe de Boer (dieuwe)",
+      "homepage": "https://www.drupal.org/u/dieuwe",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Adam Jensen (jazzslider)",
+      "homepage": "https://www.drupal.org/u/jazzslider",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Viktor Holovachek (AstonVictor)",
+      "homepage": "https://www.drupal.org/u/astonvictor",
+      "role": "Maintainer"
+    }
+  ],
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/term_condition",
+    "source": "https://git.drupalcode.org/project/term_condition"
+  }
+}

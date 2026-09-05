@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains commerce_checkout_link.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ *
+ *  {@inheritdoc}
+ */
+function commerce_checkout_link_help($route_name, RouteMatchInterface $arg) {
+  switch ($route_name) {
+    case 'help.page.commerce_checkout_link':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Makes it possible to send a link to finish an order that for example an admin has created either with adding things to cart, or by creating it in the UI.') . '</p>';
+      $output .= '<p>';
+      $output .= t('Visit the <a href=":project_link">Commerce Checkout Link project pages</a> on Drupal.org for more information.', [
+        ':project_link' => 'https://www.drupal.org/project/commerce_checkout_link',
+      ]);
+      $output .= '</p>';
+      return $output;
+  }
+}

@@ -1,0 +1,6 @@
+tip:
+  label: 'Tip'
+  singular_label: 'tip'
+  plural_label: 'tips'
+  has_ui: false
+  weight: 2

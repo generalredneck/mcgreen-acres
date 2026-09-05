@@ -1,0 +1,19 @@
+# Schema for the configuration files of the Optimize Database Tables module.
+
+optimize_database_tables.settings:
+  type: config_object
+  label: 'Optimize Database Tables settings'
+  mapping:
+    all_tables:
+      type: boolean
+      label: 'All Tables'
+    connections:
+      type: sequence
+      label: 'Connection keys to optimize'
+      sequence:
+        type: string
+    table_list:
+      type: sequence
+      label: 'Table List'
+      sequence:
+        type: string

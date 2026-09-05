@@ -1,0 +1,13 @@
+condition.plugin.term:
+  type: condition.plugin
+  mapping:
+    term_uuids:
+      label: 'Term UUIDs'
+      type: sequence
+      orderby: value
+      sequence:
+        type: uuid
+        label: 'Term UUID'
+    require_all_terms:
+      label: 'Require all terms'
+      type: boolean

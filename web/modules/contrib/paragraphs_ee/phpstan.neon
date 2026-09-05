@@ -1,0 +1,12 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+  level: max
+  excludePaths:
+    - */node_modules/*
+    - */vendor/*
+    - */tests/*
+  ignoreErrors:
+	  -
+      identifier: arrayFilter.strict

@@ -1,0 +1,59 @@
+field.formatter.settings.image_delta_formatter:
+  type: mapping
+  label: 'Image Delta Formatter: image settings'
+  mapping:
+    deltas:
+      type: sequence
+      label: 'Deltas'
+      sequence:
+        type: integer
+        label: 'deltas'
+        constraints:
+          Range:
+            min: 0
+    deltas_reversed:
+      type: boolean
+      label: 'Reversed'
+    image_link:
+      type: string
+      label: 'Link image to'
+    image_style:
+      type: string
+      label: 'Image style'
+    image_loading:
+      type: mapping
+      label: 'Image loading settings'
+      mapping:
+        attribute:
+          type: string
+          label: 'Loading attribute'
+
+field.formatter.settings.media_delta_formatter:
+  type: mapping
+  label: 'Image Delta Formatter: media settings'
+  mapping:
+    deltas:
+      type: sequence
+      label: 'Deltas'
+      sequence:
+        type: integer
+        label: 'deltas'
+        constraints:
+          Range:
+            min: 0
+    deltas_reversed:
+      type: boolean
+      label: 'Reversed'
+    image_style:
+      type: string
+      label: 'Image style'
+    image_link:
+      type: string
+      label: 'Image link'
+    image_loading:
+      type: mapping
+      label: 'Image loading'
+      mapping:
+        attribute:
+          type: string
+          label: 'Attribute: lazy or eager'

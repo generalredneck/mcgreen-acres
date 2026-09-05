@@ -1,0 +1,16 @@
+{
+  "name": "drimage_improved",
+  "description": "Front-end functional (BDD) acceptance tests for the Drimage module.",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "engines": {
+    "node": ">= 20.0"
+  },
+  "scripts": {
+    "test": "node ./node_modules/@cucumber/cucumber/bin/cucumber.js --config cucumber.js",
+    "test:chromium": "BROWSER=chromium node ./node_modules/@cucumber/cucumber/bin/cucumber.js --config cucumber.js"
+  },
+  "devDependencies": {
+    "@vardot/varbase-e2e": "^2"
+  }
+}

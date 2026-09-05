@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Provides a single layout with dynamic regions for Layout Builder.
+ *
+ * @todo delete all hooks and preprocess when min D11.
+ */
+
+use Drupal\blazy_layout\BlazyLayoutManager;
+use Drupal\blazy_layout\Hook\HelpHooks;
+use Drupal\blazy_layout\Hook\LayoutHooks;
+use Drupal\blazy_layout\Hook\ThemeHooks;
+
+/**
+ * Provides a convenient shortcut for procedural hooks.
+ *
+ * @return \Drupal\blazy_layout\BlazyLayoutManager
+ *   The BlazyLayoutManager manager class instance.
+ */
+// @codingStandardsIgnoreStart
+function blazy_layout(): BlazyLayoutManager {
+  static $manager;
+
+  if (!isset($manager)) {
+    $manager = \Drupal::service('blazy_layout');
+  }
+
+  return $manager;
+}
+// @codingStandardsIgnoreEnd
+
+/**
+ * Implements hook_theme().
+ */
+function blazy_layout_theme() {
+  return ThemeHooks::theme();
+}
+
+/**
+ * Overrides variables for layout.html.twig templates.
+ */
+function blazy_layout_preprocess_layout(array &$variables) {
+  ThemeHooks::preprocessLayout($variables);
+}
+
+/**
+ * Overrides variables for block.html.twig templates.
+ */
+function blazy_layout_preprocess_block(array &$variables) {
+  ThemeHooks::preprocessBlock($variables);
+}
+
+/**
+ * Overrides variables for field.html.twig templates.
+ */
+function blazy_layout_preprocess_field(array &$variables) {
+  ThemeHooks::preprocessField($variables);
+}
+
+/**
+ * Implements hook_layout_alter().
+ */
+function blazy_layout_layout_alter(array &$definitions) {
+  LayoutHooks::layoutAlter($definitions);
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ */
+function blazy_layout_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  ThemeHooks::themeSuggestionsAlter($suggestions, $variables, $hook);
+}
+
+/**
+ * Implements hook_help().
+ */
+function blazy_layout_help($route_name) {
+  return HelpHooks::help($route_name);
+}
