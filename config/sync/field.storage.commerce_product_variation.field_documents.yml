@@ -1,0 +1,20 @@
+uuid: 962f5544-7ab7-4767-972c-dc4010b1690f
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_product
+    - media
+id: commerce_product_variation.field_documents
+field_name: field_documents
+entity_type: commerce_product_variation
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

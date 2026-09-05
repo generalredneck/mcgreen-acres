@@ -1,0 +1,73 @@
+uuid: 23ccdc0b-37b8-4f02-a184-f9840a0963e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.feed
+    - field.field.commerce_product.feed.body
+    - field.field.commerce_product.feed.field_farmstand_available
+    - field.field.commerce_product.feed.field_featured
+    - field.field.commerce_product.feed.field_product_department
+    - field.field.commerce_product.feed.images
+    - field.field.commerce_product.feed.product_collections
+    - field.field.commerce_product.feed.product_tags
+    - image.style.d01_square
+    - image.style.d05_standard
+  module:
+    - bootstrap_basic_image_gallery
+    - commerce_product
+    - text
+_core:
+  default_config_hash: pmSqQG23xo0ghpw4ppxHahYyYEbqCBvRpAb6PKGOS0A
+id: commerce_product.feed.default
+targetEntityType: commerce_product
+bundle: feed
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  images:
+    type: bootstrap_basic_image_gallery_formatter
+    label: hidden
+    settings:
+      image_style: d05_standard
+      thumbnails_per_row: '3'
+      thumbnail_image_style: d01_square
+      modal_image_style: ''
+      carousel_interval: '5000'
+      lazyload: '1'
+      carousel_autorotate: 0
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  variations:
+    type: commerce_add_to_cart
+    label: hidden
+    settings:
+      combine: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  created: true
+  field_farmstand_available: true
+  field_featured: true
+  field_product_department: true
+  product_collections: true
+  product_tags: true
+  search_api_excerpt: true
+  stores: true
+  uid: true

@@ -1,0 +1,58 @@
+uuid: 0b1776ec-f8aa-47be-bf95-50b035ec2145
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.feed
+    - core.entity_view_mode.commerce_product.teaser
+    - field.field.commerce_product.feed.body
+    - field.field.commerce_product.feed.field_farmstand_available
+    - field.field.commerce_product.feed.field_featured
+    - field.field.commerce_product.feed.field_product_department
+    - field.field.commerce_product.feed.images
+    - field.field.commerce_product.feed.product_collections
+    - field.field.commerce_product.feed.product_tags
+    - image.style.de2e_standard
+  module:
+    - image_delta_formatter
+_core:
+  default_config_hash: 4hTeLK10sb0ZXzqFqSFMlxYI74vP6A9XkeH7GpAhmtE
+id: commerce_product.feed.teaser
+targetEntityType: commerce_product
+bundle: feed
+mode: teaser
+content:
+  images:
+    type: image_delta_formatter
+    label: hidden
+    settings:
+      deltas:
+        - 0
+      deltas_reversed: false
+      image_link: content
+      image_style: de2e_standard
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  body: true
+  created: true
+  field_farmstand_available: true
+  field_featured: true
+  field_product_department: true
+  product_collections: true
+  product_tags: true
+  search_api_excerpt: true
+  stores: true
+  uid: true
+  variations: true

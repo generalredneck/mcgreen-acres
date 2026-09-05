@@ -1,0 +1,33 @@
+uuid: d097843f-3ef3-4284-bd05-7511dd81c41a
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.feed
+    - field.storage.commerce_product_variation.field_documents
+    - media.type.file
+    - media.type.image
+    - media.type.pdf
+id: commerce_product_variation.feed.field_documents
+field_name: field_documents
+entity_type: commerce_product_variation
+bundle: feed
+label: Documents
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+      image: image
+      pdf: pdf
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

@@ -1,0 +1,29 @@
+uuid: 1915751f-84e5-4b59-a48c-3938cbb20e3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.feed
+    - field.storage.commerce_product_variation.field_feed_animal
+    - taxonomy.vocabulary.feed_animal
+id: commerce_product_variation.feed.field_feed_animal
+field_name: field_feed_animal
+entity_type: commerce_product_variation
+bundle: feed
+label: Animal
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      feed_animal: feed_animal
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

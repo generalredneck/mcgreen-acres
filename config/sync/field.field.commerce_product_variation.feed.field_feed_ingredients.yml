@@ -1,0 +1,29 @@
+uuid: 5060fe3b-a468-4ab6-944b-2f27e768826e
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.feed
+    - field.storage.commerce_product_variation.field_feed_ingredients
+    - taxonomy.vocabulary.feed_ingredients
+id: commerce_product_variation.feed.field_feed_ingredients
+field_name: field_feed_ingredients
+entity_type: commerce_product_variation
+bundle: feed
+label: Ingredients
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      feed_ingredients: feed_ingredients
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

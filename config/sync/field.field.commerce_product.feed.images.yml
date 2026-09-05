@@ -1,0 +1,40 @@
+uuid: 9e3b9df9-68b5-4964-967c-8588788322cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.feed
+    - field.storage.commerce_product.images
+  module:
+    - image
+_core:
+  default_config_hash: JrMqVMgzUhpKp-ga-jUAignV8SnasKWK6RVEQHThsIU
+id: commerce_product.feed.images
+field_name: images
+entity_type: commerce_product
+bundle: feed
+label: Images
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg'
+  max_filesize: ''
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: null
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image

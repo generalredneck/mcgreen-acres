@@ -1,0 +1,52 @@
+uuid: f4eaf253-a952-41c4-aa2d-ef3de4860519
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.feed
+    - core.entity_view_mode.commerce_product.cart
+    - field.field.commerce_product.feed.body
+    - field.field.commerce_product.feed.field_farmstand_available
+    - field.field.commerce_product.feed.field_featured
+    - field.field.commerce_product.feed.field_product_department
+    - field.field.commerce_product.feed.images
+    - field.field.commerce_product.feed.product_collections
+    - field.field.commerce_product.feed.product_tags
+    - responsive_image.styles.d01_square
+  module:
+    - image_delta_formatter
+id: commerce_product.feed.cart
+targetEntityType: commerce_product
+bundle: feed
+mode: cart
+content:
+  images:
+    type: responsive_image_delta_formatter
+    label: hidden
+    settings:
+      deltas:
+        - 0
+      responsive_image_style: d01_square
+      image_link: ''
+      image_loading:
+        attribute: lazy
+      deltas_reversed: 0
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  body: true
+  created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_farmstand_available: true
+  field_featured: true
+  field_product_department: true
+  product_collections: true
+  product_tags: true
+  search_api_excerpt: true
+  stores: true
+  title: true
+  uid: true
+  variations: true

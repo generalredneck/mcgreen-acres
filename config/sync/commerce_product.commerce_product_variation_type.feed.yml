@@ -1,0 +1,17 @@
+uuid: f15226bc-d6bc-48e7-b0c7-0505c8b49bb1
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_better_product_variation_label
+third_party_settings:
+  commerce_better_product_variation_label:
+    product_label_prefix: true
+    product_label_prefix_separator: ' -'
+id: feed
+label: Feed
+traits:
+  - purchasable_entity_shippable
+locked: false
+orderItemType: physical_product
+generateTitle: false
