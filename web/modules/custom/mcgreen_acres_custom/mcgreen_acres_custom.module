@@ -5,6 +5,7 @@
  * Contains mcgreen_acres_custom.module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\UserInterface;
 
@@ -109,5 +110,17 @@ function mcgreen_acres_custom_user_delete(UserInterface $account) {
       $account->getEmail(),
       MCGREEN_ACRES_CUSTOM_DEFAULT_NEWSLETTER
     );
+  }
+}
+
+/**
+ * Implements hook_field_widget_single_element_form_alter().
+ */
+function mcgreen_acres_custom_field_widget_single_element_form_alter(&$element, FormStateInterface $form_state, $context) {
+  $widget_id = $context['widget']->getPluginId();
+  if (in_array($widget_id, ['entity_reference_autocomplete', 'entity_reference_autocomplete_tags'])) {
+    if (isset($element['target_id']['#maxlength']) && $element['target_id']['#maxlength'] <= 1024) {
+      $element['target_id']['#maxlength'] = 4096;
+    }
   }
 }
