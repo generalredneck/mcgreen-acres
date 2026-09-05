@@ -1,0 +1,41 @@
+uuid: 08ea4c27-5202-4c93-98b9-6db05ae5acdb
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.feed
+    - core.entity_view_mode.commerce_product_variation.teaser
+    - field.field.commerce_product_variation.feed.field_documents
+    - field.field.commerce_product_variation.feed.field_feed_animal
+    - field.field.commerce_product_variation.feed.field_feed_ingredients
+    - field.field.commerce_product_variation.feed.field_feed_type
+    - field.field.commerce_product_variation.feed.field_product_brand
+    - field.field.commerce_product_variation.feed.weight
+  module:
+    - commerce_price
+id: commerce_product_variation.feed.teaser
+targetEntityType: commerce_product_variation
+bundle: feed
+mode: teaser
+content:
+  price:
+    type: commerce_price_default
+    label: hidden
+    settings:
+      strip_trailing_zeroes: false
+      currency_display: symbol
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_documents: true
+  field_feed_animal: true
+  field_feed_ingredients: true
+  field_feed_type: true
+  field_product_brand: true
+  list_price: true
+  product_id: true
+  search_api_excerpt: true
+  sku: true
+  title: true
+  weight: true

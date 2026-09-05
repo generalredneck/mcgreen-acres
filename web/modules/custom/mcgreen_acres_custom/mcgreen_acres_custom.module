@@ -114,6 +114,42 @@ function mcgreen_acres_custom_user_delete(UserInterface $account) {
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter() for commerce_product_form.
+ *
+ * The core default_admin theme (Drupal 11.2+) forcibly re-themes every
+ * content-entity form with the node_edit_form template. That template never
+ * renders the `footer` render group, and Commerce's ProductForm groups the
+ * Published (`status`) checkbox into `footer` (see ProductForm::form()) — so
+ * under default_admin the checkbox vanishes from the product edit form
+ * entirely. Claro renders `footer` via Commerce's own template, so it is
+ * only affected when default_admin is the active admin theme.
+ *
+ * A theme's hook_form_alter() runs after all module implementations, so
+ * default_admin's changes aren't visible here yet; defer to an #after_build
+ * callback that runs once the full form (theme alters included) is built.
+ */
+function mcgreen_acres_custom_form_commerce_product_form_alter(array &$form, FormStateInterface $form_state) {
+  if (\Drupal::theme()->getActiveTheme()->getName() === 'default_admin') {
+    $form['#after_build'][] = '_mcgreen_acres_custom_commerce_product_status_after_build';
+  }
+}
+
+/**
+ * Form #after_build: surface the Published checkbox hidden by default_admin.
+ *
+ * Detaching `status` from the dropped `footer` group makes it render inline
+ * in the main form column at its natural position.
+ */
+function _mcgreen_acres_custom_commerce_product_status_after_build(array $form, FormStateInterface $form_state) {
+  if (isset($form['status']) && ($form['status']['#group'] ?? NULL) === 'footer') {
+    unset($form['status']['#group']);
+    // Keep it near the bottom of the form, where staff expect to find it.
+    $form['status']['#weight'] = 90;
+  }
+  return $form;
+}
+
+/**
  * Implements hook_field_widget_single_element_form_alter().
  */
 function mcgreen_acres_custom_field_widget_single_element_form_alter(&$element, FormStateInterface $form_state, $context) {
