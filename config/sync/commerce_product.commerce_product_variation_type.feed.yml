@@ -7,7 +7,7 @@ dependencies:
 third_party_settings:
   commerce_better_product_variation_label:
     product_label_prefix: true
-    product_label_prefix_separator: ' -'
+    product_label_prefix_separator: ' - '
 id: feed
 label: Feed
 traits:
