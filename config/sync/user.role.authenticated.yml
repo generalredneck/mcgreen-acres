@@ -17,6 +17,7 @@ dependencies:
     - commerce_payment
     - commerce_product
     - commerce_recurring
+    - commerce_shipping
     - disqus
     - dropzonejs
     - entity_browser
@@ -61,6 +62,7 @@ permissions:
   - 'use text format restricted_html'
   - 'use text format webform_default'
   - 'view commerce_product'
+  - 'view commerce_shipping_method'
   - 'view disqus comments'
   - 'view field_author_description'
   - 'view media'

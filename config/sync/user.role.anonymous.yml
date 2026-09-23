@@ -7,6 +7,7 @@ dependencies:
   module:
     - commerce_checkout
     - commerce_product
+    - commerce_shipping
     - disqus
     - field_permissions
     - filter
@@ -30,6 +31,7 @@ permissions:
   - 'update own phone profile'
   - 'use text format restricted_html'
   - 'view commerce_product'
+  - 'view commerce_shipping_method'
   - 'view disqus comments'
   - 'view field_author_description'
   - 'view media'
