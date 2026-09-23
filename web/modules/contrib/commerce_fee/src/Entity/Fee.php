@@ -1,0 +1,577 @@
+<?php
+
+namespace Drupal\commerce_fee\Entity;
+
+use Drupal\commerce\ConditionGroup;
+use Drupal\commerce\Entity\CommerceContentEntityBase;
+use Drupal\commerce\Plugin\Commerce\Condition\ConditionInterface;
+use Drupal\commerce\Plugin\Commerce\Condition\ParentEntityAwareInterface;
+use Drupal\commerce_fee\Plugin\Commerce\Fee\FeeInterface as FeePluginInterface;
+use Drupal\commerce_fee\Plugin\Commerce\Fee\OrderItemFeeInterface;
+use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+
+/**
+ * Defines the fee entity class.
+ *
+ * @ContentEntityType(
+ *   id = "commerce_fee",
+ *   label = @Translation("Fee", context = "Commerce"),
+ *   label_collection = @Translation("Fees", context = "Commerce"),
+ *   label_singular = @Translation("fee", context = "Commerce"),
+ *   label_plural = @Translation("fees", context = "Commerce"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count fee",
+ *     plural = "@count fees",
+ *     context = "Commerce",
+ *   ),
+ *   handlers = {
+ *     "event" = "Drupal\commerce_fee\Event\FeeEvent",
+ *     "storage" = "Drupal\commerce_fee\FeeStorage",
+ *     "access" = "Drupal\entity\EntityAccessControlHandler",
+ *     "permission_provider" = "Drupal\entity\EntityPermissionProvider",
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
+ *     "list_builder" = "Drupal\commerce_fee\FeeListBuilder",
+ *     "views_data" = "Drupal\commerce_fee\FeeViewsData",
+ *     "form" = {
+ *       "default" = "Drupal\commerce_fee\Form\FeeForm",
+ *       "add" = "Drupal\commerce_fee\Form\FeeForm",
+ *       "edit" = "Drupal\commerce_fee\Form\FeeForm",
+ *       "duplicate" = "Drupal\commerce_fee\Form\FeeForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
+ *     },
+ *     "local_task_provider" = {
+ *       "default" = "Drupal\entity\Menu\DefaultEntityLocalTaskProvider",
+ *     },
+ *     "route_provider" = {
+ *       "default" = "Drupal\entity\Routing\AdminHtmlRouteProvider",
+ *       "delete-multiple" = "Drupal\entity\Routing\DeleteMultipleRouteProvider",
+ *     },
+ *     "translation" = "Drupal\commerce_fee\FeeTranslationHandler"
+ *   },
+ *   base_table = "commerce_fee",
+ *   data_table = "commerce_fee_field_data",
+ *   admin_permission = "administer commerce_fee",
+ *   translatable = TRUE,
+ *   translation = {
+ *     "content_translation" = {
+ *       "access_callback" = "content_translation_translate_access"
+ *     },
+ *   },
+ *   entity_keys = {
+ *     "id" = "fee_id",
+ *     "label" = "name",
+ *     "langcode" = "langcode",
+ *     "uuid" = "uuid",
+ *     "status" = "status",
+ *   },
+ *   links = {
+ *     "add-form" = "/fee/add",
+ *     "edit-form" = "/fee/{commerce_fee}/edit",
+ *     "duplicate-form" = "/fee/{commerce_fee}/duplicate",
+ *     "delete-form" = "/fee/{commerce_fee}/delete",
+ *     "delete-multiple-form" = "/admin/commerce/fees/delete",
+ *     "collection" = "/admin/commerce/fees",
+ *     "drupal:content-translation-overview" = "/fee/{commerce_fee}/translations",
+ *     "drupal:content-translation-add" = "/fee/{commerce_fee}/translations/add/{source}/{target}",
+ *     "drupal:content-translation-edit" = "/fee/{commerce_fee}/translations/edit/{language}",
+ *     "drupal:content-translation-delete" = "/fee/{commerce_fee}/translations/delete/{language}",
+ *   },
+ * )
+ */
+class Fee extends CommerceContentEntityBase implements FeeInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function toUrl($rel = 'canonical', array $options = []) {
+    if ($rel == 'canonical') {
+      $rel = 'edit-form';
+    }
+    return parent::toUrl($rel, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getName(): ?string {
+    return $this->get('name')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setName($name): static {
+    $this->set('name', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDisplayName(): ?string {
+    return $this->get('display_name')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDisplayName($display_name): static {
+    $this->set('display_name', $display_name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription(): ?string {
+    return $this->get('description')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDescription($description): static {
+    $this->set('description', $description);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOrderTypes(): array {
+    return $this->get('order_types')->referencedEntities();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOrderTypes(array $order_types): static {
+    $this->set('order_types', $order_types);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOrderTypeIds(): array {
+    $order_type_ids = [];
+    foreach ($this->get('order_types') as $field_item) {
+      $order_type_ids[] = $field_item->target_id;
+    }
+    return $order_type_ids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOrderTypeIds(array $order_type_ids): static {
+    $this->set('order_types', $order_type_ids);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStores() {
+    return $this->getTranslatedReferencedEntities('stores');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStores(array $stores) {
+    $this->set('stores', $stores);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStoreIds() {
+    $store_ids = [];
+    foreach ($this->get('stores') as $field_item) {
+      $store_ids[] = $field_item->target_id;
+    }
+    return $store_ids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStoreIds(array $store_ids) {
+    $this->set('stores', $store_ids);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPlugin(): ?FeePluginInterface {
+    if (!$this->get('plugin')->isEmpty()) {
+      return $this->get('plugin')->first()->getTargetInstance();
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPlugin(FeePluginInterface $plugin): static {
+    $this->set('plugin', [
+      'target_plugin_id' => $plugin->getPluginId(),
+      'target_plugin_configuration' => $plugin->getConfiguration(),
+    ]);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConditions(): array {
+    $conditions = [];
+    foreach ($this->get('conditions') as $field_item) {
+      /** @var \Drupal\commerce\Plugin\Field\FieldType\PluginItemInterface $field_item */
+      $condition = $field_item->getTargetInstance();
+      if ($condition instanceof ParentEntityAwareInterface) {
+        $condition->setParentEntity($this);
+      }
+      $conditions[] = $condition;
+    }
+    return $conditions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setConditions(array $conditions): static {
+    $this->set('conditions', []);
+    foreach ($conditions as $condition) {
+      if ($condition instanceof ConditionInterface) {
+        $this->get('conditions')->appendItem([
+          'target_plugin_id' => $condition->getPluginId(),
+          'target_plugin_configuration' => $condition->getConfiguration(),
+        ]);
+      }
+    }
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConditionOperator(): string {
+    return $this->get('condition_operator')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setConditionOperator($condition_operator): static {
+    $this->set('condition_operator', $condition_operator);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStartDate($store_timezone = 'UTC'): DrupalDateTime {
+    return new DrupalDateTime($this->get('start_date')->value, $store_timezone);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStartDate(DrupalDateTime $start_date): static {
+    $this->get('start_date')->value = $start_date->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEndDate($store_timezone = 'UTC'): ?DrupalDateTime {
+    if (!$this->get('end_date')->isEmpty()) {
+      return new DrupalDateTime($this->get('end_date')->value, $store_timezone);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEndDate(?DrupalDateTime $end_date = NULL): static {
+    $this->get('end_date')->value = NULL;
+    if ($end_date) {
+      $this->get('end_date')->value = $end_date->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+    }
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEnabled(): bool {
+    return (bool) $this->getEntityKey('status');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEnabled($enabled): static {
+    $this->set('status', (bool) $enabled);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function available(OrderInterface $order): bool {
+    if (!$this->isEnabled()) {
+      return FALSE;
+    }
+    if (!in_array($order->bundle(), $this->getOrderTypeIds())) {
+      return FALSE;
+    }
+    if (!in_array($order->getStoreId(), $this->getStoreIds())) {
+      return FALSE;
+    }
+    $date = $order->getCalculationDate();
+    $store_timezone = $date->getTimezone()->getName();
+    $start_date = $this->getStartDate($store_timezone);
+    if ($start_date->format('U') > $date->format('U')) {
+      return FALSE;
+    }
+    $end_date = $this->getEndDate($store_timezone);
+    if ($end_date && $end_date->format('U') <= $date->format('U')) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function applies(OrderInterface $order): bool {
+    $conditions = $this->getConditions();
+    if (!$conditions) {
+      // Fees without conditions always apply.
+      return TRUE;
+    }
+    $condition_group = new ConditionGroup($conditions, $this->getConditionOperator());
+
+    return $condition_group->evaluate($order);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function apply(OrderInterface $order): void {
+    $plugin = $this->getPlugin();
+    if ($plugin instanceof OrderItemFeeInterface) {
+      $fee_conditions = new ConditionGroup($plugin->getConditions(), 'OR');
+      // Apply the plugin to order items that pass the conditions.
+      foreach ($order->getItems() as $order_item) {
+        if ($fee_conditions->evaluate($order_item)) {
+          $plugin->apply($order_item, $this);
+        }
+      }
+    }
+    else {
+      $plugin->apply($order, $this);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    $fields['name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Name'))
+      ->setDescription(t('The fee name.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setSettings([
+        'default_value' => '',
+        'max_length' => 255,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['display_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Display name'))
+      ->setDescription(t('If provided, shown on the order instead of "@translated".', [
+        '@translated' => t('Fee'),
+      ]))
+      ->setTranslatable(TRUE)
+      ->setSettings([
+        'display_description' => TRUE,
+        'default_value' => '',
+        'max_length' => 255,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['description'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Description'))
+      ->setDescription(t('Additional information about the fee to show to the customer'))
+      ->setTranslatable(TRUE)
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textarea',
+        'weight' => 1,
+        'settings' => [
+          'rows' => 3,
+        ],
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['order_types'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Order types'))
+      ->setDescription(t('The order types for which the fee is valid.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setRequired(TRUE)
+      ->setSetting('target_type', 'commerce_order_type')
+      ->setSetting('handler', 'default')
+      ->setDisplayOptions('form', [
+        'type' => 'commerce_entity_select',
+        'weight' => 2,
+      ]);
+
+    $fields['stores'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Stores'))
+      ->setDescription(t('The stores for which the fee is valid.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setRequired(TRUE)
+      ->setSetting('target_type', 'commerce_store')
+      ->setSetting('handler', 'default')
+      ->setDisplayOptions('form', [
+        'type' => 'commerce_entity_select',
+        'weight' => 2,
+      ]);
+
+    $fields['plugin'] = BaseFieldDefinition::create('commerce_plugin_item:commerce_fee')
+      ->setLabel(t('Fee type'))
+      ->setCardinality(1)
+      ->setRequired(TRUE)
+      ->setSetting('allowed_values_function', [static::class, 'getPluginOptions'])
+      ->setDisplayOptions('form', [
+        'type' => 'commerce_plugin_select',
+        'weight' => 3,
+      ]);
+
+    $fields['conditions'] = BaseFieldDefinition::create('commerce_plugin_item:commerce_condition')
+      ->setLabel(t('Conditions'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setRequired(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'commerce_conditions',
+        'weight' => 3,
+        'settings' => [
+          'entity_types' => ['commerce_order'],
+        ],
+      ]);
+
+    $fields['condition_operator'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t('Condition operator'))
+      ->setDescription(t('The condition operator.'))
+      ->setRequired(TRUE)
+      ->setSetting('allowed_values', [
+        'AND' => t('All conditions must pass'),
+        'OR' => t('Only one condition must pass'),
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons',
+        'weight' => 4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDefaultValue('AND');
+
+    $fields['start_date'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Start date'))
+      ->setDescription(t('The date the fee becomes valid.'))
+      ->setRequired(TRUE)
+      ->setSetting('datetime_type', 'datetime')
+      ->setDefaultValueCallback('Drupal\commerce_fee\Entity\Fee::getDefaultStartDate')
+      ->setDisplayOptions('form', [
+        'type' => 'commerce_store_datetime',
+        'weight' => 5,
+      ]);
+
+    $fields['end_date'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('End date'))
+      ->setDescription(t('The date after which the fee is invalid.'))
+      ->setRequired(FALSE)
+      ->setSetting('datetime_type', 'datetime')
+      ->setSetting('datetime_optional_label', t('Provide an end date'))
+      ->setDisplayOptions('form', [
+        'type' => 'commerce_store_datetime',
+        'weight' => 6,
+      ]);
+
+    $fields['status'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Status'))
+      ->setDescription(t('Whether the fee is enabled.'))
+      ->setDefaultValue(TRUE)
+      ->setRequired(TRUE)
+      ->setSettings([
+        'on_label' => t('Enabled'),
+        'off_label' => t('Disabled'),
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons',
+        'weight' => 0,
+      ]);
+
+    return $fields;
+  }
+
+  /**
+   * Default value callback for 'start_date' base field definition.
+   *
+   * @see ::baseFieldDefinitions()
+   *
+   * @return string
+   *   The default value (date string).
+   */
+  public static function getDefaultStartDate(): string {
+    $timestamp = \Drupal::time()->getRequestTime();
+    return date(DateTimeItemInterface::DATETIME_STORAGE_FORMAT, $timestamp);
+  }
+
+  /**
+   * Gets the allowed values for the 'plugin' base field.
+   *
+   * @return array
+   *   The allowed values.
+   */
+  public static function getPluginOptions(): array {
+    /** @var \Drupal\commerce_fee\FeeManager $fee_manager */
+    $fee_manager = \Drupal::getContainer()->get('plugin.manager.commerce_fee');
+    $plugins = array_map(static function ($definition) {
+      return $definition['label'];
+    }, $fee_manager->getDefinitions());
+    asort($plugins);
+
+    return $plugins;
+  }
+
+}

@@ -1,0 +1,7 @@
+ms_clarity.admin:
+  version: VERSION
+  js:
+    js/ms_clarity.admin.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

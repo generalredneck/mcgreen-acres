@@ -1,0 +1,7 @@
+{
+  "name": "drupal/optimize_database_tables",
+  "description": "Optimize database tables",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/optimize_database_tables",
+  "license": "GPL-2.0+"
+}

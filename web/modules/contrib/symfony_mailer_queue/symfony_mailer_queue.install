@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Symfony mailer queue module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function symfony_mailer_queue_uninstall(): void {
+
+  // Delete old settings since the date of installation is uncertain.
+  \Drupal::configFactory()
+    ->getEditable('symfony_mailer_queue.settings')
+    ->delete();
+
+  // Delete all configured queue sending email adjusters.
+  /** @var \Drupal\symfony_mailer\Entity\MailerPolicy[] $mailer_policies */
+  $mailer_policies = \Drupal::entityTypeManager()
+    ->getStorage('mailer_policy')
+    ->loadMultiple();
+
+  foreach ($mailer_policies as $policy) {
+    $configurations = $policy->getConfiguration();
+    if (!array_key_exists('queue_sending', $configurations)) {
+      continue;
+    }
+    unset($configurations['queue_sending']);
+    $policy->setConfiguration($configurations);
+    $policy->save();
+  }
+}
+
+/**
+ * Move Symfony mailer queue settings to email adjuster plugins.
+ */
+function symfony_mailer_queue_update_10101(): void {
+
+  $config = \Drupal::configFactory()->getEditable('symfony_mailer_queue.settings');
+  $requeue_delay = $config->get('requeue_delay');
+  $maximum_attempts = $config->get('maximum_attempts');
+  $send_wait_time = $config->get('send_wait_time');
+
+  /** @var \Drupal\symfony_mailer\Entity\MailerPolicy[] $mailer_policies */
+  $mailer_policies = \Drupal::entityTypeManager()
+    ->getStorage('mailer_policy')
+    ->loadMultiple();
+
+  foreach ($mailer_policies as $policy) {
+    $configurations = $policy->getConfiguration();
+    if (!array_key_exists('queue_sending', $configurations)) {
+      continue;
+    }
+    $configurations['queue_sending'] = [
+      'queue_behavior' => 'delayed',
+      'requeue_delay' => $requeue_delay,
+      'maximum_attempts' => $maximum_attempts,
+      'send_wait_time' => $send_wait_time,
+    ];
+    $policy->setConfiguration($configurations);
+    $policy->save();
+  }
+
+  $config->delete();
+}

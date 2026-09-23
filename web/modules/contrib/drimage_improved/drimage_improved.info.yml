@@ -1,0 +1,12 @@
+name: Drimage
+type: module
+description: "Image formatter that will generate image styles on the fly on the front end."
+core_version_requirement: ^10 || ^11 || ^12
+dependencies:
+  - drupal:image
+configure: drimage_improved.settings
+
+# Information added by Drupal.org packaging script on 2026-08-22
+version: '1.0.12'
+project: 'drimage_improved'
+datestamp: 1787420937

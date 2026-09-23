@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and update hooks for VBP text and image module.
+ */
+
+use Vardot\Entity\EntityDefinitionUpdateManager;
+use Vardot\Installer\ModuleInstallerFactory;
+
+// Include all helpers and updates.
+include_once __DIR__ . '/includes/helpers.inc';
+include_once __DIR__ . '/includes/updates.inc';
+
+/**
+ * Implements hook_install().
+ */
+function vbp_text_and_image_install() {
+
+  // Processor for install: in vbp_text_and_image.info.yml file.
+  ModuleInstallerFactory::installList('vbp_text_and_image');
+
+  // Install optional configs.
+  ModuleInstallerFactory::importConfigsFromScanedDirectory('vbp_text_and_image', '/^field.storage.*\\.(yml)$/i');
+  ModuleInstallerFactory::importConfigsFromScanedDirectory('vbp_text_and_image', '/^.*(settings.yml)$/i');
+
+  // Entity updates to clear up any mismatched entity and/or field definitions
+  // And Fix changes were detected in the entity type and field definitions.
+  \Drupal::classResolver()
+    ->getInstanceFromDefinition(EntityDefinitionUpdateManager::class)
+    ->applyUpdates();
+
+  // Add permissions.
+  ModuleInstallerFactory::addPermissions('vbp_text_and_image');
+
+}

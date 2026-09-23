@@ -1,0 +1,6 @@
+services:
+  drimage_s3fs.event_subscriber:
+    class: Drupal\drimage_s3fs\EventSubscriber\DrimageS3Subscriber
+    arguments: [ '@stream_wrapper_manager' , '@entity_type.manager', '@module_handler', '@config.factory', '@logger.factory', '@drimage_improved.manager']
+    tags:
+      - { name: event_subscriber }

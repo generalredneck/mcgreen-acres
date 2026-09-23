@@ -1,0 +1,4 @@
+services:
+  plugin.manager.webform_ip_geo_plugin:
+    class: Drupal\webform_ip_geo\Plugin\WebformIpGeoPluginManager
+    parent: default_plugin_manager

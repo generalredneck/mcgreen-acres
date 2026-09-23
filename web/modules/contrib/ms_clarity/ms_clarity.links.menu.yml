@@ -1,0 +1,5 @@
+ms_clarity.admin_settings_form:
+  title: 'Microsoft Clarity'
+  parent: system.admin_config_services
+  description: 'Configure Microsoft Clarity to view insights about your website traffics and heatmap.'
+  route_name: ms_clarity.admin_settings_form

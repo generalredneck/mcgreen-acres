@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for entity_browser_entity_form.module.
+ *
+ * Provides integration with the Inline entity form module.
+ */
+
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\entity_browser_entity_form\Hook\EntityBrowserEntityFormHooks;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\WidgetInterface;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\entity_browser\Element\EntityBrowserElement;
+
+/**
+ * Implements hook_inline_entity_form_reference_form_alter().
+ */
+#[LegacyHook]
+function entity_browser_entity_form_inline_entity_form_reference_form_alter(&$reference_form, FormStateInterface &$form_state) {
+  \Drupal::service(EntityBrowserEntityFormHooks::class)->inlineEntityFormReferenceFormAlter($reference_form, $form_state);
+}
+
+/**
+ * Validates the form for adding existing entities.
+ *
+ * @todo see if we can get away without overriding entire IEF function.
+ *
+ * @param array $reference_form
+ *   The reference entity form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state of the parent form.
+ *
+ * @see inline_entity_form_reference_form_validate()
+ */
+function entity_browser_entity_form_reference_form_validate(array &$reference_form, FormStateInterface $form_state) {
+  $form_values = NestedArray::getValue($form_state->getValues(), $reference_form['#parents']);
+  if (empty($form_values['entity_browser']['entity_ids'])) {
+    // The entity_id element is required, the value is empty only if
+    // the form was cancelled.
+    return;
+  }
+  $ief_id = $reference_form['#ief_id'];
+  $labels = $reference_form['#ief_labels'];
+  $attach_entities = EntityBrowserElement::processEntityIds($form_values['entity_browser']['entity_ids']);
+
+  // Check if the entity is already referenced by the field.
+  if (!empty($attach_entities)) {
+    foreach ($attach_entities as $attach_entity) {
+      foreach ($form_state->get(['inline_entity_form', $ief_id, 'entities']) as $key => $value) {
+        if ($value['entity']->getEntityTypeId() == $attach_entity->getEntityTypeId() && $value['entity']->id() == $attach_entity->id()) {
+          $form_state->setError($reference_form['entity_browser'], t('The selected @label has already been added.', ['@label' => $labels['singular']]));
+          $reference_form['entity_browser']['entity_ids']['#value'] = '';
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Submits the form for adding existing entities.
+ *
+ * Adds the specified entity to the IEF form state.
+ *
+ * @todo see if we can get away without overriding entire IEF function.
+ *
+ * @param array $reference_form
+ *   The reference entity form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state of the parent form.
+ *
+ * @see inline_entity_form_reference_form_submit()
+ */
+function entity_browser_entity_form_reference_form_submit(array $reference_form, FormStateInterface $form_state) {
+  $ief_id = $reference_form['#ief_id'];
+  $form_values = NestedArray::getValue($form_state->getValues(), $reference_form['#parents']);
+  $attach_entities = EntityBrowserElement::processEntityIds($form_values['entity_browser']['entity_ids']);
+  $entities =& $form_state->get(['inline_entity_form', $ief_id, 'entities']);
+
+  // Determine the correct weight of the new element.
+  $weight = 0;
+  if ($entities) {
+    $weight = max(array_keys($entities)) + 1;
+  }
+
+  foreach ($attach_entities as $attach_entity) {
+    $entities[] = [
+      'entity' => $attach_entity,
+      'weight' => $weight,
+      'form' => NULL,
+      'needs_save' => FALSE,
+    ];
+    $weight++;
+  }
+  $form_state->set(['inline_entity_form', $ief_id, 'entities'], $entities);
+
+  // In some rare cases entity_ids keeps values of selected entities which then
+  // causes problems in subsequent selections. Let's make sure it is empty and
+  // ready for next usage of entity browser.
+  $form_state->setValueForElement($reference_form['entity_browser']['entity_ids'], '');
+  $input = &$form_state->getUserInput();
+  NestedArray::unsetValue($input, array_merge($reference_form['#parents'], ['entity_browser', 'entity_ids']));
+}
+
+/**
+ * Implements hook_field_widget_third_party_settings_form().
+ */
+#[LegacyHook]
+function entity_browser_entity_form_field_widget_third_party_settings_form(WidgetInterface $plugin, FieldDefinitionInterface $field_definition, $form_mode, $form, FormStateInterface $form_state) {
+  return \Drupal::service(EntityBrowserEntityFormHooks::class)->fieldWidgetThirdPartySettingsForm($plugin, $field_definition, $form_mode, $form, $form_state);
+}
+
+/**
+ * Implements hook_field_widget_settings_summary_alter().
+ */
+#[LegacyHook]
+function entity_browser_entity_form_field_widget_settings_summary_alter(&$summary, $context) {
+  return \Drupal::service(EntityBrowserEntityFormHooks::class)->fieldWidgetSettingsSummaryAlter($summary, $context);
+}

@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\Core\File\Exception\FileException;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function imageapi_optimize_webp_entity_type_alter(array &$entity_types) {
+  if (isset($entity_types['imageapi_optimize_pipeline'])) {
+    $entity_types['imageapi_optimize_pipeline']->setClass('Drupal\imageapi_optimize_webp\Entity\ImageAPIOptimizeWebPPipeline');
+  }
+  return [];
+}
+
+/**
+ * Implements hook_image_style_flush().
+ */
+function imageapi_optimize_webp_image_style_flush($style, $path = NULL) {
+  if ($path !== NULL && substr_compare($path, '.webp', -strlen('.webp')) !== 0) {
+    $file_system = \Drupal::service('file_system');
+    $derivative_uri = $style->buildUri($path . '.webp');
+    if (file_exists($derivative_uri)) {
+      try {
+        $file_system->delete($derivative_uri);
+      }
+      catch (FileException $e) {
+        // Ignore failed deletes.
+      }
+    }
+  }
+}

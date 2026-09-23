@@ -1,0 +1,4 @@
+services:
+  term_condition.autocomplete_matcher:
+    class: Drupal\term_condition\TermAutocompleteMatcher
+    arguments: ['@plugin.manager.entity_reference_selection', '@entity_type.manager']

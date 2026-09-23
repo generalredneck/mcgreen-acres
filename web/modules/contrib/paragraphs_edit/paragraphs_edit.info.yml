@@ -1,0 +1,14 @@
+name: "Paragraphs Edit"
+type: module
+description: "Allows users to edit paragraphs."
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+package: Paragraphs
+
+dependencies:
+  - drupal:contextual
+  - paragraphs:paragraphs
+
+# Information added by Drupal.org packaging script on 2024-12-06
+version: '3.0.1'
+project: 'paragraphs_edit'
+datestamp: 1733468699

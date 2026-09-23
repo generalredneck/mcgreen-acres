@@ -1,0 +1,4 @@
+admin:
+  css:
+    theme:
+      css/imageapi_optimize.admin.css: {}

@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Installation file for PRLP module.
+ */
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Grant PRLP admin permission to roles with 'administer users' permission.
+ */
+function prlp_update_8001(&$sandbox) {
+  foreach (Role::loadMultiple() as $role) {
+    if ($role->hasPermission('administer users')) {
+      $role->grantPermission('administer prlp settings');
+      $role->save();
+    }
+  }
+}

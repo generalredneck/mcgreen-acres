@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\interval\Hook\IntervalHooks;
+
+/**
+ * @file
+ * Defines an interval field.
+ * @copyright Copyright(c) 2011 Rowlands Group
+ * @license GPL v2+ http://www.fsf.org/licensing/licenses/gpl.html
+ */
+
+/**
+ * Implements hook_theme().
+ */
+#[LegacyHook]
+function interval_theme() {
+  return \Drupal::service(IntervalHooks::class)->theme();
+}
+
+/**
+ * Returns HTML for an interval form element.
+ */
+function template_preprocess_interval(&$variables) {
+  IntervalHooks::preprocessInterval($variables);
+}

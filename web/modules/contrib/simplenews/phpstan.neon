@@ -1,0 +1,20 @@
+parameters:
+  level: 0
+  fileExtensions:
+    - php
+    - module
+    - inc
+    - install
+    - theme
+    - profile
+  reportUnmatchedIgnoredErrors: false
+  excludePaths:
+    - src/Plugin/migrate/source/d7/*
+  ignoreErrors:
+    # new static() is a best practice in Drupal, so we cannot fix that.
+    # @see https://www.drupal.org/docs/develop/development-tools/phpstan/handling-unsafe-usage-of-new-static
+    - identifier: new.static
+
+    # Dependency injection leads to huge amounts of dull boiler plate code,
+    # and BC problems so we don't always do it.
+    - identifier: globalDrupalDependencyInjection.useDependencyInjection

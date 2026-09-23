@@ -1,0 +1,17 @@
+{
+  "name": "drupal/commerce_better_product_variation_label",
+  "type": "drupal-module",
+  "description": "Provides improvements for Drupal Commerce Product Variation labels / titles.",
+  "keywords": [
+    "Drupal"
+  ],
+  "require": {
+    "drupal/commerce": "^2 || ^3"
+  },
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/commerce_better_product_variation_label",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/commerce_better_product_variation_label",
+    "source": "http://cgit.drupalcode.org/commerce_better_product_variation_label"
+  }
+}

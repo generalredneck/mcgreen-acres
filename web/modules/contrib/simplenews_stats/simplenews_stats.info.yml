@@ -1,0 +1,13 @@
+name: Simplenews Stats
+type: module
+description: 'Simplenews stats allows you to collect statistics from newsletter sent with simplenews.'
+package: Mail
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - simplenews:simplenews
+configure: entity.simplenews_stats.collection
+
+# Information added by Drupal.org packaging script on 2026-08-26
+version: '4.0.0-beta4'
+project: 'simplenews_stats'
+datestamp: 1787744628

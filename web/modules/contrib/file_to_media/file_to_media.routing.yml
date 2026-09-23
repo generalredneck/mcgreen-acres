@@ -1,0 +1,14 @@
+file_to_media.add_form:
+  path: '/file/to-media/{file}/{media_type}'
+  defaults:
+    _controller: '\Drupal\file_to_media\Controller\FileToMedia::fileToMediaForm'
+    _title_callback: '\Drupal\file_to_media\Controller\FileToMedia::fileToMediaTitle'
+  options:
+    _admin_route: TRUE
+    parameters:
+      media_type:
+        type: entity:media_type
+      file:
+        type: entity:file
+  requirements:
+    _permission: 'access files overview'

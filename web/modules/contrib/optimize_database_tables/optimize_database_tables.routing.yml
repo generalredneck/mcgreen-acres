@@ -1,0 +1,19 @@
+optimize_database_tables.settings:
+  path: '/admin/config/system/database_optimize_tables'
+  defaults:
+    _title: 'Optimize Database Tables'
+    _form: 'Drupal\optimize_database_tables\Form\OptimizeDatabaseTablesConfigForm'
+  requirements:
+    _permission: 'administer_optimize_database_tables'
+  options:
+    _admin_route: TRUE
+
+optimize_database_tables.run:
+  path: '/admin/config/system/database_optimize_tables/run'
+  defaults:
+    _title: 'Optimize Database Tables'
+    _form: 'Drupal\optimize_database_tables\Form\OptimizeDatabaseTablesForm'
+  requirements:
+    _permission: 'administer_optimize_database_tables'
+  options:
+    _admin_route: TRUE

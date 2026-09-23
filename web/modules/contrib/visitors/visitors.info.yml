@@ -1,0 +1,10 @@
+name: Visitors
+description: "Logs visitor's actions."
+package: 'Analytics'
+core_version_requirement: ^10.1 || ^11
+type: module
+configure: visitors.settings
+dependencies:
+  - drupal:views
+  - drupal:path
+  - charts:charts_chartjs
