@@ -2,6 +2,7 @@
 
 namespace Drupal\mcgreen_acres_store\EventSubscriber;
 
+use Drupal\commerce_recurring\Entity\SubscriptionInterface;
 use Drupal\commerce_recurring\Event\RecurringEvents;
 use Drupal\commerce_recurring\Event\SubscriptionEvent;
 use Drupal\simplenews\Entity\Subscriber;
@@ -51,7 +52,7 @@ class ProductSubscriptionNewsletterSubscriber implements EventSubscriberInterfac
     }
 
     $original = $subscription->original;
-    if (!$original) {
+    if (!$original instanceof SubscriptionInterface) {
       return;
     }
 
