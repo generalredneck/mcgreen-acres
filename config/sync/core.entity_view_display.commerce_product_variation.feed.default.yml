@@ -12,6 +12,7 @@ dependencies:
     - field.field.commerce_product_variation.feed.weight
   module:
     - commerce_price
+    - physical
 id: commerce_product_variation.feed.default
 targetEntityType: commerce_product_variation
 bundle: feed
@@ -28,7 +29,7 @@ content:
     region: content
   field_feed_animal:
     type: entity_reference_label
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -44,7 +45,7 @@ content:
     region: content
   field_feed_type:
     type: entity_reference_label
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -52,7 +53,7 @@ content:
     region: content
   field_product_brand:
     type: entity_reference_label
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -76,9 +77,15 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  weight:
+    type: physical_measurement_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
 hidden:
   product_id: true
   search_api_excerpt: true
   sku: true
   title: true
-  weight: true

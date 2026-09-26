@@ -6,23 +6,17 @@ dependencies:
     - field.field.media.pdf.field_media_file
     - media.type.pdf
   module:
-    - pdf
+    - file
 id: media.pdf.default
 targetEntityType: media
 bundle: pdf
 mode: default
 content:
   field_media_file:
-    type: pdf_default
+    type: file_default
     label: visually_hidden
     settings:
-      keep_pdfjs: '1'
-      width: 100%
-      height: 500px
-      page: ''
-      zoom: auto
-      custom_zoom: ''
-      pagemode: ''
+      use_description_as_link_text: true
     third_party_settings: {  }
     weight: 0
     region: content

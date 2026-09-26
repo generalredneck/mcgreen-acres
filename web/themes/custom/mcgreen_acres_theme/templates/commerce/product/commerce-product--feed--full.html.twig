@@ -1,0 +1,124 @@
+{#
+/**
+ * @file
+ *
+ * Feed product template. Purchase panel above, tabbed secondary content
+ * (description / more information / ingredients / documents) below, in the
+ * style of the feed manufacturer's own product pages.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the wrapper.
+ * - product: The rendered product fields.
+ *   Use 'product' to print them all, or print a subset such as
+ *   'product.title'. Use the following code to exclude the
+ *   printing of a given field:
+ *   @code
+ *   {{ product|without('title') }}
+ *   @endcode
+ * - product_entity: The product entity.
+ * - product_url: The product URL.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{%
+  set classes = [
+  'pb-4',
+  'mb-5',
+  'overflow-hidden'
+]
+%}
+
+{% set tab_id_base = 'feed-' ~ product_entity.id %}
+{% set variation = product_entity.getDefaultVariation() %}
+{% set has_feed_type = variation and not variation.field_feed_type.isEmpty() %}
+{% set has_weight = variation and not variation.weight.isEmpty() %}
+{% set has_brand = variation and not variation.field_product_brand.isEmpty() %}
+{% set has_animal = variation and not variation.field_feed_animal.isEmpty() %}
+{% set has_ingredients = variation and not variation.field_feed_ingredients.isEmpty() %}
+{% set has_documents = variation and not variation.field_documents.isEmpty() %}
+
+<article{{ attributes.addClass(classes) }}>
+  <div class="row g-5">
+    <div class="col-md-5">
+      {% if product.variation_images|render is not empty %}
+        {{- product.variation_images -}}
+      {% else %}
+        {{- product.images -}}
+      {% endif %}
+    </div>
+    <div class="col-md-7">
+      <div class="fs-4 font-weight-bold">{{- product.variation_price -}}</div>
+      {% if farmstand_available %}
+        <div class="fulfillment-status fulfillment-status--farmstand">{{ 'Available at the Farm Stand today'|t }}</div>
+      {% else %}
+        <div class="fulfillment-status fulfillment-status--appointment">{{ 'Pickup by appointment only'|t }}</div>
+      {% endif %}
+      <hr/>
+      {{- product.variations -}}
+      {{- product.variation_stock -}}
+      {% if farmstand_available %}
+        <div class="alert alert-info"><p class="lead"><strong>Available at the Farm Stand — self serve, free to take upon purchase.</strong></p><p>Pickup only, at our address:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a>. Not available for delivery or shipping.</p></div>
+      {% else %}
+        <div class="alert alert-info"><p class="lead"><strong>Orders must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p></div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="product_detail_tab">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="{{ tab_id_base }}-description-tab" data-toggle="tab" href="#{{ tab_id_base }}-description" role="tab" aria-controls="{{ tab_id_base }}-description" aria-selected="true">{{ 'Description'|t }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="{{ tab_id_base }}-info-tab" data-toggle="tab" href="#{{ tab_id_base }}-info" role="tab" aria-controls="{{ tab_id_base }}-info" aria-selected="false">{{ 'More Information'|t }}</a>
+      </li>
+      {% if has_ingredients %}
+        <li class="nav-item">
+          <a class="nav-link" id="{{ tab_id_base }}-ingredients-tab" data-toggle="tab" href="#{{ tab_id_base }}-ingredients" role="tab" aria-controls="{{ tab_id_base }}-ingredients" aria-selected="false">{{ 'Ingredients'|t }}</a>
+        </li>
+      {% endif %}
+      {% if has_documents %}
+        <li class="nav-item">
+          <a class="nav-link" id="{{ tab_id_base }}-documents-tab" data-toggle="tab" href="#{{ tab_id_base }}-documents" role="tab" aria-controls="{{ tab_id_base }}-documents" aria-selected="false">{{ 'Documents'|t }}</a>
+        </li>
+      {% endif %}
+    </ul>
+    <div class="tab-content">
+      <div id="{{ tab_id_base }}-description" class="tab-pane fade show active" role="tabpanel" aria-labelledby="{{ tab_id_base }}-description-tab">
+        {{- product.body -}}
+      </div>
+      <div id="{{ tab_id_base }}-info" class="tab-pane fade" role="tabpanel" aria-labelledby="{{ tab_id_base }}-info-tab">
+        <table class="table table-striped more-info-table">
+          <tbody>
+            {% if has_feed_type %}
+              <tr><th scope="row">{{ 'Feed Type'|t }}</th><td>{{- product.variation_field_feed_type -}}</td></tr>
+            {% endif %}
+            {% if has_weight %}
+              <tr><th scope="row">{{ 'Weight'|t }}</th><td>{{- product.variation_weight -}}</td></tr>
+            {% endif %}
+            {% if has_brand %}
+              <tr><th scope="row">{{ 'Brand'|t }}</th><td>{{- product.variation_field_product_brand -}}</td></tr>
+            {% endif %}
+            {% if has_animal %}
+              <tr><th scope="row">{{ 'Animal'|t }}</th><td>{{- product.variation_field_feed_animal -}}</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+      {% if has_ingredients %}
+        <div id="{{ tab_id_base }}-ingredients" class="tab-pane fade" role="tabpanel" aria-labelledby="{{ tab_id_base }}-ingredients-tab">
+          {{- product.variation_field_feed_ingredients -}}
+        </div>
+      {% endif %}
+      {% if has_documents %}
+        <div id="{{ tab_id_base }}-documents" class="tab-pane fade" role="tabpanel" aria-labelledby="{{ tab_id_base }}-documents-tab">
+          {{- product.variation_field_documents -}}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {{- product|without('variation_attributes', 'images', 'variation_images', 'title', 'variation_price', 'variations', 'variation_stock', 'body', 'variation_field_feed_type', 'variation_weight', 'variation_field_product_brand', 'variation_field_feed_animal', 'variation_field_feed_ingredients', 'variation_field_documents') -}}
+</article>

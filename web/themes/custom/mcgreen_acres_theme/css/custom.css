@@ -1335,3 +1335,69 @@ th.views-field-remove-button {
   border: 1px solid var(--mca-amber, #c8902a);
   color: #6b4d16;
 }
+
+/* Product detail tabs (feed products): style.css's legacy pill styling
+ * (`.product_detail_tab > ul > li > a`) gives inactive tabs a transparent
+ * background and no border, so next to the solid green active pill they
+ * read as plain text rather than other clickable tabs. Give every tab a
+ * visible outline so the whole row reads as one set of buttons (a
+ * segmented control), with the active one filled in. */
+.product_detail_tab .nav-link {
+  border: 1px solid #d7dbdd;
+  background-color: #f8f9fa;
+}
+.product_detail_tab .nav-link:hover,
+.product_detail_tab .nav-link:focus {
+  border-color: #1fa12e;
+  background-color: #e7f2e2;
+  color: #1fa12e;
+  text-decoration: none;
+}
+/* `.product_detail_tab > ul > li > a.active` (style.css) loses to
+ * Bootstrap's own `.nav-tabs .nav-link.active` on specificity, so restate
+ * it against the classes Bootstrap's tab JS actually toggles. */
+.product_detail_tab .nav-link.active {
+  color: #fff;
+  background-color: #1fa12e;
+  border-color: #1fa12e;
+}
+
+/* On mobile, style.css's own `.product_detail_tab > ul > li { width: 100%;
+ * display: block; }` (its @media (max-width: 767px) block, line ~10930)
+ * stacks each tab onto its own full-width row, one per row. That's the
+ * theme's original ThemeForest demo behavior, not something we added — but
+ * with 4 tabs (some with long labels, e.g. "More Information") it pushes
+ * the panel content down a full screen's worth before it's visible.
+ * Undo the full-width stacking so the tabs wrap onto as many rows as
+ * needed instead, the way Drupal core's own local-task tabs do, rather
+ * than either single-file stacking or a horizontally scrolling strip. */
+@media (max-width: 767px) {
+  .product_detail_tab .nav-tabs > .nav-item {
+    width: auto;
+    display: block;
+    margin: 0 10px 10px;
+  }
+  .product_detail_tab .nav-tabs > .nav-item:first-child {
+    margin-left: 0;
+  }
+}
+
+/* Field label display: "above" vs "inline".
+ * Stable9 (this theme's base) never implemented label_display the way
+ * Classy did — its field.html.twig only branches on "hidden", so "inline"
+ * silently rendered identically to "above". field.html.twig now emits the
+ * same field--label-inline/field__label/field__items hooks Classy used;
+ * this restores the actual side-by-side "Label: value" layout for them. */
+.field--label-inline .field__label,
+.field--label-inline .field__items {
+  float: left;
+  margin-bottom: 0;
+}
+.field--label-inline .field__label,
+.field--label-inline > .field__item,
+.field--label-inline .field__items {
+  padding-right: 0.5em;
+}
+.field--label-inline .field__label::after {
+  content: ":";
+}
