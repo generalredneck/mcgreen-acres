@@ -355,9 +355,18 @@ function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_preprocess_commerce_product__teaser().
+ * Implements hook_preprocess_HOOK() for commerce_product templates.
+ *
+ * Runs for every commerce_product view mode and bundle, unlike
+ * hook_preprocess_commerce_product__full()/__teaser(): those only fire when
+ * the *generic* --full/--teaser template is the one actually rendered. A
+ * bundle-specific template like commerce-product--feed--full.html.twig gets
+ * its own theme registry entry (because the file exists) whose preprocess
+ * chain does not include the generic __full suggestion's preprocess
+ * functions at all — so farmstand_available needs to live here, on the base
+ * hook, to reliably reach every bundle/view-mode template.
  */
-function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
+function mcgreen_acres_store_preprocess_commerce_product(&$variables) {
   /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
   $product = $variables['product_entity'];
   if (!$product) {
@@ -374,6 +383,17 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
   // invalidateTags() call in FarmstandSettingsForm::submitForm().
   $variables['#cache']['tags'][] = FarmstandSettingsForm::CACHE_TAG;
   $variables['is_subscription'] = $product->bundle() === 'subscription';
+}
+
+/**
+ * Implements hook_preprocess_commerce_product__teaser().
+ */
+function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
+  /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
+  $product = $variables['product_entity'];
+  if (!$product) {
+    return;
+  }
 
   $variations = $product->getVariations();
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
@@ -423,27 +443,6 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
       $variables['all_out_of_stock'] = TRUE;
     }
   }
-}
-
-/**
- * Implements hook_preprocess_commerce_product__full().
- */
-function mcgreen_acres_store_preprocess_commerce_product__full(&$variables) {
-  /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
-  $product = $variables['product_entity'];
-  if (!$product) {
-    return;
-  }
-
-  $variables['farmstand_available'] = $product->hasField('field_farmstand_available')
-    && (bool) $product->get('field_farmstand_available')->value
-    && !\Drupal::state()->get(FarmstandSettingsForm::STATE_KEY, FALSE);
-  // The state flag isn't a cache context/tag Drupal knows about on its own,
-  // so without this the rendered teaser/full markup (and any Views row
-  // cache built from it, e.g. the product catalog) would keep showing the
-  // stale badge until an unrelated cache clear evicted it. Paired with the
-  // invalidateTags() call in FarmstandSettingsForm::submitForm().
-  $variables['#cache']['tags'][] = FarmstandSettingsForm::CACHE_TAG;
 }
 
 /**
