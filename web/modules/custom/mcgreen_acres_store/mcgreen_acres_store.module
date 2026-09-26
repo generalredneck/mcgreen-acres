@@ -378,7 +378,21 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
   $variations = $product->getVariations();
   $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-  if (count($variations) === 1 && $product->bundle() === 'physical') {
+  // Subscriptions are deliberately excluded from the single-variation fast
+  // path even when they have exactly one (enabled) variation: the product
+  // description carries information (blackout dates, waitlist status, etc.)
+  // that we want customers to see via "Choose Options" before they commit,
+  // rather than skipping straight to add-to-cart. physical and feed have no
+  // such requirement, so a single enabled variation goes straight to the
+  // add-to-cart form. loadEnabled() runs the same access check core's own
+  // add-to-cart form relies on, so a product whose only variation is
+  // disabled (e.g. out of season) doesn't match count() === 1 and get a
+  // lazy-built form with nothing to render.
+  $single_variation_bundles = ['physical', 'feed'];
+  $variation_storage = \Drupal::entityTypeManager()->getStorage('commerce_product_variation');
+  $enabled_variations = $variation_storage->loadEnabled($product);
+
+  if (in_array($product->bundle(), $single_variation_bundles, TRUE) && count($enabled_variations) === 1) {
     $variables['add_to_cart_form'] = [
       '#lazy_builder' => [
         'commerce_product.lazy_builders:addToCartForm', [
