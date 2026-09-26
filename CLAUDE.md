@@ -46,7 +46,7 @@ find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o
 
 - **Local**: Lando with MariaDB 11.4, PHP 8.4, mailpit for email capture. Site URL: `https://mcgreen-acres.lndo.site` Mailpit: https://mail-mcgreen-acres.lndo.site
 - **Production**: Shared hosting at `mcgreenacres.com` — connection details are in `drush/sites/self.site.yml` (not committed)
-- **CI/CD**: CircleCI builds an artifact (strips `.git` dirs/tests, commits to `deploy-<branch>`), then deploys via SSH to prod after manual approval. Deploy branch naming: `deploy-master` triggers live deploy.
+- **CI/CD** (`.circleci/config.yml`): pushing to `master` is safe on its own — it only runs `static_tests` + `build`, then a `deploy` job that auto-builds an artifact (strips `.git` dirs/tests) and commits/pushes it to the `deploy-master` branch. Nothing reaches production yet at this point. A push to `deploy-master` (only ever done by that automated `deploy` job, not manually) is what triggers the `approve_deploy_to_live` gate — a **manual approval** required in the CircleCI UI before `deploy_to_live_general` runs and deploys via SSH to prod. So: normal feature work → commit + push to `master` → CI stops after the artifact lands on `deploy-master`; going live additionally requires clicking approve in CircleCI.
 - **Environment detection**: `settings.php` checks `$environment` (`local` vs `live`). Local overrides: Symfony Mailer routes to mailpit, trusted hosts open, stage_file_proxy pulls files from prod.
 - **Fake time**: the Lando appserver installs `libfaketime` (see `.lando.yml`). Set/uncomment `FAKETIME` there to freeze or shift the container clock — useful for testing `commerce_recurring` renewal/billing behavior at future dates. Unset it afterwards.
 
