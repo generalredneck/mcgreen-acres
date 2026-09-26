@@ -389,6 +389,7 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
   // disabled (e.g. out of season) doesn't match count() === 1 and get a
   // lazy-built form with nothing to render.
   $single_variation_bundles = ['physical', 'feed'];
+  /** @var \Drupal\commerce_product\ProductVariationStorageInterface $variation_storage */
   $variation_storage = \Drupal::entityTypeManager()->getStorage('commerce_product_variation');
   $enabled_variations = $variation_storage->loadEnabled($product);
 
