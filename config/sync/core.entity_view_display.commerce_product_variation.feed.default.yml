@@ -9,9 +9,11 @@ dependencies:
     - field.field.commerce_product_variation.feed.field_feed_ingredients
     - field.field.commerce_product_variation.feed.field_feed_type
     - field.field.commerce_product_variation.feed.field_product_brand
+    - field.field.commerce_product_variation.feed.stock
     - field.field.commerce_product_variation.feed.weight
   module:
     - commerce_price
+    - commerce_stock_field
     - physical
 id: commerce_product_variation.feed.default
 targetEntityType: commerce_product_variation
@@ -76,6 +78,13 @@ content:
       currency_display: symbol
     third_party_settings: {  }
     weight: 0
+    region: content
+  stock:
+    type: commerce_stock_level_simple
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
     region: content
   weight:
     type: physical_measurement_default

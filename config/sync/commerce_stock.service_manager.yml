@@ -1,3 +1,4 @@
 default_service_id: always_in_stock
 stock_events_plugin_id: core_stock_events
 commerce_product_variation_physical_service_id: local_stock
+commerce_product_variation_feed_service_id: local_stock

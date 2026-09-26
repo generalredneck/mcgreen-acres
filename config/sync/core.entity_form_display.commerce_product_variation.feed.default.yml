@@ -9,9 +9,11 @@ dependencies:
     - field.field.commerce_product_variation.feed.field_feed_ingredients
     - field.field.commerce_product_variation.feed.field_feed_type
     - field.field.commerce_product_variation.feed.field_product_brand
+    - field.field.commerce_product_variation.feed.stock
     - field.field.commerce_product_variation.feed.weight
   module:
     - commerce_price
+    - commerce_stock_field
     - media_library
     - physical
 id: commerce_product_variation.feed.default
@@ -99,6 +101,15 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  stock:
+    type: commerce_stock_level_simple_transaction
+    weight: 9
+    region: content
+    settings:
+      step: '1'
+      custom_transaction_note: false
+      default_transaction_note: 'Transaction issued by stock level field.'
     third_party_settings: {  }
   title:
     type: string_textfield

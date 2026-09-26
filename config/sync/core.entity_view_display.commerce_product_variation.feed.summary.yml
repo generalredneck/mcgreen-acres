@@ -10,6 +10,7 @@ dependencies:
     - field.field.commerce_product_variation.feed.field_feed_ingredients
     - field.field.commerce_product_variation.feed.field_feed_type
     - field.field.commerce_product_variation.feed.field_product_brand
+    - field.field.commerce_product_variation.feed.stock
     - field.field.commerce_product_variation.feed.weight
   module:
     - commerce_price
@@ -46,4 +47,5 @@ hidden:
   product_id: true
   search_api_excerpt: true
   sku: true
+  stock: true
   weight: true

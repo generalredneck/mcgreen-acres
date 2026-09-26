@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - commerce_product.commerce_product_type.feed
     - commerce_product.commerce_product_type.physical
     - commerce_product.commerce_product_type.subscription
   module:
@@ -18,6 +19,7 @@ selection_criteria:
     context_mapping:
       commerce_product: commerce_product
     bundles:
+      feed: feed
       physical: physical
       subscription: subscription
 selection_logic: and
