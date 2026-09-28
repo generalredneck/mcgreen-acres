@@ -1,0 +1,4 @@
+services:
+  facebook_pixel.facebook_event:
+    class: Drupal\facebook_pixel\FacebookEvent
+    arguments: ['@tempstore.private', '@session_manager', '@module_handler']

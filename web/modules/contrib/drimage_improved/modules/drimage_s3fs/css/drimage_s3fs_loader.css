@@ -1,0 +1,21 @@
+.s3_drimage.is-loading {
+  animation: color-change 0.45s ease-in-out forwards;
+  opacity: 0;
+}
+
+@keyframes color-change {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.drimage_improved {
+  animation: none;
+}

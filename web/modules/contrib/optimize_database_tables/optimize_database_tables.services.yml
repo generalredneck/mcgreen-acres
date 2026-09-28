@@ -1,0 +1,24 @@
+services:
+
+  optimize_database_tables.handler_factory:
+    class: Drupal\optimize_database_tables\Service\DbHandlerFactory
+    arguments:
+      - '@database'
+      - '@logger.factory'
+
+  optimize_database_tables.handler:
+    class: Drupal\optimize_database_tables\Service\DbHandlerInterface
+    factory: ['@optimize_database_tables.handler_factory', 'create']
+
+  optimize_database_tables.connection_registry:
+    class: Drupal\optimize_database_tables\Service\ConnectionRegistry
+    arguments:
+      - '@optimize_database_tables.handler_factory'
+      - '@logger.factory'
+
+  optimize_database_tables.service:
+    class: Drupal\optimize_database_tables\Service\OptimizeDatabase
+    arguments:
+      - '@optimize_database_tables.connection_registry'
+      - '@config.factory'
+      - '@messenger'

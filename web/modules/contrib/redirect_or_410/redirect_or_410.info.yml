@@ -1,0 +1,8 @@
+name: 'Redirect or 410'
+type: module
+description: 'Expands Redirect and Redirect 404 options to throw a 410'
+package: 'redirect'
+core_version_requirement: ^10 || ^11
+configure: redirect.settings
+dependencies:
+  - redirect:redirect

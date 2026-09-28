@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for paragraphs_ee_sets module.
+ */
+
+use Drupal\Component\Utility\DeprecationHelper;
+use Drupal\Core\Extension\ModuleWeight;
+
+/**
+ * Implements hook_install().
+ */
+function paragraphs_ee_sets_install(): void {
+  // Assign a weight higher than paragraphs_ee and paragraphs_sets.
+  $module = 'paragraphs_ee_sets';
+  $weight = 20;
+  DeprecationHelper::backwardsCompatibleCall(\Drupal::VERSION, '11.5.0', fn() => \Drupal::service(ModuleWeight::class)->set($module, $weight), fn() => module_set_weight($module, $weight));
+}

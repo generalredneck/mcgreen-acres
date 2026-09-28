@@ -1,0 +1,5 @@
+services:
+  # Extend symfony_mailer email factory to instantiate queueable email objects.
+  email_factory:
+    class: Drupal\symfony_mailer_queue\Service\EmailFactory
+    arguments: ['@plugin.manager.email_builder', '@plugin.manager.email_adjuster']

@@ -1,0 +1,5 @@
+entity.recipe_tracker_log.collection:
+  title: 'Recipe Tracker'
+  description: 'The log of recipes installed.'
+  route_name: entity.recipe_tracker_log.collection
+  parent: system.modules_list

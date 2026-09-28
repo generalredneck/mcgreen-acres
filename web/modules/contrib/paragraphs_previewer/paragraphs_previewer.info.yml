@@ -1,0 +1,13 @@
+name: Paragraphs Previewer
+type: module
+description: 'Provides a rendered preview of a paragraphs item while on an entity form.'
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+package: Paragraphs
+
+dependencies:
+  - paragraphs:paragraphs
+
+# Information added by Drupal.org packaging script on 2024-03-26
+version: '8.x-1.9'
+project: 'paragraphs_previewer'
+datestamp: 1711467609

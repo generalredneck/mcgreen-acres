@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains webform_ip_geo.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function webform_ip_geo_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the webform_ip_geo module.
+    case 'help.page.webform_ip_geo':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Retrieves GEO data from the IP of a webform submission.') . '</p>';
+      return $output;
+  }
+  return '';
+}

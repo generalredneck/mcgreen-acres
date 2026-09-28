@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Legacy hooks for the Commerce Profile Pane module.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function commerce_profile_pane_profile_type_insert(EntityInterface $entity) {
+  \Drupal::service('plugin.manager.commerce_checkout_pane')
+    ->clearCachedDefinitions();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function commerce_profile_pane_profile_type_delete(EntityInterface $entity) {
+  \Drupal::service('plugin.manager.commerce_checkout_pane')
+    ->clearCachedDefinitions();
+}

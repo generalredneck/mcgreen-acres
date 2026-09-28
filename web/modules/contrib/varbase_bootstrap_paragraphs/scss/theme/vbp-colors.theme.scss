@@ -1,0 +1,141 @@
+// Varbase Bootstrap Paragraphs colors theme.
+// -----------------------------------------------------------------------------
+@use 'sass:map';
+
+@import '../defaults'; // Global defaults.
+
+// Add display so color shows.
+.paragraph.paragraph--color {
+  display: table;
+}
+
+// Adds padding to fill in color.
+.paragraph.paragraph--color > .paragraph__column {
+  @include padding-top(4rem);
+  @include padding-bottom(4rem);
+}
+
+// Fills color on colorless .paragraph__column after color .paragraph__column.
+.paragraph.paragraph--color + .paragraph > .paragraph__column {
+  @include padding-top(4rem);
+}
+
+// Background colors;
+// -----------------------------------------------------------------------------
+// vbp_color_01: Blue
+// vbp_color_02: Madison
+// vbp_color_03: Dark Gray
+// vbp_color_04: Light Gray
+// vbp_color_05: Red
+
+// List of palette background colors by name.
+:root {
+  /* VBP Palette background colors */
+  --vbp-palette-color-boston-blue: #338ec7;
+  --vbp-palette-color-pickled-bluewood: #2c3e50;
+  --vbp-palette-color-silver-chalice: #a4a4a4;
+  --vbp-palette-color-alto: #d3d3d3;
+  --vbp-palette-color-persian-red: #cc3c2d;
+  --vbp-palette-color-anzac: #e4b649;
+}
+
+// Associate background colors names to a function name.
+body {
+  /* VBP Associate background colors */
+  --vbp_color_01: var(--vbp-palette-color-boston-blue); // Blue
+  --vbp_color_02: var(--vbp-palette-color-pickled-bluewood); // Madison
+  --vbp_color_03: var(--vbp-palette-color-silver-chalice); // Dark Gray
+  --vbp_color_04: var(--vbp-palette-color-alto); // Light Gray
+  --vbp_color_05: var(--vbp-palette-color-persian-red); // Red
+}
+
+// Map of background colors by function.
+$vbp-colors: (
+  'vbp_color_01': var(--vbp_color_01),
+  'vbp_color_02': var(--vbp_color_02),
+  'vbp_color_03': var(--vbp_color_03),
+  'vbp_color_04': var(--vbp_color_04),
+  'vbp_color_05': var(--vbp_color_05),
+);
+
+// Foreground colors:
+// -----------------------------------------------------------------------------
+// vbp_foreground_color_01: White for background vbp_color_01 color.
+// vbp_foreground_color_02: White for background vbp_color_02 color.
+// vbp_foreground_color_03: White for background vbp_color_03 color.
+// vbp_foreground_color_04: Black for background vbp_color_04 color.
+// vbp_foreground_color_05: White for background vbp_color_05 color.
+
+// List of palette foreground colors by name.
+:root {
+  /* VBP palette foreground colors */
+  --vbp-palette-color-black: #000;
+  --vbp-palette-color-white: #fff;
+}
+
+// Associate foreground colors names to a function name.
+body {
+  /* VBP Associate foreground colors */
+  --vbp_foreground_color_01: var(--vbp-palette-color-white); // White
+  --vbp_foreground_color_02: var(--vbp-palette-color-white); // White
+  --vbp_foreground_color_03: var(--vbp-palette-color-white); // White
+  --vbp_foreground_color_04: var(--vbp-palette-color-black); // Black
+  --vbp_foreground_color_05: var(--vbp-palette-color-white); // White
+}
+
+// Map of foreground colors by function.
+$vbp-foreground-colors: (
+  'vbp_color_01': var(--vbp_foreground_color_01),
+  'vbp_color_02': var(--vbp_foreground_color_02),
+  'vbp_color_03': var(--vbp_foreground_color_03),
+  'vbp_color_04': var(--vbp_foreground_color_04),
+  'vbp_color_05': var(--vbp_foreground_color_05),
+);
+
+// Varbase Bootstrap Paragraphs color default template for the vbp_color_{NUM}
+// we could copy this mixin and change it for other type of styling options.
+// This could be changed in your sub-theme, in the way you custom sites.
+@mixin vbp-color(
+  $vbp-color-name,
+  $vbp-background-color,
+  $vbp-foreground-color
+) {
+  body .#{$vbp-color-name} {
+    color: $vbp-foreground-color;
+    background-color: $vbp-background-color;
+
+    a {
+      color: $vbp-foreground-color;
+
+      &:hover,
+      &:focus,
+      &:active,
+      &.is-active,
+      &.active {
+        color: $vbp-foreground-color;
+      }
+    }
+  }
+}
+
+// Varbase Bootstrap Paragraphs colors default template.
+// This could be changed in your sub-theme, in the way you custom sites.
+@mixin vbp-colors {
+  // Only listing 5 colors, this could work in a loop.
+  // or by writing the list of css color classes manually.
+  @each $vbp-color-name, $vbp-color-value in $vbp-colors {
+    @include vbp-color(
+      #{$vbp-color-name},
+      $vbp-color-value,
+      map.get($vbp-foreground-colors, #{$vbp-color-name})
+    );
+  }
+}
+
+// Call the vbp_colors mixin for the front-end use.
+@include vbp-colors;
+
+// Add support for drupal off canvas editor and the layout builder settings try.
+#drupal-off-canvas-wrapper {
+  @include vbp-colors;
+}

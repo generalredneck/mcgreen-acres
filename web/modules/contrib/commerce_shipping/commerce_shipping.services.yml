@@ -1,0 +1,114 @@
+services:
+  _defaults:
+    autowire: true
+  access_check.shipment_collection:
+    class: Drupal\commerce_shipping\Access\ShipmentCollectionAccessCheck
+    tags:
+      - { name: access_check, applies_to: _shipment_collection_access }
+
+  commerce_shipping.packer_manager:
+    class: Drupal\commerce_shipping\PackerManager
+    tags:
+      - { name: service_collector, call: addPacker, tag: commerce_shipping.packer }
+  Drupal\commerce_shipping\PackerManagerInterface: '@commerce_shipping.packer_manager'
+
+  commerce_shipping.default_packer:
+    class: Drupal\commerce_shipping\Packer\DefaultPacker
+    tags:
+      - { name: commerce_shipping.packer, priority: -100 }
+
+  commerce_shipping.admin_packer:
+    class: Drupal\commerce_shipping\Packer\AdminPacker
+    tags:
+      - { name: commerce_shipping.packer, priority: -200 }
+
+  commerce_shipping.order_shipment_summary:
+    class: Drupal\commerce_shipping\OrderShipmentSummary
+  Drupal\commerce_shipping\OrderShipmentSummaryInterface: '@commerce_shipping.order_shipment_summary'
+
+  commerce_shipping.early_order_processor:
+    class: Drupal\commerce_shipping\EarlyOrderProcessor
+    tags:
+      - { name: commerce_order.order_processor, priority: 200 }
+
+  commerce_shipping.late_order_processor:
+    class: Drupal\commerce_shipping\LateOrderProcessor
+    tags:
+      - { name: commerce_order.order_processor, priority: -100 }
+
+  commerce_shipping.referenceable_plugin_types_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\ReferenceablePluginTypesSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_shipping.order_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\OrderSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_shipping.order_manager:
+    class: Drupal\commerce_shipping\ShippingOrderManager
+  Drupal\commerce_shipping\ShippingOrderManagerInterface: '@commerce_shipping.order_manager'
+
+  commerce_shipping.profile_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\ProfileSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_shipping.route_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_shipping.profile_field_copy:
+    class: Drupal\commerce_shipping\ProfileFieldCopy
+    autowire: true
+  Drupal\commerce_shipping\ProfileFieldCopyInterface: '@commerce_shipping.profile_field_copy'
+
+  commerce_shipping.shipment_manager:
+    class: Drupal\commerce_shipping\ShipmentManager
+  Drupal\commerce_shipping\ShipmentManagerInterface: '@commerce_shipping.shipment_manager'
+
+  logger.channel.commerce_shipping:
+    parent: logger.channel_base
+    arguments: ['commerce_shipping']
+
+  commerce_shipping.order_item_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\OrderItemSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  plugin.manager.commerce_shipping_method:
+    class: Drupal\commerce_shipping\ShippingMethodManager
+    parent: default_plugin_manager
+  Drupal\commerce_shipping\ShippingMethodManager: '@plugin.manager.commerce_shipping_method'
+
+  plugin.manager.commerce_package_type:
+    class: Drupal\commerce_shipping\PackageTypeManager
+    arguments: ['@module_handler', '@cache.discovery']
+  Drupal\commerce_shipping\PackageTypeManagerInterface: '@plugin.manager.commerce_package_type'
+
+  commerce_shipping.shipment_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\ShipmentSubscriber
+    tags:
+      - { name: event_subscriber }
+      - { name: needs_destruction }
+
+  commerce_shipping.filter_conditions_subscriber:
+    class: Drupal\commerce_shipping\EventSubscriber\FilterConditionsEventSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  commerce_shipping.shipment_confirmation_mail:
+    class: Drupal\commerce_shipping\Mail\ShipmentConfirmationMail
+  Drupal\commerce_shipping\Mail\ShipmentConfirmationMailInterface: '@commerce_shipping.shipment_confirmation_mail'
+
+  commerce_shipping.field_access:
+    class: Drupal\commerce_shipping\FieldAccess
+  Drupal\commerce_shipping\FieldAccessInterface: '@commerce_shipping.field_access'
+
+  Drupal\commerce_shipping\Hook\CommerceShippingHooks:
+    class: Drupal\commerce_shipping\Hook\CommerceShippingHooks
+
+  Drupal\commerce_shipping\Hook\CommerceShippingThemeHooks:
+    class: Drupal\commerce_shipping\Hook\CommerceShippingThemeHooks

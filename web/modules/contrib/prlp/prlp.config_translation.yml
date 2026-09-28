@@ -1,0 +1,5 @@
+prlp.settings:
+  title: 'PRLP settings'
+  base_route_name: prlp.prlp_admin_settings
+  names:
+    - 'prlp.settings'

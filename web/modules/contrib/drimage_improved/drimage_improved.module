@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * DrImage core functions.
+ */
+
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\drimage_improved\Hook\DrimageImprovedHooks;
+use Drupal\Core\Hook\Attribute\LegacyModuleImplementsAlter;
+use Drupal\Core\Config\ConfigImporter;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\crop\CropTypeInterface;
+use Drupal\drimage_improved\Controller\ImageStyleListBuilder;
+use Drupal\drimage_improved\Controller\ImageStyleWithPipelineListBuilder;
+use Drupal\imageapi_optimize\ImageAPIOptimizePipelineInterface;
+
+/**
+ * Implements hook_help().
+ */
+#[LegacyHook]
+function drimage_improved_help($route_name, RouteMatchInterface $route_match) {
+  return \Drupal::service(DrimageImprovedHooks::class)->help($route_name, $route_match);
+}
+
+/**
+ * Implements hook_theme().
+ */
+#[LegacyHook]
+function drimage_improved_theme() {
+  return \Drupal::service(DrimageImprovedHooks::class)->theme();
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+#[LegacyHook]
+function drimage_improved_entity_type_alter(array &$entity_types): void {
+  \Drupal::service(DrimageImprovedHooks::class)->entityTypeAlter($entity_types);
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Moves drimage_improved_entity_type_alter to the back, to override the imageapi_optimize override if present.
+ */
+#[LegacyModuleImplementsAlter]
+function drimage_improved_module_implements_alter(array &$implementations, string $hook): void {
+  if ($hook == 'entity_type_alter') {
+    $group = $implementations['drimage_improved'];
+    unset($implementations['drimage_improved']);
+    $implementations['drimage_improved'] = $group;
+  }
+}
+
+/**
+ * Implements hook_modules_uninstalled().
+ */
+#[LegacyHook]
+function drimage_improved_modules_uninstalled(array $modules, bool $isSyncing): void {
+  \Drupal::service(DrimageImprovedHooks::class)->modulesUninstalled($modules, $isSyncing);
+}
+
+/**
+ * Implements hook_modules_installed().
+ */
+#[LegacyHook]
+function drimage_improved_modules_installed(array $modules, bool $isSyncing): void {
+  \Drupal::service(DrimageImprovedHooks::class)->modulesInstalled($modules, $isSyncing);
+}
+
+/**
+ * Implements hook_config_import_steps_alter().
+ *
+ * Delete all drimage_improved image styles after certain modules are (un)installed.
+ */
+#[LegacyHook]
+function drimage_improved_config_import_steps_alter(array &$syncSteps, ConfigImporter $configImporter): void {
+  \Drupal::service(DrimageImprovedHooks::class)->configImportStepsAlter($syncSteps, $configImporter);
+}
+
+/**
+ * Helper function to delete all drimage_improved image styles.
+ */
+function _drimage_improved_config_import_delete_image_styles(array &$context, ConfigImporter $configImporter): void {
+  \Drupal::service('drimage_improved.image_style_repository')
+    ->deleteAll();
+  $context['finished'] = 1;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Delete all drimage_improved image styles if the default pipeline is updated.
+ */
+#[LegacyHook]
+function drimage_improved_imageapi_optimize_pipeline_update(ImageAPIOptimizePipelineInterface $entity): void {
+  \Drupal::service(DrimageImprovedHooks::class)->imageapiOptimizePipelineUpdate($entity);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ *
+ * Delete all drimage_improved image styles related to a crop type if it is updated.
+ */
+#[LegacyHook]
+function drimage_improved_crop_type_update(CropTypeInterface $entity): void {
+  \Drupal::service(DrimageImprovedHooks::class)->cropTypeUpdate($entity);
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+#[LegacyHook]
+function drimage_improved_page_attachments(array &$attachments) {
+  \Drupal::service(DrimageImprovedHooks::class)->pageAttachments($attachments);
+}

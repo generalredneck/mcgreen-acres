@@ -1,0 +1,4 @@
+all_tables: TRUE
+connections:
+  - default
+table_list: [ ]

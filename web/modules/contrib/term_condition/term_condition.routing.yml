@@ -1,0 +1,6 @@
+term_condition.taxonomy_term_autocomplete:
+  path: '/term-condition/taxonomy-term-autocomplete/{target_type}/{selection_handler}/{selection_settings_key}'
+  defaults:
+    _controller: '\Drupal\term_condition\Controller\TermAutocompleteController::handleAutocomplete'
+  requirements:
+    _access: 'TRUE'

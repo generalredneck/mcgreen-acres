@@ -1,0 +1,10 @@
+commerce_product.commerce_product_variation_type.*.third_party.commerce_better_product_variation_label:
+  type: config_object
+  label: 'Commerce Better Product Variation Label'
+  mapping:
+    product_label_prefix:
+      type: boolean
+      label: 'Use parent product label as prefix'
+    product_label_prefix_separator:
+      type: string
+      label: 'Prefix separator'

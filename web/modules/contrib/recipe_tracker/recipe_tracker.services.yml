@@ -1,0 +1,8 @@
+services:
+  recipe_tracker.event_subscriber:
+    class: Drupal\recipe_tracker\EventSubscriber\RecipeTrackerSubscriber
+    arguments:
+      $currentUser: '@current_user'
+      $appRoot: '%app.root%'
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Module file for facebook_pixel_commerce.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function facebook_pixel_commerce_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the facebook_pixel_commerce module.
+    case 'help.page.facebook_pixel_commerce':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Facebook Pixel Commerce: Drupal Commerce Facebook pixel integration.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function facebook_pixel_commerce_commerce_product_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($view_mode == 'full') {
+    /** @var \Drupal\facebook_pixel\FacebookEvent $facebook_event */
+    $facebook_event = \Drupal::service('facebook_pixel.facebook_event');
+    /** @var \Drupal\commerce_price\Rounder $rounder */
+    $rounder = \Drupal::service('commerce_price.rounder');
+
+    $skus = [];
+    $contents = [];
+    /** @var \Drupal\commerce_product\Entity\ProductInterface $entity */
+    foreach ($entity->getVariations() as $variation) {
+      $contents[] = [
+        'id' => $variation->getSku(),
+        'value' => $variation->getPrice() ? $rounder->round($variation->getPrice())->getNumber() : '0',
+        'quantity' => 1,
+      ];
+      $skus[] = $variation->getSku();
+    }
+    // Detect if this is a single product or product_group:
+    // @see https://developers.facebook.com/docs/facebook-pixel/reference/
+    $commerce_content_type = count($skus) > 1 ? 'product_group' : 'product';
+    $data = [
+      'content_type' => $commerce_content_type,
+      'content_name' => $entity->getTitle(),
+      'content_ids' => $skus,
+      'contents' => $contents,
+    ];
+
+    // Append the value and currency for the default variation.
+    if ($entity->getDefaultVariation()) {
+      $defaultPrice = $entity->getDefaultVariation()->getPrice();
+      // "0" needs to be a string as "getNumber()" returns a string as well:
+      $data['value'] = $defaultPrice ? $rounder->round($defaultPrice)->getNumber() : '0';
+      $data['currency'] = $defaultPrice ? $defaultPrice->getCurrencyCode() : '';
+    }
+
+    $facebook_event->addEvent('ViewContent', $data);
+  }
+
+}

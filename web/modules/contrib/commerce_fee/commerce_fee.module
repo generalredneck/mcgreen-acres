@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * @file
+ * Provides a UI for managing fees.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\views\Plugin\views\field\EntityField;
+
+/**
+ * Implements hook_commerce_condition_info_alter().
+ */
+function commerce_fee_commerce_condition_info_alter(&$definitions) {
+  foreach ($definitions as &$definition) {
+    // Force all order item conditions to have the same category.
+    // This prevents them from accidentally showing in vertical tabs
+    // in the fee UI.
+    if ($definition['entity_type'] == 'commerce_order_item') {
+      $definition['category'] = t('Products');
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function commerce_fee_theme() {
+  return [
+    'commerce_fee' => [
+      'render element' => 'elements',
+    ],
+    'commerce_fee_form' => [
+      'render element' => 'form',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_commerce_fee().
+ */
+function commerce_fee_theme_suggestions_commerce_fee(array $variables) {
+  return _commerce_entity_theme_suggestions('commerce_fee', $variables);
+}
+
+/**
+ * Prepares variables for fee templates.
+ *
+ * Default template: commerce-fee.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing rendered fields.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_commerce_fee(array &$variables) {
+  /** @var Drupal\commerce_fee\Entity\FeeInterface $fee */
+  $fee = $variables['elements']['#commerce_fee'];
+
+  $variables['fee_entity'] = $fee;
+  $variables['fee_url'] = $fee->toUrl();
+  $variables['fee'] = [];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['fee'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Removes core's built-in formatters from views field options for
+ * fee start_date and end_date fields, since they perform timezone
+ * conversion. The "Default (Store timezone)" formatter should be used instead.
+ */
+function commerce_fee_form_views_ui_config_item_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\views\Plugin\views\field\EntityField $handler */
+  $handler = $form_state->get('handler');
+  if ($handler instanceof EntityField && !empty($handler->definition['entity_type'])) {
+    $entity_type_id = $handler->definition['entity_type'];
+    $field_name = $handler->definition['field_name'];
+    /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager */
+    $field_manager = \Drupal::service('entity_field.manager');
+    $field_definitions = $field_manager->getFieldStorageDefinitions($entity_type_id);
+    $field_definition = $field_definitions[$field_name];
+    if ($entity_type_id == 'commerce_fee' && $field_definition->getType() == 'datetime') {
+      unset($form['options']['type']['#options']['datetime_custom']);
+      unset($form['options']['type']['#options']['datetime_default']);
+      unset($form['options']['type']['#options']['datetime_plain']);
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function commerce_fee_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  /** @var \Drupal\Core\Field\BaseFieldDefinition $field_definition */
+  $field_definition = $context['items']->getFieldDefinition();
+  $field_name = $field_definition->getName();
+  $entity_type = $field_definition->getTargetEntityTypeId();
+  $widget_name = $context['widget']->getPluginId();
+  if ($field_name == 'condition_operator' && $entity_type == 'commerce_fee' && $widget_name == 'options_buttons') {
+    // Hide the label.
+    $element['#title_display'] = 'invisible';
+  }
+}

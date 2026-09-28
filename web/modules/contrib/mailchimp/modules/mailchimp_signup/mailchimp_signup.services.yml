@@ -1,0 +1,4 @@
+services:
+  mailchimp_signup.lazy_builder:
+    class: Drupal\mailchimp_signup\MailchimpSignupLazyBuilder
+    arguments: ['@mailchimp.api', '@form_builder', '@entity_type.manager']

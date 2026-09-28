@@ -1,0 +1,11 @@
+name: 'Image and Media Delta Formatter'
+description: 'Provides a formatter that displays a specific delta of a multi-value image or media field.'
+core_version_requirement: ^10 || ^11
+type: module
+dependencies:
+  - drupal:image
+
+# Information added by Drupal.org packaging script on 2025-02-02
+version: '8.x-1.3'
+project: 'image_delta_formatter'
+datestamp: 1738516938

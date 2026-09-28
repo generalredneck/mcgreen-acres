@@ -1,0 +1,102 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update hooks.
+ */
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Convert term id to term uuid #3362744.
+ */
+function term_condition_update_9201() {
+  // Config keys to check -- blocks use 'visibility', others
+  // (e.g. asset_injector, context) use 'conditions'.
+  // @todo Are there others?
+  $condition_keys = [
+    'visibility',
+    'conditions',
+  ];
+
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  $config_factory = \Drupal::configFactory();
+
+  // Check ALL configs since not only blocks use condition plugins.
+  foreach ($config_factory->listAll() as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $dependencies = $config->get('dependencies.module') ?? [];
+
+    // Move on if there is no term_condition dependency or none at all.
+    if (!$dependencies || !in_array('term_condition', $dependencies)) {
+      continue;
+    }
+
+    // Attempt to load term condition config from known possible condition keys.
+    $term_condition_config = NULL;
+    foreach ($condition_keys as $key) {
+      $term_condition_key = $key . '.term';
+      if ($config->get($key) && $config->get($term_condition_key)) {
+        $term_condition_config = $config->get($term_condition_key);
+        break;
+      }
+    }
+
+    // Nothing to process.
+    if (!$term_condition_config || !array_key_exists('tid', $term_condition_config)) {
+      continue;
+    }
+
+    $valid_terms = [];
+
+    // Reformat scalar tid values as arrays matching later config formats so
+    // they can be converted to uuids below.
+    if (is_scalar($term_condition_config['tid'])) {
+      $term_condition_config['tid'] = [
+        ['target_id' => $term_condition_config['tid']],
+      ];
+    }
+
+    if (is_array($term_condition_config['tid'])) {
+      foreach ($term_condition_config['tid'] as $tid) {
+        // If we have an array (< 2.0.2), load the term by id.
+        if (is_array($tid)) {
+          $term = Term::load(reset($tid));
+        }
+        // Else this should be a UUID (i.e. 2.0.2 config).
+        elseif (!empty($tid)) {
+          $term = \Drupal::service('entity.repository')->loadEntityByUuid('taxonomy_term', $tid);
+        }
+
+        // Add the term if we found it. This effectively filters out invalid
+        // configs, or configs for terms that have been subsequently deleted.
+        if ($term) {
+          $valid_terms[] = $term->uuid();
+        }
+      }
+    }
+
+    // Store any valid, converted term uuids them in the new 'term_uuids' key
+    // and remove the 'tid' key.
+    if (!empty($valid_terms)) {
+      $config->set($term_condition_key . '.term_uuids', $valid_terms);
+      $config->clear($term_condition_key . '.tid');
+    }
+
+    // No valid terms were found, so we should clear the condition config, and
+    // ensure there's no remaining dependency on term_condition.
+    else {
+      $config->clear($term_condition_key);
+
+      $remaining_dependencies = array_diff($dependencies, ['term_condition']);
+      if ($remaining_dependencies) {
+        $config->set('dependencies.module', $remaining_dependencies);
+      }
+      else {
+        $config->clear('dependencies.module');
+      }
+    }
+    $config->save(TRUE);
+  }
+
+}

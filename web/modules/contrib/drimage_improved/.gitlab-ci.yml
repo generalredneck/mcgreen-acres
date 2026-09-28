@@ -1,0 +1,546 @@
+################################################################################
+# Self-contained CI for the Drimage module.
+#
+# Five stages:
+#   build     - composer-validate
+#   validate  - phpcs, phpstan, cspell, eslint, stylelint  (gating)
+#   unit      - phpunit (Kernel)
+#   lighthouse- a dedicated Lighthouse audit with performance and accessibility
+#               budgets, straight after the unit tests
+#   test      - functional-acceptance: one browser job per setup
+#               (base, focal_point, image_widget_crop, webp_off), each applying
+#               its own testing recipe. 4 jobs.
+#   report    - create-reports: merges every job's Cucumber JSON into one HTML + PDF
+#
+# This pipeline does NOT use the drupal/gitlab_templates include: every job is
+# spelled out so it runs identically on git.drupalcode.org and under
+# gitlab-ci-local. Nothing is masked with `|| true` and nothing is allow_failure.
+# Every job gates: composer-validate, phpcs (errors), phpstan, cspell, eslint,
+# stylelint, phpunit (Kernel), all four functional-acceptance jobs, create-reports.
+# functional-acceptance builds and serves a plain Drupal site seeded by the testing
+# recipe (content type + sample Drimage page as front page) and drives it in
+# Chromium; create-reports sums up the test-stage artifacts.
+#
+# The module's contract is plain Drupal core, so that is what is tested. A Drupal CMS
+# base was tried and dropped: fresh installs currently break inside the Drupal CMS
+# starter recipe itself (Canvas component "active_version hash mismatch" / "would
+# delete in-use Canvas component"), which is distribution drift, not this module.
+################################################################################
+stages: [build, validate, unit, lighthouse, test, report]
+
+variables:
+  # Drupal 11.4 is the current supported minor; the module declares
+  # core_version_requirement ^9.3 || ^10 || ^11.
+  DRUPAL_CORE: "11.4.0"
+  COMPOSER_ALLOW_SUPERUSER: "1"
+  COMPOSER_MEMORY_LIMIT: "-1"
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+# ---------------------------------------------------------------------------
+# Shared helper
+# ---------------------------------------------------------------------------
+# Composer and npm pull their archives from api.github.com / codeload.github.com /
+# packagist / the npm registry, which intermittently answer `HTTP/2 504` or time out
+# with `curl error 28`. Composer's own internal retry gives up and then reports
+# "Source fallback is disabled. Not trying alternative sources.", which fails the
+# whole pipeline on an outage that has nothing to do with this module.
+#
+# `retry_net` retries ONLY dependency-fetch commands, three times with a growing
+# pause, and still fails the job if the last attempt fails. Nothing else is ever
+# wrapped: no linter, no test, no assertion is retried or suppressed.
+.retry_net: &retry_net |
+  set -e
+  retry_net() {
+    for attempt in 1 2 3; do
+      if "$@"; then
+        return 0
+      fi
+      echo "network attempt $attempt failed; retrying in $((attempt * 15))s..."
+      sleep $((attempt * 15))
+    done
+    echo "still failing after 3 attempts."
+    return 1
+  }
+
+# ---------------------------------------------------------------------------
+# build
+# ---------------------------------------------------------------------------
+build:composer-validate:
+  stage: build
+  image: public.ecr.aws/docker/library/composer:2
+  script:
+    - composer validate --no-check-all --no-check-publish
+
+# ---------------------------------------------------------------------------
+# validate
+# ---------------------------------------------------------------------------
+phpcs:
+  stage: validate
+  image: public.ecr.aws/docker/library/php:8.3-cli
+  before_script:
+    - *retry_net
+    - apt-get update -y > /dev/null && apt-get install -y -qq git unzip > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+    - retry_net composer global require --no-interaction --no-progress drupal/coder:^8.3 dealerdirect/phpcodesniffer-composer-installer:^1
+    - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  script:
+    - phpcs --standard=.phpcs.xml
+  allow_failure: false
+
+phpstan:
+  stage: validate
+  image: public.ecr.aws/docker/library/php:8.3-cli
+  before_script:
+    - *retry_net
+    - apt-get update -y > /dev/null && apt-get install -y -qq git unzip > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - retry_net composer create-project drupal/recommended-project:~$DRUPAL_CORE /drupal --no-interaction --no-install
+    - cd /drupal
+    - composer config --no-plugins allow-plugins true
+    - composer config minimum-stability dev
+    # focal_point is a soft integration point for Drimage's derivatives; pull it
+    # so phpstan-drupal can resolve the classes the module references.
+    - retry_net composer require --no-interaction --no-progress --ignore-platform-reqs -W mglaman/phpstan-drupal phpstan/extension-installer drush/drush drupal/focal_point drupal/imageapi_optimize drupal/stage_file_proxy drupal/image_widget_crop drupal/s3fs
+    - retry_net composer install --no-interaction --no-progress --ignore-platform-reqs
+    - mkdir -p web/modules/custom && cp -r "$CI_PROJECT_DIR" web/modules/custom/drimage_improved
+  script:
+    - cd /drupal
+    - php -d memory_limit=2G ./vendor/bin/phpstan analyse -c web/modules/custom/drimage_improved/phpstan.neon --no-progress
+  allow_failure: false
+
+cspell:
+  stage: validate
+  image: public.ecr.aws/docker/library/node:20
+  before_script:
+    - *retry_net
+    - retry_net npm install -g cspell
+  script:
+    - cspell lint . --no-progress
+  allow_failure: false
+
+# The module ships js/ and css/, so it lints its own front-end assets against
+# Drupal core's shared eslint/stylelint configuration (fetched from the pinned
+# core tag). Gating; nothing masked.
+eslint:
+  stage: validate
+  image: public.ecr.aws/docker/library/node:20
+  before_script:
+    - *retry_net
+    - apt-get update -y > /dev/null && apt-get install -y -qq git > /dev/null
+    - retry_net git clone --depth 1 --branch "$DRUPAL_CORE" https://git.drupalcode.org/project/drupal.git /core-src
+    - cp /core-src/core/.eslintrc.json /core-src/core/.eslintrc.passing.json /core-src/core/.prettierrc.json ./ 2>/dev/null || true
+    - cp /core-src/core/package.json ./core-package.json
+    - npm install --no-audit --no-fund $(node -e "const d=require('./core-package.json').devDependencies;console.log(Object.entries(d).filter(([k])=>/eslint|babel|prettier/.test(k)).map(([k,v])=>k+'@'+v).join(' '))")
+  script:
+    - npx eslint --no-eslintrc -c .eslintrc.json js modules/*/js
+  allow_failure: false
+
+stylelint:
+  stage: validate
+  image: public.ecr.aws/docker/library/node:20
+  before_script:
+    - *retry_net
+    - apt-get update -y > /dev/null && apt-get install -y -qq git > /dev/null
+    - retry_net git clone --depth 1 --branch "$DRUPAL_CORE" https://git.drupalcode.org/project/drupal.git /core-src
+    - cp /core-src/core/.stylelintrc.json ./ 2>/dev/null || true
+    - cp /core-src/core/package.json ./core-package.json
+    - npm install --no-audit --no-fund $(node -e "const d=require('./core-package.json').devDependencies;console.log(Object.entries(d).filter(([k])=>/stylelint/.test(k)).map(([k,v])=>k+'@'+v).join(' '))")
+  script:
+    - npx stylelint --config .stylelintrc.json "css/**/*.css" "modules/*/css/**/*.css"
+  allow_failure: false
+
+# ---------------------------------------------------------------------------
+# test
+# ---------------------------------------------------------------------------
+# Native PHPUnit Kernel tests (back-end logic; need a DB only). Browser-level
+# coverage lives in the browser-based functional test suite (functional-acceptance),
+# not in PHPUnit Functional tests. Builds a scratch Drupal ~11.4 with
+# drimage_improved, the optional integration modules and drupal/core-dev.
+#
+# Proven under gitlab-ci-local (Drupal ~11.4): 17 tests, 76 assertions, OK.
+phpunit:
+  stage: unit
+  image: public.ecr.aws/docker/library/php:8.3-cli
+  services:
+    - name: public.ecr.aws/docker/library/mariadb:10.11
+      alias: mariadb
+      command: ["--max-allowed-packet=128M"]
+  variables:
+    MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+    MYSQL_DATABASE: "drupal"
+    SIMPLETEST_DB: "mysql://root@mariadb/drupal"
+  before_script:
+    - *retry_net
+    - apt-get update -y > /dev/null && apt-get install -y -qq git unzip libzip-dev libpng-dev libjpeg-dev libfreetype6-dev libwebp-dev default-mysql-client > /dev/null
+    # --with-webp is REQUIRED, not cosmetic: this module renders a WebP <source>
+    # in its <picture>, and the php:8.3-cli GD build has no WebP support unless it
+    # is compiled in. Without it every `*.webp` derivative fails to generate, the
+    # browser picks the WebP source and shows a broken image.
+    - docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp > /dev/null
+    - docker-php-ext-install -j"$(nproc)" gd pdo_mysql zip > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - retry_net composer create-project drupal/recommended-project:~$DRUPAL_CORE /drupal --no-interaction --no-install
+    - cd /drupal
+    - composer config --no-plugins allow-plugins true
+    - composer config minimum-stability dev
+    - retry_net composer require --no-interaction --no-progress --ignore-platform-reqs -W "drupal/core-dev:~$DRUPAL_CORE" drupal/focal_point drupal/imageapi_optimize drupal/stage_file_proxy drupal/image_widget_crop drupal/s3fs
+    - retry_net composer install --no-interaction --no-progress --ignore-platform-reqs
+    - mkdir -p web/modules/custom && cp -r "$CI_PROJECT_DIR" web/modules/custom/drimage_improved
+  script:
+    - cd /drupal
+    - mkdir -p "$CI_PROJECT_DIR/tests/reports"
+    - php vendor/phpunit/phpunit/phpunit -c web/core --group drimage_improved
+        --log-junit "$CI_PROJECT_DIR/tests/reports/phpunit.junit.xml"
+        web/modules/custom/drimage_improved/tests/src/Kernel
+        web/modules/custom/drimage_improved/modules/drimage_s3fs/tests/src/Kernel
+  artifacts:
+    when: always
+    paths:
+      - tests/reports/
+    reports:
+      junit: tests/reports/phpunit.junit.xml
+  allow_failure: false
+
+# Front-end BDD acceptance (Playwright + Cucumber-js via @vardot/varbase-e2e).
+#
+# HEAVY / BROWSER-BASED. This job needs, in one runner:
+#   * PHP + Composer to build Drupal ~11.4 with drimage_improved + focal_point,
+#   * a MariaDB service and a drush site install,
+#   * homepage content that actually renders a Drimage image (an image field
+#     using the Drimage formatter, a node with a focal-point image, set as the
+#     front page) with core WebP enabled,
+#   * Node 20 + Chromium (`npx playwright install --with-deps chromium`),
+#   * the site served on LAUNCH_URL.
+#
+# The scenarios were proven green locally (5/5) against a running Drupal 11.4
+# site whose homepage renders a Drimage image. The homepage-content
+# provisioning below comes from the testing recipe (config + default content).
+.acceptance:
+  stage: test
+  image: public.ecr.aws/docker/library/php:8.3-cli
+  services:
+    - name: public.ecr.aws/docker/library/mariadb:10.11
+      alias: mariadb
+      command: ["--max-allowed-packet=128M"]
+  variables:
+    MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+    MYSQL_DATABASE: "drupal"
+    LAUNCH_URL: "http://localhost:8080"
+    HEADLESS: "true"
+    FEATURES: "tests/features/drimage/**/*.feature"
+    # @vardot/varbase-e2e renders a per-run HTML report from a process-exit hook,
+    # reading the DEFAULT tests/reports/cucumber_report.json. Every job here writes
+    # its own cucumber_report_$SETUP.json instead, so that hook finds nothing and
+    # aborts the node process AFTER cucumber has already reported its result. The
+    # combined HTML + PDF report is rendered once, from all setups, by create-reports.
+    VARBASE_E2E_REPORT_DISABLE: "1"
+  before_script:
+    - *retry_net
+    - apt-get update -y > /dev/null && apt-get install -y -qq git unzip curl gnupg libzip-dev libpng-dev libjpeg-dev libfreetype6-dev libwebp-dev default-mysql-client > /dev/null
+    # --with-webp is REQUIRED, not cosmetic: this module renders a WebP <source>
+    # in its <picture>, and the php:8.3-cli GD build has no WebP support unless it
+    # is compiled in. Without it every `*.webp` derivative fails to generate, the
+    # browser picks the WebP source and shows a broken image.
+    - docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp > /dev/null
+    - docker-php-ext-install -j"$(nproc)" gd pdo_mysql zip > /dev/null
+    - curl -fsSL https://deb.nodesource.com/setup_20.x | bash - > /dev/null && apt-get install -y -qq nodejs > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    # Build a plain Drupal site pinned to $DRUPAL_CORE. Composer fetches hundreds of
+    # archives and regularly loses one to a transient network failure, especially with
+    # several of these jobs building at once - see the retry_net helper at the top.
+    - |
+      set -e
+      retry_net composer create-project "drupal/recommended-project:~$DRUPAL_CORE" /drupal --no-interaction --no-install
+      cd /drupal
+      composer config --no-plugins allow-plugins true
+      composer config minimum-stability dev
+      composer config prefer-stable true
+      retry_net composer require --no-interaction --no-progress --ignore-platform-reqs -W drush/drush drupal/focal_point drupal/imageapi_optimize drupal/stage_file_proxy drupal/image_widget_crop drupal/s3fs
+      retry_net composer install --no-interaction --no-progress --ignore-platform-reqs
+    - cd /drupal
+    - mkdir -p web/modules/custom && cp -r "$CI_PROJECT_DIR" web/modules/custom/drimage_improved
+    # Install the base site from core's `standard` profile.
+    - php -d memory_limit=512M vendor/drush/drush/drush.php site:install standard --db-url="mysql://root@mariadb/drupal" --account-name=webmaster --account-pass=dD.123123ddd --site-name="Drimage CI" -y
+    # Core's `standard` profile does NOT install Media (see standard.info.yml): its
+    # media.type.* files are OPTIONAL config, so a bare standard site has no
+    # /media/add page at all. The editorial feature exercises Drimage against core
+    # media, so provision it from core's own media-type recipes. The guard keeps the
+    # step idempotent: re-applying a media-type recipe over existing config would fail
+    # on its strict field storages.
+    - |
+      set -e
+      cd /drupal/web
+      php /drupal/vendor/drush/drush/drush.php config:get media.type.image id > /dev/null 2>&1 \
+        || php -d memory_limit=1G /drupal/vendor/bin/dr recipe /drupal/web/core/recipes/image_media_type
+      php /drupal/vendor/drush/drush/drush.php config:get media.type.remote_video id > /dev/null 2>&1 \
+        || php -d memory_limit=1G /drupal/vendor/bin/dr recipe /drupal/web/core/recipes/remote_video_media_type
+      cd /drupal
+    # Seed the test setup with the hidden testing recipe (installs drimage_improved
+    # + focal_point and creates the Drimage Test content type + Drimage display).
+    # Apply the setup recipe with core's own CLI: Drush re-discovers commands right
+    # after a module install and chokes on this module's legacy drush.services.yml.
+    # Use the Composer bin proxy `vendor/bin/dr`, not `web/core/scripts/drupal`:
+    # since 11.4 that shim forwards to `core/scripts/dr`, which falls back to
+    # `<docroot>/vendor/autoload.php` when it is not invoked through the proxy —
+    # a path that does not exist in the drupal/recommended-project layout, so the
+    # shim fatals before the recipe is applied.
+    # memory_limit: applying a recipe serialises the whole config/plugin graph, which
+    # can exceed PHP's default 128M and die with "Allowed memory size of 134217728
+    # bytes exhausted" in PhpSerialize.
+    - cd /drupal/web && php -d memory_limit=1G /drupal/vendor/bin/dr recipe "/drupal/web/modules/custom/drimage_improved/tests/recipes/$RECIPE"
+    - cd /drupal
+    # Drush must discover the module's command after install (Drush 13 attribute command).
+    - php vendor/drush/drush/drush.php drimage_improved:delete-styles
+    # Fail fast if the site is not actually installed and seeded.
+    - php vendor/drush/drush/drush.php status --field=bootstrap | grep -q Successful
+    - php vendor/drush/drush/drush.php cget system.site page.front
+    # Serve the site. Two things about this line are load-bearing:
+    #
+    # 1. The server must RUN WITH THE DOCROOT AS ITS WORKING DIRECTORY (the `cd`
+    #    inside the subshell). `-t` only tells the built-in server where to look for
+    #    files; the PHP process keeps the cwd it was started in. Drupal resolves a
+    #    lot of paths relative to the process cwd, so starting it from /drupal gives
+    #    `Twig\Error\LoaderError: Template "core/modules/file/templates/
+    #    file-upload-help.html.twig" is not defined` and
+    #    `file_get_contents(core/themes/olivero/js/nav-resize.js): Failed to open
+    #    stream` - half-rendered forms and broken asset aggregates, which surface as
+    #    a missing login field or a missing file input.
+    # 2. PHP's built-in server is single-threaded unless PHP_CLI_SERVER_WORKERS is
+    #    set. A Drimage page fires several derivative requests in parallel and each
+    #    one is generated by Drupal on first hit, so a one-worker server cannot serve
+    #    the page these tests assert on: the derivative requests pile up behind the
+    #    document and come back as HTTP 500.
+    - (cd /drupal/web && PHP_CLI_SERVER_WORKERS=8 exec php -S 0.0.0.0:8080 -t /drupal/web /drupal/web/.ht.router.php > /tmp/php-server.log 2>&1) &
+    - sleep 3
+    # Fail fast if the served site does not answer at all.
+    - curl -sf -o /dev/null -w "front page HTTP %{http_code}\n" "$LAUNCH_URL/"
+    # Warm the site SEQUENTIALLY before handing it to the browser, as an anonymous
+    # visitor AND as the administrator, over every page the suite drives.
+    #
+    # Why this is needed: on a freshly installed site the very first render of a
+    # given page can die with `Twig\Error\LoaderError: Template
+    # "core/modules/system/templates/input.html.twig" is not defined` - the theme
+    # registry is still being populated, and with several PHP worker processes the
+    # incomplete state can even get cached. The visible symptom is the login step
+    # timing out on #edit-name, or an admin form rendering without its fields.
+    # One request at a time (curl fetches no sub-resources, so nothing races) settles
+    # it, exactly as a real site's first visitor would.
+    #
+    # This is a GATE, not a best effort: the loop repeats until every page answers
+    # without a 5xx and FAILS THE JOB if any page is still broken after three passes.
+    # Nothing here is asserted by the tests, and nothing is suppressed.
+    - |
+      set -e
+      COOKIES=/tmp/warm-cookies.txt
+      ULI=$(cd /drupal && php vendor/drush/drush/drush.php user:login --uri="$LAUNCH_URL" --no-browser | head -n1)
+      curl -s -L -c "$COOKIES" -o /dev/null "$ULI"
+      warm_ok=0
+      for pass in 1 2 3; do
+        warm_ok=1
+        for path in / /user/login /node/add/drimage_test /admin/config/media/drimage_improved /media/add; do
+          for auth in anon admin; do
+            if [ "$auth" = "admin" ]; then
+              code=$(curl -s -b "$COOKIES" -o /dev/null -w "%{http_code}" "$LAUNCH_URL$path")
+            else
+              code=$(curl -s -o /dev/null -w "%{http_code}" "$LAUNCH_URL$path")
+            fi
+            echo "warm pass=$pass $auth $path HTTP $code"
+            case "$code" in 5*) warm_ok=0 ;; esac
+          done
+        done
+        [ "$warm_ok" = "1" ] && break
+      done
+      if [ "$warm_ok" != "1" ]; then
+        echo "The served site still returns HTTP 5xx after three warm-up passes."
+        exit 1
+      fi
+    # Browser toolchain, run from the copied module (its cucumber.js + steps).
+    - cd web/modules/custom/drimage_improved
+    - retry_net npm install --no-audit --no-fund
+    - retry_net npx playwright install --with-deps chromium
+  script:
+    - cd /drupal/web/modules/custom/drimage_improved
+    - LAUNCH_URL="$LAUNCH_URL" FEATURES="$FEATURES" CUCUMBER_JSON="cucumber_report_$SETUP" npx cucumber-js --config cucumber.js --tags "$TAGS"
+  after_script:
+    - mkdir -p "$CI_PROJECT_DIR/tests/reports"
+    - cp -f /drupal/web/modules/custom/drimage_improved/tests/reports/cucumber_report_*.json "$CI_PROJECT_DIR/tests/reports/" 2>/dev/null || true
+    # Keep the evidence for a failed browser run: the served site's own log and the
+    # last Drupal log entries. Without these a red scenario only says "HTTP 500".
+    - cp -f /tmp/php-server.log "$CI_PROJECT_DIR/tests/reports/php-server-$SETUP.log" 2>/dev/null || true
+    - cd /drupal && php vendor/drush/drush/drush.php watchdog:show --count=50 --extended > "$CI_PROJECT_DIR/tests/reports/watchdog-$SETUP.log" 2>&1 || true
+  artifacts:
+    when: always
+    paths:
+      - tests/reports/
+  allow_failure: false
+
+# One browser job per setup. Each applies its own testing recipe on top of the base
+# one and runs the scenarios that apply to it (tag expression), writing its own
+# Cucumber JSON so the report stage can merge all of them into one report.
+#
+# SETUP = which optional integration is in play (focal point, image widget crop,
+#         core WebP off).
+functional-acceptance:
+  extends: .acceptance
+  parallel:
+    matrix:
+      - SETUP: base
+        RECIPE: drimage_improved_test
+        TAGS: "not @focal and not @iwc and not @webp-off"
+      - SETUP: focal_point
+        RECIPE: drimage_improved_test_focal_point
+        TAGS: "not @iwc and not @webp-off"
+      - SETUP: image_widget_crop
+        RECIPE: drimage_improved_test_image_widget_crop
+        TAGS: "not @focal and not @webp-off"
+      - SETUP: webp_off
+        RECIPE: drimage_improved_test_webp_off
+        TAGS: "not @focal and not @iwc and not @webp-on"
+
+# Lighthouse audit of the served test site: the module's whole point is fast
+# images, so performance and accessibility get a budget in CI next to the tests.
+lighthouse:
+  extends: .acceptance
+  stage: lighthouse
+  variables:
+    SETUP: lighthouse
+    RECIPE: drimage_improved_test_focal_point
+    MIN_PERFORMANCE: "0.80"
+    MIN_ACCESSIBILITY: "0.90"
+  script:
+    - cd /drupal/web/modules/custom/drimage_improved
+    - npm install --no-audit --no-fund --no-save lighthouse@12
+    - mkdir -p "$CI_PROJECT_DIR/tests/reports"
+    - |
+      CHROME_PATH="$(node -e 'console.log(require("playwright").chromium.executablePath())')" \
+      npx lighthouse "$LAUNCH_URL" \
+        --only-categories=performance,accessibility,best-practices,seo \
+        --output=json --output=html \
+        --output-path="$CI_PROJECT_DIR/tests/reports/lighthouse" \
+        --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" \
+        --quiet
+    - |
+      node -e '
+        const fs=require("fs");
+        const r=JSON.parse(fs.readFileSync(process.env.CI_PROJECT_DIR+"/tests/reports/lighthouse.report.json","utf8"));
+        const s=Object.fromEntries(Object.entries(r.categories).map(([k,v])=>[k,v.score]));
+        console.log("scores:",JSON.stringify(s));
+        const min={performance:+process.env.MIN_PERFORMANCE,accessibility:+process.env.MIN_ACCESSIBILITY};
+        const bad=Object.entries(min).filter(([k,v])=>!(s[k]>=v));
+        if(bad.length){console.error("below budget: "+bad.map(([k,v])=>`${k} ${s[k]} < ${v}`).join(", "));process.exit(1)}
+        console.log("all budgets met");
+      '
+  after_script:
+    - cp -f /tmp/php-server.log "$CI_PROJECT_DIR/tests/reports/php-server-lighthouse.log" 2>/dev/null || true
+  artifacts:
+    when: always
+    paths:
+      - tests/reports/
+  allow_failure: false
+
+# ---------------------------------------------------------------------------
+# report
+# ---------------------------------------------------------------------------
+# Sum up the test-stage jobs into one combined report, as one summary:
+# "Create reports" job does: collect each test job's artifacts (the PHPUnit JUnit
+# XML and the Cucumber JSON), merge the Cucumber JSON(s) and render one HTML + PDF
+# report. Runs even if a test job failed so the report always reflects reality.
+create-reports:
+  stage: report
+  image: public.ecr.aws/docker/library/node:20
+  when: always
+  needs:
+    - job: phpunit
+      artifacts: true
+      optional: true
+    - job: functional-acceptance
+      artifacts: true
+      optional: true
+    - job: lighthouse
+      artifacts: true
+      optional: true
+  before_script:
+    - *retry_net
+    # The PDF is rendered by Playwright's Chromium (see generatePdf() in
+    # @vardot/varbase-e2e/bin/generate-reports.js), so this job needs the browser
+    # and its system libraries, not just the npm package.
+    - retry_net npm install --no-audit --no-fund
+    - retry_net npx playwright install --with-deps chromium
+  script:
+    - mkdir -p tests/reports
+    - 'echo "PHPUnit JUnit: $(test -f tests/reports/phpunit.junit.xml && echo present || echo missing)"'
+    # Every acceptance job writes its artifacts with `when: always`, so a red test
+    # job still delivers its Cucumber JSON. No JSON at all therefore means the test
+    # stage did not produce evidence, and this job must fail rather than report a
+    # green run on an empty set.
+    - |
+      set -e
+      ls tests/reports/cucumber_report_*.json > /dev/null 2>&1 || {
+        echo "No Cucumber JSON from the test stage - nothing to report on."
+        exit 1
+      }
+    # Merge every setup's Cucumber JSON into one, then render HTML + PDF.
+    - node -e 'const fs=require("fs");const out=[];for(const f of fs.readdirSync("tests/reports").filter(n=>/^cucumber_report_.*\.json$/.test(n)).sort())out.push(...JSON.parse(fs.readFileSync("tests/reports/"+f,"utf8")));fs.writeFileSync("tests/reports/cucumber_report.merged.json",JSON.stringify(out));console.log("merged "+out.length+" feature entries")'
+    - node ./node_modules/@vardot/varbase-e2e/bin/generate-reports.js
+        --json tests/reports/cucumber_report.merged.json
+        --out tests/reports/report.html --format all --pdf-out tests/reports/report.pdf
+        --metadata Project=drimage_improved
+    # The report is the deliverable of this stage: prove both files exist.
+    - test -s tests/reports/report.html
+    - test -s tests/reports/report.pdf
+  artifacts:
+    when: always
+    paths:
+      - tests/reports/
+  allow_failure: false
+
+# =============================================================================
+# GitLab Pages - the documentation site
+# =============================================================================
+#
+# Builds the Material for MkDocs site under `docs/` and publishes it with GitLab
+# Pages. This project has unique Pages domains enabled, so the site is served
+# from a generated hostname and https://project.pages.drupalcode.org/drimage_improved/
+# redirects to it; the exact domain is under Deploy > Pages. Only the default
+# branch publishes, so a merge request never replaces the live documentation.
+#
+# `--strict` turns a broken internal link or a missing nav target into a failed
+# job, which is the point: documentation that does not build is not documentation.
+pages:
+  stage: report
+  image: python:3.12-slim
+  needs: []
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  before_script:
+    - pip install --quiet "mkdocs-material>=9,<10" "pymdown-extensions>=10,<11"
+  script:
+    - mkdocs build --strict --site-dir public
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  allow_failure: false
+
+# Builds the documentation on every branch and merge request, so a broken page
+# fails review instead of failing after the merge.
+docs:build:
+  stage: validate
+  image: python:3.12-slim
+  needs: []
+  before_script:
+    - pip install --quiet "mkdocs-material>=9,<10" "pymdown-extensions>=10,<11"
+  script:
+    - mkdocs build --strict --site-dir public
+  artifacts:
+    when: on_failure
+    paths:
+      - public
+    expire_in: 1 day
+  allow_failure: false
