@@ -36,6 +36,7 @@ backups
 .lando.local.yml
 .vscode
 .claude
+.playwright-mcp
 
 # Stray npm install at repo root (no package.json here)
 /node_modules/
@@ -45,3 +46,4 @@ backups
 
 # Local design mockups (remove this line if you want them versioned)
 /mockups/
+content-drafts
