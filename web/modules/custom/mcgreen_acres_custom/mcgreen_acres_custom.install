@@ -506,3 +506,24 @@ function mcgreen_acres_custom_update_10010() {
 
   return t('Added Mailchimp import fields and the Subscriber Tags vocabulary.');
 }
+
+/**
+ * Removes newsletter subscribers created by contact-form spam senders.
+ *
+ * These addresses came from fake wholesale-order / marketing spam through
+ * the contact form's "subscribe" checkbox. Their domains are now on the
+ * advanced_email_validation banned list, so they can't re-subscribe.
+ */
+function mcgreen_acres_custom_update_10011() {
+  $mails = [
+    'amy.collett@bizwell.org',
+    'leo.scott@immensitylogistics.com',
+    'procurement@legendsglobal.us',
+    'jessicca.harrington@metlhodsmachine.com',
+  ];
+  $storage = \Drupal::entityTypeManager()->getStorage('simplenews_subscriber');
+  $subscribers = $storage->loadByProperties(['mail' => $mails]);
+  $storage->delete($subscribers);
+
+  return t('Deleted @count spam newsletter subscribers.', ['@count' => count($subscribers)]);
+}

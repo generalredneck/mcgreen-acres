@@ -1,0 +1,13 @@
+--- a/src/AdvancedEmailValidator.php	2026-09-28 13:18:42.733087251 -0500
++++ b/src/AdvancedEmailValidator.php	2026-09-28 13:18:42.748422895 -0500
+@@ -81,7 +81,9 @@
+ 
+     $validatorConfig = !empty($configOverrides) ? $configOverrides : $defaultConfig;
+     $emailValidator = new EmailValidator($validatorConfig);
+-    $emailValidator->validate($email);
++    // Domains are case-insensitive, but the banned/free/disposable lists are
++    // matched with a case-sensitive fnmatch(), so "x@BANNED.COM" would pass.
++    $emailValidator->validate(mb_strtolower($email));
+     return $emailValidator->getErrorCode();
+   }
+ 

@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - advanced_email_validation
     - mcgreen_acres_newsletter_segments
     - mcgreen_webform_network_check
     - spamaway
@@ -396,4 +397,34 @@ handlers:
     conditions: {  }
     weight: -50
     settings: {  }
+  advanced_email_webform_validator:
+    id: advanced_email_webform_validator_handler
+    handler_id: advanced_email_webform_validator
+    label: 'Advanced email webform validator'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings:
+      override_site_defaults: false
+      rules:
+        mx_lookup: false
+        disposable: false
+        free: false
+        banned: false
+      error_messages:
+        basic: ''
+        mx_lookup: ''
+        disposable: ''
+        free: ''
+        banned: ''
+      domain_lists:
+        disposable:
+          - ''
+        free:
+          - ''
+        banned:
+          - ''
+      emails:
+        '[webform_submission:values:email:html_email]': '[webform_submission:values:email:html_email]'
 variants: {  }

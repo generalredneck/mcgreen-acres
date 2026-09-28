@@ -22,7 +22,41 @@ domain_lists:
     - melottogroup.com
     - youdidyourbest.org
     - thewellnessscale.com
-    - 'dominat*keywords.com'
+    - 'dominat*.com'
+    - 'professionalbusiness*.com'
+    - '*onlineprofile.com'
+    - bizwell.org
+    - bravebizowners.com
+    - free-lance-now.com
+    - theentrepreneurhub.com
+    - excitepreneur.net
+    - mentalwellnesscenter.info
+    - hoffnmazordevelop.com
+    - invincibldev.com
+    - wixjo.com
+    - '*food*.us'
+    - '*food*.us.com'
+    - 'bova*'
+    - 'bridgford*'
+    - 'unitednaturalfood*'
+    - 'avifood*'
+    - 'carrols*'
+    - '*dine*brand*'
+    - 'einst*bros*'
+    - 'mcdonalds*'
+    - 'sonicdrivein*'
+    - 'levy*restaurant*'
+    - 'legendsglobal*'
+    - 'mrcglobal*'
+    - 'sugarfood*'
+    - 'tabatchnick*'
+    - 'lakesidefoods*'
+    - 'takktfoodservices*'
+    - metlhodsmachine.com
+    - ryaanlogistics.com
+    - immensitylogistics.com
+    - sendproud.com
+    - khlsch.us
 local_list_only:
   disposable: false
   free: false

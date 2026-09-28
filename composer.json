@@ -261,6 +261,9 @@
             "dompdf/dompdf": {
                 "PHP 8.4 compatibility": "patches/dompdf-3640.diff"
             },
+            "drupal/advanced_email_validation": {
+                "Case-insensitive banned/free/disposable domain matching": "patches/advanced_email_validation-case_insensitive_domain_lists.patch"
+            },
             "drupal/bootstrap_basic_image_gallery": {
                 "once": "patches/bootstrap_basic_image_gallery_once.patch"
             },
