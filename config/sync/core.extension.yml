@@ -128,6 +128,7 @@ module:
   mcgreen_acres_store: 0
   mcgreen_order_payment: 0
   mcgreen_subscription_payment: 0
+  mcgreen_webform_network_check: 0
   media: 0
   media_bulk_upload: 0
   media_bulk_upload_dropzonejs: 0

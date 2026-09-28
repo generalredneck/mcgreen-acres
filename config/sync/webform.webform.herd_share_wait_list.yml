@@ -4,6 +4,7 @@ status: open
 dependencies:
   module:
     - mcgreen_acres_newsletter_segments
+    - mcgreen_webform_network_check
     - spamaway
     - webform_mailchimp
     - webform_simplenews_handler
@@ -59,6 +60,10 @@ elements: |-
     '#type': checkbox
     '#title': 'Keep me updated with news and offers.'
     '#default_value': true
+  network_check:
+    '#type': value
+    '#title': 'Network check'
+    '#value': ''
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -296,7 +301,10 @@ handlers:
     label: MailChimp
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 0
     settings:
       list: e31f5f79c4
@@ -312,7 +320,10 @@ handlers:
     label: 'Response Email'
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 0
     settings:
       states:
@@ -354,6 +365,8 @@ handlers:
       enabled:
         ':input[name="subscribe_newsletter"]':
           checked: true
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 0
     settings:
       states:
@@ -393,6 +406,8 @@ handlers:
       enabled:
         ':input[name="subscribe_newsletter"]':
           checked: true
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 1
     settings:
       mail_source: email
@@ -416,4 +431,13 @@ handlers:
       spamaway_anti_spam_allowed_ip_count: 4
       spamaway_query_limit: 200
       spamaway_ip_check_enabled: true
+  network_check:
+    id: network_check
+    handler_id: network_check
+    label: 'Network check'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings: {  }
 variants: {  }

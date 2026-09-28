@@ -1,0 +1,34 @@
+mcgreen_webform_network_check.settings:
+  type: config_object
+  label: 'Webform network check settings'
+  mapping:
+    asn_database:
+      type: string
+      label: 'Path to a GeoLite2/GeoIP2 ASN database (.mmdb), absolute or relative to the Drupal root'
+    relay_asns:
+      type: sequence
+      label: 'ASNs treated as privacy relays / corporate proxies (never quarantined)'
+      sequence:
+        type: integer
+        label: 'ASN'
+    hosting_asns:
+      type: sequence
+      label: 'ASNs treated as hosting / data-center networks'
+      sequence:
+        type: integer
+        label: 'ASN'
+    hosting_keywords:
+      type: sequence
+      label: 'Case-insensitive substrings of the ASN organization name that mark a hosting network'
+      sequence:
+        type: string
+        label: 'Keyword'
+    notify_email:
+      type: email
+      label: 'Digest recipient (empty = site email)'
+    notify_interval:
+      type: integer
+      label: 'Minimum seconds between digest emails'
+    retention_days:
+      type: integer
+      label: 'Days to keep quarantined submissions before deleting them'

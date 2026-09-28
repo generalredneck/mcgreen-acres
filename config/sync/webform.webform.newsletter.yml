@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - mcgreen_webform_network_check
     - spamaway
     - webform_mailchimp
 weight: 0
@@ -51,6 +52,10 @@ elements: |-
     '#type': ip_geo
     '#title': 'Submission Location'
     '#value': '[city], [region], [region_code]'
+  network_check:
+    '#type': value
+    '#title': 'Network check'
+    '#value': ''
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -250,7 +255,10 @@ handlers:
     label: MailChimp
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 0
     settings:
       list: e31f5f79c4
@@ -266,7 +274,10 @@ handlers:
     label: Email
     notes: ''
     status: true
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 0
     settings:
       states:
@@ -317,4 +328,13 @@ handlers:
       spamaway_anti_spam_allowed_ip_count: 4
       spamaway_query_limit: 200
       spamaway_ip_check_enabled: true
+  network_check:
+    id: network_check
+    handler_id: network_check
+    label: 'Network check'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings: {  }
 variants: {  }

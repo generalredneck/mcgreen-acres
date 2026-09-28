@@ -5,6 +5,7 @@ dependencies:
   module:
     - advanced_email_validation
     - mcgreen_acres_newsletter_segments
+    - mcgreen_webform_network_check
     - webform_mailchimp
     - webform_simplenews_handler
   enforced:
@@ -56,6 +57,10 @@ elements: |-
     '#type': checkbox
     '#title': 'Keep me updated with news and offers.'
     '#default_value': true
+  network_check:
+    '#type': value
+    '#title': 'Network check'
+    '#value': ''
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -250,7 +255,10 @@ handlers:
     label: MailChimp
     notes: ''
     status: false
-    conditions: {  }
+    conditions:
+      enabled:
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: -49
     settings:
       list: e31f5f79c4
@@ -338,6 +346,8 @@ handlers:
       enabled:
         ':input[name="subscribe_newsletter"]':
           checked: true
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 0
     settings:
       states:
@@ -374,8 +384,19 @@ handlers:
       enabled:
         ':input[name="subscribe_newsletter"]':
           checked: true
+        ':input[name="network_check"]':
+          '!value': hosting
     weight: 1
     settings:
       mail_source: email
       tags: ContactUs
+  network_check:
+    id: network_check
+    handler_id: network_check
+    label: 'Network check'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings: {  }
 variants: {  }

@@ -1,0 +1,7 @@
+name: 'McGreen Webform Network Check'
+type: module
+description: 'Classifies webform submitters by network (home ISP, privacy relay, or hosting/data center) so handlers can silently skip bot traffic from rented servers, and emails a digest of quarantined submissions.'
+core_version_requirement: ^10 || ^11 || ^12
+package: 'McGreen Acres'
+dependencies:
+  - webform:webform

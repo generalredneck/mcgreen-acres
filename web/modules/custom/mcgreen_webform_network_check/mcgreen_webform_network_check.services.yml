@@ -1,0 +1,21 @@
+services:
+  mcgreen_webform_network_check.asn_lookup:
+    class: Drupal\mcgreen_webform_network_check\AsnLookup
+    arguments: ['@config.factory', '@logger.channel.mcgreen_webform_network_check', '%app.root%']
+  mcgreen_webform_network_check.classifier:
+    class: Drupal\mcgreen_webform_network_check\NetworkClassifier
+    arguments: ['@mcgreen_webform_network_check.asn_lookup', '@config.factory']
+  mcgreen_webform_network_check.reporter:
+    class: Drupal\mcgreen_webform_network_check\QuarantineReporter
+    arguments:
+      - '@database'
+      - '@entity_type.manager'
+      - '@config.factory'
+      - '@state'
+      - '@plugin.manager.mail'
+      - '@mcgreen_webform_network_check.classifier'
+      - '@date.formatter'
+      - '@logger.channel.mcgreen_webform_network_check'
+  logger.channel.mcgreen_webform_network_check:
+    parent: logger.channel_base
+    arguments: ['mcgreen_webform_network_check']

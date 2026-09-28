@@ -74,6 +74,7 @@ find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o
 | `mcgreen_order_payment` | Lets staff prepare admin-created orders (e.g. custom invoices) for the customer to pay directly, bypassing the storefront cart |
 | `mcgreen_acres_newsletter_segments` | Simplenews recipient handler targeting subscribers by taxonomy tag (send-to/exclude) for per-issue segmentation |
 | `custom_commerce_simplenews_checkout` | Overrides the Simplenews checkout pane to render as a single opt-in checkbox instead of a labeled newsletter list |
+| `mcgreen_webform_network_check` | Webform handler that classifies submitters by ASN (pass / relay / hosting) into a `network_check` value element; handlers that email or subscribe the submitter are conditioned on `!value: hosting`, so hosting-network submissions are silently quarantined. Cron emails a digest of new quarantines and purges them after `retention_days`. ASN lists and the GeoLite2-ASN `asn_database` path (absolute or relative to the Drupal root) live in `mcgreen_webform_network_check.settings` |
 
 ### Custom Theme (`web/themes/custom/mcgreen_acres_theme/`)
 

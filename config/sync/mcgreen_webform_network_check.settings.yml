@@ -1,0 +1,50 @@
+_core:
+  default_config_hash: Vr_mzzNlMijLm00hAXjuE0auq6Z5AvzSz1hGTQ3t1VY
+asn_database: ../private/geoip2/GeoLite2-ASN.mmdb
+relay_asns:
+  - 13335
+  - 54113
+  - 36183
+  - 20940
+  - 22616
+hosting_asns:
+  - 55286
+  - 263821
+  - 36352
+  - 52393
+  - 33368
+  - 263740
+  - 263735
+  - 52485
+  - 394474
+  - 216071
+  - 9009
+  - 212238
+  - 14061
+  - 16509
+  - 20473
+  - 16276
+  - 24940
+  - 212317
+hosting_keywords:
+  - server
+  - hosting
+  - datacenter
+  - 'data center'
+  - vps
+  - colocation
+  - colocrossing
+  - whitelabelcolo
+  - hetzner
+  - ovh
+  - m247
+  - leaseweb
+  - digitalocean
+  - linode
+  - vultr
+  - contabo
+  - choopa
+  - datacamp
+notify_email: ''
+notify_interval: 86400
+retention_days: 14

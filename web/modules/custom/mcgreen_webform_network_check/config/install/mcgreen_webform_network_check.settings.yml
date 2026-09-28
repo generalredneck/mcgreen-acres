@@ -1,0 +1,54 @@
+asn_database: ../private/geoip2/GeoLite2-ASN.mmdb
+relay_asns:
+  # iCloud Private Relay egress, Cloudflare WARP.
+  - 13335
+  # Fastly (iCloud Private Relay egress).
+  - 54113
+  # Akamai (iCloud Private Relay egress).
+  - 36183
+  - 20940
+  # Zscaler corporate proxy.
+  - 22616
+hosting_asns:
+  # 2026-09-28 egg_newsletter spam-relay attack.
+  - 55286
+  - 263821
+  - 36352
+  - 52393
+  - 33368
+  - 263740
+  - 263735
+  - 52485
+  - 394474
+  # Historical form spam (fake wholesale orders, SEO pitches, gibberish).
+  - 216071
+  - 9009
+  - 212238
+  - 14061
+  - 16509
+  - 20473
+  - 16276
+  - 24940
+  - 212317
+hosting_keywords:
+  - server
+  - hosting
+  - datacenter
+  - 'data center'
+  - vps
+  - colocation
+  - colocrossing
+  - whitelabelcolo
+  - hetzner
+  - ovh
+  - m247
+  - leaseweb
+  - digitalocean
+  - linode
+  - vultr
+  - contabo
+  - choopa
+  - datacamp
+notify_email: ''
+notify_interval: 86400
+retention_days: 14

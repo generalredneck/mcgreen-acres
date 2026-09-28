@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Quarantines webform submissions from hosting networks and reports them.
+ */
+
+use Drupal\Core\Render\Markup;
+
+/**
+ * Implements hook_cron().
+ */
+function mcgreen_webform_network_check_cron() {
+  \Drupal::service('mcgreen_webform_network_check.reporter')->run(\Drupal::time()->getRequestTime());
+}
+
+/**
+ * Implements hook_mail().
+ */
+function mcgreen_webform_network_check_mail($key, &$message, $params) {
+  if ($key === 'digest') {
+    $message['subject'] = $params['subject'];
+    $message['body'][] = Markup::create($params['body']);
+  }
+}
