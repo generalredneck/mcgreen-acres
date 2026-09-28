@@ -223,14 +223,19 @@ $settings['crawler_rate_limit.settings']['asn_blocklist'] = [
   '216071',
   '24560',
   '24940',
+  '263735',
+  '263740',
+  '263821',
   '396507',
   '46918',
+  '52393',
   '52449',
+  '52485',
   '53667',
   '61125',
 ];
 
-// Merge into the crawler_rate_limit settings
+// Merge into the crawler_rate_limit settings.
 $settings['crawler_rate_limit.settings']['asn_blocklist'] = array_merge(
   $settings['crawler_rate_limit.settings']['asn_blocklist'] ?? [],
   $asn_blocklist
