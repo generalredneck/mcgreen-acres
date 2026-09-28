@@ -5,6 +5,27 @@ set -eo pipefail
 git config --global user.email "$GIT_EMAIL"
 git config --global user.name "CI Bot"
 git config --global core.fileMode false
+
+# Work out the version for the source commit before the artifact commit moves
+# HEAD. If the commit already carries an X.Y.Z tag (pushed by hand to set a
+# major/minor bump, or from a re-run of this job) reuse it; otherwise bump the
+# patch of the highest X.Y.Z tag in master's history, starting at 1.0.0.
+SOURCE_SHA=$(git rev-parse HEAD)
+git fetch --tags --force origin
+SEMVER_RE='^[0-9]+\.[0-9]+\.[0-9]+$'
+VERSION=$(git tag --points-at "$SOURCE_SHA" | grep -E "$SEMVER_RE" | sort -V | tail -n1 || true)
+if [ -z "$VERSION" ]; then
+  LATEST=$(git tag --merged "$SOURCE_SHA" | grep -E "$SEMVER_RE" | sort -V | tail -n1 || true)
+  if [ -z "$LATEST" ]; then
+    VERSION=1.0.0
+  else
+    IFS=. read -r MAJOR MINOR PATCH <<< "$LATEST"
+    VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+  fi
+  git tag -a "$VERSION" -m "Release $VERSION" "$SOURCE_SHA"
+fi
+echo "Deploying version $VERSION from $SOURCE_SHA"
+
 sed -i '1,/# :::::::::::::::::::::: cut ::::::::::::::::::::::/d' .gitignore
 # remove any .git directories that may exist in vendor libraries* so those
 # libraries don't get excluded from our repo. Remember kiddies somedir/*
@@ -22,7 +43,12 @@ find ./* -type f | grep .gitignore | xargs rm -rf
 # Commit and push to a "deploy" branch.
 chmod +x vendor/bin/*
 git add .
-git commit -am "Built assets."
+git commit -am "Built assets for $VERSION."
+git tag -f -a "$VERSION-build" -m "Build artifact for $VERSION ($SOURCE_SHA)"
 DEPLOY_BRANCH=deploy-$CIRCLE_BRANCH
-git push origin $CIRCLE_BRANCH:$DEPLOY_BRANCH -f --tags
+# Atomic so the artifact never lands without its tags. The source tag is not
+# forced: if a concurrent deploy already claimed this version the push fails
+# rather than moving it, and a re-run picks the next number. The build tag is
+# forced because a re-run of the same version produces a new artifact commit.
+git push --atomic origin "+$CIRCLE_BRANCH:$DEPLOY_BRANCH" "refs/tags/$VERSION" "+refs/tags/$VERSION-build"
 echo "If deployment was successful, an artifact should be availible in the origin repo at $CIRCLE_BRANCH-deploy".
