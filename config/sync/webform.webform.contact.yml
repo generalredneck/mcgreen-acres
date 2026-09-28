@@ -255,7 +255,7 @@ handlers:
     settings:
       list: e31f5f79c4
       email: email
-      double_optin: false
+      double_optin: true
       mergevars: "FNAME: '[webform_submission:values:fname]'\r\nLNAME: '[webform_submission:values:lname]'"
       interest_groups: {  }
       control: ''

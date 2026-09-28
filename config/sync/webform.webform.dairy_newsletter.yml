@@ -3,6 +3,7 @@ langcode: en
 status: open
 dependencies:
   module:
+    - spamaway
     - webform_mailchimp
 weight: 0
 open: null
@@ -23,6 +24,9 @@ elements: |-
     '#wrapper_attributes':
       class:
         - newsletter_field_block
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   last_name:
     '#type': textfield
     '#title': 'Last Name'
@@ -31,6 +35,9 @@ elements: |-
     '#wrapper_attributes':
       class:
         - newsletter_field_block
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   email:
     '#type': email
     '#title': Email
@@ -254,7 +261,7 @@ handlers:
     settings:
       list: e31f5f79c4
       email: email
-      double_optin: false
+      double_optin: true
       mergevars: "FNAME: '[webform_submission:values:first_name]'\r\nLNAME: '[webform_submission:values:last_name]'"
       interest_groups: {  }
       control: ''
@@ -284,7 +291,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: 'Welcome to McGreen Acres!'
-      body: '<p>Hey there [webform_submission:values:first_name:raw],</p><p>We’re so glad you are here! Welcome to the farm.</p><p>Our little community’s made up of folks who care about what they feed their families and who want real food raised with respect for the land and the animals. If that sounds like you, you’re in the right place. Around here, we believe food ought to be simple, honest, and something you can feel good about bringing to the table.</p><p>As promised, your free Fresh Milk Starter Pack is attached.</p><p>Before you go, We’d love to hear from you. It helps us know what matters most to the people we serve. <strong>Just hit reply and tell me:</strong></p><p><strong>What are you struggling with most when it comes to finding real, healthy food you can trust for your family?</strong></p><p>Don’t be shy! We really do read every reply, and we love getting to know our neighbors.</p><p><strong>In the meantime, take a look around our farm store</strong>: <a href="https://store.mcgreenacres.com">https://store.mcgreenacres.com</a></p><p>We hope to meet you out here sometime,</p><p>All of us at McGreen Acres</p><p>&nbsp;</p><center><p>This email was sent to <a style="color:#404040 !important;" href="mailto:[webform_submission:values:email:raw]" target="_blank">[webform_submission:values:email:raw]</a>&nbsp;<br><a style="color:#404040 !important;" href="https://mcgreenacres.us16.list-manage.com/about?u=d317cd0b822f03b7700e10596&amp;id=e31f5f79c4&amp;e=[UNIQID]&amp;c=e4bf94749b" target="_blank"><em>why did I get this?</em></a>&nbsp;&nbsp;&nbsp; <a style="color:#404040 !important;" href="https://mcgreenacres.us16.list-manage.com/unsubscribe?u=d317cd0b822f03b7700e10596&amp;id=e31f5f79c4&amp;t=b&amp;e=[UNIQID]&amp;c=e4bf94749b">unsubscribe from this list</a>&nbsp;&nbsp;&nbsp; <a style="color:#404040 !important;" href="https://mcgreen-acres.mailchimpsites.com/manage/preferences?u=d317cd0b822f03b7700e10596&amp;id=e31f5f79c4&amp;e=[UNIQID]&amp;c=e4bf94749b">update subscription preferences</a>&nbsp;<br>McGreen Acres LLC · 2414 Westmoreland Rd · Red Oak, TX 75154-5816 · USA&nbsp;</p></center>'
+      body: '<p>Hey there,</p><p>We’re so glad you are here! Welcome to the farm.</p><p>Our little community’s made up of folks who care about what they feed their families and who want real food raised with respect for the land and the animals. If that sounds like you, you’re in the right place. Around here, we believe food ought to be simple, honest, and something you can feel good about bringing to the table.</p><p>As promised, your free Fresh Milk Starter Pack is attached.</p><p>Before you go, We’d love to hear from you. It helps us know what matters most to the people we serve. <strong>Just hit reply and tell me:</strong></p><p><strong>What are you struggling with most when it comes to finding real, healthy food you can trust for your family?</strong></p><p>Don’t be shy! We really do read every reply, and we love getting to know our neighbors.</p><p><strong>In the meantime, take a look around our farm store</strong>: <a href="https://store.mcgreenacres.com">https://store.mcgreenacres.com</a></p><p>We hope to meet you out here sometime,</p><p>All of us at McGreen Acres</p><p>&nbsp;</p><center><p>This email was sent to <a style="color:#404040 !important;" href="mailto:[webform_submission:values:email:raw]" target="_blank">[webform_submission:values:email:raw]</a>&nbsp;<br><a style="color:#404040 !important;" href="https://mcgreenacres.us16.list-manage.com/about?u=d317cd0b822f03b7700e10596&amp;id=e31f5f79c4&amp;e=[UNIQID]&amp;c=e4bf94749b" target="_blank"><em>why did I get this?</em></a>&nbsp;&nbsp;&nbsp; <a style="color:#404040 !important;" href="https://mcgreenacres.us16.list-manage.com/unsubscribe?u=d317cd0b822f03b7700e10596&amp;id=e31f5f79c4&amp;t=b&amp;e=[UNIQID]&amp;c=e4bf94749b">unsubscribe from this list</a>&nbsp;&nbsp;&nbsp; <a style="color:#404040 !important;" href="https://mcgreen-acres.mailchimpsites.com/manage/preferences?u=d317cd0b822f03b7700e10596&amp;id=e31f5f79c4&amp;e=[UNIQID]&amp;c=e4bf94749b">update subscription preferences</a>&nbsp;<br>McGreen Acres LLC · 2414 Westmoreland Rd · Red Oak, TX 75154-5816 · USA&nbsp;</p></center>'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -297,4 +304,23 @@ handlers:
       langcode: ''
       parameters: {  }
       debug: false
+  spamaway:
+    id: spamaway_anti_spam_forms
+    handler_id: spamaway
+    label: SpamAway
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -10
+    settings:
+      spamaway_anti_spam_field_names: 'first_name,last_name'
+      spamaway_anti_spam_threshold_percentage: '80,80'
+      spamaway_anti_spam_allowed_count: 5
+      spamaway_anti_spam_logging: 1
+      spamaway_anti_spam_hash: sha256
+      spamaway_anti_spam_period: 0
+      spamaway_anti_spam_ip_period: 36000
+      spamaway_anti_spam_allowed_ip_count: 4
+      spamaway_query_limit: 200
+      spamaway_ip_check_enabled: true
 variants: {  }

@@ -4,6 +4,7 @@ status: open
 dependencies:
   module:
     - mcgreen_acres_newsletter_segments
+    - spamaway
     - webform_mailchimp
     - webform_simplenews_handler
 weight: 0
@@ -25,11 +26,17 @@ elements: |-
     '#type': textfield
     '#required': true
     '#default_value': '[current-user:display-name]'
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   lname:
     '#title': 'Last Name'
     '#type': textfield
     '#required': true
     '#default_value': ''
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   email:
     '#title': 'Your Email'
     '#type': email
@@ -294,7 +301,7 @@ handlers:
     settings:
       list: e31f5f79c4
       email: email
-      double_optin: false
+      double_optin: true
       mergevars: "FNAME: '[webform_submission:values:fname]'\r\nLNAME: '[webform_submission:values:lname]'\r\nPHONE: '[webform_submission:values:phone]'"
       interest_groups: {  }
       control: ''
@@ -324,7 +331,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: "You're on the McGreen Acres Herd Share Waitlist."
-      body: '<p>Hi [webform_submission:values:fname],</p><p>Thank you for your interest in our herd share program. We''ve added you to our waitlist.</p><p>Both of our cows are entering their natural dry period before calving, so we have temporarily closed enrollment. We expect the dry period to last approximately 2-3 months beginning around June 1. Once the herd freshens and we evaluate production, we will reach out to the waitlist before reopening enrollment.</p><p>Re-entry is subject to availability and current share pricing at the time of reopening. If you have questions in the meantime, our <a href="https://mcgreenacres.com/herd-share/dry-period-faq">dry period FAQ</a> covers the details.</p><p>We appreciate your interest and look forward to connecting with you when shares are available.</p><p>Rebecca<br>McGreen Acres<br>mcgreenacres.com</p>'
+      body: '<p>Hi there,</p><p>Thank you for your interest in our herd share program. We''ve added you to our waitlist.</p><p>Both of our cows are entering their natural dry period before calving, so we have temporarily closed enrollment. We expect the dry period to last approximately 2-3 months beginning around June 1. Once the herd freshens and we evaluate production, we will reach out to the waitlist before reopening enrollment.</p><p>Re-entry is subject to availability and current share pricing at the time of reopening. If you have questions in the meantime, our <a href="https://mcgreenacres.com/herd-share/dry-period-faq">dry period FAQ</a> covers the details.</p><p>We appreciate your interest and look forward to connecting with you when shares are available.</p><p>Rebecca<br>McGreen Acres<br>mcgreenacres.com</p>'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -390,4 +397,23 @@ handlers:
     settings:
       mail_source: email
       tags: HerdShareWaitList
+  spamaway:
+    id: spamaway_anti_spam_forms
+    handler_id: spamaway
+    label: SpamAway
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -10
+    settings:
+      spamaway_anti_spam_field_names: 'fname,lname'
+      spamaway_anti_spam_threshold_percentage: '80,80'
+      spamaway_anti_spam_allowed_count: 5
+      spamaway_anti_spam_logging: 1
+      spamaway_anti_spam_hash: sha256
+      spamaway_anti_spam_period: 0
+      spamaway_anti_spam_ip_period: 36000
+      spamaway_anti_spam_allowed_ip_count: 4
+      spamaway_query_limit: 200
+      spamaway_ip_check_enabled: true
 variants: {  }

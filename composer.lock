@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21bc320664c7859ea172501ac7a5a4d5",
+    "content-hash": "ff28ec592940ffde6368b38faa698bcd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -11041,6 +11041,71 @@
             "homepage": "https://www.drupal.org/project/sophron",
             "support": {
                 "source": "https://git.drupalcode.org/project/sophron"
+            }
+        },
+        {
+            "name": "drupal/spamaway",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/spamaway.git",
+                "reference": "2.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/spamaway-2.0.3.zip",
+                "reference": "2.0.3",
+                "shasum": "5228c49770d809b540dc9010507e0e0e7dccab80"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/webform": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.3",
+                    "datestamp": "1760942732",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "kriboogh",
+                    "homepage": "https://www.drupal.org/user/688606"
+                },
+                {
+                    "name": "mschudders",
+                    "homepage": "https://www.drupal.org/user/1314320"
+                },
+                {
+                    "name": "stefdewa",
+                    "homepage": "https://www.drupal.org/user/2480344"
+                },
+                {
+                    "name": "svdhout",
+                    "homepage": "https://www.drupal.org/user/717826"
+                },
+                {
+                    "name": "tim-diels",
+                    "homepage": "https://www.drupal.org/user/2915097"
+                },
+                {
+                    "name": "tomhollevoet",
+                    "homepage": "https://www.drupal.org/user/3289561"
+                }
+            ],
+            "description": "Anti-Spam module SpamAway",
+            "homepage": "https://www.drupal.org/project/spamaway",
+            "support": {
+                "source": "https://git.drupalcode.org/project/spamaway"
             }
         },
         {

@@ -191,6 +191,7 @@ module:
   simplenews: 0
   simplenews_stats: 0
   simplenews_stats_unsubscribe: 0
+  spamaway: 0
   state_machine: 0
   symfony_mailer: 0
   symfony_mailer_queue: 0
