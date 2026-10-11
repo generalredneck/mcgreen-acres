@@ -1,0 +1,9 @@
+name: Crawler Rate Limit
+type: module
+description: Rate limit web crawler (bot) requests
+core_version_requirement: ^9.4 || ^10 | ^11
+
+# Information added by Drupal.org packaging script on 2025-10-10
+version: '3.1.0'
+project: 'crawler_rate_limit'
+datestamp: 1760095919

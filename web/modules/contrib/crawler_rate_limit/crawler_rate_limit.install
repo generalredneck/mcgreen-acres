@@ -1,0 +1,350 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall hooks for the Crawler Rate Limit module.
+ */
+
+use Drupal\Core\Site\Settings;
+use Drupal\crawler_rate_limit\RateLimitManager;
+use GeoIp2\Database\Reader;
+use MaxMind\Db\Reader\InvalidDatabaseException;
+
+/**
+ * Implements hook_requirements().
+ */
+function crawler_rate_limit_requirements($phase) {
+  $requirements = [];
+
+  $memcached = extension_loaded('memcached');
+  $redis = extension_loaded('redis');
+  $apcu = extension_loaded('apcu');
+  $predis = class_exists('Predis\Client');
+  $geoip2 = class_exists('GeoIp2\Database\Reader');
+
+  if ($phase == 'install') {
+    if (!$memcached && !$redis && !$predis && !$apcu) {
+      $requirements['crawler_rate_limit_extension']['title'] = t('Crawler Rate Limit');
+      $requirements['crawler_rate_limit_extension']['severity'] = REQUIREMENT_ERROR;
+      $requirements['crawler_rate_limit_extension']['value'] = '';
+      $requirements['crawler_rate_limit_extension']['description'] = t('
+        Crawler Rate Limit requires one of the following to be installed:
+          - Redis PECL extension or Predis PHP package in order to use "redis" backend
+          - Memcached PECL extension in order to use "memcached" backend
+          - APCu PECL extension in order to use "apcu" backend
+      ');
+    }
+  }
+
+  if ($phase == 'runtime') {
+    $handler = Drupal::moduleHandler();
+    $memcache_module = $handler->moduleExists('memcache');
+    $redis_module = $handler->moduleExists('redis');
+
+    $settings = RateLimitManager::getSettings();
+    $settings_raw = Settings::get('crawler_rate_limit.settings', []);
+
+    $readme_url = 'https://git.drupalcode.org/project/crawler_rate_limit/-/blob/3.x/README.md';
+
+    // Check the backend.
+    if (empty($settings['backend'])) {
+      $active_backend = t('Backend is not set.');
+    }
+    elseif (!in_array($settings['backend'], ['redis', 'memcached', 'apcu'])) {
+      $active_backend = t('Invalid backend set: %backend.', ['%backend' => $settings['backend']]);
+    }
+    else {
+      $active_backend = t('Configured to use %backend backend.', ['%backend' => $settings['backend']]);
+    }
+
+    $errors_backend = [];
+    switch ($settings['backend']) {
+      case 'redis':
+        if (!($redis || $predis) || !$redis_module) {
+          $errors_backend[] = t('Missing dependencies: In order to use redis backend you need to install <a href=":redis">Redis Drupal module</a> and either <a href=":phpredis">Redis PECL extension</a> or <a href=":predis">Predis PHP package</a>.', [
+            ':redis' => 'https://www.drupal.org/project/redis',
+            ':phpredis' => 'https://pecl.php.net/package/redis',
+            ':predis' => 'https://github.com/predis/predis',
+          ]);
+        }
+        break;
+
+      case 'memcached':
+        if (!$memcached || !$memcache_module) {
+          $errors_backend[] = t('Missing dependencies: In order to use memcached backend you need to install <a href=":memcached">Memcached PECL extension</a> and <a href=":memcache">Memcache Drupal module</a>.', [
+            ':memcached' => 'https://pecl.php.net/package/memcached',
+            ':memcache' => 'https://www.drupal.org/project/memcache',
+          ]);
+        }
+        break;
+
+      case 'apcu':
+        if (!$apcu) {
+          $errors_backend[] = t('Missing dependencies: In order to use apcu backend you need to install <a href=":url">APCu PECL extension</a>.', [
+            ':url' => 'https://pecl.php.net/package/APCu',
+          ]);
+        }
+        break;
+
+      case '':
+        $errors_backend[] = t('Backend is not set. Crawler Rate Limit supports the following backends: redis, apcu, memcached');
+        break;
+
+      default:
+        $errors_backend[] = t('Invalid backend: "%backend". Crawler Rate Limit supports the following backends: redis, apcu, memcached', [
+          '%backend' => $settings['backend'],
+        ]);
+    }
+
+    // Check the dependencies required for ASN-level rate limiting and blocking.
+    $errors_asn = [];
+
+    // Do we have the ASN database?
+    $asn_database = FALSE;
+    if (isset($settings_raw['regular_traffic_asn'])) {
+      $notice = t("In order to perform ASN-based operations, Crawler Rate Limit needs the GeoLite2/GeoIP2 binary ASN Database. Consult module's <a target=\"_blank\" href=\":url\">README.md</a> for details.", [
+        ':url' => $readme_url,
+      ]);
+
+      $asn_database = TRUE;
+      if (empty($settings['regular_traffic_asn']['database'])) {
+        $asn_database = FALSE;
+        $errors_asn[] = t('ASN database is not defined. @notice', [
+          '@notice' => $notice,
+        ]);
+      }
+      elseif (!is_readable($settings['regular_traffic_asn']['database'])) {
+        $asn_database = FALSE;
+        $errors_asn[] = t('ASN database at "%path" does not exist or is not readable. @notice', [
+          '%path' => $settings['regular_traffic_asn']['database'],
+          '@notice' => $notice,
+        ]);
+      }
+      elseif ($geoip2) {
+        try {
+          new Reader($settings['regular_traffic_asn']['database']);
+        }
+        catch (InvalidDatabaseException $exception) {
+          $asn_database = FALSE;
+          $errors_asn[] = t('Invalid ASN database at "%path". @notice', [
+            '%path' => $settings['regular_traffic_asn']['database'],
+            '@notice' => $notice,
+          ]);
+        }
+      }
+
+      // Do we have geoip2?
+      if (!$geoip2) {
+        $errors_asn[] = t('In order to perform ASN-based operations, you need to install the <a href=":url">GeoIP2 PHP API</a>.', [
+          ':url' => 'https://packagist.org/packages/geoip2/geoip2',
+        ]);
+      }
+    }
+    $asn_dependencies_ok = $geoip2 && $asn_database;
+
+    // Determine status of the bot/crawler and regular traffic rate limiting.
+    // ASN-level rate limiting is handled separately because we also need to
+    // consider ASN dependencies when determining its status.
+    $types = [
+      'bot_traffic' => [
+        'label' => t('bot/crawler requests'),
+        'actor' => t('visitor'),
+      ],
+      'regular_traffic' => [
+        'label' => t('regular traffic requests at the visitor-level'),
+        'actor' => t('visitor'),
+      ],
+    ];
+    $statuses = [
+      'not_enabled' => t('not configured'),
+      'error' => t('disabled due to error(s)'),
+    ];
+
+    $traffic = [];
+    $errors_traffic_limits = [];
+    foreach ($types as $type => $args) {
+      if ($settings[$type]['interval'] > 0 && $settings[$type]['requests'] > 0) {
+        $traffic[$type] = t('@label: @requests requests allowed per @actor over a @interval-second interval.', [
+          '@label' => $args['label'],
+          '@actor' => $args['actor'],
+          '@requests' => $settings[$type]['requests'],
+          '@interval' => $settings[$type]['interval'],
+        ]);
+      }
+      else {
+        if (isset($settings_raw[$type])) {
+          // Configuration for this type of rate limiting is present in the
+          // settings.php file but is not valid.
+          $limiting_status = $statuses['error'];
+          $errors_traffic_limits[$type] = $args['label'];
+        }
+        else {
+          // Configuration for this type of rate limiting is not present in the
+          // settings.php file.
+          $limiting_status = $statuses['not_enabled'];
+        }
+
+        $traffic[$type] = t('@label: @status.', [
+          '@label' => $args['label'],
+          '@status' => $limiting_status,
+        ]);
+      }
+    }
+
+    // Determine status of the ASN-level rate limiting.
+    $label = t('regular traffic requests at the ASN-level');
+    $asn_config_ok = $settings['regular_traffic_asn']['interval'] > 0 && $settings['regular_traffic_asn']['requests'] > 0;
+    if ($asn_config_ok && $asn_dependencies_ok) {
+      $traffic['regular_traffic_asn'] = t('@label: @requests requests allowed per ASN over a @interval-second interval.', [
+        '@label' => $label,
+        '@requests' => $settings['regular_traffic_asn']['requests'],
+        '@interval' => $settings['regular_traffic_asn']['interval'],
+      ]);
+    }
+    else {
+      if (isset($settings_raw['regular_traffic_asn'])) {
+        $limiting_status = $statuses['error'];
+
+        if (!$asn_config_ok) {
+          $errors_traffic_limits['regular_traffic_asn'] = $label;
+        }
+      }
+      else {
+        $limiting_status = $statuses['not_enabled'];
+      }
+      $traffic['regular_traffic_asn'] = t('@label: @status.', [
+        '@label' => $label,
+        '@status' => $limiting_status,
+      ]);
+    }
+
+    if (empty($errors_backend)) {
+      // Display module's status only if backend is functional.
+      $requirements['crawler_rate_limit_status'] = [
+        'title' => t('Crawler Rate Limit'),
+        'severity' => REQUIREMENT_INFO,
+        'value' => $settings['enabled'] ? t('Enabled') : t('Not enabled'),
+        // Use twig inline_template to avoid twig's autoescape.
+        'description' => [
+          '#type' => 'inline_template',
+          '#template' => '{{ backend }}<br />{{ limiting_label }}{{ traffic }}',
+          '#context' => [
+            'backend' => $active_backend,
+            'limiting_label' => t('Rate limiting:'),
+            'traffic' => [
+              '#theme' => 'item_list',
+              '#items' => $traffic,
+            ],
+          ],
+        ],
+      ];
+
+      $other_features = [];
+      if (!empty($settings['ip_address_allowlist'])) {
+        $other_features[] = \Drupal::translation()->formatPlural(
+          count($settings['ip_address_allowlist']),
+          'Allowlist: 1 IP address or subnet is allowed to bypass rate limiting.',
+          'Allowlist: @count IP addresses or subnets are allowed to bypass rate limiting.'
+        );
+      }
+      if (!empty($settings['asn_blocklist']) && $asn_dependencies_ok) {
+        $other_features[] = \Drupal::translation()->formatPlural(
+          count($settings['asn_blocklist']),
+          'Blocklist: 1 ASN is blocked.',
+          'Blocklist: @count ASNs are blocked.'
+        );
+      }
+      if (!empty($other_features)) {
+        $requirements['crawler_rate_limit_status']['description']['#template'] .= '{{ other_label }}{{ other }}';
+        $requirements['crawler_rate_limit_status']['description']['#context']['other_label'] = t('Other features:');
+        $requirements['crawler_rate_limit_status']['description']['#context']['other'] = [
+          '#theme' => 'item_list',
+          '#items' => $other_features,
+        ];
+      }
+    }
+    elseif (empty($settings_raw)) {
+      $requirements['crawler_rate_limit_status'] = [
+        'title' => t('Crawler Rate Limit'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => t('Not configured'),
+        'description' => t("Consult module's <a target=\"_blank\" href=\":url\">README.md</a> for configuration instructions.", [
+          ':url' => $readme_url,
+        ]),
+      ];
+    }
+    else {
+      if ($settings_raw['enabled']) {
+        $value = t('Critical issue(s) detected that prevent rate limiter from functioning. Rate limiting is not active. You must <strong>fix</strong> the following errors or <strong>disable</strong> the Crawler Rate Limit.');
+      }
+      else {
+        $value = t('Critical issue(s) detected. Make sure to fix the following errors before enabling the rate limiting:');
+      }
+
+      $requirements['crawler_rate_limit_backend_error'] = [
+        'title' => t('Crawler Rate Limit backend'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => $value,
+        'description' => [
+          '#type' => 'inline_template',
+          '#template' => '{{ errors }}',
+          '#context' => [
+            'errors' => [
+              '#theme' => 'item_list',
+              '#items' => $errors_backend,
+            ],
+          ],
+        ],
+      ];
+    }
+
+    if (!empty($errors_traffic_limits)) {
+      $requirements['crawler_rate_limit_limits_errors'] = [
+        'title' => t('Crawler Rate Limit config'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => t('Values for "requests" and "interval" must be whole numbers greater than zero. Invalid values detected for rate limiting of:'),
+        'description' => [
+          '#type' => 'inline_template',
+          '#template' => '{{ errors }}',
+          '#context' => [
+            'errors' => [
+              '#theme' => 'item_list',
+              '#items' => $errors_traffic_limits,
+            ],
+          ],
+        ],
+      ];
+    }
+
+    if (!empty($errors_asn)) {
+      $requirements['crawler_rate_limit_asn_errors'] = [
+        'title' => t('Crawler Rate Limit ASN dependencies'),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => t('ASN-level rate limiting and blocking is disabled due to missing dependencies.'),
+        'description' => [
+          '#type' => 'inline_template',
+          '#template' => '{{ errors }}',
+          '#context' => [
+            'errors' => [
+              '#theme' => 'item_list',
+              '#items' => $errors_asn,
+            ],
+          ],
+        ],
+      ];
+    }
+
+    // Show warning about deprecated settings independent of the module status.
+    if ($settings['deprecated']) {
+      $requirements['crawler_rate_limit_deprecated'] = [
+        'title' => t('Crawler Rate Limit'),
+        'severity' => REQUIREMENT_WARNING,
+        'value' => t("Deprecated settings detected. Consult module's <a target=\"_blank\" href=\":url\">README.md</a> for details how to update.", [
+          ':url' => $readme_url,
+        ]),
+      ];
+    }
+  }
+
+  return $requirements;
+}

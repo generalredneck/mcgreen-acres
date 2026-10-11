@@ -1,0 +1,13 @@
+name: 'Commerce Tip'
+type: module
+description: 'Provides Commerce tip.'
+package: Commerce (contrib)
+core_version_requirement: ^9.2 || ^10 || ^11
+dependencies:
+  - commerce:commerce
+  - commerce:commerce_checkout
+
+# Information added by Drupal.org packaging script on 2025-04-03
+version: '1.0.4'
+project: 'commerce_tip'
+datestamp: 1743645233
