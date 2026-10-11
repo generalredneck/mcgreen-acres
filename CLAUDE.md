@@ -95,6 +95,12 @@ find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o
 - **Newsletter**: `simplenews` + `simplenews_stats`, `webform_simplenews_handler`, `commerce_simplenews_checkout`, and the custom newsletter modules above
 - **Composer lenient**: `mglaman/composer-drupal-lenient` allows installing D11-incompatible modules; allow-list is in `composer.json` `extra.drupal-lenient.allowed-list` (e.g. `commerce_tip`, `pdf`, `user_csv_import`, `webform_ip_geo`)
 
+### Pinned Versions
+
+Version constraints in `composer.json` that hold a package back on purpose. Record the *why* here when adding a pin, and remove the entry when the pin is lifted.
+
+- `drupal/commerce_stripe`: `<=2.2.1` — pinned in the 2026-09-23 "securty upgrade" commit (a35d058c6) with no recorded reason. Likely cause: our `#3564625` reusable-payment-method patch (MR199) doesn't apply to 2.2.2. Its `Stripe.php` hunk #1 is rejected (2.2.2 rewrote the decline-message block), and it adds a second `commerce_stripe_update_8107()` that collides with 2.2.2's own `update_8107` (PHP redeclare fatal). To unpin: regenerate the patch against 2.2.2 without hunk #1, renumber its update to `8108`, then test card + Express Checkout checkout. Deferred 2026-10-10 (busiest weekend traffic, risky change).
+
 ### Patches
 
 Many contrib modules are patched (see `composer.json` `extra.patches`). Notable ones:
