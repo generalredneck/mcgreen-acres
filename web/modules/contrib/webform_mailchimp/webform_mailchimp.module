@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Contains webform_mailchimp.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function webform_mailchimp_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.webform_mailchimp':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The webform mailchimp module allows to send Webform submissions to MailChimp lists.  For more information, see the <a href=":documentation">online documentation for the Webform MailChimp module</a>.', [':documentation' => 'https://www.drupal.org/project/webform_mailchimp/']) . '</p>';
+      return $output;
+  }
+}

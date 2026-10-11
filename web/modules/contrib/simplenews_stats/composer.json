@@ -1,0 +1,24 @@
+{
+    "name": "drupal/simplenews_stats",
+    "type": "drupal-module",
+    "description": "Simplenews stats allows you to collect statistics from newsletter sent with simplenews.",
+    "keywords": ["Drupal", "mail"],
+    "authors": [
+        {
+            "name": "Damien LAGUERRE",
+            "email": "damien.laguerre@gmail.com",
+            "homepage": "https://www.drupal.org/u/damien-laguerre",
+            "role": "Maintainer"
+        }
+    ],
+    "homepage": "https://www.drupal.org/project/simplenews_stats",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/simplenews_stats",
+        "source": "https://git.drupalcode.org/project/simplenews_stats"
+    },
+    "license": "GPL-2.0+",
+    "require": {
+        "drupal/simplenews": "^4.0",
+        "drupal/universal_device_detection": "^2.1"
+    }
+}

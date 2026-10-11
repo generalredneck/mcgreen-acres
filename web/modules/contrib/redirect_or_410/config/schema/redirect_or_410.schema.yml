@@ -1,0 +1,13 @@
+redirect_or_410.settings:
+  type: config_object
+  label: '410 or Redirect settings.'
+  mapping:
+    fast_410_message:
+      type: string
+      label: "Fast 410 response message."
+    fast_410:
+      type: boolean
+      label: "Whether send a fast 410 or throw a new 410 exception."
+    fast_410_page:
+      type: string
+      label: "Default 410 (gone) page"

@@ -1,0 +1,3 @@
+services:
+  commerce_tip.utilities:
+    class: Drupal\commerce_tip\CommerceTipUtilities

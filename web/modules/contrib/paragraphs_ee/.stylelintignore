@@ -1,0 +1,5 @@
+# css/ is compiled (and minified) from scss/ via `yarn compile` (node-sass,
+# --output-style=compressed). It is generated build output, not hand-authored
+# source, so it is excluded from linting the same way Drupal core excludes
+# its own vendored/generated CSS in core/.stylelintrc.json's ignoreFiles.
+css/*.css

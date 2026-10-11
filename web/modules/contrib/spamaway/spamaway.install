@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ *
+ * @see \Drupal\webform\WebformEntityStorage
+ */
+function spamaway_schema() {
+  $schema['spamaway_webform_submission'] = [
+    'description' => 'Stores all webform data used for spamaway.',
+    'fields' => [
+      'serial' => [
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'webform_id' => [
+        'description' => 'The webform id the submisison belongs to',
+        'type' => 'varchar',
+        'length' => 512,
+        'not null' => TRUE,
+      ],
+      'created' => [
+        'description' => 'A Unix timestamp indicating when the submission was submitted.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'submission' => [
+        'description' => 'The serial number of the webform submission.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'field_name' => [
+        'description' => 'The field name for which we are saving data',
+        'type' => 'varchar',
+        'length' => 512,
+        'not null' => TRUE,
+      ],
+      'value' => [
+        'description' => 'The value of the field we are saving.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['serial'],
+    // @todo are indexes good enough?
+    'indexes' => [
+      'webform_id__created' => [
+        'webform_id',
+        'created',
+      ],
+      'webform_id__submission' => [
+        'webform_id',
+        'submission',
+      ],
+      'webform_id__field_name' => [
+        'webform_id',
+        'field_name',
+      ],
+      'webform_id__submission__field_name' => [
+        'webform_id',
+        'submission',
+        'field_name'
+      ]
+    ],
+  ];
+  return $schema;
+}
+
+function spamaway_update_9001() {
+  $table = 'spamaway_webform_submission';
+  $schema_definition = spamaway_schema();
+  $schema = \Drupal\Core\Database\Database::getConnection()->schema();
+
+  if (!$schema->tableExists($table)) {
+    $schema->createTable($table, $schema_definition['spamaway_webform_submission']);
+  }
+
+  // Field changes.
+  foreach ($schema_definition[$table]['fields'] as $field => $spec) {
+    if (!$schema->fieldExists($table, $field)) {
+      $schema->addField($table, $field, $spec);
+    }
+  }
+
+  // Index changes
+  if ($schema->indexExists($table, 'created')) {
+    $schema->dropIndex($table, 'created');
+  }
+  if ($schema->indexExists($table, 'submission')) {
+    $schema->dropIndex($table, 'submission');
+  }
+  foreach ($schema_definition[$table]['indexes'] as $index => $fields) {
+    if (!$schema->indexExists($table, $index)) {
+      $schema->addIndex($table, $index, $fields, $schema_definition[$table]);
+    }
+  }
+}
