@@ -274,6 +274,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
               payment_gateway:
@@ -284,6 +285,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
               order_type:
@@ -299,6 +301,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
                 select_all_none: false
@@ -864,6 +867,7 @@ display:
                 combine_param: sort_bef_combine
                 reset: false
                 reset_label: ''
+                no_reset: false
                 collapsible: false
                 collapsible_label: 'Sort options'
                 is_secondary: false
@@ -875,6 +879,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
       sorts:
@@ -1466,6 +1471,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
               payment_gateway:
@@ -1476,6 +1482,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
               order_type:
@@ -1491,6 +1498,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
                 select_all_none: false
@@ -2165,6 +2173,7 @@ display:
                 combine_param: sort_bef_combine
                 reset: false
                 reset_label: ''
+                no_reset: false
                 collapsible: false
                 collapsible_label: 'Sort options'
                 is_secondary: false
@@ -2176,6 +2185,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
       sorts:

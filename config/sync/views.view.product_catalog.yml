@@ -192,6 +192,7 @@ display:
                 combine_param: sort_bef_combine
                 reset: false
                 reset_label: ''
+                no_reset: false
                 collapsible: false
                 collapsible_label: 'Sort options'
                 is_secondary: false
@@ -207,6 +208,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
               field_farmstand_available:
@@ -222,6 +224,7 @@ display:
                   collapsible_disable_automatic_open: false
                   open_by_default: false
                   is_secondary: false
+                  no_reset: false
                   hide_label: false
                   field_classes: ''
                 treat_as_false: false
