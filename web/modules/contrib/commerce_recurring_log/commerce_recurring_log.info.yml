@@ -1,0 +1,13 @@
+name: Commerce Recurring Log
+type: module
+description: 'Provides activity logs for Subscription entities.'
+core_version_requirement: ^9.2 || ^10 || ^11 || ^12
+package: Commerce (contrib)
+dependencies:
+  - commerce_recurring:commerce_recurring
+  - commerce:commerce_log
+
+# Information added by Drupal.org packaging script on 2026-06-14
+version: '1.0.7'
+project: 'commerce_recurring_log'
+datestamp: 1781456895

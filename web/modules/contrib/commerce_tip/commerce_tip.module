@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * This is the hook for Commerce Tip module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Provides help information for the Commerce Tip module.
+ *
+ * Implements hook_help().
+ */
+function commerce_tip_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.commerce_tip':
+      $output = '';
+      $output .= '<h2>' . t('About') . '</h2>';
+      $output .= '<p>' . t('Create a function to make user can add tip money to order.') . '</p>';
+      $output .= '<p>' . t('More information at <a href="https://www.drupal.org/project/commerce_tip" target="_blank">link</a>.') . '</p>';
+      return $output;
+  }
+}

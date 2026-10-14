@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Commerce Email module.
+ */
+
+/**
+ * Create the "commerce_email" queue if it doesn't exist.
+ */
+function commerce_email_update_8001() {
+  if (!\Drupal::moduleHandler()->moduleExists('advancedqueue')) {
+    return;
+  }
+  $queue_storage = \Drupal::entityTypeManager()->getStorage('advancedqueue_queue');
+  /** @var \Drupal\advancedqueue\Entity\QueueInterface $queue */
+  $queue = $queue_storage->load('commerce_email');
+  if (!$queue) {
+    $queue_storage->create([
+      'status' => TRUE,
+      'dependencies' => [],
+      'id' => 'commerce_email',
+      'label' => 'Commerce Email',
+      'backend' => 'database',
+      'backend_configuration' => [
+        'lease_time' => 300,
+      ],
+      'processor' => 'cron',
+      'processing_time' => 180,
+      'locked' => FALSE,
+      'threshold' => [
+        'type' => 0,
+        'limit' => 0,
+        'state' => 'all',
+      ],
+    ])->save();
+  }
+}
