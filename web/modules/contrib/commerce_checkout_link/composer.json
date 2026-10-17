@@ -1,0 +1,17 @@
+{
+    "homepage": "https://www.drupal.org/project/commerce_checkout_link",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "eiriksm",
+            "homepage": "https://www.drupal.org/user/1014468"
+        }
+    ],
+    "type": "drupal-module",
+    "name": "drupal/commerce_checkout_link",
+    "description": "Makes it possible to share a link to an order with a user",
+    "require": {
+        "drupal/commerce_cart": "*",
+        "drupal/commerce_order": "*"
+    }
+}

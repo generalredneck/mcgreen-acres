@@ -1,0 +1,40 @@
+################################################################################
+# gitlab-ci-local overrides for this project.
+#
+# gitlab-ci-local automatically merges this file on top of .gitlab-ci.yml.
+#
+# NOTHING IS DISABLED HERE. The whole pipeline runs on this machine exactly as it
+# runs on git.drupalcode.org: build, validate, the MariaDB-backed phpunit job, all
+# four browser-based functional-acceptance jobs, and create-reports. No job is
+# skipped, masked or given allow_failure locally, so a local green run means the
+# same thing a remote green run means.
+#
+# Usage
+#   gitlab-ci-local --list
+#   gitlab-ci-local --concurrency 2
+#   gitlab-ci-local phpcs
+#   gitlab-ci-local 'functional-acceptance: [base,drimage_improved_test,not @focal and not @iwc and not @webp-off]'
+#
+# What a local run needs
+#   * Docker. Every job runs in a container; the phpunit and functional-acceptance
+#     jobs also start a MariaDB service container (gitlab-ci-local supports
+#     `services:` and the `mariadb` alias resolves inside the job network).
+#   * Network access to public.ecr.aws (images), packages.drupal.org + packagist
+#     (Composer), the npm registry and git.drupalcode.org (the eslint/stylelint
+#     jobs clone Drupal core for its shared front-end config).
+#   * Time and room. Each acceptance job builds a complete Drupal site from scratch
+#     and downloads a Chromium: roughly 6 minutes each. On an 8-core machine keep
+#     --concurrency at 2-3; running all four at once will thrash, and the parallel
+#     Composer downloads start timing out.
+#
+# Artifacts
+#   gitlab-ci-local writes to ./.gitlab-ci-local/ and copies job artifacts back
+#   into ./tests/reports/ (report.html, report.pdf, the per-setup Cucumber JSON,
+#   the PHP server log and the watchdog dump). Both paths are gitignored.
+################################################################################
+
+# This file must be valid YAML but must not add or change a job. Keys starting
+# with a dot are templates and are never instantiated as jobs.
+.gitlab-ci-local-notes:
+  script:
+    - 'true'
