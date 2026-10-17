@@ -1,0 +1,22 @@
+--- a/src/Plugin/views/filter/SimplenewsStatsEntityAssociated.php
++++ b/src/Plugin/views/filter/SimplenewsStatsEntityAssociated.php
+@@ -45,7 +45,7 @@
+    * Extract entity id and entity type form the string value.
+    */
+   protected function massageValue() {
+-    preg_match('/\(([a-zA-Z_]*)\|(\d+)\)$/', $this->value[0], $matches);
++    preg_match('/\(([a-zA-Z_]*)\|(\d+)\)$/', (string) (is_array($this->value) ? reset($this->value) : $this->value), $matches);
+ 
+     if (count($matches) != 3) {
+       return FALSE;
+--- a/src/Plugin/views/filter/SimplenewsStatsUser.php
++++ b/src/Plugin/views/filter/SimplenewsStatsUser.php
+@@ -44,7 +44,7 @@
+    * Extract entity id and entity type form the string value.
+    */
+   protected function massageValue() {
+-    preg_match('/\((\d+)\)$/', $this->value[0], $matches);
++    preg_match('/\((\d+)\)$/', (string) (is_array($this->value) ? reset($this->value) : $this->value), $matches);
+ 
+     if (count($matches) != 2) {
+       return FALSE;
