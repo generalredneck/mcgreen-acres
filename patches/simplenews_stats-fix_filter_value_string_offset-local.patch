@@ -5,7 +5,7 @@
     */
    protected function massageValue() {
 -    preg_match('/\(([a-zA-Z_]*)\|(\d+)\)$/', $this->value[0], $matches);
-+    preg_match('/\(([a-zA-Z_]*)\|(\d+)\)$/', (string) (is_array($this->value) ? reset($this->value) : $this->value), $matches);
++    preg_match('/\(([a-zA-Z_]*)\|(\d+)\)"?\s*$/', (string) (is_array($this->value) ? reset($this->value) : $this->value), $matches);
  
      if (count($matches) != 3) {
        return FALSE;
@@ -16,7 +16,7 @@
     */
    protected function massageValue() {
 -    preg_match('/\((\d+)\)$/', $this->value[0], $matches);
-+    preg_match('/\((\d+)\)$/', (string) (is_array($this->value) ? reset($this->value) : $this->value), $matches);
++    preg_match('/\((\d+)\)"?\s*$/', (string) (is_array($this->value) ? reset($this->value) : $this->value), $matches);
  
      if (count($matches) != 2) {
        return FALSE;
