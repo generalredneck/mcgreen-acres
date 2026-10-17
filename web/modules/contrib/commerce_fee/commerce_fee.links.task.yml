@@ -1,0 +1,4 @@
+entity.commerce_fee.collection:
+  route_name: entity.commerce_fee.collection
+  base_route: entity.commerce_fee.collection
+  title: List

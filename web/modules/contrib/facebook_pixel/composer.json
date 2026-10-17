@@ -1,0 +1,13 @@
+{
+    "name": "drupal/facebook_pixel",
+    "type": "drupal-module",
+    "description": "Allows your site to be tracked by Facebook Pixel.",
+    "homepage": "https://www.drupal.org/project/facebook_pixel",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^10 || ^11"
+    },
+    "require-dev": {
+        "drupal/commerce": "^2.29 || ^3"
+    }
+}

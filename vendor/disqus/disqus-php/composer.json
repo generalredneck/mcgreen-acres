@@ -1,0 +1,22 @@
+{
+    "name": "disqus/disqus-php",
+    "description": "Disqus API bindings for PHP",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/RobLoach/disqus-php",
+    "autoload": {
+        "classmap": [
+            "disqusapi/"
+        ]
+    },
+    "include-path": [
+        "./"
+    ],
+    "replace": {
+        "jakubzapletal/disqus-php": "*",
+        "drexarj/disqus-php": "*",
+        "jasonrgd/disqus-php": "*"
+    },
+    "require": {
+        "php": ">=5.3.0"
+    }
+}

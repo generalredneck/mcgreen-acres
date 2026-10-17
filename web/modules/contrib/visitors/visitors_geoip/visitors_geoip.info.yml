@@ -1,0 +1,8 @@
+name: Visitors GeoIP
+description: Add country reports to stats
+package: 'Analytics'
+core_version_requirement: ^10.1 || ^11
+type: module
+configure: visitors_geoip.settings
+dependencies:
+  - visitors:visitors
