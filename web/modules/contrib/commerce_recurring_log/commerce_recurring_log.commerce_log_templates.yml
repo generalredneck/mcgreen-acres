@@ -1,0 +1,19 @@
+subscription_state_updated:
+  category: commerce_subscription
+  label: 'Subscription state updated'
+  template: '<p>Subscription moved from <em>{{ from_state }}</em> to <em>{{ to_state }}</em> by the <em>{{ transition_label }}</em> transition. Changed by <strong>{{ user_name }}</strong>.</p>'
+
+subscription_payment_declined:
+  category: commerce_subscription
+  label: 'Subscription payment declined'
+  template: '<p>The subscription payment was declined.</p>'
+
+subscription_amount_changed:
+  label: 'Subscription amount changed'
+  category: commerce_subscription
+  template: '<p>The subscription amount was changed from <em>{{ old_amount }} {{ old_currency_code }}</em> to <em>{{ new_amount }} {{ new_currency_code }}<em>. Changed by <strong>{{ user_name }}</strong>.</p>'
+
+subscription_reactivate_with_immediate_payment:
+  label: 'Subscription reactivation with immediate payment'
+  category: commerce_subscription
+  template: '<p>A reactivation with immediate payment was attempted by <strong>{{ user_name }}</strong>.</p>'

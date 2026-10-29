@@ -1,0 +1,13 @@
+name: Media Bulk Upload
+type: module
+description: Enables content editors to upload multiple files at once and automatically creates media entities for each file.
+core_version_requirement: ^10.3 || ^11
+package: Media
+dependencies:
+  - drupal:media
+configure: entity.media_bulk_config.collection
+
+# Information added by Drupal.org packaging script on 2026-10-20
+version: '3.0.6'
+project: 'media_bulk_upload'
+datestamp: 1792514288

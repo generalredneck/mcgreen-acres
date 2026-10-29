@@ -1,0 +1,47 @@
+/**
+ * @file
+ * Styles for Paragraphs Previewer rendered page.
+ */
+
+/* Cleanup themes that always show the header and footer (ex. bartik) */
+body.paragraphs-previewer > header,
+body.paragraphs-previewer > div > header,
+body.paragraphs-previewer #page > header,
+body.paragraphs-previewer > footer,
+body.paragraphs-previewer > div > footer,
+body.paragraphs-previewer #page > footer {
+  display: none !important;
+}
+
+/* Compact main content */
+html.paragraphs-previewer-html,
+html.paragraphs-previewer-html body.paragraphs-previewer,
+body.paragraphs-previewer > main,
+body.paragraphs-previewer > main > .layout-content,
+body.paragraphs-previewer #main-wrapper,
+body.paragraphs-previewer #main-wrapper > #main,
+body.paragraphs-previewer #main-wrapper > #main > #content,
+body.paragraphs-previewer #main-wrapper .main-content__container,
+body.paragraphs-previewer #main-wrapper .region--content,
+body.paragraphs-previewer #main-wrapper .block-system-main-block{
+  min-height: auto;
+  height: auto;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Set HTML background color. */
+html.paragraphs-previewer-html {
+  background-color: #ffffff;
+}
+
+/* Add padding to the content */
+body.paragraphs-previewer #main-wrapper {
+  padding: 1.5rem !important;
+}
+
+/* Full width .main-content override some themes */
+body.paragraphs-previewer .main-content {
+  width: 100%;
+}

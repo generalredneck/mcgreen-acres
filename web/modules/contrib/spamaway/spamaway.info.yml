@@ -1,0 +1,14 @@
+name: 'SpamAway'
+description: 'Anti-Spam module SpamAway'
+package: 'Spam control'
+type: module
+core_version_requirement: ^10 || ^11
+'interface translation project': spamaway
+'interface translation server pattern': modules/contrib/%project/translations/%project.%language.po
+dependencies:
+  - webform:webform
+
+# Information added by Drupal.org packaging script on 2025-10-20
+version: '2.0.3'
+project: 'spamaway'
+datestamp: 1760942734
