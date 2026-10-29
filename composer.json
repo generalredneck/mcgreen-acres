@@ -94,7 +94,7 @@
         "drupal/commerce_shipping": "^3.0",
         "drupal/commerce_simplenews_checkout": "^2.0@RC",
         "drupal/commerce_stock": "^3.0@beta",
-        "drupal/commerce_stripe": "<=2.2.1",
+        "drupal/commerce_stripe": "^2.2",
         "drupal/commerce_tip": "^1.0",
         "drupal/config_split": "^2.0",
         "drupal/core": "^11.4",

@@ -1,8 +1,8 @@
 diff --git a/commerce_stripe.install b/commerce_stripe.install
-index 43ca3d476c46e6610347bb285688e8b2cacd1973..f04c69bec88bf32eb546129de925ceea95f239a9 100644
+index ead238f..0203faf 100644
 --- a/commerce_stripe.install
 +++ b/commerce_stripe.install
-@@ -218,3 +218,11 @@ function commerce_stripe_update_8106() {
+@@ -222,3 +222,11 @@ function commerce_stripe_update_8107() {
    $entity_type = \Drupal::entityTypeManager()->getDefinition('commerce_payment_method');
    \Drupal::service('entity.bundle_plugin_installer')->installBundles($entity_type, ['commerce_stripe']);
  }
@@ -10,36 +10,15 @@ index 43ca3d476c46e6610347bb285688e8b2cacd1973..f04c69bec88bf32eb546129de925ceea
 +/**
 + * Install the customer ID field to existing stripe card payment methods.
 + */
-+function commerce_stripe_update_8107() {
++function commerce_stripe_update_8108() {
 +  $entity_type = \Drupal::entityTypeManager()->getDefinition('commerce_payment_method');
 +  \Drupal::service('entity.bundle_plugin_installer')->installBundles($entity_type, ['commerce_stripe', 'commerce_payment']);
 +}
 diff --git a/commerce_stripe.module b/commerce_stripe.module
-index 03dcd5e7357753e330b350b2055bc15d0ae3c177..ab4e1588d106b5d0df66757204a2a401bc44325a 100644
+index 3813237..5f9b501 100644
 --- a/commerce_stripe.module
 +++ b/commerce_stripe.module
-@@ -5,15 +5,15 @@
-  * Provides Commerce integration for Stripe Payments.
-  */
- 
--use Drupal\commerce_payment\Entity\PaymentGateway;
--use Drupal\commerce_payment\Entity\PaymentGatewayInterface;
--use Drupal\commerce_stripe\Plugin\Commerce\PaymentGateway\StripePaymentElementInterface;
--use Drupal\commerce_stripe\PluginForm\Stripe\PaymentMethodAddForm;
--use Drupal\commerce_stripe\StripeHelper;
- use Drupal\Core\Entity\EntityInterface;
- use Drupal\Core\Form\FormStateInterface;
- use Drupal\Core\Link;
- use Drupal\Core\Url;
-+use Drupal\commerce_payment\Entity\PaymentGateway;
-+use Drupal\commerce_payment\Entity\PaymentGatewayInterface;
-+use Drupal\commerce_stripe\PluginForm\Stripe\PaymentMethodAddForm;
-+use Drupal\commerce_stripe\Plugin\Commerce\PaymentGateway\StripePaymentElementInterface;
-+use Drupal\commerce_stripe\StripeHelper;
- 
- /**
-  * Implements hook_form_FORM_ID_alter().
-@@ -249,3 +249,12 @@ function commerce_stripe_form_views_form_commerce_cart_form_default_alter(&$form
+@@ -254,3 +254,12 @@ function commerce_stripe_form_views_form_commerce_cart_form_default_alter(&$form
      break;
    }
  }
@@ -53,7 +32,7 @@ index 03dcd5e7357753e330b350b2055bc15d0ae3c177..ab4e1588d106b5d0df66757204a2a401
 +  }
 +}
 diff --git a/src/EventSubscriber/OrderPaymentIntentSubscriber.php b/src/EventSubscriber/OrderPaymentIntentSubscriber.php
-index 029bfef6546f0ea1c35b38decd85c8e857d97e31..ccd112e2e3c1827c684257a948caf7780941ab0f 100644
+index 029bfef..ccd112e 100644
 --- a/src/EventSubscriber/OrderPaymentIntentSubscriber.php
 +++ b/src/EventSubscriber/OrderPaymentIntentSubscriber.php
 @@ -19,6 +19,7 @@ use Drupal\Core\DestructableInterface;
@@ -89,19 +68,10 @@ index 029bfef6546f0ea1c35b38decd85c8e857d97e31..ccd112e2e3c1827c684257a948caf778
      }
      catch (\Throwable $throwable) {
 diff --git a/src/Plugin/Commerce/PaymentGateway/Stripe.php b/src/Plugin/Commerce/PaymentGateway/Stripe.php
-index b418003ae7eab00b1a4a8d966d05ad8e584283d0..c3ef554d6c8f4090454f322cd8721988f8ca79f3 100644
+index ae43e43..2237cee 100644
 --- a/src/Plugin/Commerce/PaymentGateway/Stripe.php
 +++ b/src/Plugin/Commerce/PaymentGateway/Stripe.php
-@@ -299,7 +299,7 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
-           $decline_message = sprintf('%s: %s', $error->type, $error->message ?? '');
-         }
-         else {
--          $decline_message = $intent->last_payment_error;
-+          $decline_message = $intent->last_payment_error ?? sprintf('Unexpected payment intent status: %s', $intent->status);
-         }
-         throw HardDeclineException::createForPayment($payment, $decline_message);
-       }
-@@ -538,7 +538,12 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+@@ -539,7 +539,12 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
        'capture_method' => 'automatic',
      ];
  
@@ -115,7 +85,7 @@ index b418003ae7eab00b1a4a8d966d05ad8e584283d0..c3ef554d6c8f4090454f322cd8721988
      if (!empty($customer_remote_id)) {
        $default_intent_attributes['customer'] = $customer_remote_id;
      }
-@@ -589,6 +594,9 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+@@ -590,6 +595,9 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
      if ($owner && $owner->isAuthenticated()) {
        $customer_id = $this->getRemoteCustomerId($owner);
      }
@@ -125,7 +95,7 @@ index b418003ae7eab00b1a4a8d966d05ad8e584283d0..c3ef554d6c8f4090454f322cd8721988
      try {
        $stripe_payment_method = PaymentMethod::retrieve($stripe_payment_method_id);
  
-@@ -606,7 +614,7 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+@@ -607,7 +615,7 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
          $email = $owner->getEmail();
        }
        // If the user is authenticated, created a Stripe customer to attach the
@@ -134,7 +104,7 @@ index b418003ae7eab00b1a4a8d966d05ad8e584283d0..c3ef554d6c8f4090454f322cd8721988
        elseif ($owner && $owner->isAuthenticated()) {
          $email = $owner->getEmail();
          $customer = Customer::create([
-@@ -619,14 +627,23 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
+@@ -620,14 +628,23 @@ class Stripe extends OnsitePaymentGatewayBase implements StripeInterface {
          $this->setRemoteCustomerId($owner, $customer_id);
          $owner->save();
        }
@@ -164,7 +134,7 @@ index b418003ae7eab00b1a4a8d966d05ad8e584283d0..c3ef554d6c8f4090454f322cd8721988
          if (!empty($formatted_address)) {
 diff --git a/src/Plugin/Commerce/PaymentMethodType/LegacyCard.php b/src/Plugin/Commerce/PaymentMethodType/LegacyCard.php
 new file mode 100644
-index 0000000000000000000000000000000000000000..9434d78732c8330823f333b76590f8c80094679c
+index 0000000..9434d78
 --- /dev/null
 +++ b/src/Plugin/Commerce/PaymentMethodType/LegacyCard.php
 @@ -0,0 +1,33 @@
