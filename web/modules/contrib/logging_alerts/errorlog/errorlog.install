@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the errorlog module.
+ */
+
+use Drupal\Core\Logger\RfcLogLevel;
+
+/**
+ * Implements hook_uninstall().
+ */
+function errorlog_uninstall() {
+  \Drupal::configFactory()->getEditable('errorlog.settings')->delete();
+}
+
+/**
+ * Change NULL severity levels to FALSE.
+ */
+function errorlog_update_10201(): void {
+  $config = \Drupal::configFactory()->getEditable('errorlog.settings');
+  // Earlier releases saved an unchecked checkbox as NULL.
+  foreach (array_keys(RfcLogLevel::getLevels()) as $severity) {
+    $key = 'errorlog_' . $severity;
+    if ($config->get($key) === NULL) {
+      $config->set($key, FALSE);
+    }
+  }
+  $config->save();
+}

@@ -1,0 +1,4 @@
+administer prlp settings:
+  title: Administer PRLP settings
+  description: Allow to manage Password Reset Landing Page (PRLP) settings.
+  restrict access: TRUE

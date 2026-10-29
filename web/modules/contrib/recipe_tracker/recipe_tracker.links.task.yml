@@ -1,0 +1,14 @@
+entity.recipe_tracker_log.view:
+  title: 'View'
+  route_name: entity.recipe_tracker_log.canonical
+  base_route: entity.recipe_tracker_log.canonical
+entity.recipe_tracker_log.delete_form:
+  title: 'Delete'
+  route_name: entity.recipe_tracker_log.delete_form
+  base_route: entity.recipe_tracker_log.canonical
+  weight: 10
+entity.recipe_tracker_log.collection:
+  title: 'Recipe Tracker'
+  route_name: entity.recipe_tracker_log.collection
+  base_route: system.modules_list
+  weight: 10

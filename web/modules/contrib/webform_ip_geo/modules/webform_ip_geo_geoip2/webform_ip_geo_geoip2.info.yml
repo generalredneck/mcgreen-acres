@@ -1,0 +1,7 @@
+name: 'Webform IP Geo: MaxMind GeoIP2'
+type: module
+description: 'Local MaxMind GeoIP2/GeoLite2 database provider for Webform IP Geo. Not subject to remote API rate limits.'
+core_version_requirement: ^10.1 || ^11
+package: 'Webform'
+dependencies:
+  - webform_ip_geo:webform_ip_geo

@@ -1,0 +1,12 @@
+{
+  "version": "0.1",
+  "language": "en",
+  "ignoreWords": [
+    "danielveza",
+    "dieuwe",
+    "holovachek",
+    "jazzslider",
+    "maintainerswri",
+    "viktor"
+  ]
+}
