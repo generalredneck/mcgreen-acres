@@ -1,0 +1,13 @@
+name: File to Media
+description: 'Allows creating a media entity from an existing file'
+core_version_requirement: ^8.8 || ~9.0 || ^10 || ^11
+type: module
+dependencies:
+  - drupal:file
+  - drupal:views
+  - drupal:media
+
+# Information added by Drupal.org packaging script on 2024-08-14
+version: '1.0.3'
+project: 'file_to_media'
+datestamp: 1723677679
