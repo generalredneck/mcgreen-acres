@@ -1,0 +1,69 @@
+{#
+/**
+ * @file
+ * Price field for by-weight variations on the full product display.
+ *
+ * Same markup as templates/field/field.html.twig, plus a small line under the
+ * price showing the heaviest the package can be and the rate per lb, e.g.
+ * "Up to 0.75 lb @ $9.00/lb". The two values come from
+ * mcgreen_acres_theme_preprocess_field(). Teasers use a different template, so
+ * they are not affected.
+ */
+#}
+{%
+  set classes = [
+    field_name|clean_class,
+    'field__item',
+  ]
+%}
+
+{%
+  set label_classes = [
+    'form-label',
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
+%}
+
+{%
+  set wrapper_classes = [
+    'field--label-' ~ label_display,
+    label_display == 'inline' ? 'clearfix',
+  ]
+%}
+
+{% if by_weight_max_weight and by_weight_rate %}
+  {% set per_lb_label %}
+    <div class="price-per-lb small text-muted">{{ 'Up to @weight lb @ @rate/lb'|t({'@weight': by_weight_max_weight, '@rate': by_weight_rate}) }}</div>
+  {% endset %}
+{% endif %}
+
+{% if label_hidden %}
+  {% if multiple %}
+    <div{{ attributes }}>
+      {% for item in items %}
+        <div{{ item.attributes.addClass(classes) }}>{{ item.content }}</div>
+      {% endfor %}
+      {{ per_lb_label }}
+    </div>
+  {% else %}
+    {% for item in items %}
+      <div{{ attributes.addClass(classes) }}>{{ item.content }}</div>
+    {% endfor %}
+    {{ per_lb_label }}
+  {% endif %}
+{% else %}
+  <div{{ attributes.addClass(wrapper_classes) }}>
+    <div{{ title_attributes.addClass(label_classes) }}>{{ label }}</div>
+    {% if multiple %}
+      <div class="field__items">
+    {% endif %}
+    {% for item in items %}
+      <div{{ item.attributes.addClass(classes) }}>{{ item.content }}</div>
+    {% endfor %}
+    {% if multiple %}
+      </div>
+    {% endif %}
+    {{ per_lb_label }}
+  </div>
+{% endif %}

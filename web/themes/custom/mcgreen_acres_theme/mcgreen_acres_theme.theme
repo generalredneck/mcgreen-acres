@@ -261,6 +261,22 @@ function mcgreen_acres_theme_preprocess_field(array &$variables, $hook) {
       && $entity->hasField('commerce_stock_always_in_stock')
       && (bool) $entity->get('commerce_stock_always_in_stock')->value;
   }
+
+  // By-weight variations show "max weight @ rate per lb" under the price (see
+  // field--commerce-product-variation--price--by-weight--full.html.twig).
+  if ($variables['element']['#field_name'] === 'price') {
+    $entity = $variables['element']['#object'] ?? NULL;
+    if ($entity && $entity->getEntityTypeId() === 'commerce_product_variation'
+      && $entity->bundle() === 'by_weight'
+      && !$entity->get('field_max_weight')->isEmpty()
+      && !$entity->get('field_rate_per_lb')->isEmpty()) {
+      $rate = $entity->get('field_rate_per_lb')->first()->toPrice();
+      // Trim trailing zeros: 0.50 -> 0.5, 1.00 -> 1.
+      $variables['by_weight_max_weight'] = rtrim(rtrim((string) $entity->get('field_max_weight')->value, '0'), '.');
+      $variables['by_weight_rate'] = \Drupal::service('commerce_price.currency_formatter')
+        ->format($rate->getNumber(), $rate->getCurrencyCode());
+    }
+  }
 }
 
 /**

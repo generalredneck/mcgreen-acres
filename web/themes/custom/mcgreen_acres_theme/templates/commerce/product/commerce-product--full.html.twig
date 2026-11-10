@@ -56,6 +56,9 @@
       {% endif %}
       {{- product.variations -}}
       {{- product.variation_stock -}}
+      {% if product_entity.bundle == 'by_weight' %}
+        <div class="alert alert-info"><p class="lead"><strong>Sold by weight</strong></p><p class="mb-0">The price shown is the most you'll pay. We charge the actual weight of your purchase at the rate shown when we pull your order.</p></div>
+      {% endif %}
       {% if farmstand_available %}
         <div class="alert alert-info"><p class="lead"><strong>Available at the Farm Stand — self serve, free to take upon purchase.</strong></p><p>Pickup only, at our address:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a>. Not available for delivery or shipping.</p></div>
       {% else %}

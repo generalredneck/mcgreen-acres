@@ -16,6 +16,7 @@ dependencies:
     - custom_commerce_simplenews_checkout
     - facebook_pixel_commerce
     - mcgreen_acres_store
+    - mcgreen_by_weight_orders
     - mcgreen_order_payment
 _core:
   default_config_hash: mj-wWv7nj79DC7uw5I63mZ3ch0PNp4hyonJyhuEwKDc
@@ -91,6 +92,11 @@ configuration:
       message:
         value: '<div class="alert alert-info"><p class="lead"><strong>Orders with items not in the farm stand must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>Feel free to put your requested pick up times in the Comments &amp; Special Requests area.&nbsp;</p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬ so we can set up a pick up time.</p></div>'
         format: full_html
+    by_weight_notice:
+      display_label: null
+      step: review
+      weight: 10
+      wrapper_element: container
     review:
       display_label: null
       step: review
@@ -99,44 +105,36 @@ configuration:
     stripe_review:
       display_label: null
       step: review
-      weight: 10
+      weight: 11
       wrapper_element: container
       button_id: edit-actions-next
       auto_submit_review_form: false
       setup_future_usage: ''
-    newsletter_subscribe:
-      display_label: null
-      step: _disabled
-      weight: 17
-      wrapper_element: container
-      mailchimp_list_id: ''
-      tags: ''
-      subscribe_text: 'Keep me updated with news and offers.'
     simplenews_subscription:
       display_label: null
       step: review
-      weight: 11
+      weight: 12
       wrapper_element: container
+      label: 'Keep me updated with news and offers.'
       newsletters:
         - mcgreen_acres_newsletter
-      label: 'Keep me updated with news and offers.'
       review: 0
       review_label: 'Subscribe to newsletters: @newsletters'
     customer_comments:
       display_label: 'Comments & Special Requests'
       step: review
-      weight: 12
+      weight: 13
       wrapper_element: fieldset
     payment_process:
       display_label: null
       step: payment
-      weight: 13
+      weight: 14
       wrapper_element: container
       capture: true
     completion_message:
       display_label: null
       step: complete
-      weight: 14
+      weight: 15
       wrapper_element: null
       message:
         value: '<h2>Your order is Complete!</h2><div class="alert alert-info"><p class="lead"><strong>Orders with items not in the Farm Stand must be picked up at the farm by appointment.</strong></p><p>We are located at:<br><a href="https://maps.app.goo.gl/g27qR5a6KtSQ9XrS7" target="_blank" rel="noopener noreferrer">2414 Westmoreland Rd Red Oak, Texas 75154</a></p><p>To minimize delays call or text us at ‪<a href="tel:469-248-5703">(469) 248-5703</a>‬‬ so we can set up a pick up time.</p></div><p>Your order number is [commerce_order:order_number].&nbsp;</p><p>An email has been sent with your receipt.&nbsp;</p><p>An account has been created for you. Check your email for a link to set a password so you can review your orders and manage any subscriptions.</p>'
@@ -145,26 +143,39 @@ configuration:
     order_summary:
       display_label: null
       step: _sidebar
-      weight: 15
+      weight: 16
       wrapper_element: container
       view: commerce_checkout_order_summary
     coupon_redemption:
       display_label: null
       step: _sidebar
-      weight: 16
+      weight: 17
       wrapper_element: container
       allow_multiple: false
-    shipping_information:
+    mcgreen_order_payment_completion_message:
       display_label: null
       step: _disabled
       weight: 18
+      wrapper_element: container
+    newsletter_subscribe:
+      display_label: null
+      step: _disabled
+      weight: 19
+      wrapper_element: container
+      mailchimp_list_id: ''
+      tags: ''
+      subscribe_text: 'Keep me updated with news and offers.'
+    shipping_information:
+      display_label: null
+      step: _disabled
+      weight: 20
       wrapper_element: fieldset
       auto_recalculate: true
       require_shipping_profile: true
     agree_terms:
       display_label: null
       step: _disabled
-      weight: 19
+      weight: 21
       wrapper_element: container
       link_text: 'Terms and Conditions'
       prefix_text: 'I agree with the %terms'
@@ -175,10 +186,5 @@ configuration:
     completion_register:
       display_label: null
       step: _disabled
-      weight: 20
+      weight: 22
       wrapper_element: null
-    mcgreen_order_payment_completion_message:
-      display_label: null
-      step: _disabled
-      weight: 0
-      wrapper_element: container
