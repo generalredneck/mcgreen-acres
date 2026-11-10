@@ -851,6 +851,20 @@ if ($environment == 'local') {
 // wait_timeout and cascade into unrelated "MySQL server has gone away" errors.
 ini_set('default_socket_timeout', 10);
 
+// PHP 8.5 deprecated curl_close(), which stripe-php v15 (pinned by
+// commerce_stripe ^15) still calls from CurlClient::__destruct(). That runs at
+// shutdown after Drupal's database connection has been destroyed, so letting
+// Drupal log the deprecation fatals with "StatementWrapperIterator ... null
+// given" at the end of any page that called the Stripe API (e.g. the checkout
+// review step). Ignore only that one deprecation, and remove this once
+// commerce_stripe allows a newer stripe-php.
+$stripe_curl_close_previous_handler = set_error_handler(function ($errno, $errstr, $errfile = '', $errline = 0) use (&$stripe_curl_close_previous_handler) {
+  if ($errno === E_DEPRECATED && str_contains($errstr, 'curl_close()')) {
+    return TRUE;
+  }
+  return $stripe_curl_close_previous_handler ? $stripe_curl_close_previous_handler($errno, $errstr, $errfile, $errline) : FALSE;
+});
+
 
 /**
  * Load local development override configuration, if available.
