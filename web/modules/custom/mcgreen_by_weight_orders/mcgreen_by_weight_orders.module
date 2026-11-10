@@ -6,6 +6,9 @@
  */
 
 use Drupal\commerce_product\Entity\ProductVariationInterface;
+use Drupal\mcgreen_by_weight_orders\ByWeightOrderCharger;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_ENTITY_TYPE_presave() for commerce_product_variation.
@@ -25,4 +28,39 @@ function mcgreen_by_weight_orders_commerce_product_variation_presave(ProductVari
   $rate = $variation->get('field_rate_per_lb')->first()->toPrice();
   $max_weight = (string) $variation->get('field_max_weight')->value;
   $variation->setPrice(\Drupal::service('commerce_price.rounder')->round($rate->multiply($max_weight)));
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * The "To weigh" view lists orders with a by-weight item that still needs
+ * attention: an item with no packed weight yet, or a card authorization that
+ * has not been captured (for example because the capture failed after the
+ * weights were saved). Joining the order items would return an order once per
+ * matching item (and Views selects each item's ID, so DISTINCT can't collapse
+ * them), so the condition is a correlated subquery on the order instead.
+ */
+function mcgreen_by_weight_orders_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'commerce_orders_to_weigh') {
+    return;
+  }
+  $query->addWhereExpression(0, 'EXISTS (
+    SELECT 1
+    FROM {commerce_order__order_items} oi
+    INNER JOIN {commerce_order_item} i ON i.order_item_id = oi.order_items_target_id
+    LEFT JOIN {commerce_order_item__field_packed_weight} w ON w.entity_id = i.order_item_id
+    WHERE oi.entity_id = commerce_order.order_id
+      AND oi.deleted = 0
+      AND i.type = :by_weight_type
+      AND (
+        w.field_packed_weight_value IS NULL
+        OR EXISTS (
+          SELECT 1 FROM {commerce_payment} p
+          WHERE p.order_id = commerce_order.order_id AND p.state = :authorization
+        )
+      )
+  )', [
+    ':by_weight_type' => ByWeightOrderCharger::ORDER_ITEM_TYPE,
+    ':authorization' => 'authorization',
+  ]);
 }

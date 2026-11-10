@@ -3,6 +3,7 @@
 namespace Drupal\mcgreen_by_weight_orders\Form;
 
 use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\commerce_payment\Exception\PaymentGatewayException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -90,6 +91,16 @@ class ByWeightChargeForm extends FormBase {
     }
     catch (\InvalidArgumentException $e) {
       $this->messenger()->addError($e->getMessage());
+      $form_state->setRebuild();
+    }
+    catch (PaymentGatewayException $e) {
+      // The weights and the new total were already saved by this point, so
+      // trying again re-applies the same weights and retries the capture.
+      $this->logger('mcgreen_by_weight_orders')->error('Capture failed for order @order: @message', [
+        '@order' => $order->id(),
+        '@message' => $e->getMessage(),
+      ]);
+      $this->messenger()->addError($this->t('The weights were saved, but the card could not be charged: @message The hold may have expired or been released. The order stays on the To weigh list until it is charged; try again, or record the payment another way.', ['@message' => $e->getMessage()]));
       $form_state->setRebuild();
     }
   }

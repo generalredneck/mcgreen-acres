@@ -2,10 +2,7 @@ uuid: de1b7a40-64cd-4a04-91ba-ea600c5d1e15
 langcode: en
 status: true
 dependencies:
-  config:
-    - commerce_order.commerce_order_item_type.by_weight
   module:
-    - commerce
     - commerce_order
     - commerce_price
     - options
@@ -16,7 +13,7 @@ _core:
 id: commerce_orders_to_weigh
 label: 'To weigh'
 module: views
-description: 'Open orders with a by-weight item that has not been weighed and charged yet.'
+description: 'Open orders with a by-weight item that has not been weighed yet, or whose card hold has not been captured (e.g. after a failed capture). The condition is added by mcgreen_by_weight_orders_views_query_alter().'
 tag: Commerce
 base_table: commerce_order
 base_field: order_id
@@ -670,94 +667,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        order_item_type:
-          id: order_item_type
-          table: commerce_order_item
-          field: type
-          relationship: order_items
-          group_type: group
-          admin_label: ''
-          entity_type: commerce_order_item
-          entity_field: type
-          plugin_id: bundle
-          operator: in
-          value:
-            by_weight: by_weight
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        unweighed:
-          id: unweighed
-          table: commerce_order_item__field_packed_weight
-          field: field_packed_weight_value
-          relationship: order_items
-          group_type: group
-          admin_label: ''
-          entity_type: commerce_order_item
-          entity_field: field_packed_weight
-          plugin_id: numeric
-          operator: empty
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
       style:
         type: table
         options:
@@ -846,21 +755,9 @@ display:
         options:
           query_comment: ''
           disable_sql_rewrite: false
-          distinct: true
+          distinct: false
           replica: false
           query_tags: {  }
-      relationships:
-        order_items:
-          id: order_items
-          table: commerce_order__order_items
-          field: order_items_target_id
-          relationship: none
-          group_type: group
-          admin_label: 'Order item'
-          entity_type: commerce_order
-          entity_field: order_items
-          plugin_id: standard
-          required: true
       use_ajax: false
       header: {  }
       footer: {  }
