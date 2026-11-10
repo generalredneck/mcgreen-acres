@@ -7,6 +7,7 @@ use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_order\Entity\OrderItemInterface;
 use Drupal\commerce_order\OrderRefreshInterface;
 use Drupal\commerce_payment\Entity\PaymentInterface;
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\SupportsAuthorizationsInterface;
 use Drupal\commerce_price\RounderInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
@@ -59,7 +60,9 @@ class ByWeightOrderCharger {
    *   The payments.
    */
   public function getAuthorizedPayments(OrderInterface $order): array {
-    $payments = $this->entityTypeManager->getStorage('commerce_payment')->loadMultipleByOrder($order);
+    /** @var \Drupal\commerce_payment\PaymentStorageInterface $payment_storage */
+    $payment_storage = $this->entityTypeManager->getStorage('commerce_payment');
+    $payments = $payment_storage->loadMultipleByOrder($order);
     return array_filter($payments, fn (PaymentInterface $payment) => $payment->getState()->getId() === 'authorization');
   }
 
@@ -71,7 +74,9 @@ class ByWeightOrderCharger {
     if (!$variation || !$variation->hasField('field_rate_per_lb') || $variation->get('field_rate_per_lb')->isEmpty()) {
       throw new \InvalidArgumentException(sprintf('"%s" has no rate per lb.', $item->label()));
     }
-    return $this->rounder->round($variation->get('field_rate_per_lb')->first()->toPrice()->multiply($weight));
+    /** @var \Drupal\commerce_price\Plugin\Field\FieldType\PriceItem $rate_item */
+    $rate_item = $variation->get('field_rate_per_lb')->first();
+    return $this->rounder->round($rate_item->toPrice()->multiply($weight));
   }
 
   /**
@@ -92,6 +97,16 @@ class ByWeightOrderCharger {
    */
   public function apply(OrderInterface $order, array $weights, bool $capture = TRUE) {
     $items = $this->getByWeightItems($order);
+    // Check the payment can be captured before saving anything.
+    $payments = $capture ? $this->getAuthorizedPayments($order) : [];
+    $payment = reset($payments) ?: NULL;
+    $gateway = NULL;
+    if ($payment) {
+      $gateway = $payment->getPaymentGateway()->getPlugin();
+      if (!$gateway instanceof SupportsAuthorizationsInterface) {
+        throw new \InvalidArgumentException(sprintf('The payment gateway "%s" cannot capture an authorization.', $payment->getPaymentGateway()->label()));
+      }
+    }
     // Validate every line before saving anything.
     $actuals = [];
     foreach ($items as $id => $item) {
@@ -129,19 +144,17 @@ class ByWeightOrderCharger {
     // Recalculate in memory first so nothing is saved if the total is wrong.
     $this->orderRefresh->refresh($order);
     $order->recalculateTotalPrice();
-    $payments = $capture ? $this->getAuthorizedPayments($order) : [];
     $balance = $order->getBalance();
-    $payment = reset($payments);
     if ($payment && $balance->greaterThan($payment->getAmount())) {
       throw new \InvalidArgumentException(sprintf('The new order balance %s is more than the %s authorized.', $balance, $payment->getAmount()));
     }
 
     $order->save();
 
-    if (!$payment) {
+    if (!$payment || !$gateway) {
       return NULL;
     }
-    $payment->getPaymentGateway()->getPlugin()->capturePayment($payment, $balance);
+    $gateway->capturePayment($payment, $balance);
     return $balance;
   }
 

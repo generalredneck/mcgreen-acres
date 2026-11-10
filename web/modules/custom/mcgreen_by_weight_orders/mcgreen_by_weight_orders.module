@@ -8,6 +8,7 @@
 use Drupal\commerce_product\Entity\ProductVariationInterface;
 use Drupal\mcgreen_by_weight_orders\ByWeightOrderCharger;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -25,7 +26,9 @@ function mcgreen_by_weight_orders_commerce_product_variation_presave(ProductVari
   if ($variation->get('field_rate_per_lb')->isEmpty() || $variation->get('field_max_weight')->isEmpty()) {
     return;
   }
-  $rate = $variation->get('field_rate_per_lb')->first()->toPrice();
+  /** @var \Drupal\commerce_price\Plugin\Field\FieldType\PriceItem $rate_item */
+  $rate_item = $variation->get('field_rate_per_lb')->first();
+  $rate = $rate_item->toPrice();
   $max_weight = (string) $variation->get('field_max_weight')->value;
   $variation->setPrice(\Drupal::service('commerce_price.rounder')->round($rate->multiply($max_weight)));
 }
@@ -44,7 +47,7 @@ function mcgreen_by_weight_orders_commerce_product_variation_presave(ProductVari
  * instead.
  */
 function mcgreen_by_weight_orders_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
-  if ($view->id() !== 'commerce_orders_to_weigh') {
+  if ($view->id() !== 'commerce_orders_to_weigh' || !$query instanceof Sql) {
     return;
   }
   $query->addWhereExpression(0, 'EXISTS (

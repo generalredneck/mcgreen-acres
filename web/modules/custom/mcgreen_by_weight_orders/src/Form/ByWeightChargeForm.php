@@ -83,6 +83,7 @@ class ByWeightChargeForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
     $order = $this->entityTypeManager->getStorage('commerce_order')->load($form_state->get('order_id'));
     try {
       $captured = $this->charger->apply($order, $form_state->getValue('weights'));
