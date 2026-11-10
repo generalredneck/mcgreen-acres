@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the emaillog module.
+ */
+
+use Drupal\Core\Logger\RfcLogLevel;
+
+/**
+ * Add settings that do not exist. Set NULL checkboxes to FALSE.
+ */
+function emaillog_update_10201(): void {
+  $config = \Drupal::configFactory()->getEditable('emaillog.settings');
+  // Configuration with translatable values must have a language code.
+  if (!$config->get('langcode')) {
+    $config->set('langcode', \Drupal::languageManager()->getDefaultLanguage()->getId());
+  }
+  // If the backtrace setting does not exist, set it to TRUE.
+  // The old form saved an unchecked box as NULL.
+  if (!array_key_exists('emaillog_backtrace_replace_args', $config->get())) {
+    $config->set('emaillog_backtrace_replace_args', TRUE);
+  }
+  // Set NULL checkbox values to FALSE. Add settings that do not exist.
+  // If the custom subject is empty, the logger uses the default subject.
+  $defaults = [
+    'emaillog_backtrace_replace_args' => FALSE,
+    'emaillog_debug_info' => [],
+    'emaillog_max_similar_emails' => NULL,
+    'emaillog_max_consecutive_timespan' => NULL,
+    'emaillog_max_similarity_level' => NULL,
+    'emaillog_legacy_subject' => FALSE,
+    'emaillog_custom_subject' => '',
+  ];
+  foreach (array_keys(RfcLogLevel::getLevels()) as $level) {
+    $defaults['emaillog_' . $level] = '';
+    $defaults['emaillog_' . $level . '_channels'] = '';
+  }
+  foreach ($defaults as $key => $value) {
+    if ($config->get($key) === NULL) {
+      $config->set($key, $value);
+    }
+  }
+  // When Drupal saves the configuration, it changes each string to the type
+  // in the schema.
+  $config->save();
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="drimage_improved">
+  <description>PHP_CodeSniffer configuration for the Drimage module (Drupal + DrupalPractice).</description>
+  <arg name="extensions" value="inc,install,module,php,profile,test,theme,yml"/>
+
+  <!-- Scan the module, skip front-end tool and dependency folders. -->
+  <file>.</file>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/bower_components/*</exclude-pattern>
+
+  <!-- Full Drupal coding standard. -->
+  <rule ref="Drupal"/>
+
+  <!-- Drupal best-practice sniffs. -->
+  <rule ref="DrupalPractice">
+    <!-- Test classes legitimately use unused parameters and set-up fixtures. -->
+    <exclude-pattern>*/tests/*</exclude-pattern>
+  </rule>
+  <!-- Gate on errors. Warnings (dependency-injection refactors, line length) are
+       reported for follow-up but do not fail the build. -->
+  <arg name="warning-severity" value="0"/>
+</ruleset>

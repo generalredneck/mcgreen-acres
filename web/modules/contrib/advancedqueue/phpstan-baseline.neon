@@ -1,0 +1,1129 @@
+parameters:
+	ignoreErrors:
+		-
+			rawMessage: 'Function advancedqueue_schema() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: advancedqueue.install
+
+		-
+			rawMessage: 'Function advancedqueue_cron() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: advancedqueue.module
+
+		-
+			rawMessage: 'Function advancedqueue_theme() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: advancedqueue.module
+
+		-
+			rawMessage: 'Function advancedqueue_views_data() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: advancedqueue.views.inc
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\BackendManager::__construct() has parameter $namespaces with no value type specified in iterable type Traversable.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BackendManager.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\BackendManager::processDefinition() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/BackendManager.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\BackendManager::processDefinition() has parameter $definition with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/BackendManager.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\BackendManager::processDefinition() has parameter $plugin_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/BackendManager.php
+
+		-
+			rawMessage: Property Drupal\advancedqueue\BackendManager::$defaults type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BackendManager.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\BackendPluginCollection::__construct() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/BackendPluginCollection.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\BackendPluginCollection::initializePlugin() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/BackendPluginCollection.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Commands\AdvancedQueueCommands::process() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Commands/AdvancedQueueCommands.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Commands\AdvancedQueueCommands::process() has parameter $options with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Commands/AdvancedQueueCommands.php
+
+		-
+			rawMessage: 'Call to an undefined method Drupal\Core\Entity\EntityInterface::getBackend().'
+			identifier: method.notFound
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::enqueueJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::enqueueJobs() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::getBackendConfiguration() should return string but returns array.'
+			identifier: return.type
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::getThreshold() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::postDelete() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::postSave() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::setBackendConfiguration() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\Queue::setThreshold() has parameter $threshold with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: Property Drupal\advancedqueue\Entity\Queue::$backend_configuration type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Property Drupal\advancedqueue\Entity\Queue::$pluginCollection (Drupal\advancedqueue\BackendPluginCollection) does not accept null.'
+			identifier: assign.propertyType
+			count: 2
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: Property Drupal\advancedqueue\Entity\Queue::$threshold type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/Queue.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\QueueInterface::enqueueJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/QueueInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\QueueInterface::enqueueJobs() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Entity/QueueInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\QueueInterface::getThreshold() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/QueueInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\QueueInterface::setBackendConfiguration() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/QueueInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Entity\QueueInterface::setThreshold() has parameter $threshold with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Entity/QueueInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Exception\DuplicateJobException::__construct() has parameter $duplicates with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Exception/DuplicateJobException.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Exception\DuplicateJobException::getDuplicates() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Exception/DuplicateJobException.php
+
+		-
+			rawMessage: 'PHPDoc tag @param for parameter $duplicates with type array[Drupal\advancedqueue\Job|int|string] is not subtype of native type array.'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/Exception/DuplicateJobException.php
+
+		-
+			rawMessage: 'PHPDoc tag @var for property Drupal\advancedqueue\Exception\DuplicateJobException::$duplicates with type array[Drupal\advancedqueue\Job|int|string] is not subtype of native type array.'
+			identifier: property.phpDocType
+			count: 1
+			path: src/Exception/DuplicateJobException.php
+
+		-
+			rawMessage: Property Drupal\advancedqueue\Exception\DuplicateJobException::$duplicates type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Exception/DuplicateJobException.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\BulkActionConfirmForm::buildForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/BulkActionConfirmForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\BulkActionConfirmForm::buildForm() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/BulkActionConfirmForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\BulkActionConfirmForm::submitForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/BulkActionConfirmForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\DeleteJob::buildForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/DeleteJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\DeleteJob::buildForm() has parameter $job_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Form/DeleteJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\DeleteJob::buildForm() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/DeleteJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\DeleteJob::submitForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/DeleteJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\DeleteJob::submitForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/DeleteJob.php
+
+		-
+			rawMessage: 'Parameter #1 $job_id of method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\SupportsDeletingJobsInterface::deleteJob() expects string, int given.'
+			identifier: argument.type
+			count: 1
+			path: src/Form/DeleteJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::ajaxCallback() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::ajaxCallback() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::ajaxRefresh() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::ajaxRefresh() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::form() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::form() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::save() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::submitForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::submitForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::validateForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\QueueForm::validateForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Unsafe usage of new static().'
+			identifier: new.static
+			count: 1
+			path: src/Form/QueueForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\ReleaseJob::buildForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/ReleaseJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\ReleaseJob::buildForm() has parameter $job_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Form/ReleaseJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\ReleaseJob::buildForm() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/ReleaseJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\ReleaseJob::submitForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/ReleaseJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\ReleaseJob::submitForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/ReleaseJob.php
+
+		-
+			rawMessage: 'Parameter #1 $job_id of method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\SupportsReleasingJobsInterface::releaseJob() expects string, int given.'
+			identifier: argument.type
+			count: 1
+			path: src/Form/ReleaseJob.php
+
+		-
+			rawMessage: 'Call to an undefined method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::loadJob().'
+			identifier: method.notFound
+			count: 1
+			path: src/Form/RetryJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\RetryJob::buildForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/RetryJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\RetryJob::buildForm() has parameter $job_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Form/RetryJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\RetryJob::buildForm() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/RetryJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\RetryJob::submitForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Form/RetryJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Form\RetryJob::submitForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Form/RetryJob.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Hook\AdvancedqueueHooks::theme() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Hook/AdvancedqueueHooks.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Hook\AdvancedqueueViewsHooks::viewsData() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Hook/AdvancedqueueViewsHooks.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::__construct() has parameter $definition with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::assertState() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::create() has parameter $definition with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::create() has parameter $payload with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::getAvailableTime() should return string but returns int.'
+			identifier: return.type
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::getMessage() should return string but returns array.'
+			identifier: return.type
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::getPayload() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::setPayload() has parameter $payload with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Job::toArray() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Property Drupal\advancedqueue\Job::$message (array) does not accept string.'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: Property Drupal\advancedqueue\Job::$message type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: Property Drupal\advancedqueue\Job::$payload type has no value type specified in iterable type array.
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Unsafe usage of new static().'
+			identifier: new.static
+			count: 1
+			path: src/Job.php
+
+		-
+			rawMessage: 'Unsafe usage of new static().'
+			identifier: new.static
+			count: 2
+			path: src/JobResult.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\JobTypeManager::__construct() has parameter $namespaces with no value type specified in iterable type Traversable.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/JobTypeManager.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::__construct() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::buildConfigurationForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::buildConfigurationForm() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::calculateDependencies() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::cleanupQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::create() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::defaultConfiguration() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::getConfiguration() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::setConfiguration() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::setConfiguration() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::submitConfigurationForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::submitConfigurationForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::validateConfigurationForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase::validateConfigurationForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Unsafe usage of new static() in abstract class Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendBase in static method create().'
+			identifier: new.staticInAbstractClassStaticMethod
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Unsafe usage of new static().'
+			identifier: new.static
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::cleanupQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::countJobs() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::createQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::deleteQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::enqueueJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::enqueueJobs() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::onFailure() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::onSuccess() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::retryJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/BackendInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::__construct() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::cleanupQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::cleanupQueueItems() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::constructJobFromDefinition() has parameter $definition with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::countJobs() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::create() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::createQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::deleteJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::deleteQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::enqueueJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::enqueueJobs() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::getDuplicateJobs() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::onFailure() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::onSuccess() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::releaseJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::retryJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\Database::updateJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Parameter #2 $fetch of method Drupal\Core\Database\StatementInterface::fetchAllAssoc() expects Drupal\Core\Database\Statement\FetchAs|null, int given.'
+			identifier: argument.type
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Unsafe usage of new static().'
+			identifier: new.static
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/Database.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::claimJob() should return Drupal\advancedqueue\Job|null but return statement is missing.'
+			identifier: return.missing
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::cleanupQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::countJobs() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::createQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::deleteJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::deleteQueue() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::enqueueJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::enqueueJobs() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::onFailure() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::onSuccess() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::releaseJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\NullBackend::retryJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/NullBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\SupportsDeletingJobsInterface::deleteJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/SupportsDeletingJobsInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\SupportsDetectingDuplicateJobsInterface::getDuplicateJobs() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/SupportsDetectingDuplicateJobsInterface.php
+
+		-
+			rawMessage: 'PHPDoc tag @return with type array[Drupal\advancedqueue\Job|int|string] is not subtype of native type array.'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/SupportsDetectingDuplicateJobsInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\SupportsReleasingJobsInterface::releaseJob() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/AdvancedQueue/Backend/SupportsReleasingJobsInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\JobType\JobTypeBase::handleDuplicateJobs() has parameter $duplicates with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/JobType/JobTypeBase.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\AdvancedQueue\JobType\JobTypeInterface::handleDuplicateJobs() has parameter $duplicates with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/AdvancedQueue/JobType/JobTypeInterface.php
+
+		-
+			rawMessage: 'PHPDoc tag @param for parameter $duplicates with type array[Drupal\advancedqueue\Job|int|string] is not subtype of native type array.'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/Plugin/AdvancedQueue/JobType/JobTypeInterface.php
+
+		-
+			rawMessage: PHPDoc tag @return with type Drupal\advancedqueue\JobResult|null is not subtype of native type Drupal\advancedqueue\Job|null.
+			identifier: return.phpDocType
+			count: 1
+			path: src/Plugin/AdvancedQueue/JobType/JobTypeInterface.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\argument_validator\QueueBackend::validateArgument() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/views/argument_validator/QueueBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\argument_validator\QueueBackend::validateArgument() has parameter $arg with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Plugin/views/argument_validator/QueueBackend.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::__construct() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::buildOptionsForm() has parameter $form with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::create() has parameter $configuration with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::defineOptions() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::validateOptionsForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::viewsForm() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::viewsFormSubmit() has parameter $form with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\AdvancedQueueBulkForm::viewsFormValidate() has parameter $form with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: PHPDoc tag @return with type string is incompatible with native type Drupal\Core\StringTranslation\TranslatableMarkup.
+			identifier: return.phpDocType
+			count: 1
+			path: src/Plugin/views/field/AdvancedQueueBulkForm.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\JobState::buildOptionsForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/views/field/JobState.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\JobState::buildOptionsForm() has parameter $form with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Plugin/views/field/JobState.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\JobState::defineOptions() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/JobState.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\JobState::getOptions() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/JobState.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\JobState::render() should return Drupal\Component\Render\MarkupInterface|string but returns array<string, array<string, mixed>|string>.'
+			identifier: return.type
+			count: 1
+			path: src/Plugin/views/field/JobState.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\JobType::getOptions() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/JobType.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Json::buildOptionsForm() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/views/field/Json.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Json::buildOptionsForm() has parameter $form with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Plugin/views/field/Json.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Json::defineOptions() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/Json.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Operations::init() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/views/field/Operations.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Operations::init() has parameter $options with no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Plugin/views/field/Operations.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Operations::query() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Plugin/views/field/Operations.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Plugin\views\field\Operations::render() should return Drupal\Component\Render\MarkupInterface|string but returns array<string, array<string, array<string, Drupal\Core\StringTranslation\TranslatableMarkup|Drupal\Core\Url|int>>|string>.'
+			identifier: return.type
+			count: 1
+			path: src/Plugin/views/field/Operations.php
+
+		-
+			rawMessage: If condition is always false.
+			identifier: if.alwaysFalse
+			count: 1
+			path: src/Processor.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\Processor::stop() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/Processor.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\ProcessorInterface::stop() has no return type specified.'
+			identifier: missingType.return
+			count: 1
+			path: src/ProcessorInterface.php
+
+		-
+			rawMessage: 'Direct injection of entity storage via $storage is not recommended. Inject Drupal\Core\Entity\EntityTypeManagerInterface and call getStorage() at the call-site instead.'
+			identifier: drupal.entityStorageDirectInjection
+			count: 1
+			path: src/QueueListBuilder.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\QueueListBuilder::buildHeader() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueueListBuilder.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\QueueListBuilder::buildRow() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueueListBuilder.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue\QueueListBuilder::getDefaultOperations() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/QueueListBuilder.php
+
+		-
+			rawMessage: 'Unsafe usage of new static().'
+			identifier: new.static
+			count: 1
+			path: src/QueueListBuilder.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue_test\Plugin\AdvancedQueue\Backend\BaseOnly::countJobs() return type has no value type specified in iterable type array.'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/modules/advancedqueue_test/src/Plugin/AdvancedQueue/Backend/BaseOnly.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue_test\Plugin\AdvancedQueue\Backend\BaseOnly::deleteJob() has parameter $job_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/modules/advancedqueue_test/src/Plugin/AdvancedQueue/Backend/BaseOnly.php
+
+		-
+			rawMessage: 'Method Drupal\advancedqueue_test\Plugin\AdvancedQueue\Backend\BaseOnly::releaseJob() has parameter $job_id with no type specified.'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/modules/advancedqueue_test/src/Plugin/AdvancedQueue/Backend/BaseOnly.php
+
+		-
+			rawMessage: 'Call to an undefined method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::deleteJob().'
+			identifier: method.notFound
+			count: 1
+			path: tests/src/Kernel/DatabaseBackendTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Drupal\advancedqueue\Plugin\AdvancedQueue\Backend\BackendInterface::loadJob().'
+			identifier: method.notFound
+			count: 1
+			path: tests/src/Kernel/DatabaseBackendTest.php
+
+		-
+			rawMessage: 'Call to an undefined method Prophecy\Prophecy\ObjectProphecy<Drupal\Component\Datetime\TimeInterface>::getCurrentTime().'
+			identifier: method.notFound
+			count: 2
+			path: tests/src/Kernel/DatabaseBackendTest.php
+
+		-
+			rawMessage: 'Parameter #2 $fetch of method Drupal\Core\Database\StatementInterface::fetchAllAssoc() expects Drupal\Core\Database\Statement\FetchAs|null, int given.'
+			identifier: argument.type
+			count: 2
+			path: tests/src/Kernel/ProcessorTest.php

@@ -1,0 +1,3 @@
+access webform_ip_geo configuration:
+  title: 'Access configuration'
+  description: 'Allow access to change API providers and set debug mode'

@@ -1,0 +1,18 @@
+services:
+  commerce_recurring_log.subscription_subscriber:
+    class: Drupal\commerce_recurring_log\EventSubscriber\SubscriptionSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_recurring_log.dunning_subscriber:
+    class: Drupal\commerce_recurring_log\EventSubscriber\DunningSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }
+
+  commerce_recurring_log.subscription_logger_subscriber:
+    class: Drupal\commerce_recurring_log\EventSubscriber\SubscriptionLoggerSubscriber
+    arguments: ['@entity_type.manager', '@commerce_price.currency_formatter']
+    tags:
+      - { name: event_subscriber } 

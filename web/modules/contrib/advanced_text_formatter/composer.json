@@ -1,0 +1,9 @@
+{
+    "name": "drupal/advanced_text_formatter",
+    "description": "Formatter of textfield, text area and text format.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "^8 || ^9 || ^10 || ^11"
+    }
+}

@@ -1,0 +1,13 @@
+name: 'Commerce Simplenews Checkout'
+type: module
+description: 'Adds a simplenews newsletter subscription integration to Drupal Commerce checkout process.'
+core_version_requirement: ^8 || ^10.2 || ^11
+package: 'Commerce'
+dependencies:
+  - commerce
+  - simplenews
+
+# Information added by Drupal.org packaging script on 2025-07-17
+version: '2.0.0-rc3'
+project: 'commerce_simplenews_checkout'
+datestamp: 1752761924
