@@ -5,6 +5,7 @@ dependencies:
   config:
     - commerce_product.commerce_product_variation_type.by_weight
     - core.entity_view_mode.commerce_product_variation.summary
+    - field.field.commerce_product_variation.by_weight.field_max_weight
     - field.field.commerce_product_variation.by_weight.field_rate_per_lb
     - field.field.commerce_product_variation.by_weight.stock
   module:
@@ -37,6 +38,7 @@ content:
     region: content
 hidden:
   commerce_variation_cart_form: true
+  field_max_weight: true
   field_rate_per_lb: true
   list_price: true
   product_id: true

@@ -11,7 +11,7 @@ field_name: price
 entity_type: commerce_product_variation
 bundle: by_weight
 label: Price
-description: 'The most a customer can be charged for this package: the heaviest weight in the range times the rate per lb (for "1/2 - 3/4 lb" at $9.00/lb, enter 6.75). It is shown on the product page and in the cart, and it is the amount held on the customer''s card at checkout. The final charge is set when you weigh the package, and can never be more than this.'
+description: 'Calculated automatically as Rate per lb times Max weight. This is the most a customer can be charged, and it is the amount held on their card at checkout.'
 required: true
 translatable: true
 default_value: {  }

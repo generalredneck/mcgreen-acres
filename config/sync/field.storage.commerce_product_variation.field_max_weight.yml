@@ -1,0 +1,20 @@
+uuid: feb5967b-04e9-4cb5-8ea0-ad25f1ecb6c4
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_product
+id: commerce_product_variation.field_max_weight
+field_name: field_max_weight
+entity_type: commerce_product_variation
+type: decimal
+settings:
+  precision: 6
+  scale: 2
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

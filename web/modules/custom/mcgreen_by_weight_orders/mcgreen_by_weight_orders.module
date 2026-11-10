@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Hooks for by-weight order handling.
+ */
+
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for commerce_product_variation.
+ *
+ * A by-weight variation's price is the most a customer can be charged: the
+ * heaviest weight in its range times the rate per lb. Compute it on every
+ * save so the stored price (shown in the catalog, cart and search index and
+ * authorized at checkout) can never disagree with the rate and max weight.
+ */
+function mcgreen_by_weight_orders_commerce_product_variation_presave(ProductVariationInterface $variation) {
+  if ($variation->bundle() !== 'by_weight') {
+    return;
+  }
+  if ($variation->get('field_rate_per_lb')->isEmpty() || $variation->get('field_max_weight')->isEmpty()) {
+    return;
+  }
+  $rate = $variation->get('field_rate_per_lb')->first()->toPrice();
+  $max_weight = (string) $variation->get('field_max_weight')->value;
+  $variation->setPrice(\Drupal::service('commerce_price.rounder')->round($rate->multiply($max_weight)));
+}

@@ -12,7 +12,7 @@ field_name: field_rate_per_lb
 entity_type: commerce_product_variation
 bundle: by_weight
 label: 'Rate per lb'
-description: 'The price per pound. Used only when you weigh the package on the order''s "Weigh and charge" tab: packed weight times this rate is the amount actually charged, and the rest of the card hold is released. It is not shown to customers or used at checkout. Keep it the same on every variation of a product, and make sure Price equals this rate times the range''s heaviest weight, since nothing checks that for you.'
+description: 'The price per pound. Price is calculated as this rate times Max weight, so changing it updates the price the next time the variation is saved. It is also used when you weigh the package on the order''s "Weigh and charge" tab: packed weight times this rate is the amount actually charged, and the rest of the card hold is released.'
 required: true
 translatable: true
 default_value: {  }

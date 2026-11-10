@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - commerce_product.commerce_product_variation_type.by_weight
+    - field.field.commerce_product_variation.by_weight.field_max_weight
     - field.field.commerce_product_variation.by_weight.field_rate_per_lb
     - field.field.commerce_product_variation.by_weight.stock
   module:
@@ -56,21 +57,22 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  field_max_weight:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_rate_per_lb:
     type: commerce_price_default
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   list_price:
     type: commerce_list_price
     weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  price:
-    type: commerce_price_default
-    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -108,5 +110,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  price: true
   uid: true
   weight: true
