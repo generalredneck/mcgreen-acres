@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="drupal-commerce-profile-pane">
+  <description>PHP CodeSniffer configuration for Commerce Profile Checkout Pane project.</description>
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+  <!-- Maintain alphabetic ordering of uses. -->
+  <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
+    <properties>
+      <property name="caseSensitive" value="true"/>
+    </properties>
+  </rule>
+  <!-- Keep the extensions in alphabetic order like Core. -->
+  <arg name="extensions" value="engine,inc,info,install,module,php,profile,test,theme,yml"/>
+</ruleset>

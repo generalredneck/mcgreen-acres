@@ -1,0 +1,11 @@
+name: 'Microsoft Clarity'
+type: module
+description: 'Allows you to analyze how users engage with your website with click tracking, scroll tracking, and heatmaps.'
+core_version_requirement: ^10 || ^11
+package: 'Custom'
+configure: ms_clarity.admin_settings_form
+
+# Information added by Drupal.org packaging script on 2024-11-24
+version: '2.0.1'
+project: 'ms_clarity'
+datestamp: 1732440775

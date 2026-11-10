@@ -1,0 +1,14 @@
+{
+  "name": "drupal/media_bulk_upload",
+  "description": "Enables content editors to upload multiple files at once and automatically creates media entities for each file.",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/media_bulk_upload",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/media_bulk_upload",
+    "source": "git://git.drupal.org/project/media_bulk_upload.git"
+  },
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "drupal/dropzonejs": "^2.0"
+  }
+}
