@@ -34,11 +34,14 @@ function mcgreen_by_weight_orders_commerce_product_variation_presave(ProductVari
  * Implements hook_views_query_alter().
  *
  * The "To weigh" view lists orders with a by-weight item that still needs
- * attention: an item with no packed weight yet, or a card authorization that
- * has not been captured (for example because the capture failed after the
- * weights were saved). Joining the order items would return an order once per
- * matching item (and Views selects each item's ID, so DISTINCT can't collapse
- * them), so the condition is a correlated subquery on the order instead.
+ * attention: an item with no packed weight yet, or a card order that was
+ * authorized on the by-weight gateway but never actually charged (the capture
+ * failed after the weights were saved, or the hold was voided or expired).
+ * "Charged" means any completed payment, so an order stops being listed once
+ * it has been paid some other way too. Joining the order items would return an
+ * order once per matching item (and Views selects each item's ID, so DISTINCT
+ * can't collapse them), so the condition is a correlated subquery on the order
+ * instead.
  */
 function mcgreen_by_weight_orders_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
   if ($view->id() !== 'commerce_orders_to_weigh') {
@@ -54,13 +57,23 @@ function mcgreen_by_weight_orders_views_query_alter(ViewExecutable $view, QueryP
       AND i.type = :by_weight_type
       AND (
         w.field_packed_weight_value IS NULL
-        OR EXISTS (
-          SELECT 1 FROM {commerce_payment} p
-          WHERE p.order_id = commerce_order.order_id AND p.state = :authorization
+        OR (
+          EXISTS (
+            SELECT 1 FROM {commerce_payment} held
+            WHERE held.order_id = commerce_order.order_id AND held.payment_gateway = :gateway
+          )
+          AND NOT EXISTS (
+            SELECT 1 FROM {commerce_payment} paid
+            WHERE paid.order_id = commerce_order.order_id
+              AND paid.state IN (:paid_completed, :paid_partially_refunded, :paid_refunded)
+          )
         )
       )
   )', [
     ':by_weight_type' => ByWeightOrderCharger::ORDER_ITEM_TYPE,
-    ':authorization' => 'authorization',
+    ':gateway' => ByWeightOrderCharger::GATEWAY_ID,
+    ':paid_completed' => 'completed',
+    ':paid_partially_refunded' => 'partially_refunded',
+    ':paid_refunded' => 'refunded',
   ]);
 }

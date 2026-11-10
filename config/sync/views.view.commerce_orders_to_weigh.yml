@@ -13,7 +13,7 @@ _core:
 id: commerce_orders_to_weigh
 label: 'To weigh'
 module: views
-description: 'Open orders with a by-weight item that has not been weighed yet, or whose card hold has not been captured (e.g. after a failed capture). The condition is added by mcgreen_by_weight_orders_views_query_alter().'
+description: 'Open orders with a by-weight item that has not been weighed yet, or a card order on the by-weight gateway that was never charged (failed capture, voided or expired hold). The condition is added by mcgreen_by_weight_orders_views_query_alter().'
 tag: Commerce
 base_table: commerce_order
 base_field: order_id

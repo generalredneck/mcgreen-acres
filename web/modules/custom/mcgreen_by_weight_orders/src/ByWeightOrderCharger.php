@@ -25,6 +25,11 @@ class ByWeightOrderCharger {
    */
   const ORDER_ITEM_TYPE = 'by_weight';
 
+  /**
+   * Payment gateway that holds the card for by-weight orders.
+   */
+  const GATEWAY_ID = 'stripe_by_weight';
+
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
     protected OrderRefreshInterface $orderRefresh,
