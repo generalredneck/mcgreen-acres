@@ -1,0 +1,10 @@
+name: McGreen By-Weight Orders
+type: module
+description: 'Weighs packaged items (meat, produce) at set-aside time and captures the exact amount from a Stripe authorization.'
+package: McGreen Acres
+core_version_requirement: ^11
+dependencies:
+  - commerce:commerce_order
+  - commerce:commerce_payment
+  - commerce:commerce_price
+  - commerce:commerce_product

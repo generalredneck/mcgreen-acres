@@ -337,19 +337,26 @@ function mcgreen_acres_store_entity_update(EntityInterface $entity) {
  * Implements hook_entity_insert().
  */
 function mcgreen_acres_store_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() === 'commerce_product_variation') {
-    /** @var \Drupal\commerce_product\Entity\ProductVariationInterface $entity */
-    /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntityTrackingManager $search_api_tracking_manager */
-    $search_api_tracking_manager = \Drupal::service('search_api.entity_datasource.tracking_manager');
-    /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
-    $product = $entity->get('product_id')->entity;
-    $search_api_tracking_manager->trackEntityChange($product);
-    $indexes = $search_api_tracking_manager->getIndexesForEntity($product);
-    foreach ($indexes as $index) {
-      $index->trackItemsUpdated($product->getEntityTypeId(), [$product->id() . ':' . $product->language()->getId()]);
-      foreach ($index->getDatasourceIds() as $datasource_id) {
-        $index->indexItems(-1, $datasource_id);
-      }
+  if ($entity->getEntityTypeId() !== 'commerce_product_variation') {
+    return;
+  }
+  /** @var \Drupal\commerce_product\Entity\ProductVariationInterface $entity */
+  /** @var \Drupal\commerce_product\Entity\ProductInterface|null $product */
+  $product = $entity->get('product_id')->entity;
+  // A variation saved before its product exists has nothing to reindex yet;
+  // the product's own save tracks it.
+  if (!$product) {
+    return;
+  }
+  /** @var \Drupal\search_api\Plugin\search_api\datasource\ContentEntityTrackingManager $search_api_tracking_manager */
+  $search_api_tracking_manager = \Drupal::service('search_api.entity_datasource.tracking_manager');
+  // Flags the product as changed on every index that contains it. Variation
+  // data (stock, price) is part of the indexed product, so it needs this.
+  $search_api_tracking_manager->trackEntityChange($product);
+  // Index right away so the catalog's out-of-stock sort reflects the change.
+  foreach ($search_api_tracking_manager->getIndexesForEntity($product) as $index) {
+    foreach ($index->getDatasourceIds() as $datasource_id) {
+      $index->indexItems(-1, $datasource_id);
     }
   }
 }
@@ -430,7 +437,11 @@ function mcgreen_acres_store_preprocess_commerce_product__teaser(&$variables) {
     $stock_manager = \Drupal::service('commerce_stock.service_manager');
     $any_in_stock = FALSE;
     foreach ($variations as $variation) {
-      if ($stock_manager->getStockLevel($variation) > 0) {
+      // A variation flagged "always in stock" can be bought even when its
+      // tracked level is 0 (the search index's out-of-stock flag already
+      // treats it that way).
+      $stock_checker = $stock_manager->getService($variation)->getStockChecker();
+      if ($stock_checker->getIsAlwaysInStock($variation) || $stock_manager->getStockLevel($variation) > 0) {
         $any_in_stock = TRUE;
         break;
       }

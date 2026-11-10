@@ -18,6 +18,8 @@ third_party_settings:
     checkout_flow: default
   commerce_shipping:
     shipment_type: ''
+  commerce_receipt_on_payment:
+    send_receipt_on_paid: true
 _core:
   default_config_hash: kYapI397yx2zFJGyDEs85Hyqgfc9jhmzxqPZMl2Fqhk
 id: default

@@ -1,0 +1,22 @@
+uuid: 05939e53-ac73-4da0-9b15-b607d207f07e
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.by_weight
+  module:
+    - commerce_price
+id: commerce_product_variation.by_weight.price
+field_name: price
+entity_type: commerce_product_variation
+bundle: by_weight
+label: Price
+description: 'The most a customer can be charged for this package: the heaviest weight in the range times the rate per lb (for "1/2 - 3/4 lb" at $9.00/lb, enter 6.75). It is shown on the product page and in the cart, and it is the amount held on the customer''s card at checkout. The final charge is set when you weigh the package, and can never be more than this.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_currencies: {  }
+  allow_negative: false
+field_type: commerce_price

@@ -73,4 +73,9 @@ conditions:
     configuration:
       bundles:
         - default
+  -
+    plugin: order_excludes_variation_type
+    configuration:
+      variation_types:
+        - by_weight
 conditionOperator: AND

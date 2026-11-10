@@ -1,0 +1,21 @@
+uuid: f5c8f9f3-6632-4830-8747-4ed7198f8733
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.by_weight
+    - field.storage.commerce_product_variation.stock
+  module:
+    - commerce_stock_field
+id: commerce_product_variation.by_weight.stock
+field_name: stock
+entity_type: commerce_product_variation
+bundle: by_weight
+label: 'Items left in Stock'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: commerce_stock_level

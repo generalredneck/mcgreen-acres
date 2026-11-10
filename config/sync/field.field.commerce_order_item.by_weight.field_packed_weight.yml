@@ -1,0 +1,23 @@
+uuid: 0a13a209-484c-452e-af8e-4be5b8b3a0ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_item_type.by_weight
+    - field.storage.commerce_order_item.field_packed_weight
+id: commerce_order_item.by_weight.field_packed_weight
+field_name: field_packed_weight
+entity_type: commerce_order_item
+bundle: by_weight
+label: 'Packed weight (lb, total for this line)'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ' lb'
+field_type: decimal

@@ -1,0 +1,13 @@
+mcgreen_by_weight_orders.charge:
+  path: '/admin/commerce/orders/{commerce_order}/by-weight-charge'
+  defaults:
+    _form: '\Drupal\mcgreen_by_weight_orders\Form\ByWeightChargeForm'
+    _title: 'Weigh and charge'
+  requirements:
+    _permission: 'charge by-weight orders'
+    _custom_access: 'mcgreen_by_weight_orders.access:access'
+  options:
+    _admin_route: TRUE
+    parameters:
+      commerce_order:
+        type: entity:commerce_order

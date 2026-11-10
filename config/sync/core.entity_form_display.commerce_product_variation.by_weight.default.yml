@@ -1,0 +1,112 @@
+uuid: 11858bc0-b7ab-4ef9-bf63-67de331d2ada
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.by_weight
+    - field.field.commerce_product_variation.by_weight.field_rate_per_lb
+    - field.field.commerce_product_variation.by_weight.stock
+  module:
+    - commerce_price
+    - commerce_stock_field
+    - field_group
+third_party_settings:
+  field_group:
+    group_inventory:
+      children:
+        - sku
+        - list_price
+        - price
+      label: Inventory
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_shipping:
+      children:
+        - weight
+      label: Shipping
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+_core:
+  default_config_hash: pfCe3PwEV7uVsZq8ICEkspO4FBD5WCJR1h8EfTSf1FU
+id: commerce_product_variation.by_weight.default
+targetEntityType: commerce_product_variation
+bundle: by_weight
+mode: default
+content:
+  commerce_stock_always_in_stock:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_rate_per_lb:
+    type: commerce_price_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  list_price:
+    type: commerce_list_price
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  price:
+    type: commerce_price_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  sku:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  stock:
+    type: commerce_stock_level_simple_transaction
+    weight: 9
+    region: content
+    settings:
+      step: '1'
+      custom_transaction_note: false
+      default_transaction_note: 'Transaction issued by stock level field.'
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  uid: true
+  weight: true

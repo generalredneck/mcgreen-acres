@@ -1,0 +1,4 @@
+charge by-weight orders:
+  title: 'Weigh and charge by-weight orders'
+  description: 'Record packed weights on by-weight orders and capture the exact amount.'
+  restrict access: true

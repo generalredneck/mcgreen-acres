@@ -1,0 +1,18 @@
+uuid: 03318b76-fd71-4530-a2c8-4b9b610d9344
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_better_product_variation_label
+third_party_settings:
+  commerce_better_product_variation_label:
+    product_label_prefix: true
+    product_label_prefix_separator: ' - '
+_core:
+  default_config_hash: bdWN0bTEbHmonSaxYn47TLe1snVQ1cUirlDXH3Yb-jw
+id: by_weight
+label: 'By weight'
+traits: {  }
+locked: false
+orderItemType: by_weight
+generateTitle: false

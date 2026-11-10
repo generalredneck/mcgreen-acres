@@ -1,0 +1,7 @@
+services:
+  mcgreen_by_weight_orders.charger:
+    class: Drupal\mcgreen_by_weight_orders\ByWeightOrderCharger
+    arguments: ['@entity_type.manager', '@commerce_order.order_refresh', '@commerce_price.rounder']
+  mcgreen_by_weight_orders.access:
+    class: Drupal\mcgreen_by_weight_orders\Access\ByWeightOrderAccess
+    arguments: ['@mcgreen_by_weight_orders.charger']

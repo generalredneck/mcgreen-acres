@@ -1,0 +1,5 @@
+mcgreen_by_weight_orders.charge_tab:
+  title: 'Weigh and charge'
+  route_name: mcgreen_by_weight_orders.charge
+  base_route: entity.commerce_order.canonical
+  weight: 50

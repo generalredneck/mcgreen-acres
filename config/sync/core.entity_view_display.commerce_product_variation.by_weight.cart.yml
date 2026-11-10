@@ -1,0 +1,46 @@
+uuid: a0b6aeaa-bf05-4c1f-9829-f7bfcb3d94e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_variation_type.by_weight
+    - core.entity_view_mode.commerce_product_variation.cart
+    - field.field.commerce_product_variation.by_weight.field_rate_per_lb
+    - field.field.commerce_product_variation.by_weight.stock
+  module:
+    - commerce_better_product_variation_label
+    - mcgreen_acres_store
+id: commerce_product_variation.by_weight.cart
+targetEntityType: commerce_product_variation
+bundle: by_weight
+mode: cart
+content:
+  product_id:
+    type: mcgreen_acres_store_entity_reference_field_view
+    label: hidden
+    settings:
+      field_name: images
+      view_mode: cart
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  title:
+    type: commerce_better_product_variation_label_string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  commerce_variation_cart_form: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_rate_per_lb: true
+  list_price: true
+  price: true
+  search_api_excerpt: true
+  sku: true
+  stock: true
+  weight: true

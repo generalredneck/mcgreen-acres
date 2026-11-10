@@ -1,0 +1,17 @@
+uuid: c7ce44da-e7db-446e-bda3-70c832c27419
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_tax
+third_party_settings:
+  commerce_tax:
+    taxable_type: physical_goods
+_core:
+  default_config_hash: nTwd_oR0LuhGRHx-ID5s2dyXOp08L9rGTRFW0YCnHLE
+id: by_weight
+label: 'By weight (Product variation)'
+traits: {  }
+locked: false
+purchasableEntityType: commerce_product_variation
+orderType: default
