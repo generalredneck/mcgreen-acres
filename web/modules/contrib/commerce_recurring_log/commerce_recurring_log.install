@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the commerce_recurring_log module.
+ */
+
+/**
+ * Install the Commerce Recurring Activity view for existing installations.
+ */
+function commerce_recurring_log_update_10001() {
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'commerce_recurring_log');
+}

@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Recipe Tracker module.
+ */
+
+/**
+ * Update recipe_label column to utf8mb4 to support non-ASCII recipe names.
+ */
+function recipe_tracker_update_10001(): void {
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $storage_definition = $manager->getFieldStorageDefinition('recipe_label', 'recipe_tracker_log');
+  $storage_definition->setSetting('is_ascii', FALSE);
+  $manager->updateFieldStorageDefinition($storage_definition);
+}

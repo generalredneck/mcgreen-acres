@@ -1,0 +1,13 @@
+name: 'Webform MailChimp'
+type: module
+description: 'Allows to send Webform submissions to MailChimp lists.'
+package: 'Webform'
+core_version_requirement: ^10.1 || ^11
+dependencies:
+  - webform:webform
+  - mailchimp:mailchimp
+
+# Information added by Drupal.org packaging script on 2025-03-04
+version: '8.x-5.11'
+project: 'webform_mailchimp'
+datestamp: 1741091011

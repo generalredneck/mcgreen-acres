@@ -1,0 +1,6 @@
+administer media_bulk_upload configuration:
+  title: 'Configure Media Bulk Upload settings'
+  description: 'Allows a user to configure which media can be uploaded in bulk and media bulk uploading form.'
+
+permission_callbacks:
+  - \Drupal\media_bulk_upload\MediaBulkConfigPermissions::mediaBulkConfigPermissions

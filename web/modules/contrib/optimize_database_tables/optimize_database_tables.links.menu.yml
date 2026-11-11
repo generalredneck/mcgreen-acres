@@ -1,0 +1,5 @@
+optimize_database_tables.settings:
+  title: 'Optimize Database Tables'
+  route_name: optimize_database_tables.settings
+  description: 'Optimize Database Tables'
+  parent: system.admin_config_system
