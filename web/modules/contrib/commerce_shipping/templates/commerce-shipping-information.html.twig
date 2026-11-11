@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Template for the shipment information.
+ *
+ * Available variables:
+ * - shipment_panels: The list of panes with shipment content.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="card commerce-admin-card">
+  {% for shipment_panel in shipment_panels %}
+    <div class="card__content-wrapper shipping-information-panel {{ loop.index == 1 ? 'open' }}" data-content-index="{{ loop.index }}">
+      <div class="card__header">
+        <span class="card__title">{{ 'Shipping information'|t }}</span>
+        {% if shipment_panel.edit %}
+          <span>{{ shipment_panel.edit }}</span>
+        {% endif %}
+      </div>
+      <div class="card__content">{{ shipment_panel.content }}</div>
+    </div>
+  {% endfor %}
+  {% if shipment_panels|length > 1 %}
+    <div class="card__navigation">
+      {% for shipment_panel in shipment_panels %}
+        <span class="card__navigation_item shipping-information-tab" data-content-target="{{ loop.index }}">
+        {{ shipment_panel.nav_label }}
+      </span>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

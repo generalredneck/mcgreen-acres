@@ -1,0 +1,3 @@
+administer_optimize_database_tables:
+  title: 'Optimize Database Tables'
+  restrict access: true

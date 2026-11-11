@@ -1,0 +1,20 @@
+services:
+  commerce_fee.referenceable_plugin_types_subscriber:
+    class: Drupal\commerce_fee\EventSubscriber\ReferenceablePluginTypesSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  plugin.manager.commerce_fee:
+    class: Drupal\commerce_fee\FeeManager
+    arguments: ['@container.namespaces', '@cache.discovery', '@module_handler', '@entity_type.manager']
+
+  commerce_fee.fee_order_processor:
+    class: Drupal\commerce_fee\FeeOrderProcessor
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: commerce_order.order_processor, priority: 120, adjustment_type: fee }
+
+  commerce_fee.filter_conditions_subscriber:
+    class: Drupal\commerce_fee\EventSubscriber\FilterConditionsEventSubscriber
+    tags:
+      - { name: event_subscriber }
