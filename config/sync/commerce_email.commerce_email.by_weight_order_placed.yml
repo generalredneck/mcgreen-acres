@@ -1,0 +1,28 @@
+uuid: 372cc068-3619-49f7-81bb-31f5c9b986b9
+langcode: en
+status: true
+dependencies: {  }
+id: by_weight_order_placed
+label: 'By-weight order placed (alert to staff)'
+from: '[site:mail]'
+toType: email
+to: mcgreenacres@gmail.com
+toRole: ''
+cc: ''
+bcc: ''
+replyTo: '[commerce_order:mail]'
+subject: 'New order to weigh: #[commerce_order:order_number]'
+body:
+  value: '<div style="font-family:arial,sans-serif;max-width:640px;margin:0 auto;"><h2>New order to weigh: #[commerce_order:order_number]</h2><p>A customer placed an order that includes items sold by weight. Their card is held for the full amount and will be charged the actual amount when you weigh the order.</p><ul><li><strong>Customer:</strong> [commerce_order:mail]</li><li><strong>Held on their card (most they can be charged):</strong> [commerce_order:total_price]</li></ul><p><a href="[site:url]admin/commerce/orders/[commerce_order:order_id]/by-weight-charge">Weigh and charge this order</a></p><p><a href="[site:url]admin/commerce/orders/to-weigh">See everything waiting to be weighed</a></p></div>'
+  format: full_html
+conditions:
+  -
+    plugin: order_variation_type
+    configuration:
+      variation_types:
+        - by_weight
+conditionOperator: AND
+queue: false
+logToEntity: true
+event: order_placed
+targetEntityType: commerce_order

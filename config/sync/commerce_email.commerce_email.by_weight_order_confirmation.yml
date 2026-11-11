@@ -1,0 +1,28 @@
+uuid: c602d35e-9dd5-4317-945d-f834554a248c
+langcode: en
+status: true
+dependencies: {  }
+id: by_weight_order_confirmation
+label: 'By-weight order received (to customer)'
+from: '[site:mail]'
+toType: email
+to: '[commerce_order:mail]'
+toRole: ''
+cc: ''
+bcc: mcgreenacres@gmail.com
+replyTo: '[site:mail]'
+subject: 'We received your order #[commerce_order:order_number]'
+body:
+  value: '<div style="font-family:arial,sans-serif;max-width:640px;margin:0 auto;"><p>Hi [commerce_order:billing_profile:entity:address:given_name|"there"],</p><p>Thanks for your order! We&#039;ve got it. Because it includes items sold by weight, here is what happens next:</p><ol><li>We pull your order and choose packages that fit what you ordered. Each package is marked with its weight.</li><li>We adjust the charge to the actual weight of what we pull, at the rate shown on the product. You will not be charged more than the amount held.</li><li>You&#039;ll get your receipt by email once your card is charged.</li></ol><p><strong>Your card is held for [commerce_order:total_price] right now.</strong> That is the most you can be charged. You may see it as a pending charge on your statement. Once the final charge is made, how soon your bank releases the rest of the hold is up to them.</p><p>Pickup is at the farm by appointment. Call or text us at (469) 248-5703 to set up a time.</p><p>Questions? Just reply to this email.</p><p>McGreen Acres</p></div>'
+  format: full_html
+conditions:
+  -
+    plugin: order_variation_type
+    configuration:
+      variation_types:
+        - by_weight
+conditionOperator: AND
+queue: false
+logToEntity: true
+event: order_placed
+targetEntityType: commerce_order
