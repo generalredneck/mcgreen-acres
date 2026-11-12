@@ -61,10 +61,10 @@ class ByWeightChargeForm extends FormBase {
       $form['weights'][$id] = [
         '#type' => 'number',
         '#title' => $this->t('@label x @qty: packed weight (lb, total for the line)', [
-          '@label' => $item->label(),
+          '@label' => $this->charger->getBaseTitle($item),
           '@qty' => (int) $item->getQuantity(),
         ]),
-        '#description' => $this->t('Authorized for this line: @max.', ['@max' => $item->getUnitPrice()->multiply($item->getQuantity())]),
+        '#description' => $this->t('Authorized for this line: @max.', ['@max' => $this->charger->getAuthorizedPrice($item)]),
         '#step' => 0.01,
         '#min' => 0.01,
         '#required' => TRUE,
