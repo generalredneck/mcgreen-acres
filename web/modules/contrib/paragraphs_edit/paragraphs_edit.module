@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @file
+ * Allows users to edit, clone and delete paragraphs.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\paragraphs_edit\Form\ParagraphCloneForm;
+use Drupal\paragraphs_edit\Form\ParagraphDeleteForm;
+use Drupal\paragraphs_edit\Form\ParagraphEditForm;
+
+/**
+ * Implements hook_help().
+ */
+function paragraphs_edit_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.paragraphs_edit':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module adds contextual links to paragraphs to edit, delete and clone paragraphs.') . '</p>';
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function paragraphs_edit_entity_type_build(array &$entity_types) {
+  $entity_types['paragraph']->setFormClass('entity_edit', ParagraphEditForm::class);
+
+  $entity_types['paragraph']->setFormClass('entity_clone', ParagraphCloneForm::class);
+
+  $entity_types['paragraph']->setFormClass('entity_delete', ParagraphDeleteForm::class);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for paragraph entities.
+ */
+function paragraphs_edit_paragraph_view_alter(array &$build, ParagraphInterface $entity, EntityViewDisplayInterface $display) {
+  // Skip adding contextual links if the Paragraph is in a QuickEdit form
+  // context to avoid causing conflicts with Quickedit JS.
+  if (\Drupal::routeMatch()->getRouteName() == 'quickedit.field_form') {
+    return;
+  }
+
+  // Skip adding contextual links, if the Paragraph is in a AdminRoute context.
+  // That can happen on forms with Paragraph form display setting
+  // "Edit mode: Preview" enabled.
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+
+  $root_parent = \Drupal::service('paragraphs_edit.lineage.inspector')->getRootParent($entity);
+  if ($root_parent) {
+    $build['#contextual_links']['paragraph'] = [
+      'route_parameters' => [
+        'root_parent_type' => $root_parent->getEntityTypeId(),
+        'root_parent' => $root_parent->id(),
+        'paragraph' => $entity->id(),
+      ],
+    ];
+
+    if ($root_parent instanceof EntityChangedInterface) {
+      $build['#contextual_links']['paragraph']['metadata'] =
+        ['changed' => $root_parent->getChangedTime()];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for paragraph.html.twig.
+ *
+ * @see contextual_preprocess()
+ * @see template_preprocess_paragraph()
+ */
+function paragraphs_edit_preprocess_paragraph(&$variables) {
+  // Paragraph templates don't normally print the title_suffix, so add the
+  // contextual links to the content render array.
+  if (isset($variables['title_suffix']['contextual_links'])) {
+    $variables['content']['contextual_links'] = $variables['title_suffix']['contextual_links'];
+    $variables['content']['contextual_links']['#weight'] = -100;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_prepare_form().
+ */
+function paragraphs_edit_paragraph_prepare_form(ParagraphInterface $entity, $operation, FormStateInterface $form_state) {
+  if ('entity_edit' == $operation && $entity->isTranslatable()) {
+    $langcode = \Drupal::languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+    $form_state->set('langcode', $langcode);
+
+    if (!$entity->hasTranslation($langcode) && \Drupal::moduleHandler()->moduleExists('content_translation')) {
+      $translation_manager = \Drupal::service('content_translation.manager');
+
+      $host = $entity->getParentEntity();
+      $host_source_langcode = $host->language()->getId();
+
+      if ($host->hasTranslation($langcode)) {
+        $host = $host->getTranslation($langcode);
+        $host_source_langcode = $translation_manager->getTranslationMetadata($host)->getSource();
+      }
+
+      $translation_source = $entity;
+      if ($entity->hasTranslation($host_source_langcode)) {
+        $translation_source = $entity->getTranslation($host_source_langcode);
+      }
+
+      $entity = $entity->addTranslation($langcode, $translation_source->toArray());
+      $translation_manager->getTranslationMetadata($entity)->setSource($translation_source->language()->getId());
+    }
+  }
+}

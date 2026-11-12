@@ -1,0 +1,26 @@
+services:
+  simplenews_stats.engine:
+    class: Drupal\simplenews_stats\SimplenewsStatsEngine
+    arguments: ['@request_stack', '@current_route_match', '@entity_type.manager', '@datetime.time']
+
+  simplenews_stats.event_subscriber:
+    class: Drupal\simplenews_stats\EventSubscriber\SimplenewsStatsEventSubscriber
+    arguments: ['@simplenews_stats.engine']
+    tags:
+      - {name: event_subscriber}
+
+  simplenews_stats.mail:
+    class: Drupal\simplenews_stats\SimplenewsStatsMail
+    arguments: ['@simplenews_stats.engine', '@simplenews_stats.allowedlinks','@renderer']
+
+  simplenews_stats.symfony_mail:
+    class: Drupal\simplenews_stats\SimplenewsStatsMailSymfony
+    arguments: [ '@simplenews_stats.engine', '@simplenews_stats.allowedlinks', '@renderer' ]
+
+  simplenews_stats.allowedlinks:
+    class: Drupal\simplenews_stats\SimplenewsStatsAllowedLinks
+    arguments: ['@database']
+
+  simplenews_stats.tools:
+    class: Drupal\simplenews_stats\SimplenewsStatsTools
+    arguments: ['@entity.repository']

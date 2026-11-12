@@ -1,0 +1,33 @@
+{
+    "name": "drupal/crawler_rate_limit",
+    "description": "Rate limit web crawler (bot) requests",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/crawler_rate_limit",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Vojislav Jovanović (vaish)",
+            "homepage": "https://www.drupal.org/u/vaish",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/crawler_rate_limit",
+        "source": "http://cgit.drupalcode.org/crawler_rate_limit"
+    },
+    "require": {
+        "php": ">=7.4.0",
+        "jaybizzle/crawler-detect": "^1.3",
+        "nikolaposa/rate-limit": "^3.2"
+    },
+    "suggest": {
+        "ext-apcu": "In order to use APCu backend",
+        "ext-memcached": "In order to use Memcached backend",
+        "ext-redis": "In order to use Redis backend",
+        "drupal/memcache": "In order to use Memcached backend",
+        "predis/predis": "In order to use Redis backend",
+        "drupal/redis": "In order to use Redis backend",
+        "geoip2/geoip2": "In order to rate limit regular traffic by ASN"
+    }
+}

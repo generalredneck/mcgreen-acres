@@ -1,0 +1,68 @@
+<?php declare(strict_types=1);
+
+namespace mglaman\PHPStanDrupal\Rules\Drupal\Coder;
+
+use PhpParser\Node;
+use PhpParser\Node\Expr\FuncCall;
+use PHPStan\Analyser\Scope;
+use PHPStan\Rules\Rule;
+use PHPStan\Rules\RuleErrorBuilder;
+use function in_array;
+use function sprintf;
+use function strtolower;
+
+/**
+ * Based on Drupal_Sniffs_Functions_DiscouragedFunctionsSniff.
+ *
+ * @implements Rule<FuncCall>
+ */
+final class DiscouragedFunctionsRule implements Rule
+{
+    private const DISCOURAGED_FUNCTIONS = [
+        // Devel module debugging functions.
+        'dargs',
+        'dcp',
+        'dd',
+        'dfb',
+        'dfbt',
+        'dpm',
+        'dpq',
+        'dpr',
+        'dprint_r',
+        'drupal_debug',
+        'dsm',
+        'dvm',
+        'dvr',
+        'kdevel_print_object',
+        'kpr',
+        'kprint_r',
+        'sdpm',
+        // Functions which are not available on all
+        // PHP builds.
+        'fnmatch',
+    ];
+
+    public function getNodeType(): string
+    {
+        return FuncCall::class;
+    }
+
+    public function processNode(Node $node, Scope $scope): array
+    {
+        if (!($node->name instanceof Node\Name)) {
+            return [];
+        }
+        $name = strtolower((string)$node->name);
+
+        if (in_array($name, self::DISCOURAGED_FUNCTIONS, true)) {
+            return [
+                RuleErrorBuilder::message(
+                    sprintf('Calls to function %s should not exist.', $name)
+                )
+                ->identifier('discouragedFunctions.discouragedFunctionCalled')
+                ->build()
+            ];
+        }
+        return [];
+    }
+}

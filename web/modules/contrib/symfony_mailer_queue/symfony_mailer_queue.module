@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Symfony mailer queue module.
+ */
+
+use Drupal\Core\Queue\QueueGarbageCollectionInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\symfony_mailer_queue\Plugin\QueueWorker\SymfonyMailerQueueWorker;
+
+/**
+ * Implements hook_cron().
+ *
+ * Expiry of delayed queue items is reset during garbage collection. The garbage
+ * collection is usually executed during system cron. Adding a separate cron job
+ * offers the chance to configure more frequent resets for Symfony mailer queue
+ * items. This cron job should typically run more frequently than the configured
+ * requeue delay. Use supplemental modules such as Ultimate Cron to clock in
+ * cron jobs and queue processing.
+ */
+function symfony_mailer_queue_cron(): void {
+  $queue = \Drupal::service('queue')->get(SymfonyMailerQueueWorker::QUEUE_NAME);
+  if ($queue instanceof QueueGarbageCollectionInterface) {
+    $queue->garbageCollection();
+  }
+}
+
+/**
+ * Implements hook_help().
+ */
+function symfony_mailer_queue_help(string $route_name, RouteMatchInterface $route_match): string {
+
+  if ($route_name === 'help.page.symfony_mailer_queue') {
+    $output = '<h2>' . t('About') . '</h2>';
+    $output .= '<p>' . t('The <em>Symfony Mailer Queue</em> module extends the existing <a href=":symfony_mailer" title="Drupal Symfony Mailer">Drupal Symfony Mailer</a> module by integrating with queue systems to send emails. This enhancement ensures that email delivery is handled asynchronously, significantly improving the performance and reliability of your Drupal site. By utilizing Drupal’s queue system, the module processes email-sending tasks in the background, allowing for better resource management and scalability. See the <a href=":symfony_mailer_queue">online documentation for the Symfony Mailer Queue module</a> for more details.', [
+      ':symfony_mailer' => 'https://www.drupal.org/project/symfony_mailer',
+      ':symfony_mailer_queue' => 'https://www.drupal.org/project/symfony_mailer_queue',
+    ]) . '</p>';
+    $output .= '<h2>' . t('How to use?') . '</h2>';
+    $output .= '<ol>';
+    $output .= '<li>' . t('<strong>Configure Mailer Policies:</strong> Go to <em>Configuration > System > Mailer</em> and add the <em>Queue sending</em> email adjuster to the desired policies. Configure the queue behavior, requeue delay, maximum retry attempts, and wait time per item. When email processing fails, items that are immediately requeued become available for repeated processing right away. If requeuing is delayed, the item will only be available after the specified delay or once its lease time expires. While not all queue systems support delays, the Drupal database queue does. When using cron to process the queue, proper garbage collection to release items has then to be configured. For queues that do not support delays, a default lease time of one minute applies. Additionally, the email queue can be suspended, which requeues the failed item and delays the processing of other items until the next scheduled run.') . '</li>';
+    $output .= '<li>' . t('<strong>(Optional) Configure Ultimate Cron:</strong> If processing the queue with cron and delayed requeueing, it is recommended to schedule frequent cron processing. This can be achieved with the <a href=":ultimate_cron" title="Drupal Ultimate Cron">Ultimate Cron</a> module.', [':ultimate_cron' => 'https://www.drupal.org/project/ultimate_cron']);
+    $output .= ' ' . t('There are two jobs to consider:');
+    $output .= '<ul>';
+    $output .= '<li>' . t('The <em>Default cron handler</em> of Symfony Mailer Queue performs garbage collection required to to release queue items.') . '</li>';
+    $output .= '<li>' . t('The <em>Queue</em> of Symfony Mailer Queue, which sends emails and retries failures.') . '</li>';
+    $output .= '</ul>';
+    $output .= '</li></ol>';
+    return $output;
+  }
+
+  return '';
+}

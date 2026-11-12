@@ -1,0 +1,12 @@
+services:
+  paragraphs_edit.lineage.inspector:
+    class: Drupal\paragraphs_edit\ParagraphLineageInspector
+    arguments: ['@entity_type.manager']
+  paragraphs_edit.lineage.revisioner:
+    class: Drupal\paragraphs_edit\ParagraphLineageRevisioner
+    arguments: ['@paragraphs_edit.lineage.inspector', '@entity_type.manager']
+  paragraphs_edit.lineage.access_check:
+    class: Drupal\paragraphs_edit\Access\ParagraphLineageAccessCheck
+    arguments: ['@paragraphs_edit.lineage.inspector']
+    tags:
+      - { name: access_check, applies_to: _paragraphs_edit_lineage }
