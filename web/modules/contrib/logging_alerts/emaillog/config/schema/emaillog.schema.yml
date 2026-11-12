@@ -1,0 +1,122 @@
+emaillog.settings:
+  type: config_object
+  label: 'Email log settings'
+  mapping:
+    # Keys use the numeric RfcLogLevel severity, matching errorlog.settings.
+    # Each address value may be a comma separated list, so it is a string
+    # rather than an email.
+    emaillog_0:
+      type: string
+      label: 'Email address for severity: Emergency'
+    emaillog_0_channels:
+      type: string
+      label: 'Channels for severity: Emergency'
+    emaillog_1:
+      type: string
+      label: 'Email address for severity: Alert'
+    emaillog_1_channels:
+      type: string
+      label: 'Channels for severity: Alert'
+    emaillog_2:
+      type: string
+      label: 'Email address for severity: Critical'
+    emaillog_2_channels:
+      type: string
+      label: 'Channels for severity: Critical'
+    emaillog_3:
+      type: string
+      label: 'Email address for severity: Error'
+    emaillog_3_channels:
+      type: string
+      label: 'Channels for severity: Error'
+    emaillog_4:
+      type: string
+      label: 'Email address for severity: Warning'
+    emaillog_4_channels:
+      type: string
+      label: 'Channels for severity: Warning'
+    emaillog_5:
+      type: string
+      label: 'Email address for severity: Notice'
+    emaillog_5_channels:
+      type: string
+      label: 'Channels for severity: Notice'
+    emaillog_6:
+      type: string
+      label: 'Email address for severity: Info'
+    emaillog_6_channels:
+      type: string
+      label: 'Channels for severity: Info'
+    emaillog_7:
+      type: string
+      label: 'Email address for severity: Debug'
+    emaillog_7_channels:
+      type: string
+      label: 'Channels for severity: Debug'
+
+    emaillog_backtrace_replace_args:
+      type: boolean
+      label: 'Show backtrace argument types and sizes'
+
+    # Keyed by numeric severity. Only enabled debug info keys are stored.
+    emaillog_debug_info:
+      type: sequence
+      label: 'Enabled debug info by severity'
+      sequence:
+        type: mapping
+        label: 'Debug info for severity'
+        mapping:
+          server:
+            type: boolean
+            label: '$_SERVER'
+            requiredKey: false
+          env:
+            type: boolean
+            label: '$_ENV'
+            requiredKey: false
+          request:
+            type: boolean
+            label: '$_REQUEST'
+            requiredKey: false
+          cookie:
+            type: boolean
+            label: '$_COOKIE'
+            requiredKey: false
+          get:
+            type: boolean
+            label: '$_GET'
+            requiredKey: false
+          post:
+            type: boolean
+            label: '$_POST'
+            requiredKey: false
+          session:
+            type: boolean
+            label: '$_SESSION'
+            requiredKey: false
+          backtrace:
+            type: boolean
+            label: 'debug_backtrace()'
+            requiredKey: false
+
+    # An empty value means no limit. Saving an empty string casts it to NULL.
+    emaillog_max_similar_emails:
+      type: integer
+      label: 'Maximum similar email alerts'
+      nullable: true
+    emaillog_max_consecutive_timespan:
+      type: float
+      label: 'Consecutive timespan (minutes)'
+      nullable: true
+    emaillog_max_similarity_level:
+      type: float
+      label: 'Maximum similarity level between alerts'
+      nullable: true
+
+    emaillog_legacy_subject:
+      type: boolean
+      label: 'Use legacy subject'
+    # An empty value uses the default subject.
+    emaillog_custom_subject:
+      type: label
+      label: 'Email subject'
