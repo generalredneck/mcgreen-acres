@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_shoulder_cut
+label: 'Cut sheet: shoulder cut'
+category: Cut sheet
+options: |-
+  pork_steaks: Pork steaks
+  butt_roast: Butt roast
+  country_style_ribs: Country style ribs

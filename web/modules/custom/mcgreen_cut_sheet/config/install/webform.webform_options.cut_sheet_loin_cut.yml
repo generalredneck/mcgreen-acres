@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_loin_cut
+label: 'Cut sheet: loin cut'
+category: Cut sheet
+options: |-
+  bone_in: Bone-in chops
+  boneless: Boneless chops

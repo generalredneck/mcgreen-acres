@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_keep_or_grind
+label: 'Cut sheet: keep or grind'
+category: Cut sheet
+options: |-
+  keep: Keep
+  grind: Grind into ground meat

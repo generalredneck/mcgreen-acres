@@ -1,0 +1,15 @@
+mcgreen_cut_sheet.print:
+  path: '/admin/structure/webform/manage/{webform}/submission/{webform_submission}/cut-sheet'
+  defaults:
+    _controller: '\Drupal\mcgreen_cut_sheet\Controller\CutSheetPrintController::sheet'
+    _title: 'Cut sheet'
+  requirements:
+    _entity_access: 'webform_submission.view'
+    _custom_access: '\Drupal\mcgreen_cut_sheet\Controller\CutSheetPrintController::access'
+  options:
+    parameters:
+      webform:
+        type: 'entity:webform'
+      webform_submission:
+        type: 'entity:webform_submission'
+    _admin_route: true

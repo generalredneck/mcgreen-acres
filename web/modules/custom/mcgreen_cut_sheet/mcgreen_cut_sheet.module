@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Pig cut sheet: email token, theme hook and search-engine hiding.
+ */
+
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
+use Drupal\mcgreen_cut_sheet\CutSheetNarrative;
+
+/**
+ * Implements hook_theme().
+ */
+function mcgreen_cut_sheet_theme() {
+  return [
+    'mcgreen_cut_sheet_print' => [
+      'variables' => [
+        'title' => '',
+        'sections' => [],
+        'back_url' => '',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function mcgreen_cut_sheet_token_info() {
+  return [
+    'tokens' => [
+      'webform_submission' => [
+        'cut_sheet' => [
+          'name' => t('Cut sheet'),
+          'description' => t('The plain-English cut sheet for the processor, as HTML paragraphs. Pig cut sheet webform only.'),
+        ],
+        'cut_sheet_print_url' => [
+          'name' => t('Cut sheet print URL'),
+          'description' => t('Link to the staff-only print page for this cut sheet. Pig cut sheet webform only.'),
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function mcgreen_cut_sheet_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type !== 'webform_submission' || empty($data['webform_submission'])) {
+    return $replacements;
+  }
+  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+  $webform_submission = $data['webform_submission'];
+  if ($webform_submission->getWebform()->id() !== CutSheetNarrative::WEBFORM_ID) {
+    return $replacements;
+  }
+
+  foreach ($tokens as $name => $original) {
+    switch ($name) {
+      case 'cut_sheet':
+        $narrative = \Drupal::service('mcgreen_cut_sheet.narrative');
+        // toHtml() escapes all submitted text, so the result is safe markup.
+        $replacements[$original] = Markup::create($narrative->toHtml($narrative->build($webform_submission)));
+        break;
+
+      case 'cut_sheet_print_url':
+        // Unsaved previews have no id to link to.
+        if ($webform_submission->id()) {
+          $replacements[$original] = Url::fromRoute('mcgreen_cut_sheet.print', [
+            'webform' => $webform_submission->getWebform()->id(),
+            'webform_submission' => $webform_submission->id(),
+          ], ['absolute' => TRUE])->toString();
+        }
+        break;
+    }
+  }
+  return $replacements;
+}
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * The form link is emailed to customers, not published, so keep it out of
+ * search results.
+ */
+function mcgreen_cut_sheet_page_attachments(array &$attachments) {
+  $attachments['#cache']['contexts'][] = 'route';
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() !== 'entity.webform.canonical') {
+    return;
+  }
+  $webform = $route_match->getParameter('webform');
+  if ($webform && $webform->id() === CutSheetNarrative::WEBFORM_ID) {
+    $attachments['#attached']['html_head'][] = [
+      ['#tag' => 'meta', '#attributes' => ['name' => 'robots', 'content' => 'noindex, nofollow']],
+      'mcgreen_cut_sheet_robots',
+    ];
+  }
+}

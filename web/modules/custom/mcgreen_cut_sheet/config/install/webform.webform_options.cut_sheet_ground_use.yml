@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_ground_use
+label: 'Cut sheet: ground meat use'
+category: Cut sheet
+options: |-
+  ground_pork: Ground pork in 1 lb bags
+  sausage: Make sausage

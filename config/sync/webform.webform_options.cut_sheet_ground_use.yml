@@ -1,0 +1,13 @@
+uuid: cc1dcb93-df5a-4b49-83dc-c065c34dc472
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: oHzFqyTbLzbTgZd_t-lbRSEjhBU4ORtK5_czyFC1BJw
+id: cut_sheet_ground_use
+label: 'Cut sheet: ground meat use'
+category: 'Cut sheet'
+likert: false
+options: |-
+  ground_pork: Ground pork in 1 lb bags
+  sausage: Make sausage

@@ -1,0 +1,14 @@
+uuid: a706d034-b57d-48bf-8f11-252fb4500d91
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Y4ugQGJ81f2nkDSrY6WyLhFiLT_wh2gXNKgNE4FuAkA
+id: cut_sheet_liver
+label: 'Cut sheet: liver'
+category: 'Cut sheet'
+likert: false
+options: |-
+  keep_whole: Keep whole
+  keep_sliced: Keep sliced
+  discard: Not kept, discard

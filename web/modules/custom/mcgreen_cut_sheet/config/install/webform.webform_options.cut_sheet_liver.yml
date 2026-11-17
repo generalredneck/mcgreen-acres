@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_liver
+label: 'Cut sheet: liver'
+category: Cut sheet
+options: |-
+  keep_whole: Keep whole
+  keep_sliced: Keep sliced
+  discard: Not kept, discard

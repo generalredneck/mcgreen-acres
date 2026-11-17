@@ -1,0 +1,13 @@
+uuid: 745e8498-e6b4-4a99-9c5a-01cc8ab01093
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: v7dB_aOAziJnCdaHLewKrUvvGQvt1zxU4eeCHFXSsR8
+id: cut_sheet_heart
+label: 'Cut sheet: heart'
+category: 'Cut sheet'
+likert: false
+options: |-
+  keep_whole: Keep whole
+  discard: Not kept, discard

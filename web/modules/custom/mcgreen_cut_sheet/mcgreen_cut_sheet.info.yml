@@ -1,0 +1,8 @@
+name: 'McGreen Cut Sheet'
+type: module
+description: 'Pig cut sheet webform: option lists live in config, plus a plain-English narrative, a clean print page and an email token for the processor sheet.'
+package: 'McGreen Acres'
+core_version_requirement: ^11
+dependencies:
+  - webform:webform
+  - mcgreen_webform_network_check:mcgreen_webform_network_check

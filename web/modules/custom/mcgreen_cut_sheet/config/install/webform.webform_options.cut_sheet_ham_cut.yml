@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_ham_cut
+label: 'Cut sheet: ham cut'
+category: Cut sheet
+options: |-
+  fresh_steaks: Fresh ham steaks
+  fresh_ham: Fresh ham
+  fresh_cutlets: Fresh cutlets
+  cured_steaks: Smoke and cure ham steaks
+  cured_half: Smoke and cure half ham
+  cured_whole: Smoke and cure whole ham

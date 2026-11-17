@@ -1,0 +1,596 @@
+langcode: en
+status: open
+dependencies:
+  module:
+  - mcgreen_webform_network_check
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: pig_cut_sheet
+title: Pig Cut Sheet
+description: Customer-facing cut sheet for customer-owned hogs. The option lists are Hess Meat Market's options (Cut sheet option lists at /admin/structure/webform/config/options). To use another processor, edit those lists; the keys marked as a contract in the mcgreen_cut_sheet README must keep their meaning. Set the slaughter date by changing the default value of the Slaughter date element.
+categories:
+- Meat
+elements: |-
+  intro:
+    '#type': webform_markup
+    '#markup': '<p class="lead">Choose how your hog should be cut. We send your sheet to the processor on slaughter day, and the processor will contact you directly if anything needs clarifying.</p>'
+  charges_notice:
+    '#type': webform_message
+    '#message_type': info
+    '#message_message': '<p>This form shows no prices. Some choices can add processor charges, and the processor sets the final price. Choices that can add charges include boneless chops, cutlets, smoke and cure, peppered bacon, more than one sausage type, and splitting a hog in half.</p>'
+  customer_section:
+    '#type': webform_section
+    '#title': Your information
+    '#title_tag': h2
+  customer_name:
+    '#type': textfield
+    '#title': Your name
+    '#required': true
+  customer_email:
+    '#type': email
+    '#title': Your email
+    '#required': true
+    '#description': We email you a copy of your cut sheet.
+  customer_cell_phone:
+    '#type': tel
+    '#title': Cell phone
+    '#required': true
+  customer_backup_phone:
+    '#type': tel
+    '#title': Backup phone
+  hog_section:
+    '#type': webform_section
+    '#title': Your hog
+    '#title_tag': h2
+  hog_type:
+    '#type': radios
+    '#title': Whole hog or half hog?
+    '#required': true
+    '#options':
+      whole: Whole hog
+      half: Half hog
+  half_hog_note:
+    '#type': webform_message
+    '#message_type': info
+    '#message_message': '<p>A half hog has one of each part. Answer only the questions marked 1 (loin 1, shoulder 1, ham 1 and bacon slab 1).</p>'
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: half
+  other_half_owner:
+    '#type': textfield
+    '#title': Who owns the other half?
+    '#description': Optional. The processor uses this to match two halves to one hog.
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: half
+  slaughter_date:
+    '#type': date
+    '#title': Slaughter date
+    '#default_value': '2026-12-02'
+    '#readonly': true
+    '#description': Set by us for this batch.
+  loins_section:
+    '#type': webform_section
+    '#title': Loins
+    '#title_tag': h2
+  loins_same:
+    '#type': checkbox
+    '#title': Cut both loins the same way
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+  loin_1_cut:
+    '#type': radios
+    '#title': 'Loin 1: cut'
+    '#options': cut_sheet_loin_cut
+    '#required': true
+    '#description': 'A loin is cut one way only: all bone-in chops or all boneless chops.'
+  loin_1_chop_size:
+    '#type': textfield
+    '#title': 'Loin 1: chop thickness and count per package'
+    '#placeholder': e.g. 1 inch thick, 2 per package
+    '#description': Leave blank to use the processor's default.
+  loin_1_tenderloin:
+    '#type': radios
+    '#title': 'Loin 1: tenderloin'
+    '#options': cut_sheet_keep_or_grind
+    '#required': true
+    '#description': Keep it, or grind it into ground meat.
+    '#states':
+      visible:
+        ':input[name="loin_1_cut"]':
+          value: boneless
+  loin_1_baby_back_ribs:
+    '#type': radios
+    '#title': 'Loin 1: baby back ribs'
+    '#options': cut_sheet_keep_or_grind
+    '#required': true
+    '#description': Keep it, or grind it into ground meat.
+    '#states':
+      visible:
+        ':input[name="loin_1_cut"]':
+          value: boneless
+  loin_2:
+    '#type': fieldset
+    '#title': Loin 2
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+        ':input[name="loins_same"]':
+          unchecked: true
+    loin_2_cut:
+      '#type': radios
+      '#title': 'Loin 2: cut'
+      '#options': cut_sheet_loin_cut
+      '#required': true
+      '#description': 'A loin is cut one way only: all bone-in chops or all boneless chops.'
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="loins_same"]':
+            unchecked: true
+    loin_2_chop_size:
+      '#type': textfield
+      '#title': 'Loin 2: chop thickness and count per package'
+      '#placeholder': e.g. 1 inch thick, 2 per package
+      '#description': Leave blank to use the processor's default.
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="loins_same"]':
+            unchecked: true
+    loin_2_tenderloin:
+      '#type': radios
+      '#title': 'Loin 2: tenderloin'
+      '#options': cut_sheet_keep_or_grind
+      '#required': true
+      '#description': Keep it, or grind it into ground meat.
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="loins_same"]':
+            unchecked: true
+          ':input[name="loin_2_cut"]':
+            value: boneless
+    loin_2_baby_back_ribs:
+      '#type': radios
+      '#title': 'Loin 2: baby back ribs'
+      '#options': cut_sheet_keep_or_grind
+      '#required': true
+      '#description': Keep it, or grind it into ground meat.
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="loins_same"]':
+            unchecked: true
+          ':input[name="loin_2_cut"]':
+            value: boneless
+  spare_ribs_section:
+    '#type': webform_section
+    '#title': Spare ribs
+    '#title_tag': h2
+  spare_ribs:
+    '#type': radios
+    '#title': Spare ribs
+    '#options': cut_sheet_spare_ribs
+    '#required': true
+  shoulders_section:
+    '#type': webform_section
+    '#title': Shoulders
+    '#title_tag': h2
+  shoulders_same:
+    '#type': checkbox
+    '#title': Cut both shoulders the same way
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+  shoulder_1_cut:
+    '#type': radios
+    '#title': 'Shoulder 1: cut'
+    '#options': cut_sheet_shoulder_cut
+    '#required': true
+  shoulder_1_size:
+    '#type': textfield
+    '#title': 'Shoulder 1: size'
+    '#placeholder': e.g. steaks 1 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
+    '#description': Steak thickness and count, roast weight, or ribs per pack. Leave blank to use the processor's default.
+  shoulder_2:
+    '#type': fieldset
+    '#title': Shoulder 2
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+        ':input[name="shoulders_same"]':
+          unchecked: true
+    shoulder_2_cut:
+      '#type': radios
+      '#title': 'Shoulder 2: cut'
+      '#options': cut_sheet_shoulder_cut
+      '#required': true
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="shoulders_same"]':
+            unchecked: true
+    shoulder_2_size:
+      '#type': textfield
+      '#title': 'Shoulder 2: size'
+      '#placeholder': e.g. steaks 1 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
+      '#description': Steak thickness and count, roast weight, or ribs per pack. Leave blank to use the processor's default.
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="shoulders_same"]':
+            unchecked: true
+  hams_section:
+    '#type': webform_section
+    '#title': Hams
+    '#title_tag': h2
+  hams_same:
+    '#type': checkbox
+    '#title': Cut both hams the same way
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+  ham_1_cut:
+    '#type': radios
+    '#title': 'Ham 1: cut'
+    '#options': cut_sheet_ham_cut
+    '#required': true
+  ham_1_size:
+    '#type': textfield
+    '#title': 'Ham 1: steak thickness and count'
+    '#placeholder': e.g. 3/4 inch thick, 2 per package
+    '#description': Only for steaks. Leave blank to use the processor's default.
+    '#states':
+      visible:
+      - ':input[name="ham_1_cut"]':
+          value: fresh_steaks
+      - or
+      - ':input[name="ham_1_cut"]':
+          value: cured_steaks
+  ham_2:
+    '#type': fieldset
+    '#title': Ham 2
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+        ':input[name="hams_same"]':
+          unchecked: true
+    ham_2_cut:
+      '#type': radios
+      '#title': 'Ham 2: cut'
+      '#options': cut_sheet_ham_cut
+      '#required': true
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="hams_same"]':
+            unchecked: true
+    ham_2_size:
+      '#type': textfield
+      '#title': 'Ham 2: steak thickness and count'
+      '#placeholder': e.g. 3/4 inch thick, 2 per package
+      '#description': Only for steaks. Leave blank to use the processor's default.
+      '#states':
+        visible:
+        - ':input[name="hog_type"]':
+            value: whole
+          ':input[name="hams_same"]':
+            unchecked: true
+          ':input[name="ham_2_cut"]':
+            value: fresh_steaks
+        - or
+        - ':input[name="hog_type"]':
+            value: whole
+          ':input[name="hams_same"]':
+            unchecked: true
+          ':input[name="ham_2_cut"]':
+            value: cured_steaks
+  bacon_section:
+    '#type': webform_section
+    '#title': Bacon
+    '#title_tag': h2
+  bacon_same:
+    '#type': checkbox
+    '#title': Cut both bacon slabs the same way
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+  bacon_1_cut:
+    '#type': radios
+    '#title': 'Slab 1: cut'
+    '#options': cut_sheet_bacon_cut
+    '#required': true
+  bacon_1_slice_size:
+    '#type': textfield
+    '#title': 'Slab 1: slice thickness and package size'
+    '#placeholder': e.g. regular slice, 1 lb packages
+    '#description': Leave blank to use the processor's default.
+  bacon_2:
+    '#type': fieldset
+    '#title': Slab 2
+    '#states':
+      visible:
+        ':input[name="hog_type"]':
+          value: whole
+        ':input[name="bacon_same"]':
+          unchecked: true
+    bacon_2_cut:
+      '#type': radios
+      '#title': 'Slab 2: cut'
+      '#options': cut_sheet_bacon_cut
+      '#required': true
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="bacon_same"]':
+            unchecked: true
+    bacon_2_slice_size:
+      '#type': textfield
+      '#title': 'Slab 2: slice thickness and package size'
+      '#placeholder': e.g. regular slice, 1 lb packages
+      '#description': Leave blank to use the processor's default.
+      '#states':
+        visible:
+          ':input[name="hog_type"]':
+            value: whole
+          ':input[name="bacon_same"]':
+            unchecked: true
+  jowl_section:
+    '#type': webform_section
+    '#title': Jowls
+    '#title_tag': h2
+  jowl_cut:
+    '#type': radios
+    '#title': Jowl
+    '#options': cut_sheet_jowl_cut
+    '#required': true
+  organs_section:
+    '#type': webform_section
+    '#title': Heart and liver
+    '#title_tag': h2
+  heart:
+    '#type': radios
+    '#title': Heart
+    '#options': cut_sheet_heart
+    '#required': true
+  liver:
+    '#type': radios
+    '#title': Liver
+    '#options': cut_sheet_liver
+    '#required': true
+  ground_section:
+    '#type': webform_section
+    '#title': Ground meat
+    '#title_tag': h2
+  ground_use:
+    '#type': radios
+    '#title': What should the ground meat become?
+    '#options': cut_sheet_ground_use
+    '#required': true
+    '#default_value': ground_pork
+  sausage_types:
+    '#type': checkboxes
+    '#title': Sausage types
+    '#options': cut_sheet_sausage_type
+    '#required': true
+    '#description': Using more than one sausage type adds work for the processor.
+    '#states':
+      visible:
+        ':input[name="ground_use"]':
+          value: sausage
+  sausage_lb_breakfast_bag:
+    '#type': number
+    '#title': 'Breakfast sausage in bags: approximate pounds'
+    '#required': true
+    '#field_suffix': lb
+    '#min': 0
+    '#step': any
+    '#states':
+      visible:
+        ':input[name="ground_use"]':
+          value: sausage
+        ':input[name="sausage_types[breakfast_bag]"]':
+          checked: true
+  sausage_lb_hot_breakfast_bag:
+    '#type': number
+    '#title': 'Hot breakfast sausage in bags: approximate pounds'
+    '#required': true
+    '#field_suffix': lb
+    '#min': 0
+    '#step': any
+    '#states':
+      visible:
+        ':input[name="ground_use"]':
+          value: sausage
+        ':input[name="sausage_types[hot_breakfast_bag]"]':
+          checked: true
+  sausage_lb_smoked_sausage:
+    '#type': number
+    '#title': 'Smoked sausage: approximate pounds'
+    '#required': true
+    '#field_suffix': lb
+    '#min': 10
+    '#step': any
+    '#description': The processor's minimum for this type is 10 lb.
+    '#states':
+      visible:
+        ':input[name="ground_use"]':
+          value: sausage
+        ':input[name="sausage_types[smoked_sausage]"]':
+          checked: true
+  sausage_lb_fully_cooked_links:
+    '#type': number
+    '#title': 'Fully cooked links: approximate pounds'
+    '#required': true
+    '#field_suffix': lb
+    '#min': 10
+    '#step': any
+    '#description': The processor's minimum for this type is 10 lb.
+    '#states':
+      visible:
+        ':input[name="ground_use"]':
+          value: sausage
+        ':input[name="sausage_types[fully_cooked_links]"]':
+          checked: true
+  sausage_lb_raw_sausage:
+    '#type': number
+    '#title': 'Raw sausage: approximate pounds'
+    '#required': true
+    '#field_suffix': lb
+    '#min': 10
+    '#step': any
+    '#description': The processor's minimum for this type is 10 lb.
+    '#states':
+      visible:
+        ':input[name="ground_use"]':
+          value: sausage
+        ':input[name="sausage_types[raw_sausage]"]':
+          checked: true
+  notes_section:
+    '#type': webform_section
+    '#title': Anything else
+    '#title_tag': h2
+  special_instructions:
+    '#type': textarea
+    '#title': Special instructions
+    '#rows': 4
+  network_check:
+    '#type': value
+    '#title': Network check
+    '#value': ''
+  actions:
+    '#type': webform_actions
+    '#title': Submit button(s)
+settings:
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  form_unsaved: true
+  confirmation_type: message
+  confirmation_title: ''
+  confirmation_message: '<p>Thank you. We received your cut sheet and emailed you a copy. The processor will contact you directly if anything needs clarifying.</p>'
+  confirmation_back: false
+access:
+  create:
+    roles:
+    - anonymous
+    - authenticated
+    users: []
+    permissions: []
+handlers:
+  network_check:
+    id: network_check
+    handler_id: network_check
+    label: Network check
+    notes: ''
+    status: true
+    conditions: {}
+    weight: -50
+    settings: {}
+  email_staff:
+    id: email
+    handler_id: email_staff
+    label: Email the cut sheet to staff
+    notes: ''
+    status: true
+    conditions: &id001
+      enabled:
+        ':input[name="network_check"]':
+          '!value': hosting
+    weight: 0
+    settings:
+      states:
+      - completed
+      to_mail: mcgreenacres@gmail.com
+      to_options: {}
+      bcc_mail: ''
+      bcc_options: {}
+      cc_mail: ''
+      cc_options: {}
+      from_mail: _default
+      from_options: {}
+      from_name: _default
+      reply_to: '[webform_submission:values:customer_email:raw]'
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: 'Pig cut sheet: [webform_submission:values:customer_name:raw]'
+      body: |-
+        <p>A new pig cut sheet came in. Check it over, then print it for the processor on slaughter day.</p>
+        [webform_submission:cut_sheet]
+        <p><a href="[webform_submission:cut_sheet_print_url]">Open the printable sheet</a> (sign in required)</p>
+      excluded_elements: {}
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {}
+      debug: false
+  email_customer:
+    id: email
+    handler_id: email_customer
+    label: Email a copy to the customer
+    notes: ''
+    status: true
+    conditions: *id001
+    weight: 1
+    settings:
+      states:
+      - completed
+      to_mail: '[webform_submission:values:customer_email:raw]'
+      to_options: {}
+      bcc_mail: ''
+      bcc_options: {}
+      cc_mail: ''
+      cc_options: {}
+      from_mail: _default
+      from_options: {}
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: Your pig cut sheet
+      body: |-
+        <p>Thank you, [webform_submission:values:customer_name:raw]. Here is a copy of the cut sheet we received from you. We send sheets to the processor on [webform_submission:values:slaughter_date], and the processor will contact you directly if anything needs clarifying. Reply to this email if you need to change something before then.</p>
+        [webform_submission:cut_sheet]
+      excluded_elements: {}
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      langcode: ''
+      parameters: {}
+      debug: false

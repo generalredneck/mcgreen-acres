@@ -1,0 +1,16 @@
+uuid: 1cd5494d-e92b-4ec9-8198-1644182342ef
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: JDxH637pEQm_S7_-HxU0QGbXt5ELk9ZtIFaqigpTE6Q
+id: cut_sheet_sausage_type
+label: 'Cut sheet: sausage type'
+category: 'Cut sheet'
+likert: false
+options: |-
+  breakfast_bag: Breakfast sausage in bags
+  hot_breakfast_bag: Hot breakfast sausage in bags
+  smoked_sausage: Smoked sausage
+  fully_cooked_links: Fully cooked links
+  raw_sausage: Raw sausage

@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * A complete, bare HTML document for printing one cut sheet.
+ *
+ * Available variables:
+ * - title: The webform's title.
+ * - sections: Sections with "heading" (may be empty) and "text".
+ * - back_url: Link back to the submission in the admin UI.
+ */
+#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ title }}</title>
+  <style>
+    @page { margin: 0.75in; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f2f2f2; color: #000; font: 12pt/1.5 Georgia, "Times New Roman", serif; }
+    .toolbar { max-width: 7.5in; margin: 1rem auto 0; padding: 0 1rem; display: flex; gap: 1rem; align-items: center; font: 14px/1.4 system-ui, sans-serif; }
+    .toolbar button { padding: 0.5rem 1rem; font: inherit; cursor: pointer; }
+    .sheet { max-width: 7.5in; margin: 1rem auto; padding: 0.75in; background: #fff; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2); }
+    h1 { margin: 0 0 1rem; font-size: 18pt; }
+    p { margin: 0 0 0.75rem; white-space: pre-line; break-inside: avoid; }
+    @media print {
+      body { background: #fff; font-size: 11.5pt; }
+      .toolbar { display: none; }
+      .sheet { max-width: none; margin: 0; padding: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Print or save as PDF</button>
+    <a href="{{ back_url }}">Back to submission</a>
+  </div>
+  <main class="sheet">
+    <h1>{{ title }}</h1>
+    {% for section in sections %}
+      <p>{% if section.heading %}<strong>{{ section.heading }}:</strong> {% endif %}{{ section.text }}</p>
+    {% endfor %}
+  </main>
+</body>
+</html>

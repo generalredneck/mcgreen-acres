@@ -1,0 +1,14 @@
+uuid: b025bf30-e497-4616-882e-5d10e55f3866
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Ip39qR5JFn432FjK3Ztlb5d-oj4AsXsoKtJUuZyud4g
+id: cut_sheet_bacon_cut
+label: 'Cut sheet: bacon cut'
+category: 'Cut sheet'
+likert: false
+options: |-
+  fresh: Fresh bacon
+  cured: Smoke and cure bacon
+  cured_peppered: Smoke and cure peppered bacon

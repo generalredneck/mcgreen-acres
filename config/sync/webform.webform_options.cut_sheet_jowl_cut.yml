@@ -1,0 +1,14 @@
+uuid: 0db9c2cf-d864-4faf-9c71-2b7fe0874e98
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: BOpc8t4TDjC58s9EB66zkhOEUYVOVQRtz-5qcaf_7rM
+id: cut_sheet_jowl_cut
+label: 'Cut sheet: jowl cut'
+category: 'Cut sheet'
+likert: false
+options: |-
+  cured_sliced: Smoke and cure, sliced
+  cured_whole: Smoke and cure, whole
+  grind: Not kept, grind into ground meat

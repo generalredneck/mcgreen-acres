@@ -1,0 +1,13 @@
+uuid: 71859c95-0273-4772-b58e-9495cba578c3
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: i3LKaZhERF_V_RQar2rZs6_GqLA9XFTAM6z0aUC8r8A
+id: cut_sheet_keep_or_grind
+label: 'Cut sheet: keep or grind'
+category: 'Cut sheet'
+likert: false
+options: |-
+  keep: Keep
+  grind: Grind into ground meat

@@ -1,0 +1,5 @@
+mcgreen_cut_sheet.print_tab:
+  title: 'Cut sheet'
+  route_name: mcgreen_cut_sheet.print
+  base_route: entity.webform_submission.canonical
+  weight: 5

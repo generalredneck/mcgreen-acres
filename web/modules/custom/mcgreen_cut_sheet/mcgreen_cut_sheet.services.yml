@@ -1,0 +1,3 @@
+services:
+  mcgreen_cut_sheet.narrative:
+    class: Drupal\mcgreen_cut_sheet\CutSheetNarrative

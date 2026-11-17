@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_bacon_cut
+label: 'Cut sheet: bacon cut'
+category: Cut sheet
+options: |-
+  fresh: Fresh bacon
+  cured: Smoke and cure bacon
+  cured_peppered: Smoke and cure peppered bacon

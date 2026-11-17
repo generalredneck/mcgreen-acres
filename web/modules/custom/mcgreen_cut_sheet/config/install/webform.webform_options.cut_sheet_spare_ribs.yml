@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_spare_ribs
+label: 'Cut sheet: spare ribs'
+category: Cut sheet
+options: |-
+  keep: Save the ribs
+  grind: Grind the ribs into ground meat

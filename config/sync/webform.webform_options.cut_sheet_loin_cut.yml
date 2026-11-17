@@ -1,0 +1,13 @@
+uuid: 338f702b-9ca1-4033-bb82-90d1ffddf7f6
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: HS2PJrgVv4_GyweIGKBQqPu5jjMj2Qfvbw1IIG8CPvA
+id: cut_sheet_loin_cut
+label: 'Cut sheet: loin cut'
+category: 'Cut sheet'
+likert: false
+options: |-
+  bone_in: 'Bone-in chops'
+  boneless: 'Boneless chops (allows for tenderloin & babyback ribs)'

@@ -1,0 +1,14 @@
+uuid: ca5064dd-fe6f-4675-8476-f9f260fac3b6
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: zU3yR6HX1QvH0KJziXgp-a1bQU9v3MtQ5TrJHaXl1CY
+id: cut_sheet_shoulder_cut
+label: 'Cut sheet: shoulder cut'
+category: 'Cut sheet'
+likert: false
+options: |-
+  pork_steaks: Pork steaks
+  butt_roast: Butt roast
+  country_style_ribs: Country style ribs

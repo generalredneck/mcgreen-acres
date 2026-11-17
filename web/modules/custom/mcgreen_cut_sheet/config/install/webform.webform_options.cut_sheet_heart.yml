@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_heart
+label: 'Cut sheet: heart'
+category: Cut sheet
+options: |-
+  keep_whole: Keep whole
+  discard: Not kept, discard

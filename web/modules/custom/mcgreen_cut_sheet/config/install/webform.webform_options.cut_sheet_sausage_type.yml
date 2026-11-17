@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_sausage_type
+label: 'Cut sheet: sausage type'
+category: Cut sheet
+options: |-
+  breakfast_bag: Breakfast sausage in bags
+  hot_breakfast_bag: Hot breakfast sausage in bags
+  smoked_sausage: Smoked sausage
+  fully_cooked_links: Fully cooked links
+  raw_sausage: Raw sausage

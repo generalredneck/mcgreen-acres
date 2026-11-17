@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {}
+id: cut_sheet_jowl_cut
+label: 'Cut sheet: jowl cut'
+category: Cut sheet
+options: |-
+  cured_sliced: Smoke and cure, sliced
+  cured_whole: Smoke and cure, whole
+  grind: Not kept, grind into ground meat

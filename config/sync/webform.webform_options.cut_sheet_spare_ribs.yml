@@ -1,0 +1,13 @@
+uuid: cc7a35ed-0a36-4188-a89b-00c30facbb42
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: R8GAAmEQpVDXWAZ9mFN_pjwGsKlRWlmx_sFPl5xDmrk
+id: cut_sheet_spare_ribs
+label: 'Cut sheet: spare ribs'
+category: 'Cut sheet'
+likert: false
+options: |-
+  keep: Save the ribs
+  grind: Grind the ribs into ground meat
