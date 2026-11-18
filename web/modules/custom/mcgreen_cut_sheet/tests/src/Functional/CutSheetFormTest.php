@@ -150,6 +150,9 @@ class CutSheetFormTest extends BrowserTestBase {
     $session->pageTextContains('Bacon as you buy it is cured and smoked pork belly.');
     $session->pageTextContains('Liver is not guaranteed.');
     $session->pageTextContains('Grind the rib meat into ground meat');
+    // Only the ribs say rib meat. The tenderloin keeps the plain wording.
+    $session->elementTextContains('css', 'label[for="edit-loin-1-baby-back-ribs-grind"]', 'Grind the rib meat into ground meat');
+    $session->elementTextContains('css', 'label[for="edit-loin-1-tenderloin-grind"]', 'Grind into ground meat');
     $session->fieldExists('ground_details');
     $session->fieldExists('sausage_types[contact_me]');
   }
@@ -174,6 +177,20 @@ class CutSheetFormTest extends BrowserTestBase {
       'sausage_types[breakfast_bag]' => TRUE,
       'sausage_lb_breakfast_bag' => '2',
     ], 'Submit');
+    $this->assertSession()->pageTextContains('We received your cut sheet');
+  }
+
+  /**
+   * Sausage pounds are optional so a customer can describe a split instead.
+   */
+  public function testSausagePoundsCanBeLeftBlank(): void {
+    $this->drupalGet('/webform/pig_cut_sheet');
+    $this->submitForm([
+      'ground_use[sausage]' => TRUE,
+      'sausage_types[breakfast_bag]' => TRUE,
+      'sausage_types[hot_breakfast_bag]' => TRUE,
+      'ground_details' => 'Half breakfast, half hot',
+    ] + static::HALF_HOG, 'Submit');
     $this->assertSession()->pageTextContains('We received your cut sheet');
   }
 

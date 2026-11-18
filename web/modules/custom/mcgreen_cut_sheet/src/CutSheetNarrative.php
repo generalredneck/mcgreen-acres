@@ -16,7 +16,8 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * A few option keys are a contract between the option lists and this class
  * and the webform's #states:
- * - keep / grind: tenderloin and baby back ribs (cut_sheet_keep_or_grind).
+ * - keep / grind: tenderloin and baby back ribs (cut_sheet_keep_or_grind and
+ *   cut_sheet_baby_back_ribs).
  * - A ham cut whose key ends in "steaks" is asked for a size.
  * - grind: a loin, shoulder, ham or bacon cut that is ground; no size.
  *
@@ -35,6 +36,11 @@ class CutSheetNarrative {
    * The cut key meaning "grind the meat", the same in every cut list.
    */
   const GRIND = 'grind';
+
+  /**
+   * The sausage type that asks the butcher to call; it has no pounds.
+   */
+  const CONTACT_ME = 'contact_me';
 
   /**
    * What a blank size field reads as.
@@ -263,6 +269,8 @@ class CutSheetNarrative {
       $text .= ' Keep the ' . implode(' and ', $keep) . ' from ' . $from . '.';
     }
     if ($grind) {
+      // Ribs are ground for their meat, never the bones.
+      $grind = array_map(fn ($name) => $name === 'baby back ribs' ? 'baby back rib meat' : $name, $grind);
       $text .= ' Grind the ' . implode(' and ', $grind) . ' from ' . $from . ' into ground meat.';
     }
     if ($unanswered) {
@@ -313,9 +321,9 @@ class CutSheetNarrative {
    * Ground meat paragraph: what it becomes, then the customer's details.
    */
   protected function groundMeatText(array $data, callable $label): string {
-    $text = $this->groundUseText($data, $label);
     $details = $this->value($data, 'ground_details');
-    return $details !== '' ? $text . ' Customer details about the ground meat: ' . $this->sentence($details) : $text;
+    $text = $this->groundUseText($data, $label, $details !== '');
+    return $details !== '' ? $text . ' Special instructions for grind and sausage: ' . $this->sentence($details) : $text;
   }
 
   /**
@@ -324,7 +332,7 @@ class CutSheetNarrative {
    * The customer can choose both. Sausage is given in pounds per type, so the
    * rest of the ground meat is the ground pork.
    */
-  protected function groundUseText(array $data, callable $label): string {
+  protected function groundUseText(array $data, callable $label, bool $has_details): string {
     $uses = $data['ground_use'] ?? [];
     // Older submissions stored a single choice as a string.
     $uses = is_array($uses) ? $uses : [$uses];
@@ -343,7 +351,14 @@ class CutSheetNarrative {
     foreach ($types as $type) {
       $pounds = $this->value($data, 'sausage_lb_' . $type);
       $sentence = ucfirst(rtrim($this->optionText($label, 'sausage_types', $type), '.'));
-      $sentences[] = $sentence . ($pounds !== '' ? ', about ' . $this->formatPounds($pounds) . ' lb.' : '.');
+      if ($pounds !== '') {
+        $sentence .= ', about ' . $this->formatPounds($pounds) . ' lb';
+      }
+      elseif ($type !== static::CONTACT_ME) {
+        // No pounds: the customer described the amount, or left it open.
+        $sentence .= $has_details ? ', amount: see special instructions' : ', amount not given';
+      }
+      $sentences[] = $sentence . '.';
     }
     $intro = $ground !== ''
       ? 'Make sausage from some of the ground meat, and put the rest in ' . $ground . '.'

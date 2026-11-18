@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: cut_sheet_baby_back_ribs
+label: 'Cut sheet: baby back ribs'
+category: 'Cut sheet'
+likert: false
+options: |-
+  keep: Keep
+  grind: 'Grind the rib meat into ground meat'

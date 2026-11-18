@@ -141,7 +141,7 @@ elements: |-
         loin_1_baby_back_ribs:
           '#type': radios
           '#title': Baby back ribs
-          '#options': cut_sheet_keep_or_grind
+          '#options': cut_sheet_baby_back_ribs
           '#required': true
           '#states':
             visible:
@@ -205,7 +205,7 @@ elements: |-
         loin_2_baby_back_ribs:
           '#type': radios
           '#title': Baby back ribs
-          '#options': cut_sheet_keep_or_grind
+          '#options': cut_sheet_baby_back_ribs
           '#required': true
           '#states':
             visible:
@@ -562,18 +562,41 @@ elements: |-
         visible:
           ':input[name="ground_use[sausage]"]':
             checked: true
+      sausage_info:
+        '#type': webform_message
+        '#message_type': info
+        '#message_message': '<ul><li>Using more than one sausage type adds work for the processor. The butcher will contact you about flavors.</li><li>Do not see what you want? Choose "Something else" to discuss it with the butcher.</li></ul>'
       sausage_types:
         '#type': checkboxes
         '#title': Which types?
         '#options': cut_sheet_sausage_type
         '#required': true
-        '#description': 'Using more than one sausage type adds work for the processor. The butcher will contact you about flavors. Do not see what you want? Choose "Something else" to discuss it with the butcher.'
         '#states':
           visible:
             ':input[name="ground_use[sausage]"]':
               checked: true
         '#admin_title': Sausage types
         '#required_error': Choose at least one sausage type.
+      sausage_amount_help:
+        '#type': webform_message
+        '#message_type': info
+        '#message_message': '<p>Enter approximate pounds for each type below. To split the meat another way, such as half breakfast and half hot, leave the pounds blank and describe it in the special instructions box.</p>'
+        '#states':
+          visible:
+          - ':input[name="sausage_types[breakfast_bag]"]':
+              checked: true
+          - or
+          - ':input[name="sausage_types[hot_breakfast_bag]"]':
+              checked: true
+          - or
+          - ':input[name="sausage_types[smoked_sausage]"]':
+              checked: true
+          - or
+          - ':input[name="sausage_types[fully_cooked_links]"]':
+              checked: true
+          - or
+          - ':input[name="sausage_types[raw_sausage]"]':
+              checked: true
       sausage_pair:
         '#type': container
         '#attributes':
@@ -582,7 +605,6 @@ elements: |-
         sausage_lb_breakfast_bag:
           '#type': number
           '#title': 'Breakfast sausage in bags: approximate pounds'
-          '#required': true
           '#field_suffix': lb
           '#min': 0
           '#step': any
@@ -595,7 +617,6 @@ elements: |-
         sausage_lb_hot_breakfast_bag:
           '#type': number
           '#title': 'Hot breakfast sausage in bags: approximate pounds'
-          '#required': true
           '#field_suffix': lb
           '#min': 0
           '#step': any
@@ -608,7 +629,6 @@ elements: |-
         sausage_lb_smoked_sausage:
           '#type': number
           '#title': 'Smoked sausage: approximate pounds'
-          '#required': true
           '#field_suffix': lb
           '#min': 10
           '#step': any
@@ -622,7 +642,6 @@ elements: |-
         sausage_lb_fully_cooked_links:
           '#type': number
           '#title': 'Fully cooked links: approximate pounds'
-          '#required': true
           '#field_suffix': lb
           '#min': 10
           '#step': any
@@ -636,7 +655,6 @@ elements: |-
         sausage_lb_raw_sausage:
           '#type': number
           '#title': 'Raw sausage: approximate pounds'
-          '#required': true
           '#field_suffix': lb
           '#min': 10
           '#step': any
@@ -649,9 +667,9 @@ elements: |-
                 checked: true
     ground_details:
       '#type': textarea
-      '#title': Anything to add about the ground meat?
+      '#title': Special instructions for grind/sausage
       '#rows': 3
-      '#description': Want a lot of sausage or ground pork? Say which other cuts to grind, for example some of the shoulder or ham. Any other details about your ground meat can go here too.
+      '#description': Use this box for special quantities, such as half breakfast sausage and half hot sausage, or for anything else about your ground meat and sausage.
   card_notes:
     '#type': webform_section
     '#title': Anything else

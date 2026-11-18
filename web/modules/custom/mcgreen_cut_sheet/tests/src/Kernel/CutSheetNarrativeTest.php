@@ -103,6 +103,7 @@ class CutSheetNarrativeTest extends KernelTestBase {
     $lists = [
       'loin_cut',
       'keep_or_grind',
+      'baby_back_ribs',
       'spare_ribs',
       'shoulder_cut',
       'ham_cut',
@@ -169,7 +170,7 @@ TEXT;
       'hams_same' => 1,
       'ham_2_cut' => 'cured_whole',
     ]));
-    $this->assertStringContainsString('Loin 1, boneless chops, 1 inch thick, 2 per package. Keep the tenderloin from loin 1. Grind the baby back ribs from loin 1 into ground meat. Loin 2, boneless chops, 1 inch thick, 2 per package. Keep the tenderloin from loin 2. Grind the baby back ribs from loin 2 into ground meat.', $text);
+    $this->assertStringContainsString('Loin 1, boneless chops, 1 inch thick, 2 per package. Keep the tenderloin from loin 1. Grind the baby back rib meat from loin 1 into ground meat. Loin 2, boneless chops, 1 inch thick, 2 per package. Keep the tenderloin from loin 2. Grind the baby back rib meat from loin 2 into ground meat.', $text);
     $this->assertStringContainsString('Ham 1, fresh ham steaks, 3/4 inch thick, 2 per package. Ham 2, fresh ham steaks, 3/4 inch thick, 2 per package.', $text);
   }
 
@@ -233,7 +234,7 @@ TEXT;
       'ground_details' => 'Grind half of each shoulder too',
     ]));
     $this->assertStringContainsString('Breakfast sausage in bags, about 20 lb. Something else, such as bratwurst: have the butcher contact me to discuss.', $text);
-    $this->assertStringContainsString('Customer details about the ground meat: Grind half of each shoulder too.', $text);
+    $this->assertStringContainsString('Special instructions for grind and sausage: Grind half of each shoulder too.', $text);
   }
 
   /**
@@ -255,6 +256,24 @@ TEXT;
     }
     $this->assertStringNotContainsString('stale', $text);
     $this->assertStringNotContainsString('default', $text);
+  }
+
+  /**
+   * A sausage type with no pounds points to the special instructions.
+   */
+  public function testBlankSausagePoundsPointToSpecialInstructions(): void {
+    $data = [
+      'ground_use' => ['sausage'],
+      'sausage_types' => ['breakfast_bag', 'hot_breakfast_bag', 'contact_me'],
+      'sausage_lb_breakfast_bag' => '',
+      'sausage_lb_hot_breakfast_bag' => '',
+    ];
+    $text = $this->sheet($this->submission($data + ['ground_details' => 'Half and half']));
+    $this->assertStringContainsString('Breakfast sausage in bags, amount: see special instructions. Hot breakfast sausage in bags, amount: see special instructions. Something else, such as bratwurst: have the butcher contact me to discuss.', $text);
+    $this->assertStringContainsString('Special instructions for grind and sausage: Half and half.', $text);
+
+    $text = $this->sheet($this->submission($data + ['ground_details' => '']));
+    $this->assertStringContainsString('Breakfast sausage in bags, amount not given.', $text);
   }
 
   /**
