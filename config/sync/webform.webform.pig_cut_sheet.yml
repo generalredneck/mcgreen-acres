@@ -80,25 +80,12 @@ elements: |-
             value: half
       '#message_type': info
       '#message_message': '<p>A half hog has one of each part. You will only see questions marked 1 (loin 1, shoulder 1, ham 1 and bacon slab 1).</p>'
-    hog_pair:
-      '#type': container
-      '#attributes':
-        class:
-        - cut-sheet-pair
-      other_half_owner:
-        '#type': textfield
-        '#title': 'Who owns the other half? '
-        '#description': '<p>(Filled in by McGreen Acres). The processor uses this to match two halves to one hog.</p>'
-        '#states':
-          visible:
-            ':input[name="hog_type"]':
-              value: half
-      slaughter_date:
-        '#type': date
-        '#title': Slaughter date
-        '#default_value': '2026-12-02'
-        '#readonly': true
-        '#description': Set by us for this batch.
+    slaughter_date:
+      '#type': date
+      '#title': Slaughter date
+      '#default_value': '2026-12-02'
+      '#readonly': true
+      '#description': Set by us for this batch.
   card_loins:
     '#type': webform_section
     '#title': Loins and spare ribs
@@ -543,11 +530,12 @@ elements: |-
       class:
       - cut-sheet-card
     ground_use:
-      '#type': radios
-      '#title': What should the ground meat become?
+      '#type': checkboxes
+      '#title': What should the ground meat become? Choose one or both.
       '#options': cut_sheet_ground_use
       '#required': true
-      '#default_value': ground_pork
+      '#default_value':
+      - ground_pork
     sausage_panel:
       '#type': fieldset
       '#title': Sausage
@@ -556,8 +544,8 @@ elements: |-
         - cut-sheet-part
       '#states':
         visible:
-          ':input[name="ground_use"]':
-            value: sausage
+          ':input[name="ground_use[sausage]"]':
+            checked: true
       sausage_types:
         '#type': checkboxes
         '#title': Which types?
@@ -566,8 +554,8 @@ elements: |-
         '#description': Using more than one sausage type adds work for the processor.
         '#states':
           visible:
-            ':input[name="ground_use"]':
-              value: sausage
+            ':input[name="ground_use[sausage]"]':
+              checked: true
         '#admin_title': Sausage types
         '#required_error': Choose at least one sausage type.
       sausage_pair:
@@ -584,8 +572,8 @@ elements: |-
           '#step': any
           '#states':
             visible:
-              ':input[name="ground_use"]':
-                value: sausage
+              ':input[name="ground_use[sausage]"]':
+                checked: true
               ':input[name="sausage_types[breakfast_bag]"]':
                 checked: true
         sausage_lb_hot_breakfast_bag:
@@ -597,8 +585,8 @@ elements: |-
           '#step': any
           '#states':
             visible:
-              ':input[name="ground_use"]':
-                value: sausage
+              ':input[name="ground_use[sausage]"]':
+                checked: true
               ':input[name="sausage_types[hot_breakfast_bag]"]':
                 checked: true
         sausage_lb_smoked_sausage:
@@ -611,8 +599,8 @@ elements: |-
           '#description': The processor's minimum for this type is 10 lb.
           '#states':
             visible:
-              ':input[name="ground_use"]':
-                value: sausage
+              ':input[name="ground_use[sausage]"]':
+                checked: true
               ':input[name="sausage_types[smoked_sausage]"]':
                 checked: true
         sausage_lb_fully_cooked_links:
@@ -625,8 +613,8 @@ elements: |-
           '#description': The processor's minimum for this type is 10 lb.
           '#states':
             visible:
-              ':input[name="ground_use"]':
-                value: sausage
+              ':input[name="ground_use[sausage]"]':
+                checked: true
               ':input[name="sausage_types[fully_cooked_links]"]':
                 checked: true
         sausage_lb_raw_sausage:
@@ -639,8 +627,8 @@ elements: |-
           '#description': The processor's minimum for this type is 10 lb.
           '#states':
             visible:
-              ':input[name="ground_use"]':
-                value: sausage
+              ':input[name="ground_use[sausage]"]':
+                checked: true
               ':input[name="sausage_types[raw_sausage]"]':
                 checked: true
   card_notes:

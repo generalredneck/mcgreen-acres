@@ -184,10 +184,6 @@ class CutSheetNarrative {
 
     $text = $this->sentence($this->value($data, 'customer_name')) . ' ' . $phones;
     $text .= $whole ? ' Whole hog.' : ' Half hog.';
-    if (!$whole) {
-      $owner = $this->value($data, 'other_half_owner');
-      $text .= $owner !== '' ? " Other half's owner: " . $this->sentence($owner) : " Other half's owner: not given.";
-    }
     $text .= ' Hog ID: ' . static::BLANK_HOG_ID . '.';
     $text .= ' Slaughter date: ' . $this->formatDate($this->value($data, 'slaughter_date')) . '.';
     return $text;
@@ -292,11 +288,22 @@ class CutSheetNarrative {
   }
 
   /**
-   * Ground meat paragraph: ground pork, or the sausage types and pounds.
+   * Ground meat paragraph: ground pork, sausage, or both.
+   *
+   * The customer can choose both. Sausage is given in pounds per type, so the
+   * rest of the ground meat is the ground pork.
    */
   protected function groundMeatText(array $data, callable $label): string {
-    if ($this->value($data, 'ground_use') !== 'sausage') {
-      return 'All ground meat to ' . $this->lcfirst($this->optionText($label, 'ground_use', $this->value($data, 'ground_use') ?: 'ground_pork')) . '.';
+    $uses = $data['ground_use'] ?? [];
+    // Older submissions stored a single choice as a string.
+    $uses = is_array($uses) ? $uses : [$uses];
+    $uses = array_values(array_filter($uses));
+    $sausage = in_array('sausage', $uses, TRUE);
+    $others = array_values(array_diff($uses, ['sausage']));
+    $ground = $others ? $this->lcfirst($this->optionText($label, 'ground_use', $others[0])) : ($sausage ? '' : $this->lcfirst($this->optionText($label, 'ground_use', 'ground_pork')));
+
+    if (!$sausage) {
+      return 'All ground meat to ' . $ground . '.';
     }
 
     $types = $data['sausage_types'] ?? [];
@@ -307,7 +314,10 @@ class CutSheetNarrative {
       $sentence = ucfirst(rtrim($this->optionText($label, 'sausage_types', $type), '.'));
       $sentences[] = $sentence . ($pounds !== '' ? ', about ' . $this->formatPounds($pounds) . ' lb.' : '.');
     }
-    return 'Make sausage from the ground meat. ' . implode(' ', $sentences);
+    $intro = $ground !== ''
+      ? 'Make sausage from some of the ground meat, and put the rest in ' . $ground . '.'
+      : 'Make sausage from the ground meat.';
+    return $intro . ' ' . implode(' ', $sentences);
   }
 
   /**

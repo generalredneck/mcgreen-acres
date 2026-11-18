@@ -47,7 +47,7 @@ class CutSheetFormTest extends BrowserTestBase {
     'jowl_cut' => 'grind',
     'heart' => 'discard',
     'liver' => 'discard',
-    'ground_use' => 'ground_pork',
+    'ground_use[ground_pork]' => TRUE,
   ];
 
   /**
@@ -110,7 +110,7 @@ class CutSheetFormTest extends BrowserTestBase {
    * Smoked sausage, links and raw sausage have a 10 lb minimum; bags do not.
    */
   public function testSausageMinimums(): void {
-    $sausage = ['ground_use' => 'sausage'] + static::HALF_HOG;
+    $sausage = ['ground_use[sausage]' => TRUE] + static::HALF_HOG;
 
     foreach (['smoked_sausage', 'fully_cooked_links', 'raw_sausage'] as $type) {
       $this->drupalGet('/webform/pig_cut_sheet');

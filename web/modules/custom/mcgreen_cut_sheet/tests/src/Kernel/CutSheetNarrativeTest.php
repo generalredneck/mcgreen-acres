@@ -57,7 +57,7 @@ class CutSheetNarrativeTest extends KernelTestBase {
     'jowl_cut' => 'cured_sliced',
     'heart' => 'keep_whole',
     'liver' => 'keep_sliced',
-    'ground_use' => 'sausage',
+    'ground_use' => ['sausage'],
     'sausage_types' => ['breakfast_bag'],
     'sausage_lb_breakfast_bag' => '20',
     'special_instructions' => '',
@@ -168,18 +168,17 @@ TEXT;
   }
 
   /**
-   * A half hog has one of each part, no numbers, and names the other owner.
+   * A half hog has one of each part, no numbers.
    */
   public function testHalfHog(): void {
     $text = $this->sheet($this->submission([
       'hog_type' => 'half',
-      'other_half_owner' => 'Bob Smith',
       'customer_backup_phone' => '',
       'ham_1_cut' => 'cured_whole',
-      'ground_use' => 'ground_pork',
+      'ground_use' => ['ground_pork'],
       'special_instructions' => "Extra lean.\nThanks",
     ]));
-    $this->assertStringContainsString('Cell phone 555-0100. No backup phone. Half hog. Other half\'s owner: Bob Smith. Hog ID: ______.', $text);
+    $this->assertStringContainsString('Cell phone 555-0100. No backup phone. Half hog. Hog ID: ______.', $text);
     $this->assertStringContainsString('Loin: Bone-in chops, 1 inch thick, 2 per package.', $text);
     $this->assertStringNotContainsString('Loin 2', $text);
     $this->assertStringContainsString('Ham: Smoke and cure whole ham.', $text);
@@ -195,7 +194,7 @@ TEXT;
     $text = $this->sheet($this->submission([
       'ham_1_cut' => 'fresh_cutlets',
       'ham_1_size' => 'ignored stale answer',
-      'ground_use' => 'sausage',
+      'ground_use' => ['sausage'],
       'sausage_types' => ['smoked_sausage', 'raw_sausage'],
       'sausage_lb_smoked_sausage' => '10',
       'sausage_lb_raw_sausage' => '12.5',
@@ -203,6 +202,18 @@ TEXT;
     $this->assertStringContainsString('Ham 1, fresh cutlets. Ham 2', $text);
     $this->assertStringNotContainsString('ignored stale answer', $text);
     $this->assertStringContainsString('Smoked sausage, about 10 lb. Raw sausage, about 12.5 lb.', $text);
+  }
+
+  /**
+   * Ground pork and sausage can be chosen together.
+   */
+  public function testGroundPorkAndSausageTogether(): void {
+    $text = $this->sheet($this->submission([
+      'ground_use' => ['ground_pork', 'sausage'],
+      'sausage_types' => ['raw_sausage'],
+      'sausage_lb_raw_sausage' => '12',
+    ]));
+    $this->assertStringContainsString('Ground meat: Make sausage from some of the ground meat, and put the rest in ground pork in 1 lb bags. Raw sausage, about 12 lb.', $text);
   }
 
   /**
