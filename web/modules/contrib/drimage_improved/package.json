@@ -1,0 +1,23 @@
+{
+  "packageManager": "yarn@4.9.3",
+  "name": "drimage_improved",
+  "description": "Front-end functional (BDD) acceptance tests for the Drimage module.",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "engines": {
+    "node": ">= 20.0"
+  },
+  "scripts": {
+    "test": "node ./node_modules/@cucumber/cucumber/bin/cucumber.js --config cucumber.js",
+    "test:chromium": "BROWSER=chromium node ./node_modules/@cucumber/cucumber/bin/cucumber.js --config cucumber.js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "10.0.1",
+    "@cucumber/pretty-formatter": "1.0.0",
+    "@vardot/varbase-e2e": "^2.0.7"
+  },
+  "resolutions": {
+    "@cucumber/cucumber": "10.0.1",
+    "@cucumber/pretty-formatter": "1.0.0"
+  }
+}
