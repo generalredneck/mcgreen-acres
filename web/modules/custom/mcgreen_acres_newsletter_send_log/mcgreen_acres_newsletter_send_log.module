@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Retry and logging for failed Simplenews newsletter deliveries.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function mcgreen_acres_newsletter_send_log_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.mcgreen_acres_newsletter_send_log') {
+    return '<p>' . t("Retries newsletter mail that fails on a dropped SMTP connection instead of marking it permanently failed, and logs every failed attempt (recipient, time, error). A <em>See details</em> link on the issue's <em>Newsletter</em> tab lists them. Tuning lives in <code>mcgreen_acres_newsletter_send_log.settings</code>.") . '</p>';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the Simplenews issue Send tab.
+ *
+ * Adds a "See details" link after the "N mails sent out of M, N errors" text.
+ */
+function mcgreen_acres_newsletter_send_log_form_simplenews_node_tab_alter(array &$form, FormStateInterface $form_state): void {
+  $node = $form_state->get('node');
+  if (!$node || !isset($form['send']['count']['#markup'])) {
+    return;
+  }
+  // Nothing has been sent yet for an issue that has not started sending.
+  if ((int) $node->simplenews_issue->status === SIMPLENEWS_STATUS_SEND_NOT) {
+    return;
+  }
+
+  $url = Url::fromRoute('mcgreen_acres_newsletter_send_log.details', ['node' => $node->id()]);
+  if (!$url->access()) {
+    return;
+  }
+
+  $link = Link::fromTextAndUrl(t('See details'), $url)->toString();
+  $form['send']['count']['#markup'] = Markup::create($form['send']['count']['#markup'] . ' ' . $link);
+}
+
+/**
+ * Implements hook_entity_delete().
+ *
+ * Drops the send log of a deleted newsletter issue.
+ */
+function mcgreen_acres_newsletter_send_log_entity_delete(EntityInterface $entity): void {
+  if ($entity instanceof FieldableEntityInterface && $entity->getEntityTypeId() === 'node' && $entity->hasField('simplenews_issue')) {
+    \Drupal::service('mcgreen_acres_newsletter_send_log.storage')->deleteForIssue('node', (int) $entity->id());
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Purges log rows older than the configured retention.
+ */
+function mcgreen_acres_newsletter_send_log_cron(): void {
+  $days = (int) \Drupal::config('mcgreen_acres_newsletter_send_log.settings')->get('retention_days');
+  if ($days > 0) {
+    \Drupal::service('mcgreen_acres_newsletter_send_log.storage')->purge($days);
+  }
+}

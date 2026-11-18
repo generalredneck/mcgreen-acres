@@ -1,0 +1,10 @@
+services:
+  mcgreen_acres_newsletter_send_log.storage:
+    class: Drupal\mcgreen_acres_newsletter_send_log\SendAttemptStorage
+    arguments: ['@database', '@datetime.time']
+  mcgreen_acres_newsletter_send_log.classifier:
+    class: Drupal\mcgreen_acres_newsletter_send_log\TransportErrorClassifier
+  mcgreen_acres_newsletter_send_log.error_collector:
+    class: Drupal\mcgreen_acres_newsletter_send_log\SendErrorCollector
+    tags:
+      - { name: logger }

@@ -1,0 +1,8 @@
+name: 'McGreen Acres Newsletter Send Log'
+type: module
+description: 'Retries Simplenews sends that fail on a dropped SMTP connection instead of marking them permanently failed, and records every failed attempt (recipient, time, error) with a "See details" page on the issue.'
+package: 'McGreen Acres'
+core_version_requirement: ^10 || ^11 || ^12
+dependencies:
+  - simplenews:simplenews
+  - symfony_mailer:symfony_mailer

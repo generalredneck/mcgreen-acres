@@ -1,0 +1,14 @@
+mcgreen_acres_newsletter_send_log.details:
+  path: '/node/{node}/simplenews/send-details'
+  defaults:
+    _controller: '\Drupal\mcgreen_acres_newsletter_send_log\Controller\SendDetailsController::view'
+    _title_callback: '\Drupal\mcgreen_acres_newsletter_send_log\Controller\SendDetailsController::title'
+  requirements:
+    # Same audience as the issue's Newsletter tab.
+    _custom_access: '\Drupal\simplenews\Form\NodeTabForm::checkAccess'
+  options:
+    _admin_route: TRUE
+    no_cache: TRUE
+    parameters:
+      node:
+        type: entity:node

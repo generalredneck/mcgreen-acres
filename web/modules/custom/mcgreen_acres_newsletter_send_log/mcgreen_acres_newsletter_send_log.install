@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for the newsletter send log.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function mcgreen_acres_newsletter_send_log_schema(): array {
+  $schema['mcgreen_newsletter_send_attempt'] = [
+    'description' => 'One row per failed (or retried-then-sent) newsletter delivery attempt.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'entity_type' => [
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'Entity type of the newsletter issue.',
+      ],
+      'entity_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'ID of the newsletter issue.',
+      ],
+      'snid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'description' => 'Simplenews subscriber ID, if the subscriber is saved.',
+      ],
+      'mail' => [
+        'type' => 'varchar',
+        'length' => 254,
+        'not null' => TRUE,
+        'description' => 'Recipient email address.',
+      ],
+      'attempt' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Attempt number for this recipient on this issue, counting from 1.',
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'outcome' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => TRUE,
+        'description' => 'error or sent.',
+      ],
+      'classification' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => FALSE,
+        'description' => 'transient or other, for errors.',
+      ],
+      'error' => [
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => FALSE,
+        'description' => 'The transport error message.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'issue_recipient' => ['entity_type', 'entity_id', 'mail'],
+      'timestamp' => ['timestamp'],
+    ],
+  ];
+  return $schema;
+}

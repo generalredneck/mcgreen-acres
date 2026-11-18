@@ -1,0 +1,4 @@
+in_place_retries: 2
+retry_delay: 3
+max_total_attempts: 6
+retention_days: 180

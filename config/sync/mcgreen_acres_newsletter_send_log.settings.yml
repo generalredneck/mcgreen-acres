@@ -1,0 +1,6 @@
+_core:
+  default_config_hash: J3r80DfhBMJNBgsNtMBg7t4NFHF8Vw4ek8HX2phgiDY
+in_place_retries: 2
+retry_delay: 3
+max_total_attempts: 6
+retention_days: 180

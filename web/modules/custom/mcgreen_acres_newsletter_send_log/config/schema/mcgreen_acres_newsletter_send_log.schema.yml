@@ -1,0 +1,16 @@
+mcgreen_acres_newsletter_send_log.settings:
+  type: config_object
+  label: 'Newsletter send log settings'
+  mapping:
+    in_place_retries:
+      type: integer
+      label: 'Immediate retries after a transport error'
+    retry_delay:
+      type: integer
+      label: 'Base delay in seconds between immediate retries (multiplied by the retry number)'
+    max_total_attempts:
+      type: integer
+      label: 'Total attempts per recipient, across cron runs, before giving up'
+    retention_days:
+      type: integer
+      label: 'Days to keep logged attempts'
