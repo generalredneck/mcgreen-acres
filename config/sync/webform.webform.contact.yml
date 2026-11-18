@@ -29,11 +29,17 @@ elements: |-
     '#type': textfield
     '#required': true
     '#default_value': '[current-user:display-name]'
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   lname:
     '#title': 'Last Name'
     '#type': textfield
     '#required': true
     '#default_value': ''
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   email:
     '#title': 'Your Email'
     '#type': email
