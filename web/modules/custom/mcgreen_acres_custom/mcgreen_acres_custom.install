@@ -527,3 +527,22 @@ function mcgreen_acres_custom_update_10011() {
 
   return t('Deleted @count spam newsletter subscribers.', ['@count' => count($subscribers)]);
 }
+
+/**
+ * Removes more newsletter subscribers created by contact-form spam senders.
+ *
+ * A franchising pitch and a packaging-manufacturer solicitation came through
+ * the contact form with the "subscribe" box ticked. Unlike the senders removed
+ * in update 10011, their domains are not banned (one is a Gmail address).
+ */
+function mcgreen_acres_custom_update_10012() {
+  $mails = [
+    'development@franchisecreator.com',
+    'peter.mypackaginglane@gmail.com',
+  ];
+  $storage = \Drupal::entityTypeManager()->getStorage('simplenews_subscriber');
+  $subscribers = $storage->loadByProperties(['mail' => $mails]);
+  $storage->delete($subscribers);
+
+  return t('Deleted @count spam newsletter subscribers.', ['@count' => count($subscribers)]);
+}
