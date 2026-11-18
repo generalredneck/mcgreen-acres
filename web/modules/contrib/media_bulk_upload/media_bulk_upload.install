@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the the module.
+ */
+
+/**
+ * Enable dropzonejs integration submodule.
+ */
+function media_bulk_upload_update_8001() {
+  $modules = [
+    'media_bulk_upload_dropzonejs',
+  ];
+  Drupal::service('module_installer')->install($modules);
+}

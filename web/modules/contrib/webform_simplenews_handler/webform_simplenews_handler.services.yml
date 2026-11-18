@@ -1,0 +1,3 @@
+services:
+  Drupal\webform_simplenews_handler\Hook\WebformSimplenewsHandlerHooks:
+    class: Drupal\webform_simplenews_handler\Hook\WebformSimplenewsHandlerHooks
