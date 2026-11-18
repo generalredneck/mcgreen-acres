@@ -1,9 +1,10 @@
 langcode: en
 status: true
-dependencies: {}
+dependencies: {  }
 id: cut_sheet_liver
 label: 'Cut sheet: liver'
-category: Cut sheet
+category: 'Cut sheet'
+likert: false
 options: |-
   keep_whole: Keep whole
   keep_sliced: Keep sliced

@@ -1,9 +1,10 @@
 langcode: en
 status: true
-dependencies: {}
+dependencies: {  }
 id: cut_sheet_ground_use
 label: 'Cut sheet: ground meat use'
-category: Cut sheet
+category: 'Cut sheet'
+likert: false
 options: |-
   ground_pork: Ground pork in 1 lb bags
   sausage: Make sausage

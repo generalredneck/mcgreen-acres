@@ -9,6 +9,12 @@ A standalone Webform (`pig_cut_sheet`, at `/form/pig-cut-sheet`) where a custome
 - Email tokens `[webform_submission:cut_sheet]` (the sheet as HTML paragraphs) and `[webform_submission:cut_sheet_print_url]`, used by the two email handlers.
 - `noindex` on the form page.
 
+## Layout
+
+The form is one page of nine numbered cards (`webform_section` elements with the `cut-sheet-card` class). Inside a card, each part (Loin 1, Loin 2, ...) is a `cut-sheet-part` fieldset panel, and the two parts of a whole hog sit in a `cut-sheet-pair` container so they show side by side and stack on narrow screens. `css/cut-sheet-form.css` does the styling and picks up the theme's `--mca-green` colours. A question's visible label is short ("Cut"); its full name (e.g. "Loin 2: cut") is the `#admin_title` and the required-field message.
+
+Option labels are printed on the processor's sheet, so keep customer-only hints out of them and put those in a card's help text instead.
+
 ## Swapping the processor
 
 The processor's choices are webform option lists (`cut_sheet_*`, category "Cut sheet", at `/admin/structure/webform/config/options`). Edit the labels and add or remove options there; nothing in PHP lists them. The narrative prints each option's label, so wording changes reach the sheet.

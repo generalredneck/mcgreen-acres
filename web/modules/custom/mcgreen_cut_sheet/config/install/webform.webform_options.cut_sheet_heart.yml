@@ -1,9 +1,10 @@
 langcode: en
 status: true
-dependencies: {}
+dependencies: {  }
 id: cut_sheet_heart
 label: 'Cut sheet: heart'
-category: Cut sheet
+category: 'Cut sheet'
+likert: false
 options: |-
   keep_whole: Keep whole
   discard: Not kept, discard

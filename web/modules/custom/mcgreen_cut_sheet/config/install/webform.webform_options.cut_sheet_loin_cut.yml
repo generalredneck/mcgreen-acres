@@ -1,9 +1,10 @@
 langcode: en
 status: true
-dependencies: {}
+dependencies: {  }
 id: cut_sheet_loin_cut
 label: 'Cut sheet: loin cut'
-category: Cut sheet
+category: 'Cut sheet'
+likert: false
 options: |-
-  bone_in: Bone-in chops
-  boneless: Boneless chops
+  bone_in: 'Bone-in chops'
+  boneless: 'Boneless chops'

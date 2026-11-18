@@ -55,6 +55,9 @@ class CutSheetFormTest extends BrowserTestBase {
    */
   public function testHalfHogNeedsOnlyFirstParts(): void {
     $this->drupalGet('/webform/pig_cut_sheet');
+    // Nine numbered cards, styled by the module's stylesheet.
+    $this->assertSession()->elementsCount('css', 'section.cut-sheet-card', 9);
+    $this->assertSession()->responseContains('cut-sheet-form.css');
     $this->submitForm(static::HALF_HOG, 'Submit');
     $this->assertSession()->pageTextContains('We received your cut sheet');
 
@@ -72,7 +75,7 @@ class CutSheetFormTest extends BrowserTestBase {
     $whole = ['hog_type' => 'whole'] + static::HALF_HOG;
     $this->drupalGet('/webform/pig_cut_sheet');
     $this->submitForm($whole, 'Submit');
-    $this->assertSession()->pageTextContains('Loin 2: cut field is required');
+    $this->assertSession()->pageTextContains('Loin 2: cut is required.');
     $this->assertSession()->pageTextNotContains('We received your cut sheet');
 
     $this->drupalGet('/webform/pig_cut_sheet');
@@ -91,8 +94,8 @@ class CutSheetFormTest extends BrowserTestBase {
   public function testBonelessLoinMustDecideTenderloinAndRibs(): void {
     $this->drupalGet('/webform/pig_cut_sheet');
     $this->submitForm(['loin_1_cut' => 'boneless'] + static::HALF_HOG, 'Submit');
-    $this->assertSession()->pageTextContains('Loin 1: tenderloin field is required');
-    $this->assertSession()->pageTextContains('Loin 1: baby back ribs field is required');
+    $this->assertSession()->pageTextContains('Loin 1: tenderloin is required.');
+    $this->assertSession()->pageTextContains('Loin 1: baby back ribs is required.');
 
     $this->drupalGet('/webform/pig_cut_sheet');
     $this->submitForm([

@@ -1,9 +1,10 @@
 langcode: en
 status: true
-dependencies: {}
+dependencies: {  }
 id: cut_sheet_shoulder_cut
 label: 'Cut sheet: shoulder cut'
-category: Cut sheet
+category: 'Cut sheet'
+likert: false
 options: |-
   pork_steaks: Pork steaks
   butt_roast: Butt roast

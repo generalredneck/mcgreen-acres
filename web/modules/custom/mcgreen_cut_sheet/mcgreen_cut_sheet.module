@@ -5,6 +5,7 @@
  * Pig cut sheet: email token, theme hook and search-engine hiding.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
@@ -99,5 +100,16 @@ function mcgreen_cut_sheet_page_attachments(array &$attachments) {
       ['#tag' => 'meta', '#attributes' => ['name' => 'robots', 'content' => 'noindex, nofollow']],
       'mcgreen_cut_sheet_robots',
     ];
+  }
+}
+
+/**
+ * Implements hook_webform_submission_form_alter().
+ *
+ * Styles the cut sheet's numbered cards and side-by-side part panels.
+ */
+function mcgreen_cut_sheet_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  if (($form['#webform_id'] ?? NULL) === CutSheetNarrative::WEBFORM_ID) {
+    $form['#attached']['library'][] = 'mcgreen_cut_sheet/form';
   }
 }

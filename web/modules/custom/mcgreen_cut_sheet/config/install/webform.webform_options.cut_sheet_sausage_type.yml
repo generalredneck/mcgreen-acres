@@ -1,9 +1,10 @@
 langcode: en
 status: true
-dependencies: {}
+dependencies: {  }
 id: cut_sheet_sausage_type
 label: 'Cut sheet: sausage type'
-category: Cut sheet
+category: 'Cut sheet'
+likert: false
 options: |-
   breakfast_bag: Breakfast sausage in bags
   hot_breakfast_bag: Hot breakfast sausage in bags

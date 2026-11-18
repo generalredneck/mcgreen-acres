@@ -1,0 +1,154 @@
+/**
+ * Pig cut sheet form: numbered cards, with each part (loin 1, loin 2, ...)
+ * in its own panel and the two parts of a whole hog side by side.
+ *
+ * Brand colours come from the theme's custom properties, with fallbacks so
+ * the form still looks right under any theme.
+ */
+
+.webform-submission-pig-cut-sheet-form {
+  --cs-green: var(--mca-green, #40a03a);
+  --cs-green-dark: var(--mca-green-dark, #2f5e29);
+  --cs-border: #d9e0d6;
+  --cs-panel: #f8faf6;
+  counter-reset: cut-sheet-step;
+}
+
+/* Card ------------------------------------------------------------------- */
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-card {
+  margin: 0 0 1.75rem;
+  padding: 0;
+  border: 1px solid var(--cs-border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-card > .webform-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--cs-border);
+  background: #eef5ea;
+  color: var(--cs-green-dark);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  counter-increment: cut-sheet-step;
+}
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-card > .webform-section-title::before {
+  content: counter(cut-sheet-step);
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--cs-green-dark);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 2rem;
+  text-align: center;
+}
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-card > .webform-section-wrapper {
+  padding: 1.25rem;
+}
+
+/* Layout: parts side by side, stacking when narrow ------------------------ */
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0 1.5rem;
+  align-items: start;
+}
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-pair > * {
+  min-width: 0;
+}
+
+/* Panels: one per part --------------------------------------------------- */
+
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part {
+  margin: 0 0 1.25rem;
+  padding: 0.25rem 1rem 0.5rem;
+  border: 1px solid var(--cs-border);
+  border-left: 4px solid var(--cs-green);
+  border-radius: 6px;
+  background: var(--cs-panel);
+}
+
+/* The panel's own title: a heading inside the panel, not a border cut-out.
+   The theme's Bootstrap utility classes use !important, so match that. */
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part > legend {
+  /* Floated so the browser lays it out inside the panel instead of drawing it
+     across the panel's top border. */
+  float: left;
+  width: 100%;
+  margin: 0.5rem 0 0.25rem;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--cs-green-dark);
+}
+
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part > legend .fieldset-legend {
+  border-bottom: 2px solid var(--cs-border) !important;
+  padding: 0 0 0.4rem !important;
+}
+
+fieldset.cut-sheet-part > .fieldset-wrapper {
+  clear: both;
+}
+
+/* Questions inside a panel are labels, not headings. */
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part fieldset legend,
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part label:not(.option) {
+  float: none;
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #222;
+}
+
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part fieldset legend .fieldset-legend {
+  border-bottom: 0 !important;
+  padding: 0 !important;
+}
+
+.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part label.option {
+  font-weight: 400;
+}
+
+/* Inside a card, nothing should add stray bottom space. */
+.webform-submission-pig-cut-sheet-form .cut-sheet-card .form-item:last-child {
+  margin-bottom: 0;
+}
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-help {
+  margin: 0 0 1rem;
+  color: #555;
+}
+
+.webform-submission-pig-cut-sheet-form .cut-sheet-card > .webform-section-wrapper > .form-type-checkbox {
+  margin-bottom: 1rem;
+}
+
+/* Small screens: tighter card padding -------------------------------------- */
+
+@media (max-width: 575px) {
+  .webform-submission-pig-cut-sheet-form .cut-sheet-card > .webform-section-title {
+    padding: 0.75rem 1rem;
+    font-size: 1.15rem;
+  }
+
+  .webform-submission-pig-cut-sheet-form .cut-sheet-card > .webform-section-wrapper {
+    padding: 1rem;
+  }
+}

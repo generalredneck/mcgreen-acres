@@ -10,4 +10,4 @@ category: 'Cut sheet'
 likert: false
 options: |-
   bone_in: 'Bone-in chops'
-  boneless: 'Boneless chops (allows for tenderloin & babyback ribs)'
+  boneless: 'Boneless chops'
