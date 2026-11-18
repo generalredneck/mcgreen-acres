@@ -124,7 +124,13 @@ class CutSheetNarrativeTest extends KernelTestBase {
    */
   public function testWholeHog(): void {
     $expected = <<<'TEXT'
-Customer: Jane Doe. Cell phone 555-0100, backup phone 555-0101. Whole hog. Hog ID: ______. Slaughter date: December 2.
+Customer:
+Jane Doe
+Cell phone: 555-0100
+Backup phone: 555-0101
+Hog: Whole hog
+Hog ID: ______
+Slaughter date: December 2, 2026
 
 Loins: Loin 1, bone-in chops, 1 inch thick, 2 per package. Loin 2, boneless chops, processor default size. Keep the tenderloin and baby back ribs from loin 2.
 
@@ -178,7 +184,7 @@ TEXT;
       'ground_use' => ['ground_pork'],
       'special_instructions' => "Extra lean.\nThanks",
     ]));
-    $this->assertStringContainsString('Cell phone 555-0100. No backup phone. Half hog. Hog ID: ______.', $text);
+    $this->assertStringContainsString("Cell phone: 555-0100\nBackup phone: not given\nHog: Half hog\nHog ID: ______\nSlaughter date: December 2, 2026", $text);
     $this->assertStringContainsString('Loin: Bone-in chops, 1 inch thick, 2 per package.', $text);
     $this->assertStringNotContainsString('Loin 2', $text);
     $this->assertStringContainsString('Ham: Smoke and cure whole ham.', $text);
@@ -217,12 +223,55 @@ TEXT;
   }
 
   /**
+   * Customer details go on the sheet, and "contact me" needs no pounds.
+   */
+  public function testGroundDetailsAndContactMeSausage(): void {
+    $text = $this->sheet($this->submission([
+      'ground_use' => ['sausage'],
+      'sausage_types' => ['breakfast_bag', 'contact_me'],
+      'sausage_lb_breakfast_bag' => '20',
+      'ground_details' => 'Grind half of each shoulder too',
+    ]));
+    $this->assertStringContainsString('Breakfast sausage in bags, about 20 lb. Something else, such as bratwurst: have the butcher contact me to discuss.', $text);
+    $this->assertStringContainsString('Customer details about the ground meat: Grind half of each shoulder too.', $text);
+  }
+
+  /**
+   * A ground loin, shoulder, ham or slab prints no size and no extras.
+   */
+  public function testGroundPartsPrintNoSize(): void {
+    $text = $this->sheet($this->submission([
+      'hog_type' => 'half',
+      'loin_1_cut' => 'grind',
+      'loin_1_chop_size' => 'stale',
+      'shoulder_1_cut' => 'grind',
+      'shoulder_1_size' => 'stale',
+      'ham_1_cut' => 'grind',
+      'bacon_1_cut' => 'grind',
+      'bacon_1_slice_size' => 'stale',
+    ]));
+    foreach (['Loin', 'Shoulder', 'Ham', 'Bacon'] as $heading) {
+      $this->assertStringContainsString($heading . ': Grind the meat.', $text);
+    }
+    $this->assertStringNotContainsString('stale', $text);
+    $this->assertStringNotContainsString('default', $text);
+  }
+
+  /**
+   * Spare ribs read as rib meat when ground.
+   */
+  public function testSpareRibsGrindWording(): void {
+    $text = $this->sheet($this->submission(['spare_ribs' => 'grind']));
+    $this->assertStringContainsString('Spare ribs: Grind the rib meat into ground meat.', $text);
+  }
+
+  /**
    * Submitted text is escaped in HTML, and the token returns it as markup.
    */
   public function testTokenReturnsEscapedMarkup(): void {
     $submission = $this->submission(['special_instructions' => "<script>alert(1)</script>\nSecond line"]);
     $html = $this->container->get('token')->replace('[webform_submission:cut_sheet]', ['webform_submission' => $submission]);
-    $this->assertStringContainsString('<p><strong>Customer:</strong> Jane Doe.', (string) $html);
+    $this->assertStringContainsString("<p><strong>Customer:</strong><br>\nJane Doe<br>\nCell phone: 555-0100", (string) $html);
     $this->assertStringContainsString("&lt;script&gt;alert(1)&lt;/script&gt;<br>\nSecond line", (string) $html);
     $this->assertStringNotContainsString('<script>', (string) $html);
     $this->assertStringNotContainsString('&lt;p&gt;', (string) $html);

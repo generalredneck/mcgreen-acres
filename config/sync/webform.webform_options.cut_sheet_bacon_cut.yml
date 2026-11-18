@@ -9,6 +9,7 @@ label: 'Cut sheet: bacon cut'
 category: 'Cut sheet'
 likert: false
 options: |-
-  fresh: Fresh bacon
   cured: Smoke and cure bacon
   cured_peppered: Smoke and cure peppered bacon
+  grind: 'Grind the meat'
+  fresh: Fresh bacon

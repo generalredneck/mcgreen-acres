@@ -8,3 +8,4 @@ likert: false
 options: |-
   bone_in: 'Bone-in chops'
   boneless: 'Boneless chops'
+  grind: 'Grind the meat'

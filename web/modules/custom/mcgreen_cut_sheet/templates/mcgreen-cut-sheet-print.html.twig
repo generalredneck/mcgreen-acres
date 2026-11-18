@@ -5,7 +5,8 @@
  *
  * Available variables:
  * - title: The webform's title.
- * - sections: Sections with "heading" (may be empty) and "text".
+ * - sections: Sections with "heading" (may be empty), "text" and "block"
+ *   (heading on its own line, text below).
  * - back_url: Link back to the submission in the admin UI.
  */
 #}
@@ -40,7 +41,7 @@
   <main class="sheet">
     <h1>{{ title }}</h1>
     {% for section in sections %}
-      <p>{% if section.heading %}<strong>{{ section.heading }}:</strong> {% endif %}{{ section.text }}</p>
+      <p>{% if section.heading %}<strong>{{ section.heading }}:</strong>{{ section.block ? "\n" : ' ' }}{% endif %}{{ section.text }}</p>
     {% endfor %}
   </main>
 </body>

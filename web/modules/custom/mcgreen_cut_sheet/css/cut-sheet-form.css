@@ -106,7 +106,9 @@ fieldset.cut-sheet-part > .fieldset-wrapper {
   clear: both;
 }
 
-/* Questions inside a panel are labels, not headings. */
+/* Questions are labels, not headings, whether in a panel or straight on a
+   card. */
+.webform-submission-pig-cut-sheet-form .cut-sheet-card fieldset:not(.cut-sheet-part) legend,
 .webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part fieldset legend,
 .webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part label:not(.option) {
   float: none;
@@ -117,12 +119,13 @@ fieldset.cut-sheet-part > .fieldset-wrapper {
   color: #222;
 }
 
+.webform-submission-pig-cut-sheet-form .cut-sheet-card fieldset:not(.cut-sheet-part) legend .fieldset-legend,
 .webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part fieldset legend .fieldset-legend {
   border-bottom: 0 !important;
   padding: 0 !important;
 }
 
-.webform-submission-pig-cut-sheet-form fieldset.cut-sheet-part label.option {
+.webform-submission-pig-cut-sheet-form .cut-sheet-card label.option {
   font-weight: 400;
 }
 

@@ -18,9 +18,11 @@ use Drupal\webform\WebformSubmissionInterface;
  * and the webform's #states:
  * - keep / grind: tenderloin and baby back ribs (cut_sheet_keep_or_grind).
  * - A ham cut whose key ends in "steaks" is asked for a size.
+ * - grind: a loin, shoulder, ham or bacon cut that is ground; no size.
  *
  * Each section is an array with a "heading" (NULL for the closing line) and
- * a "text".
+ * a "text". A section with "block" set puts its heading on a line of its own
+ * and the text, one item per line, below it.
  */
 class CutSheetNarrative {
 
@@ -28,6 +30,11 @@ class CutSheetNarrative {
    * The webform this narrative is written for.
    */
   const WEBFORM_ID = 'pig_cut_sheet';
+
+  /**
+   * The cut key meaning "grind the meat", the same in every cut list.
+   */
+  const GRIND = 'grind';
 
   /**
    * What a blank size field reads as.
@@ -84,6 +91,7 @@ class CutSheetNarrative {
     $sections[] = [
       'heading' => 'Customer',
       'text' => $this->customerText($data, $whole),
+      'block' => TRUE,
     ];
 
     $sections[] = [
@@ -151,7 +159,12 @@ class CutSheetNarrative {
   public function toText(array $sections): string {
     $paragraphs = [];
     foreach ($sections as $section) {
-      $paragraphs[] = ($section['heading'] !== NULL ? $section['heading'] . ': ' : '') . $section['text'];
+      if ($section['heading'] === NULL) {
+        $paragraphs[] = $section['text'];
+      }
+      else {
+        $paragraphs[] = $section['heading'] . (empty($section['block']) ? ': ' : ":\n") . $section['text'];
+      }
     }
     return implode("\n\n", $paragraphs);
   }
@@ -168,25 +181,29 @@ class CutSheetNarrative {
   public function toHtml(array $sections): string {
     $paragraphs = [];
     foreach ($sections as $section) {
-      $heading = $section['heading'] !== NULL ? '<strong>' . Html::escape($section['heading']) . ':</strong> ' : '';
+      $heading = '';
+      if ($section['heading'] !== NULL) {
+        $heading = '<strong>' . Html::escape($section['heading']) . ':</strong>' . (empty($section['block']) ? ' ' : "<br>\n");
+      }
       $paragraphs[] = '<p>' . $heading . nl2br(Html::escape($section['text']), FALSE) . '</p>';
     }
     return implode("\n", $paragraphs);
   }
 
   /**
-   * The opening paragraph: who, which hog, which day.
+   * The customer block: one item per line.
    */
   protected function customerText(array $data, bool $whole): string {
     $backup = $this->value($data, 'customer_backup_phone');
-    $phones = 'Cell phone ' . $this->value($data, 'customer_cell_phone')
-      . ($backup !== '' ? ', backup phone ' . $backup . '.' : '. No backup phone.');
-
-    $text = $this->sentence($this->value($data, 'customer_name')) . ' ' . $phones;
-    $text .= $whole ? ' Whole hog.' : ' Half hog.';
-    $text .= ' Hog ID: ' . static::BLANK_HOG_ID . '.';
-    $text .= ' Slaughter date: ' . $this->formatDate($this->value($data, 'slaughter_date')) . '.';
-    return $text;
+    $lines = [
+      rtrim($this->value($data, 'customer_name'), '.'),
+      'Cell phone: ' . $this->value($data, 'customer_cell_phone'),
+      'Backup phone: ' . ($backup !== '' ? $backup : 'not given'),
+      'Hog: ' . ($whole ? 'Whole hog' : 'Half hog'),
+      'Hog ID: ' . static::BLANK_HOG_ID,
+      'Slaughter date: ' . $this->formatDate($this->value($data, 'slaughter_date')),
+    ];
+    return implode("\n", $lines);
   }
 
   /**
@@ -205,6 +222,11 @@ class CutSheetNarrative {
       $n = $part['n'];
       $cut = $this->value($data, "loin_{$n}_cut");
       $sentence = $this->lead('Loin', $part['position'], $whole, $this->optionText($label, 'loin_1_cut', $cut));
+      if ($cut === static::GRIND) {
+        // Ground loins have no chops, so no size and no extras.
+        $sentences[] = $sentence . '.';
+        continue;
+      }
       $size = $this->value($data, "loin_{$n}_chop_size");
       $sentence .= ', ' . ($size !== '' ? rtrim($size, ". \t") : static::DEFAULT_SIZE) . '.';
 
@@ -276,7 +298,7 @@ class CutSheetNarrative {
 
       // Hams only ask for a size when steaks are chosen. Bacon always asks for
       // a slice, shoulders always ask for a size.
-      $asks = $group !== 'ham' || str_ends_with($cut, 'steaks');
+      $asks = $cut !== static::GRIND && ($group !== 'ham' || str_ends_with($cut, 'steaks'));
       if ($asks) {
         $size = $this->value($data, $group === 'bacon' ? "bacon_{$n}_slice_size" : "{$group}_{$n}_size");
         $default = $size_kind === 'slice' ? static::DEFAULT_SLICE : static::DEFAULT_SIZE;
@@ -288,12 +310,21 @@ class CutSheetNarrative {
   }
 
   /**
-   * Ground meat paragraph: ground pork, sausage, or both.
+   * Ground meat paragraph: what it becomes, then the customer's details.
+   */
+  protected function groundMeatText(array $data, callable $label): string {
+    $text = $this->groundUseText($data, $label);
+    $details = $this->value($data, 'ground_details');
+    return $details !== '' ? $text . ' Customer details about the ground meat: ' . $this->sentence($details) : $text;
+  }
+
+  /**
+   * Ground pork, sausage, or both.
    *
    * The customer can choose both. Sausage is given in pounds per type, so the
    * rest of the ground meat is the ground pork.
    */
-  protected function groundMeatText(array $data, callable $label): string {
+  protected function groundUseText(array $data, callable $label): string {
     $uses = $data['ground_use'] ?? [];
     // Older submissions stored a single choice as a string.
     $uses = is_array($uses) ? $uses : [$uses];
@@ -395,11 +426,11 @@ class CutSheetNarrative {
   }
 
   /**
-   * Formats a Y-m-d date as "December 2", or passes other text through.
+   * Formats a Y-m-d date as "December 2, 2026", or passes other text through.
    */
   protected function formatDate(string $value): string {
     $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
-    return $date ? $date->format('F j') : ($value !== '' ? $value : static::BLANK_HOG_ID);
+    return $date ? $date->format('F j, Y') : ($value !== '' ? $value : static::BLANK_HOG_ID);
   }
 
   /**

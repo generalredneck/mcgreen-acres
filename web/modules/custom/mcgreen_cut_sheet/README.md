@@ -25,9 +25,10 @@ Some option keys are a contract with the narrative and the form's conditional lo
 | --- | --- | --- |
 | `cut_sheet_loin_cut` | `boneless` | Asks about the tenderloin and baby back ribs for that loin |
 | `cut_sheet_keep_or_grind` | `keep`, `grind` | Tenderloin and baby back ribs wording on the sheet |
+| `cut_sheet_loin_cut`, `cut_sheet_shoulder_cut`, `cut_sheet_ham_cut`, `cut_sheet_bacon_cut` | `grind` | The part is ground. The size questions hide and the sheet prints no size. Keep it in each list, last or just above the fresh options |
 | `cut_sheet_ham_cut` | `fresh_steaks`, `cured_steaks` | Ask for a steak size. These keys are named in the `ham_*_size` states; the narrative treats any key ending in `steaks` the same way |
 | `cut_sheet_ground_use` | `ground_pork`, `sausage` | Checkboxes: either or both. Ground pork is the default; sausage shows the sausage types |
-| `cut_sheet_sausage_type` | any | Each type gets an "approximate pounds" element `sausage_lb_<key>`; add or remove those elements to match |
+| `cut_sheet_sausage_type` | any | Each type gets an "approximate pounds" element `sausage_lb_<key>`; add or remove those elements to match. `contact_me` ("have the butcher contact me") has no pounds element on purpose |
 
 Sausage minimums are the `#min` on each `sausage_lb_*` element in the webform. The slaughter date is the `#default_value` of the `slaughter_date` element. The notice about extra charges is the `charges_notice` element.
 

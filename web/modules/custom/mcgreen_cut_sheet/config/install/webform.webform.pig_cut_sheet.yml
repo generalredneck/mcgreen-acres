@@ -92,7 +92,7 @@ elements: |-
       - cut-sheet-card
     loins_help:
       '#type': webform_markup
-      '#markup': '<p class="cut-sheet-help">Each loin is cut one way only: all bone-in chops or all boneless chops. Choosing boneless chops lets you keep the tenderloin and baby back ribs. Sizes are optional. Leave one blank and the processor uses its default.</p>'
+      '#markup': '<p class="cut-sheet-help">Each loin is cut one way only: all bone-in chops, all boneless chops, or ground. Choosing boneless chops lets you keep the tenderloin and baby back ribs. Sizes are optional. Leave one blank and the processor uses its default.</p>'
     loins_same:
       '#type': checkbox
       '#title': Cut both loins the same way
@@ -121,8 +121,12 @@ elements: |-
         loin_1_chop_size:
           '#type': textfield
           '#title': Chop thickness and count per package
-          '#placeholder': e.g. 1 inch thick, 2 per package
+          '#placeholder': e.g. 1/2 inch thick, 2 per package
           '#admin_title': 'Loin 1: chop thickness and count per package'
+          '#states':
+            visible:
+              ':input[name="loin_1_cut"]':
+                '!value': grind
         loin_1_tenderloin:
           '#type': radios
           '#title': Tenderloin
@@ -173,13 +177,15 @@ elements: |-
         loin_2_chop_size:
           '#type': textfield
           '#title': Chop thickness and count per package
-          '#placeholder': e.g. 1 inch thick, 2 per package
+          '#placeholder': e.g. 1/2 inch thick, 2 per package
           '#states':
             visible:
               ':input[name="hog_type"]':
                 value: whole
               ':input[name="loins_same"]':
                 unchecked: true
+              ':input[name="loin_2_cut"]':
+                '!value': grind
           '#admin_title': 'Loin 2: chop thickness and count per package'
         loin_2_tenderloin:
           '#type': radios
@@ -261,9 +267,13 @@ elements: |-
         shoulder_1_size:
           '#type': textfield
           '#title': Size
-          '#placeholder': e.g. steaks 1 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
+          '#placeholder': e.g. steaks 1/2 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
           '#description': Steak thickness and count, roast weight, or ribs per pack.
           '#admin_title': 'Shoulder 1: size'
+          '#states':
+            visible:
+              ':input[name="shoulder_1_cut"]':
+                '!value': grind
       shoulder_2:
         '#type': fieldset
         '#title': Shoulder 2
@@ -292,7 +302,7 @@ elements: |-
         shoulder_2_size:
           '#type': textfield
           '#title': Size
-          '#placeholder': e.g. steaks 1 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
+          '#placeholder': e.g. steaks 1/2 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
           '#description': Steak thickness and count, roast weight, or ribs per pack.
           '#states':
             visible:
@@ -300,6 +310,8 @@ elements: |-
                 value: whole
               ':input[name="shoulders_same"]':
                 unchecked: true
+              ':input[name="shoulder_2_cut"]':
+                '!value': grind
           '#admin_title': 'Shoulder 2: size'
   card_hams:
     '#type': webform_section
@@ -310,7 +322,7 @@ elements: |-
       - cut-sheet-card
     ham_help:
       '#type': webform_markup
-      '#markup': '<p class="cut-sheet-help">Sizes are optional. Leave one blank and the processor uses its default.</p>'
+      '#markup': '<p class="cut-sheet-help"><strong>Almost every ham you have eaten was cured and smoked.</strong> A fresh ham is uncured, more like a pork roast. For the ham you know, choose one of the Smoke and cure options. If you choose steaks, a box appears for the thickness and count. Leave it blank and the processor uses its default size.</p>'
     hams_same:
       '#type': checkbox
       '#title': Cut both hams the same way
@@ -339,7 +351,7 @@ elements: |-
         ham_1_size:
           '#type': textfield
           '#title': Steak thickness and count
-          '#placeholder': e.g. 3/4 inch thick, 2 per package
+          '#placeholder': e.g. 1/2 inch thick, 2 per package
           '#description': Only for steaks.
           '#states':
             visible:
@@ -377,7 +389,7 @@ elements: |-
         ham_2_size:
           '#type': textfield
           '#title': Steak thickness and count
-          '#placeholder': e.g. 3/4 inch thick, 2 per package
+          '#placeholder': e.g. 1/2 inch thick, 2 per package
           '#description': Only for steaks.
           '#states':
             visible:
@@ -404,7 +416,7 @@ elements: |-
       - cut-sheet-card
     bacon_help:
       '#type': webform_markup
-      '#markup': '<p class="cut-sheet-help">Sizes are optional. Leave one blank and the processor uses its default.</p>'
+      '#markup': '<p class="cut-sheet-help"><strong>Bacon as you buy it is cured and smoked pork belly.</strong> Fresh bacon is uncured, more like sliced pork belly. For the bacon you know, choose one of the Smoke and cure options. Slice and package sizes are optional. Leave them blank and the processor uses its default.</p>'
     bacon_same:
       '#type': checkbox
       '#title': Cut both bacon slabs the same way
@@ -435,6 +447,10 @@ elements: |-
           '#title': Slice thickness and package size
           '#placeholder': e.g. regular slice, 1 lb packages
           '#admin_title': 'Slab 1: slice thickness and package size'
+          '#states':
+            visible:
+              ':input[name="bacon_1_cut"]':
+                '!value': grind
       bacon_2:
         '#type': fieldset
         '#title': Bacon slab 2
@@ -470,6 +486,8 @@ elements: |-
                 value: whole
               ':input[name="bacon_same"]':
                 unchecked: true
+              ':input[name="bacon_2_cut"]':
+                '!value': grind
           '#admin_title': 'Slab 2: slice thickness and package size'
     jowl_panel:
       '#type': fieldset
@@ -519,6 +537,7 @@ elements: |-
           '#options': cut_sheet_liver
           '#required': true
           '#title_display': invisible
+          '#description': Liver is not guaranteed. The processor may condemn it, and then there is none to keep.
   card_ground:
     '#type': webform_section
     '#title': Ground meat
@@ -548,7 +567,7 @@ elements: |-
         '#title': Which types?
         '#options': cut_sheet_sausage_type
         '#required': true
-        '#description': Using more than one sausage type adds work for the processor.
+        '#description': 'Using more than one sausage type adds work for the processor. The butcher will contact you about flavors. Do not see what you want? Choose "Something else" to discuss it with the butcher.'
         '#states':
           visible:
             ':input[name="ground_use[sausage]"]':
@@ -628,6 +647,11 @@ elements: |-
                 checked: true
               ':input[name="sausage_types[raw_sausage]"]':
                 checked: true
+    ground_details:
+      '#type': textarea
+      '#title': Anything to add about the ground meat?
+      '#rows': 3
+      '#description': Want a lot of sausage or ground pork? Say which other cuts to grind, for example some of the shoulder or ham. Any other details about your ground meat can go here too.
   card_notes:
     '#type': webform_section
     '#title': Anything else

@@ -107,6 +107,54 @@ class CutSheetFormTest extends BrowserTestBase {
   }
 
   /**
+   * Every part can be ground, and then asks nothing more.
+   */
+  public function testGrindOptionNeedsNoSizes(): void {
+    $this->drupalGet('/webform/pig_cut_sheet');
+    $this->submitForm([
+      'loin_1_cut' => 'grind',
+      'shoulder_1_cut' => 'grind',
+      'ham_1_cut' => 'grind',
+      'bacon_1_cut' => 'grind',
+    ] + static::HALF_HOG, 'Submit');
+    $this->assertSession()->pageTextContains('We received your cut sheet');
+  }
+
+  /**
+   * Fresh ham and bacon are listed last.
+   */
+  public function testFreshOptionsComeLast(): void {
+    $this->drupalGet('/webform/pig_cut_sheet');
+    $html = $this->getSession()->getPage()->getHtml();
+    // Match the option labels, not the help text that also says "Fresh bacon".
+    $at = fn (string $label): int => strpos($html, '>' . $label . '</label>');
+    $this->assertLessThan($at('Fresh ham steaks'), $at('Smoke and cure whole ham'));
+    $this->assertLessThan(strpos($html, 'edit-ham-1-cut-fresh-steaks'), strpos($html, 'edit-ham-1-cut-grind'));
+    $this->assertLessThan(strpos($html, 'edit-ham-1-cut-grind'), strpos($html, 'edit-ham-1-cut-cured-whole'));
+    $this->assertLessThan($at('Fresh bacon'), $at('Smoke and cure peppered bacon'));
+    $this->assertLessThan($at('Fresh bacon'), strpos($html, 'edit-bacon-1-cut-grind'));
+  }
+
+  /**
+   * The form steers customers toward cured ham and bacon.
+   *
+   * It also sets expectations about liver, sausage flavors and extra grind.
+   */
+  public function testFormGuidance(): void {
+    $this->drupalGet('/webform/pig_cut_sheet');
+    $session = $this->assertSession();
+    $session->pageTextContains('Almost every ham you have eaten was cured and smoked.');
+    $session->responseContains('<strong>Almost every ham you have eaten was cured and smoked.</strong>');
+    $session->responseContains('<strong>Bacon as you buy it is cured and smoked pork belly.</strong>');
+    $session->pageTextContains('The butcher will contact you about flavors.');
+    $session->pageTextContains('Bacon as you buy it is cured and smoked pork belly.');
+    $session->pageTextContains('Liver is not guaranteed.');
+    $session->pageTextContains('Grind the rib meat into ground meat');
+    $session->fieldExists('ground_details');
+    $session->fieldExists('sausage_types[contact_me]');
+  }
+
+  /**
    * Smoked sausage, links and raw sausage have a 10 lb minimum; bags do not.
    */
   public function testSausageMinimums(): void {
@@ -148,7 +196,7 @@ class CutSheetFormTest extends BrowserTestBase {
       // Mail is converted to plain text and wrapped, so compare without
       // line breaks.
       $body = preg_replace('/\s+/', ' ', (string) $mail['body']);
-      $this->assertStringContainsString('*Customer:* Jane Doe. Cell phone 555-0100.', $body);
+      $this->assertStringContainsString('*Customer:* Jane Doe Cell phone: 555-0100 Backup phone:', $body);
       $this->assertStringContainsString('Please contact the customer directly with any questions', $body);
       $this->assertStringNotContainsString('<p>', $body);
       $this->assertStringNotContainsString('&lt;', $body);
@@ -174,8 +222,8 @@ class CutSheetFormTest extends BrowserTestBase {
     $this->assertSession()->responseHeaderContains('Cache-Control', 'no-store');
     $this->assertSession()->responseHeaderEquals('X-Robots-Tag', 'noindex, nofollow');
     $this->assertSession()->responseContains('<!DOCTYPE html>');
-    $this->assertSession()->pageTextContains('Customer: Jane Doe.');
-    $this->assertSession()->pageTextContains('Hog ID: ______.');
+    $this->assertSession()->pageTextContains('Customer: Jane Doe Cell phone: 555-0100');
+    $this->assertSession()->pageTextContains('Hog ID: ______ Slaughter date:');
     $this->assertSession()->pageTextContains('Loin: Bone-in chops, processor default size.');
     $this->assertSession()->buttonExists('Print or save as PDF');
 
