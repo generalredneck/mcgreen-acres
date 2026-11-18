@@ -5,7 +5,6 @@ dependencies:
   config:
     - webform.webform.egg_newsletter
   module:
-    - block_visibility_groups
     - system
     - webform
   theme:
@@ -26,14 +25,10 @@ settings:
   redirect: false
   lazy: false
 visibility:
-  condition_group:
-    id: condition_group
-    negate: false
-    block_visibility_group: ''
   request_path:
     id: request_path
     negate: true
-    pages: "/user/*\r\n/cart\r\n/cart/*\r\n/checkout/*\r\n/admin/*\r\n/pigs"
+    pages: "/user/*\r\n/cart\r\n/cart/*\r\n/checkout/*\r\n/admin/*\r\n/pigs\r\n/form/*"
   webform:
     id: webform
     negate: true
