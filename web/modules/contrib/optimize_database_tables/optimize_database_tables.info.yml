@@ -1,0 +1,12 @@
+name: Optimize Database Tables
+description: Module to optimize database tables.
+type: module
+core_version_requirement: ^10 || ^11
+package: Performance
+
+configure: optimize_database_tables.settings
+
+# Information added by Drupal.org packaging script on 2026-03-07
+version: '1.2.1'
+project: 'optimize_database_tables'
+datestamp: 1772905627

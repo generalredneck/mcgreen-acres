@@ -1,0 +1,23 @@
+webform.handler.submission_newsletter:
+  type: mapping
+  label: 'Submission newsletter handler settings'
+  mapping:
+    states:
+      type: sequence
+      label: 'Submission states'
+      sequence:
+        type: string
+    newsletters_lst:
+      type: sequence
+      label: 'Newsletters'
+      sequence:
+        type: string
+    token:
+      type: string
+      label: 'Email element key'
+    action:
+      type: string
+      label: 'Subscription action'
+    debug:
+      type: boolean
+      label: 'Debug'
