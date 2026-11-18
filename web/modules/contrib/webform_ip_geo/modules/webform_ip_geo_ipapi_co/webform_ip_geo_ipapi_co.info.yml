@@ -1,0 +1,12 @@
+name: 'Webform IP Geo: ipapi.co'
+type: module
+description: 'API provider for Webform IP Geo module'
+core_version_requirement: ^10.1 || ^11
+package: 'Webform'
+dependencies:
+  - webform_ip_geo:webform_ip_geo
+
+# Information added by Drupal.org packaging script on 2023-09-12
+version: '1.0.5'
+project: 'webform_ip_geo'
+datestamp: 1694539712

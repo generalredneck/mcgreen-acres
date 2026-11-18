@@ -1,0 +1,13 @@
+{
+    "name": "drupal/commerce_recurring_log",
+    "description": "This module provides visibility into subscription workflows, improving transparency, debugging, and overall reliability of Commerce Recurring subscriptions.",
+    "type": "drupal-module",
+    "homepage": "http://drupal.org/project/commerce_recurring_log",
+    "require": {
+        "drupal/core": "^9.2 || ^10 || ^11 || ^12"
+    },
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/commerce_recurring_log",
+        "source": "http://cgit.drupalcode.org/commerce_recurring_log"
+    }
+}

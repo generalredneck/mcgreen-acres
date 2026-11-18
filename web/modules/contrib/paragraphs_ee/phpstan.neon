@@ -1,0 +1,32 @@
+parameters:
+  level: max
+  excludePaths:
+    - */node_modules/*
+    - */vendor/*
+  ignoreErrors:
+    -
+      # \Drupal\Core\Template\Attribute declares @implements
+      # \ArrayAccess<string, AttributeValueBase>, but its own offsetSet()
+      # normalizes any scalar/array value into an AttributeValueBase. This
+      # makes the documented generic value type stricter than the real,
+      # widely used `$attributes['name'] = 'value'` API, causing false
+      # positives for every conventional use of Attribute.
+      message: '#Drupal\\Core\\Template\\Attribute does not accept #'
+      identifier: offsetAssign.valueType
+    -
+      # \Drupal\Core\Extension\ModuleWeight only exists starting with Drupal
+      # core 11.5 (see https://www.drupal.org/node/3595653); the call is
+      # guarded at runtime via DeprecationHelper::backwardsCompatibleCall().
+      # Only matches when analysing against a core version that doesn't have
+      # the class yet, so it must not be required to match on every run.
+      message: '#ModuleWeight#'
+      path: paragraphs_ee.install
+      reportUnmatched: false
+    -
+      # Follow-on error from the same forward-compatible call: PHPStan can't
+      # resolve DeprecationHelper::backwardsCompatibleCall()'s template type
+      # once one of the two closures references the not-yet-existing
+      # ModuleWeight class above.
+      message: '#Unable to resolve the template type Current#'
+      path: paragraphs_ee.install
+      reportUnmatched: false

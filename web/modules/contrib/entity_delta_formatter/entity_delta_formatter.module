@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains entity_delta_formatter.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function entity_delta_formatter_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the entity_delta_formatter module.
+    case 'help.page.entity_delta_formatter':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides a formatter to display a specified range of entities from an entity reference field.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

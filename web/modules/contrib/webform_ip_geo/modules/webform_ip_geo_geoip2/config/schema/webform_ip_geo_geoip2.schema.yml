@@ -1,0 +1,7 @@
+webform_ip_geo_geoip2.settings:
+  type: config_object
+  label: 'Webform IP Geo: MaxMind GeoIP2 settings'
+  mapping:
+    database:
+      type: string
+      label: 'Path to the MaxMind GeoIP2/GeoLite2 City database (.mmdb)'
