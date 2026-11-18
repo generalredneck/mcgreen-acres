@@ -151,6 +151,15 @@ Many contrib modules are patched (see `composer.json` `extra.patches`). Notable 
 
 Patches are applied automatically by `cweagans/composer-patches` during `lando composer install`. `composer-exit-on-patch-failure` is set to `true`, so if a patch no longer applies during a `lando composer update`, the entire update fails. When updating patched contrib modules, verify patches still apply or have been merged upstream.
 
+### Security update watcher (`.claude/`)
+
+`.claude/` is tracked selectively: the `drupal-update-report` skill, `.claude/security-watch/watch.py` and `.claude/settings.json`. Personal settings, worktrees, the skill's `cache/` and the watcher's runtime files are git-ignored, and `.circleci/scripts/deploy` removes `.claude` so it never reaches the artifact.
+
+- **`/drupal-update-report`** (skill, user-invoked only): read-only pre-update report for outdated, enabled `drupal/*` packages: release notes, drupal.org security advisories matched against installed versions, and impact on patches, custom code and config. Never runs `composer update`.
+- **`watch.py`** (**report-only**, never changes the repo): meant for a per-machine cron entry, `*/20 * * * 2-4 /usr/bin/python3 <checkout>/.claude/security-watch/watch.py`. It acts only on Wednesdays 11:00-16:09 America/Chicago. A cheap gate (advisory feed vs. installed versions, plus `composer audit --no-dev`; no Lando needed) decides whether anything new applies. If so, it starts one `claude -p` run that follows the skill under an allowlist-only permission file (no `composer update`, drush, git push, ssh, `@prod`) and writes `report.md` and `verdict.json`. It records whether the proposed auto-apply rule would have applied the update (core, Commerce, Stripe and custom modules are always human-only), sends a desktop notification and updates `.claude/security-watch/latest.md`.
+- Runs live in `~/.local/state/mcgreen-security-watch/runs/`, not in the repo, because an unattended Claude session cannot write under `.claude/`. State is `.claude/security-watch/state.json` (delete it to re-analyse everything); each advisory gets two attempts before the watcher stops retrying.
+- Permission-rule gotcha: path rules for file writes must be `Edit(//abs/path/**)`; `Write(path)` rules do not match.
+
 ### SEO / Content Workstream
 
 Active SEO and content work lives at the repo root (currently untracked):

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uuidgen)",
+      "Bash(php -l web/modules/custom/mcgreen_acres_store/mcgreen_acres_store.module)",
+      "Bash(php -l web/modules/custom/mcgreen_acres_store/src/EventSubscriber/OrderFulfillmentSubscriber.php)",
+      "Bash(xargs -0 -n1 php -l)"
+    ]
+  }
+}
