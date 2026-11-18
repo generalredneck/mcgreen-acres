@@ -2,6 +2,9 @@ services:
   mcgreen_acres_newsletter_send_log.storage:
     class: Drupal\mcgreen_acres_newsletter_send_log\SendAttemptStorage
     arguments: ['@database', '@datetime.time']
+  mcgreen_acres_newsletter_send_log.requeuer:
+    class: Drupal\mcgreen_acres_newsletter_send_log\SendRequeuer
+    arguments: ['@database', '@simplenews.spool_storage', '@mcgreen_acres_newsletter_send_log.storage']
   mcgreen_acres_newsletter_send_log.classifier:
     class: Drupal\mcgreen_acres_newsletter_send_log\TransportErrorClassifier
   mcgreen_acres_newsletter_send_log.error_collector:

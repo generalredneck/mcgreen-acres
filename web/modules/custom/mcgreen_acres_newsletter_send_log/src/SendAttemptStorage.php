@@ -54,14 +54,33 @@ class SendAttemptStorage {
   }
 
   /**
-   * Counts the failed attempts so far for a recipient on an issue.
+   * Records that staff put a failed recipient back in the send queue.
+   *
+   * This also resets the recipient's failure count, so the give-up limit
+   * starts over.
+   */
+  public function recordRequeue(string $entity_type, int $entity_id, ?int $snid, string $mail): void {
+    $this->record($entity_type, $entity_id, $snid, $mail, 0, 'requeued');
+  }
+
+  /**
+   * Counts the failed attempts for a recipient since the last requeue.
    */
   public function countErrors(string $entity_type, int $entity_id, string $mail): int {
+    $requeue = $this->database->select(self::TABLE, 'a')
+      ->condition('entity_type', $entity_type)
+      ->condition('entity_id', $entity_id)
+      ->condition('mail', $mail)
+      ->condition('outcome', 'requeued');
+    $requeue->addExpression('MAX(id)', 'last_id');
+    $last_requeue = (int) $requeue->execute()->fetchField();
+
     return (int) $this->database->select(self::TABLE, 'a')
       ->condition('entity_type', $entity_type)
       ->condition('entity_id', $entity_id)
       ->condition('mail', $mail)
       ->condition('outcome', 'error')
+      ->condition('id', $last_requeue, '>')
       ->countQuery()
       ->execute()
       ->fetchField();

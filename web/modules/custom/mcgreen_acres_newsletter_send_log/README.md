@@ -10,7 +10,8 @@ Two things for Simplenews issue mail sent from cron:
 2. **Records every failed attempt** (recipient, time, retry number, error
    message) and adds a *See details* link after the "N mails sent out of M, N
    errors" text on `/node/N/simplenews`, pointing to
-   `/node/N/simplenews/send-details`.
+   `/node/N/simplenews/send-details`, from which failed recipients can be
+   requeued.
 
 ## How a failed send is handled
 
@@ -40,6 +41,23 @@ on the first try are not logged. Rows are purged after `retention_days` and
 when the issue node is deleted. The details page also lists recipients that
 Simplenews marked failed before this module was enabled, flagged "No details
 were recorded".
+
+## Requeueing failed recipients
+
+Recipients Simplenews marked permanently failed get a checkbox on the details
+page; **Requeue selected** puts them back in the spool as pending, so the next
+cron run sends them. It also:
+
+- logs a `requeued` row, which resets that recipient's failure count (so the
+  `max_total_attempts` limit starts over);
+- lowers the issue's error count by the number requeued (Simplenews only ever
+  adds to it);
+- moves an issue already marked fully sent back to pending, so Simplenews marks
+  it sent again after delivery.
+
+The selection is re-checked against the database on submit: only rows of this
+issue that are still failed are touched. Access is the same as the issue's
+Newsletter tab (`administer newsletters` or `send newsletter`).
 
 ## Settings
 
