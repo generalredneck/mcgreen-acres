@@ -11,7 +11,7 @@ McGreen Acres is a Drupal 11 e-commerce site for a farm/herd share business. It 
 All `drush` and `composer` commands must be run via Lando:
 
 ```bash
-lando drush <command>        # Drush commands
+lando drush <command>        # Drush commands (--uri is set from the Lando app name; see .lando/scripts/drush.sh)
 lando composer <command>     # Composer commands
 lando build                  # Full rebuild: composer install → drop local db → sql-sync from @prod → post-sync drush tasks via fourkitchens/pots
 ```
@@ -42,7 +42,7 @@ find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o
 
 ### Driving the local site in a browser (Playwright)
 
-The Lando certificate for `https://mcgreen-acres.lndo.site` is not trusted by the Playwright browser, so a plain `page.goto()` fails with `net::ERR_CERT_AUTHORITY_INVALID` and nothing else works. Turn certificate errors off by opening the page in a new browser context. With the `browser_run_code_unsafe` tool:
+The Lando certificate for the local site (`https://mcgreen-acres.lndo.site`, or `https://<app-name>.lndo.site` for a checkout with its own `.lando.local.yml` `name:` — see "Running multiple checkouts side by side") is not trusted by the Playwright browser, so a plain `page.goto()` fails with `net::ERR_CERT_AUTHORITY_INVALID` and nothing else works. Turn certificate errors off by opening the page in a new browser context. With the `browser_run_code_unsafe` tool:
 
 ```js
 async (page) => {
@@ -60,7 +60,20 @@ Use that context's page for everything (the tool's own `page` can't be changed a
 
 ### Hosting & Deployment
 
-- **Local**: Lando with MariaDB 11.4, PHP 8.5, mailpit for email capture. Site URL: `https://mcgreen-acres.lndo.site` Mailpit: https://mail-mcgreen-acres.lndo.site
+- **Local**: Lando with MariaDB 11.4, PHP 8.5, mailpit for email capture. Site URL: `https://mcgreen-acres.lndo.site` Mailpit: https://mail-mcgreen-acres.lndo.site (these are the defaults for the main checkout; other checkouts use their own app name — see below)
+- **Running multiple checkouts side by side**: each checkout of this repo can run as its own Lando app at the same time, provided its gitignored `.lando.local.yml` sets a unique `name:`, a unique mailpit proxy hostname and a unique database `portforward`. Lando derives the site URL (`https://<name>.lndo.site`), containers, network and database volume from `name`, so nothing else is shared. `.lando.yml` therefore must not hard-code a site hostname or port: `lando drush` / `lando build` take the URI from `$LANDO_APP_NAME` via `.lando/scripts/drush.sh`, and `.lando.yml` has no `proxy:` block because Lando *concatenates* proxy lists from the two files, so a mail hostname set in `.lando.yml` would be claimed by every checkout and collide. Minimal `.lando.local.yml` for a second checkout (the main checkout needs the same, with its own values, e.g. `name: mcgreen-acres` is the default and `mail-mcgreen-acres.lndo.site` for mail):
+
+  ```yaml
+  name: mcgreen-acres-agent2          # unique per checkout → https://mcgreen-acres-agent2.lndo.site
+  proxy:
+    mail:
+      - mail-mcgreen-acres-agent2.lndo.site   # unique; Mailpit UI
+  services:
+    database:
+      portforward: 60200              # unique host port (main checkout uses 60100)
+  ```
+
+  After changing `.lando.local.yml`, run `lando rebuild -y` (or `lando restart` for proxy-only changes). Each checkout has its own database, so run `lando build` (or `lando db-import`) in a new one to populate it. `settings.php` treats the site as `local` unless a `live.txt` exists, and opens trusted hosts when local, so no Drupal settings change is needed; just use the checkout's own URL in browsers, Playwright and curl (e.g. `https://mcgreen-acres-agent2.lndo.site`). `lando phpunit` is unaffected (it uses `https://localhost` inside the container).
 - **Production**: Shared hosting at `mcgreenacres.com` — connection details are in `drush/sites/self.site.yml` (not committed)
 - **CI/CD** (`.circleci/config.yml`): pushing to `master` is safe on its own — it only runs `static_tests` + `build`, then a `deploy` job that auto-builds an artifact (strips `.git` dirs/tests) and commits/pushes it to the `deploy-master` branch. Nothing reaches production yet at this point. That job (`.circleci/scripts/deploy`) also tags the source commit on `master` as `X.Y.Z` (patch-bumped from the highest reachable `X.Y.Z` tag, or reused if the commit is already tagged — push a tag like `2.0.0` with the commit to force a major/minor bump) and the artifact commit on `deploy-master` as `X.Y.Z-build`. A push to `deploy-master` (only ever done by that automated `deploy` job, not manually) is what triggers the `approve_deploy_to_live` gate — a **manual approval** required in the CircleCI UI before `deploy_to_live_general` runs and deploys via SSH to prod. So: normal feature work → commit + push to `master` → CI stops after the artifact lands on `deploy-master`; going live additionally requires clicking approve in CircleCI.
 - **PHP version**: production and local both run PHP 8.5 (`composer.json` `config.platform.php` matches). `stripe/stripe-php` v15 (pinned by `commerce_stripe ^15`) calls the 8.5-deprecated `curl_close()` from a destructor at shutdown, after Drupal's DB connection is gone, which fatals with "StatementWrapperIterator ... null given" at the end of Stripe-calling pages. `settings.php` registers a narrow error handler that ignores only that deprecation; remove it once `commerce_stripe` allows a newer `stripe-php`.

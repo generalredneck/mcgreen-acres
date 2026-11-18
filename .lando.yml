@@ -19,13 +19,13 @@ services:
     type: mailpit
     mailFrom:
       - appserver
-proxy:
-  mail:
-    - mail-mcgreen-acres.lndo.site
+# No `proxy:` for the mail service here on purpose: Lando concatenates proxy
+# lists from .lando.local.yml, so a hostname set here would be claimed by every
+# checkout and collide. Each checkout adds its own in .lando.local.yml.
 tooling:
   drush:
     service: appserver
-    cmd: "drush --root=/app/web --uri=http://mcgreen-acres.lndo.site"
+    cmd: "sh /app/.lando/scripts/drush.sh"
   phpunit:
     service: appserver
     description: Run PHPUnit tests (e.g. `lando phpunit web/modules/contrib/simplenews/tests/src/Functional/SimplenewsAdministrationTest.php`)
@@ -37,4 +37,4 @@ tooling:
       - composer install
       - /app/vendor/bin/drush sql-drop -y
       - /app/vendor/bin/drush sql-sync @prod @self -y
-      - /app/vendor/fourkitchens/pots/scripts/general/remote/drush-commands "" "/app/vendor/bin/drush --root=/app/web --uri=http://mcgreen-acres.lndo.site" "YES"
+      - /app/vendor/fourkitchens/pots/scripts/general/remote/drush-commands "" "sh /app/.lando/scripts/drush.sh" "YES"
