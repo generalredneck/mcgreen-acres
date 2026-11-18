@@ -1,0 +1,9 @@
+optimize_database_tables.settings:
+  title: 'Optimize Database Tables Settings'
+  route_name: optimize_database_tables.settings
+  base_route: optimize_database_tables.settings
+
+optimize_database_tables.run:
+  title: 'Run Optimize Database Tables'
+  route_name: optimize_database_tables.run
+  base_route: optimize_database_tables.settings
