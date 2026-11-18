@@ -6,6 +6,7 @@ dependencies:
     - advanced_email_validation
     - mcgreen_acres_newsletter_segments
     - mcgreen_webform_network_check
+    - spamaway
     - webform_mailchimp
     - webform_simplenews_handler
   enforced:
@@ -29,11 +30,17 @@ elements: |-
     '#type': textfield
     '#required': true
     '#default_value': '[current-user:display-name]'
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   lname:
     '#title': 'Last Name'
     '#type': textfield
     '#required': true
     '#default_value': ''
+    '#maxlength': 50
+    '#pattern': '^(?!.*(://|[Ww]{3}\.|[A-Za-z0-9]\.[A-Za-z]{2,}/)).*$'
+    '#pattern_error': 'Please enter your name only.'
   email:
     '#title': 'Your Email'
     '#type': email
@@ -399,4 +406,23 @@ handlers:
     conditions: {  }
     weight: -50
     settings: {  }
+  spamaway:
+    id: spamaway_anti_spam_forms
+    handler_id: spamaway
+    label: SpamAway
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -10
+    settings:
+      spamaway_anti_spam_field_names: 'fname,lname'
+      spamaway_anti_spam_threshold_percentage: '80,80'
+      spamaway_anti_spam_allowed_count: 5
+      spamaway_anti_spam_logging: 1
+      spamaway_anti_spam_hash: sha256
+      spamaway_anti_spam_period: 0
+      spamaway_anti_spam_ip_period: 36000
+      spamaway_anti_spam_allowed_ip_count: 4
+      spamaway_query_limit: 200
+      spamaway_ip_check_enabled: true
 variants: {  }
