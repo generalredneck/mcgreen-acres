@@ -40,6 +40,22 @@ find web/modules/custom web/themes/custom \( -iname '*.php' -o -iname '*.inc' -o
 - **`web/core/tests` is stripped by `drupal-core-vendor-hardening`** (see `composer.json` `extra.drupal-core-vendor-hardening`) to keep hosting inodes down. This directory contains `bootstrap.php`, so PHPUnit cannot run at all without it. Before testing, temporarily remove `"tests"` from that array, run `lando composer reinstall drupal/core --no-progress` to restore it, run tests, then put `"tests"` back and reinstall again to re-strip it. Don't leave it un-hardened. The same hardening block also strips `drupal/commerce_stripe` tests and the `stripe/stripe` README.
 - **`SIMPLETEST_BASE_URL` must be `https://localhost`, not the `.lndo.site` domain.** Using the proxied `lndo.site` URL causes an HTTP→HTTPS redirect mid-test (e.g. during one-time-login links), which desyncs Drupal's `SESS`/`SSESS` session cookie naming and makes `drupalLogin()` assertions fail even though the login actually succeeded. `https://localhost` hits the container's Apache directly and avoids the redirect. This is already configured in `.lando/scripts/phpunit.sh` — don't change it without re-testing.
 
+### Driving the local site in a browser (Playwright)
+
+The Lando certificate for `https://mcgreen-acres.lndo.site` is not trusted by the Playwright browser, so a plain `page.goto()` fails with `net::ERR_CERT_AUTHORITY_INVALID` and nothing else works. Turn certificate errors off by opening the page in a new browser context. With the `browser_run_code_unsafe` tool:
+
+```js
+async (page) => {
+  const ctx = await page.context().browser().newContext({ ignoreHTTPSErrors: true, viewport: { width: 1280, height: 900 } });
+  const p = await ctx.newPage();
+  await p.goto('https://mcgreen-acres.lndo.site/some/path', { waitUntil: 'networkidle' });
+  // ...interact, screenshot, read values...
+  await ctx.close();
+}
+```
+
+Use that context's page for everything (the tool's own `page` can't be changed after it is created). For a quick HTTP check use `curl -sk` (`-k` skips the certificate check). Scope form locators to the form (e.g. `form.webform-submission-pig-cut-sheet-add-form`), because the site's other forms, such as the newsletter signup, also have a submit button.
+
 ## Architecture
 
 ### Hosting & Deployment
