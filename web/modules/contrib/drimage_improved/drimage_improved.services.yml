@@ -1,0 +1,36 @@
+services:
+  path_processor.drimage_improved:
+    class: Drupal\drimage_improved\PathProcessor\PathProcessorImageStyles
+    arguments: [ '@stream_wrapper_manager' ]
+    tags:
+      - { name: path_processor_inbound, priority: 299 }
+
+  drimage_improved.image_style_repository:
+    class: Drupal\drimage_improved\ImageStyleRepository
+    arguments:
+      - '@entity_type.manager'
+
+  drimage_improved.config_subscriber:
+    class: Drupal\drimage_improved\EventSubscriber\ConfigSubscriber
+    arguments:
+      - '@drimage_improved.image_style_repository'
+    tags:
+      - { name: event_subscriber }
+
+  drimage_improved.path_processor_redirect_subscriber:
+    class: Drupal\drimage_improved\EventSubscriber\DrimagePathProcessorRedirectSubscriber
+    arguments:
+      - '@path_processor_manager'
+      - '@config.factory'
+    tags:
+      - { name: event_subscriber }
+
+  drimage_improved.event_subscriber:
+    class: Drupal\drimage_improved\EventSubscriber\DrimageSubscriber
+    arguments: [ '@stream_wrapper_manager' , '@entity_type.manager', '@module_handler', '@config.factory', '@logger.factory', '@drimage_improved.manager']
+    tags:
+      - { name: event_subscriber }
+
+  drimage_improved.manager:
+    class: Drupal\drimage_improved\DrimageManager
+    arguments: ['@lock', '@image.factory', '@stream_wrapper_manager', '@file_system']

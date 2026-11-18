@@ -1,0 +1,32 @@
+# These configuration settings are deprecated for removal, but the schema will
+# be retained for migration purposes.
+symfony_mailer_queue.settings:
+  type: config_object
+  label: 'Symfony mailer queue settings'
+  mapping:
+    maximum_attempts:
+      type: integer
+      label: 'Maximum attempts'
+    requeue_delay:
+      type: integer
+      label: 'Requeue delay'
+    send_wait_time:
+      type: integer
+      label: 'Email send wait time'
+
+symfony_mailer.email_adjuster_plugin.queue_sending:
+  type: symfony_mailer.address_adjuster_base
+  label: 'Queue sending'
+  mapping:
+    queue_behavior:
+      type: string
+      label: 'Behavior'
+    requeue_delay:
+      type: string
+      label: 'Requeue delay'
+    maximum_attempts:
+      type: string
+      label: 'Maximum attempts'
+    send_wait_time:
+      type: string
+      label: 'Email send wait time'
