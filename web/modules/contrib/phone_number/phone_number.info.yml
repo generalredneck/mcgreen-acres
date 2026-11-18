@@ -1,0 +1,12 @@
+name: Phone Number
+type: module
+description: An international phone number field type with flexible validation.
+package: Field types
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - drupal:field
+
+# Information added by Drupal.org packaging script on 2026-03-31
+version: '2.0.0-alpha9'
+project: 'phone_number'
+datestamp: 1774980193
