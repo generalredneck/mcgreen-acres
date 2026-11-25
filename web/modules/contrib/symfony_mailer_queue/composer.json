@@ -1,0 +1,21 @@
+{
+  "name": "drupal/symfony_mailer_queue",
+  "description": "Implements a queue for Symfony mailer, handling both sending emails and configurable retries for failures.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://drupal.org/project/symfony_mailer_queue",
+  "authors": [
+    {
+      "name": "Simon Bäse",
+      "homepage": "https://www.drupal.org/u/simonbaese"
+    }
+  ],
+  "support": {
+    "source": "https://git.drupalcode.org/project/symfony_mailer_queue",
+    "issues": "https://www.drupal.org/project/issues/symfony_mailer_queue"
+  },
+  "require": {
+    "drupal/symfony_mailer": "^1.5",
+    "drupal/core": "^10.3 || ^11"
+  }
+}

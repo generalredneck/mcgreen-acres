@@ -1,0 +1,14 @@
+name: Mailchimp ECA
+type: module
+description: Provides integration between Mailchimp and ECA.
+package: Mailchimp
+core_version_requirement: ^10 || ^11
+
+dependencies:
+- eca:eca
+- mailchimp:mailchimp
+
+# Information added by Drupal.org packaging script on 2026-09-10
+version: '3.1.5'
+project: 'mailchimp'
+datestamp: 1789072857
