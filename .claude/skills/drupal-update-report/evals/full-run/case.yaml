@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: full-run
+expected_outcome: |
+  A report file and chat summary table covering every outdated drupal/* package that is installed (enabled) on the site, with per-project sections listing release notes, affected patches, custom code and config. Packages whose modules are disabled are not researched and appear under 'Not covered'.
+---
+tags: [skill-creator]
+max_turns: 60
+timeout_seconds: 1800
+allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, WebFetch, Agent]

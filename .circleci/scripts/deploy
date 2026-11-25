@@ -40,6 +40,9 @@ find ./* -type d | grep .git | xargs rm -rf
 find ./* -type d | grep tests | xargs rm -rf
 find ./* -type f | grep .gitignore | xargs rm -rf
 
+# Agent tooling (skills, scripts, settings) is tracked in the source repo but has no place in the artifact.
+rm -rf ./.claude
+
 # Remove unwanted gitignores here. Follow the example below.
 # Remove simplesamlphp .gitignore which would cause our config and metadata
 # symlinks to be ignored. If it's already not there, GREAT!

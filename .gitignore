@@ -35,7 +35,14 @@ backups
 
 .lando.local.yml
 .vscode
-.claude
+# Claude Code: the shared skill, the security-watch script and .claude/settings.json are tracked.
+# Personal settings, worktrees, caches and the watcher's runtime state are not.
+.claude/settings.local.json
+.claude/**/__pycache__/
+.claude/worktrees/
+.claude/skills/*/cache/
+.claude/security-watch/*
+!.claude/security-watch/watch.py
 .playwright-mcp
 
 # Stray npm install at repo root (no package.json here)
