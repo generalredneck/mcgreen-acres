@@ -1,0 +1,73 @@
+# Schema for the configuration files of the Phone Number module.
+
+# Storage schema.
+field.storage_settings.phone_number:
+  type: mapping
+  label: Storage settings
+  mapping:
+    unique:
+      type: integer
+      label: Uniqueness
+
+# Field settings schema.
+field.field_settings.phone_number:
+  type: mapping
+  label: Field settings
+  mapping:
+    allowed_countries:
+      type: sequence
+      label: Allowed Countries
+      sequence:
+        type: string
+        label: Country
+    allowed_types:
+      type: sequence
+      label: Allowed types
+      sequence:
+        type: integer
+        label: Type
+    extension_field:
+      type: boolean
+      label: Enable extension field
+
+# Widget settings schema.
+field.widget.settings.phone_number_default:
+  type: mapping
+  label: Widget settings
+  mapping:
+    default_country:
+      type: string
+      label: Default Country
+    placeholder:
+      type: string
+      label: Placeholder
+    phone_size:
+      type: integer
+      label: Phone number input size
+    extension_size:
+      type: integer
+      label: Extension input size
+    country_selection:
+      type: string
+      label: Country selection
+
+# Formatter settings schema.
+field.formatter.settings.phone_number_international:
+  type: mapping
+  label: International Number formatter settings
+  mapping:
+    as_link:
+      type: boolean
+      label: Show as TEL link
+
+field.formatter.settings.phone_number_local:
+  type: field.formatter.settings.phone_number_international
+  label: Local Number formatter settings
+
+field.formatter.settings.phone_number_country:
+  type: mapping
+  label: Country formatter settings
+  mapping:
+    type:
+      type: string
+      label: Display type

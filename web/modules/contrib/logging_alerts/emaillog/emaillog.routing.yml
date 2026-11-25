@@ -1,0 +1,7 @@
+emaillog.configuration:
+  path: '/admin/config/development/emaillog'
+  defaults:
+    _form: '\Drupal\emaillog\Form\EmaillogConfigForm'
+    _title: 'Email logging and alerts'
+  requirements:
+    _permission: 'administer site configuration'

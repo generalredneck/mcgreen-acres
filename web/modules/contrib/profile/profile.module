@@ -1,0 +1,171 @@
+<?php
+
+/**
+ * @file
+ * Support for configurable user profiles.
+ */
+
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\Core\Hook\Attribute\LegacyModuleImplementsAlter;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\profile\Hook\ProfileHooks;
+use Drupal\profile\Hook\ProfileThemeHooks;
+use Drupal\profile\Hook\ProfileTokensHooks;
+use Drupal\profile\Hook\ProfileViewsHooks;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_help().
+ */
+#[LegacyHook]
+function profile_help($route_name, RouteMatchInterface $route_match) {
+  return \Drupal::service(ProfileHooks::class)->help($route_name, $route_match);
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+#[LegacyHook]
+function profile_entity_bundle_info_alter(&$bundles): void {
+  \Drupal::service(ProfileHooks::class)->entityBundleInfoAlter($bundles);
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+#[LegacyHook]
+function profile_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL): AccessResultInterface {
+  return \Drupal::service(ProfileHooks::class)->entityFieldAccess($operation, $field_definition, $account, $items);
+}
+
+/**
+ * Implements hook_jsonapi_entity_field_filter_access().
+ */
+#[LegacyHook]
+function profile_jsonapi_entity_field_filter_access(FieldDefinitionInterface $field_definition, AccountInterface $account): AccessResultInterface {
+  return \Drupal::service(ProfileHooks::class)->jsonapiEntityFieldFilterAccess($field_definition, $account);
+}
+
+/**
+ * Implements hook_theme().
+ */
+#[LegacyHook]
+function profile_theme(): array {
+  return \Drupal::service(ProfileThemeHooks::class)->theme();
+}
+
+/**
+ * Prepares variables for profile templates.
+ *
+ * Default template: profile.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing rendered fields.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_profile(array &$variables): void {
+  \Drupal::service(ProfileThemeHooks::class)->preprocessProfile($variables);
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+#[LegacyModuleImplementsAlter]
+function profile_module_implements_alter(&$implementations, $hook): void {
+  if ($hook == 'user_insert') {
+    // Move profile_user_insert() to the top so it fires first.
+    $group = $implementations['profile'];
+    unset($implementations['profile']);
+    $implementations = ['profile' => $group] + $implementations;
+  }
+}
+
+/**
+ * Implements hook_user_insert().
+ */
+#[LegacyHook]
+function profile_user_insert(UserInterface $user): void {
+  \Drupal::service(ProfileHooks::class)->userInsert($user);
+}
+
+/**
+ * Implements hook_user_delete().
+ */
+#[LegacyHook]
+function profile_user_delete(EntityInterface $entity): void {
+  \Drupal::service(ProfileHooks::class)->userDelete($entity);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+#[LegacyHook]
+function profile_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  \Drupal::service(ProfileHooks::class)->formFieldConfigEditFormAlter($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_entity_form_display_alter().
+ */
+#[LegacyHook]
+function profile_entity_form_display_alter(EntityFormDisplayInterface $form_display, array $context): void {
+  \Drupal::service(ProfileHooks::class)->entityFormDisplayAlter($form_display, $context);
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+#[LegacyHook]
+function profile_views_data_alter(&$data): void {
+  \Drupal::service(ProfileViewsHooks::class)->viewsDataAlter($data);
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+#[LegacyHook]
+function profile_theme_suggestions_profile(array $variables): array {
+  return \Drupal::service(ProfileThemeHooks::class)->themeSuggestionsProfile($variables);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+#[LegacyHook]
+function profile_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  return \Drupal::service(ProfileHooks::class)->entityBaseFieldInfo($entity_type);
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+#[LegacyHook]
+function profile_migration_plugins_alter(array &$migrations): void {
+  \Drupal::service(ProfileHooks::class)->migrationPluginsAlter($migrations);
+}
+
+/**
+ * Implements hook_token_info_alter().
+ */
+#[LegacyHook]
+function profile_token_info_alter(&$info): void {
+  \Drupal::service(ProfileTokensHooks::class)->tokenInfoAlter($info);
+}
+
+/**
+ * Implements hook_tokens().
+ */
+#[LegacyHook]
+function profile_tokens($type, array $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array {
+  return \Drupal::service(ProfileTokensHooks::class)->tokens($type, $tokens, $data, $options, $bubbleable_metadata);
+}

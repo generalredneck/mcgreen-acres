@@ -1,0 +1,10 @@
+services:
+  logger.errorlog:
+    class: Drupal\errorlog\Logger\ErrorLogMessageFormatter
+    autowire: true
+    tags:
+      - { name: logger }
+
+  Drupal\errorlog\Hook\ErrorlogHooks:
+    class: Drupal\errorlog\Hook\ErrorlogHooks
+    autowire: true
