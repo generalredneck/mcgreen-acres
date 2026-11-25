@@ -5,11 +5,13 @@
  * Contains hook implementations for the mcgreen_subscription_payment module.
  */
 
+use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\ManualPaymentGatewayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -101,4 +103,103 @@ function mcgreen_subscription_payment_theme() {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for commerce_order.
+ *
+ * Warns staff on the admin order page when placing a draft order now would not
+ * create its subscription.
+ */
+function mcgreen_subscription_payment_preprocess_commerce_order(array &$variables) {
+  /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
+  $order = $variables['elements']['#commerce_order'];
+  if ($variables['elements']['#view_mode'] !== 'admin') {
+    return;
+  }
+  $titles = _mcgreen_subscription_payment_items_needing_payment($order);
+  if (!$titles) {
+    return;
+  }
+
+  $add_payment_url = Url::fromRoute('entity.commerce_payment.add_form', [
+    'commerce_order' => $order->id(),
+  ]);
+
+  // Keep Commerce's own draft warning and show this one below it.
+  $variables['draft_warning'] = [
+    'commerce' => $variables['draft_warning'] ?? [],
+    'subscription_payment' => [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['messages', 'messages--warning', 'no-print'],
+        'role' => 'alert',
+      ],
+      'content' => [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['messages__content']],
+        'summary' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => t('<strong>Add a payment before you place this order.</strong> If you place it now, no subscription will be created for: @items.', [
+            '@items' => implode(', ', $titles),
+          ]),
+        ],
+        'steps' => [
+          '#theme' => 'item_list',
+          '#list_type' => 'ol',
+          '#items' => [
+            t('While the order is still a draft, <a href=":url">add a payment</a>. For cash, check or another offline method, add that payment too, even if you have not received the money yet (leave "Mark as received" unchecked).', [
+              ':url' => $add_payment_url->toString(),
+            ]),
+            t('Come back to this page and click <em>Place order</em>.'),
+          ],
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Lists the subscription items that placing the order now would skip.
+ *
+ * Mirrors the conditions in OrderSubscriber::onPlace(), which creates no
+ * subscription when the order has neither a payment method nor a manual
+ * payment gateway and the billing schedule does not allow trials.
+ *
+ * @param \Drupal\commerce_order\Entity\OrderInterface $order
+ *   The order.
+ *
+ * @return string[]
+ *   The affected order item titles. Empty if the order is not a draft, or if
+ *   placing it would create every subscription it should.
+ */
+function _mcgreen_subscription_payment_items_needing_payment(OrderInterface $order): array {
+  if ($order->bundle() === 'recurring' || $order->getState()->getId() !== 'draft') {
+    return [];
+  }
+  if (!$order->get('payment_method')->isEmpty()) {
+    return [];
+  }
+  /** @var \Drupal\commerce_payment\Entity\PaymentGatewayInterface|null $gateway */
+  $gateway = $order->get('payment_gateway')->entity;
+  if ($gateway && $gateway->getPlugin() instanceof ManualPaymentGatewayInterface) {
+    return [];
+  }
+
+  $titles = [];
+  foreach ($order->getItems() as $order_item) {
+    $variation = $order_item->getPurchasedEntity();
+    if (!$variation || !$variation->hasField('subscription_type') ||
+      $variation->get('subscription_type')->isEmpty() ||
+      $variation->get('billing_schedule')->isEmpty()) {
+      continue;
+    }
+    /** @var \Drupal\commerce_recurring\Entity\BillingScheduleInterface $billing_schedule */
+    $billing_schedule = $variation->get('billing_schedule')->entity;
+    if (!$billing_schedule->getPlugin()->allowTrials()) {
+      $titles[] = $order_item->getTitle();
+    }
+  }
+  return $titles;
 }
