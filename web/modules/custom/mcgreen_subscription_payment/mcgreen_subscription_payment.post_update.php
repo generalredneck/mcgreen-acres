@@ -45,3 +45,85 @@ function mcgreen_subscription_payment_post_update_renew_manually_completed_order
     'Created renewal drafts for @count recurring orders.'
   );
 }
+
+/**
+ * Create the missing Herd Share subscription for order 743.
+ *
+ * The order was placed from the admin before its card payment was added, so no
+ * subscription was created. This does what OrderSubscriber::onPlace() would
+ * have done, dated to when the order was placed. The order itself already paid
+ * for November 2026, so the new draft recurring order bills December.
+ */
+function mcgreen_subscription_payment_post_update_create_order_743_subscription() {
+  $order_id = 743;
+  $customer_id = 270;
+  $variation_id = 28;
+
+  $entity_type_manager = \Drupal::entityTypeManager();
+  /** @var \Drupal\commerce_order\Entity\OrderInterface|null $order */
+  $order = $entity_type_manager->getStorage('commerce_order')->load($order_id);
+  if (!$order || (int) $order->getCustomerId() !== $customer_id ||
+    in_array($order->getState()->getId(), ['draft', 'canceled'], TRUE)) {
+    return t('Skipped: order @id is missing or is not the expected placed order.', ['@id' => $order_id]);
+  }
+
+  // Do nothing if someone has already fixed this by hand.
+  $subscription_storage = $entity_type_manager->getStorage('commerce_subscription');
+  $query = $subscription_storage->getQuery()->accessCheck(FALSE);
+  $current = $query->andConditionGroup()
+    ->condition('uid', $customer_id)
+    ->condition('purchased_entity', $variation_id)
+    ->condition('state', ['pending', 'trial', 'active'], 'IN');
+  $existing = $query->condition($query->orConditionGroup()
+    ->condition('initial_order', $order_id)
+    ->condition($current))
+    ->execute();
+  if ($existing) {
+    return t('Skipped: subscription @id already covers order @order.', [
+      '@id' => reset($existing),
+      '@order' => $order_id,
+    ]);
+  }
+
+  // From January on, catching up would charge more than one month at once.
+  if (\Drupal::time()->getRequestTime() >= strtotime('2027-01-01 00:00:00 America/Chicago')) {
+    return t('Skipped: too late to create the subscription for order @id without back-billing. Create it by hand.', ['@id' => $order_id]);
+  }
+
+  $order_items = array_filter($order->getItems(), fn($item) => (int) $item->getPurchasedEntityId() === $variation_id);
+  $order_item = reset($order_items);
+  /** @var \Drupal\commerce_payment\Entity\PaymentMethodInterface|null $payment_method */
+  $payment_method = $order->get('payment_method')->entity;
+  if (!$order_item || !$order_item->getPurchasedEntity() || !$payment_method ||
+    !$payment_method->isReusable() || (int) $payment_method->getOwnerId() !== $customer_id) {
+    return t('Skipped: order @id lacks the expected item or a reusable payment method. Create the subscription by hand.', ['@id' => $order_id]);
+  }
+  $variation = $order_item->getPurchasedEntity();
+
+  // Never leave an active subscription behind without its recurring order.
+  $transaction = \Drupal::database()->startTransaction();
+  try {
+    /** @var \Drupal\commerce_recurring\SubscriptionStorageInterface $subscription_storage */
+    $subscription = $subscription_storage->createFromOrderItem($order_item, [
+      'type' => $variation->get('subscription_type')->target_plugin_id,
+      'billing_schedule' => $variation->get('billing_schedule')->entity,
+      'initial_order' => $order,
+    ]);
+    $subscription->setPaymentMethod($payment_method);
+    $subscription->setState('active');
+    $subscription->setStartTime($order->getPlacedTime());
+    $subscription->save();
+    $recurring_order = \Drupal::service('commerce_recurring.order_manager')->startRecurring($subscription);
+  }
+  catch (\Throwable $e) {
+    $transaction->rollBack();
+    throw $e;
+  }
+
+  return t('Created subscription @subscription (quantity @quantity) for order @order, with draft recurring order @recurring.', [
+    '@subscription' => $subscription->id(),
+    '@quantity' => (float) $subscription->getQuantity(),
+    '@order' => $order_id,
+    '@recurring' => $recurring_order->id(),
+  ]);
+}
