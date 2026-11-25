@@ -359,12 +359,14 @@ handlers:
     settings:
       states:
         completed: completed
-        draft: 0
-        converted: 0
-        updated: 0
+        draft: '0'
+        converted: '0'
+        updated: '0'
       newsletters_lst:
         mcgreen_acres_newsletter: mcgreen_acres_newsletter
       token: default
+      action: subscribe
+      debug: false
       field_mapping_source:
         mail: email
         field_first_name: fname
@@ -379,8 +381,6 @@ handlers:
         field_location: ''
         field_optin_ip: '[webform_submission:ip-address]'
         field_phone: ''
-      action: subscribe
-      debug: false
   subscriber_tags:
     id: subscriber_tags
     handler_id: subscriber_tags

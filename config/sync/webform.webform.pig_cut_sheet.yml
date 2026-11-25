@@ -20,58 +20,58 @@ categories:
 elements: |-
   intro:
     '#type': webform_markup
-    '#markup': '<p class="lead">Choose how your hog should be cut. We send your sheet to the processor on slaughter day, and the processor will contact you directly if anything needs clarifying.</p>'
+    '#markup': '<p class="lead">Choose how your hog should be cut. We send your sheet to the processor on slaughter day, and the processor will contact you directly if anything needs clarifying.<br><br>If you need to review the process, weight examples, or pricing of the pig, check out <a href="/pigs">Reserve a Pasture-Raised Pig</a>.</p>'
   charges_notice:
     '#type': webform_message
     '#message_type': info
-    '#message_message': '<p>This form shows no prices. Some choices can add processor charges, and the processor sets the final price. Choices that can add charges include boneless chops, cutlets, smoke and cure, peppered bacon, more than one sausage type, and splitting a hog in half.</p>'
+    '#message_message': '<p>This form shows no prices. Some choices can add processor charges, and the processor sets the final price. Choices that can add charges include boneless chops, cutlets, smoke and cure, peppered bacon and more than one sausage type.</p>'
   card_customer:
     '#type': webform_section
-    '#title': Your information
+    '#title': 'Your information'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     customer_pair_1:
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       customer_name:
         '#type': textfield
-        '#title': Your name
+        '#title': 'Your name'
         '#required': true
       customer_email:
         '#type': email
-        '#title': Your email
+        '#title': 'Your email'
         '#required': true
-        '#description': We email you a copy of your cut sheet.
+        '#description': 'We email you a copy of your cut sheet.'
     customer_pair_2:
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       customer_cell_phone:
         '#type': tel
-        '#title': Cell phone
+        '#title': 'Cell phone'
         '#required': true
       customer_backup_phone:
         '#type': tel
-        '#title': Backup phone
+        '#title': 'Backup phone'
   card_hog:
     '#type': webform_section
-    '#title': Your hog
+    '#title': 'Your hog'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     hog_type:
       '#type': radios
-      '#title': Whole hog or half hog?
+      '#title': 'Whole hog or half hog?'
       '#required': true
       '#options':
-        whole: Whole hog
-        half: Half hog
+        whole: 'Whole hog'
+        half: 'Half hog'
     half_hog_note:
       '#type': webform_message
       '#states':
@@ -82,23 +82,23 @@ elements: |-
       '#message_message': '<p>A half hog has one of each part. You will only see questions marked 1 (loin 1, shoulder 1, ham 1 and bacon slab 1).</p>'
     slaughter_date:
       '#type': date
-      '#title': Slaughter date
+      '#title': 'Slaughter date'
       '#default_value': '2026-12-02'
       '#readonly': true
-      '#description': Set by us for this batch.
+      '#description': 'Set by us for this batch.'
   card_loins:
     '#type': webform_section
-    '#title': Loins and spare ribs
+    '#title': 'Loins and spare ribs'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     loins_help:
       '#type': webform_markup
       '#markup': '<p class="cut-sheet-help">Each loin is cut one way only: all bone-in chops, all boneless chops, or ground. Choosing boneless chops lets you keep the tenderloin and baby back ribs. Sizes are optional. Leave one blank and the processor uses its default.</p>'
     loins_same:
       '#type': checkbox
-      '#title': Cut both loins the same way
+      '#title': 'Cut both loins the same way'
       '#states':
         visible:
           ':input[name="hog_type"]':
@@ -107,13 +107,13 @@ elements: |-
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       loin_1:
         '#type': fieldset
-        '#title': Loin 1
+        '#title': 'Loin 1'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         loin_1_cut:
           '#type': radios
           '#title': Cut
@@ -123,8 +123,8 @@ elements: |-
           '#required_error': 'Loin 1: cut is required.'
         loin_1_chop_size:
           '#type': textfield
-          '#title': Chop thickness and count per package
-          '#placeholder': e.g. 1/2 inch thick, 2 per package
+          '#title': 'Chop thickness and count per package'
+          '#placeholder': 'e.g. 1/2 inch thick, 2 per package'
           '#admin_title': 'Loin 1: chop thickness and count per package'
           '#states':
             visible:
@@ -143,7 +143,7 @@ elements: |-
           '#required_error': 'Loin 1: tenderloin is required.'
         loin_1_baby_back_ribs:
           '#type': radios
-          '#title': Baby back ribs
+          '#title': 'Baby back ribs'
           '#options': cut_sheet_baby_back_ribs
           '#required': true
           '#states':
@@ -154,10 +154,10 @@ elements: |-
           '#required_error': 'Loin 1: baby back ribs is required.'
       loin_2:
         '#type': fieldset
-        '#title': Loin 2
+        '#title': 'Loin 2'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         '#states':
           visible:
             ':input[name="hog_type"]':
@@ -179,8 +179,8 @@ elements: |-
           '#required_error': 'Loin 2: cut is required.'
         loin_2_chop_size:
           '#type': textfield
-          '#title': Chop thickness and count per package
-          '#placeholder': e.g. 1/2 inch thick, 2 per package
+          '#title': 'Chop thickness and count per package'
+          '#placeholder': 'e.g. 1/2 inch thick, 2 per package'
           '#states':
             visible:
               ':input[name="hog_type"]':
@@ -207,7 +207,7 @@ elements: |-
           '#required_error': 'Loin 2: tenderloin is required.'
         loin_2_baby_back_ribs:
           '#type': radios
-          '#title': Baby back ribs
+          '#title': 'Baby back ribs'
           '#options': cut_sheet_baby_back_ribs
           '#required': true
           '#states':
@@ -222,13 +222,13 @@ elements: |-
           '#required_error': 'Loin 2: baby back ribs is required.'
     spare_ribs_panel:
       '#type': fieldset
-      '#title': Spare ribs
+      '#title': 'Spare ribs'
       '#attributes':
         class:
-        - cut-sheet-part
+          - cut-sheet-part
       spare_ribs:
         '#type': radios
-        '#title': Spare ribs
+        '#title': 'Spare ribs'
         '#options': cut_sheet_spare_ribs
         '#required': true
         '#title_display': invisible
@@ -238,13 +238,13 @@ elements: |-
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     shoulder_help:
       '#type': webform_markup
       '#markup': '<p class="cut-sheet-help">Sizes are optional. Leave one blank and the processor uses its default.</p>'
     shoulders_same:
       '#type': checkbox
-      '#title': Cut both shoulders the same way
+      '#title': 'Cut both shoulders the same way'
       '#states':
         visible:
           ':input[name="hog_type"]':
@@ -253,13 +253,13 @@ elements: |-
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       shoulder_1:
         '#type': fieldset
-        '#title': Shoulder 1
+        '#title': 'Shoulder 1'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         shoulder_1_cut:
           '#type': radios
           '#title': Cut
@@ -270,8 +270,8 @@ elements: |-
         shoulder_1_size:
           '#type': textfield
           '#title': Size
-          '#placeholder': e.g. steaks 1/2 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
-          '#description': Steak thickness and count, roast weight, or ribs per pack.
+          '#placeholder': 'e.g. steaks 1/2 inch thick, 2 per package; roast 3 lb; 4 ribs per pack'
+          '#description': 'Steak thickness and count, roast weight, or ribs per pack.'
           '#admin_title': 'Shoulder 1: size'
           '#states':
             visible:
@@ -279,10 +279,10 @@ elements: |-
                 '!value': grind
       shoulder_2:
         '#type': fieldset
-        '#title': Shoulder 2
+        '#title': 'Shoulder 2'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         '#states':
           visible:
             ':input[name="hog_type"]':
@@ -305,8 +305,8 @@ elements: |-
         shoulder_2_size:
           '#type': textfield
           '#title': Size
-          '#placeholder': e.g. steaks 1/2 inch thick, 2 per package; roast 3 lb; 4 ribs per pack
-          '#description': Steak thickness and count, roast weight, or ribs per pack.
+          '#placeholder': 'e.g. steaks 1/2 inch thick, 2 per package; roast 3 lb; 4 ribs per pack'
+          '#description': 'Steak thickness and count, roast weight, or ribs per pack.'
           '#states':
             visible:
               ':input[name="hog_type"]':
@@ -322,13 +322,13 @@ elements: |-
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     ham_help:
       '#type': webform_markup
       '#markup': '<p class="cut-sheet-help"><strong>Almost every ham you have eaten was cured and smoked.</strong> A fresh ham is uncured, more like a pork roast. For the ham you know, choose one of the Smoke and cure options. If you choose steaks, a box appears for the thickness and count. Leave it blank and the processor uses its default size.</p>'
     hams_same:
       '#type': checkbox
-      '#title': Cut both hams the same way
+      '#title': 'Cut both hams the same way'
       '#states':
         visible:
           ':input[name="hog_type"]':
@@ -337,13 +337,13 @@ elements: |-
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       ham_1:
         '#type': fieldset
-        '#title': Ham 1
+        '#title': 'Ham 1'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         ham_1_cut:
           '#type': radios
           '#title': Cut
@@ -353,23 +353,23 @@ elements: |-
           '#required_error': 'Ham 1: cut is required.'
         ham_1_size:
           '#type': textfield
-          '#title': Steak thickness and count
-          '#placeholder': e.g. 1/2 inch thick, 2 per package
-          '#description': Only for steaks.
+          '#title': 'Steak thickness and count'
+          '#placeholder': 'e.g. 1/2 inch thick, 2 per package'
+          '#description': 'Only for steaks.'
           '#states':
             visible:
-            - ':input[name="ham_1_cut"]':
-                value: fresh_steaks
-            - or
-            - ':input[name="ham_1_cut"]':
-                value: cured_steaks
+              - ':input[name="ham_1_cut"]':
+                  value: fresh_steaks
+              - or
+              - ':input[name="ham_1_cut"]':
+                  value: cured_steaks
           '#admin_title': 'Ham 1: steak thickness and count'
       ham_2:
         '#type': fieldset
-        '#title': Ham 2
+        '#title': 'Ham 2'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         '#states':
           visible:
             ':input[name="hog_type"]':
@@ -391,38 +391,38 @@ elements: |-
           '#required_error': 'Ham 2: cut is required.'
         ham_2_size:
           '#type': textfield
-          '#title': Steak thickness and count
-          '#placeholder': e.g. 1/2 inch thick, 2 per package
-          '#description': Only for steaks.
+          '#title': 'Steak thickness and count'
+          '#placeholder': 'e.g. 1/2 inch thick, 2 per package'
+          '#description': 'Only for steaks.'
           '#states':
             visible:
-            - ':input[name="hog_type"]':
-                value: whole
-              ':input[name="hams_same"]':
-                unchecked: true
-              ':input[name="ham_2_cut"]':
-                value: fresh_steaks
-            - or
-            - ':input[name="hog_type"]':
-                value: whole
-              ':input[name="hams_same"]':
-                unchecked: true
-              ':input[name="ham_2_cut"]':
-                value: cured_steaks
+              - ':input[name="hog_type"]':
+                  value: whole
+                ':input[name="hams_same"]':
+                  unchecked: true
+                ':input[name="ham_2_cut"]':
+                  value: fresh_steaks
+              - or
+              - ':input[name="hog_type"]':
+                  value: whole
+                ':input[name="hams_same"]':
+                  unchecked: true
+                ':input[name="ham_2_cut"]':
+                  value: cured_steaks
           '#admin_title': 'Ham 2: steak thickness and count'
   card_bacon:
     '#type': webform_section
-    '#title': Bacon and jowls
+    '#title': 'Bacon and jowls'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     bacon_help:
       '#type': webform_markup
       '#markup': '<p class="cut-sheet-help"><strong>Bacon as you buy it is cured and smoked pork belly.</strong> Fresh bacon is uncured, more like sliced pork belly. For the bacon you know, choose one of the Smoke and cure options. Slice and package sizes are optional. Leave them blank and the processor uses its default.</p>'
     bacon_same:
       '#type': checkbox
-      '#title': Cut both bacon slabs the same way
+      '#title': 'Cut both bacon slabs the same way'
       '#states':
         visible:
           ':input[name="hog_type"]':
@@ -431,13 +431,13 @@ elements: |-
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       bacon_1:
         '#type': fieldset
-        '#title': Bacon slab 1
+        '#title': 'Bacon slab 1'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         bacon_1_cut:
           '#type': radios
           '#title': Cut
@@ -447,8 +447,8 @@ elements: |-
           '#required_error': 'Slab 1: cut is required.'
         bacon_1_slice_size:
           '#type': textfield
-          '#title': Slice thickness and package size
-          '#placeholder': e.g. regular slice, 1 lb packages
+          '#title': 'Slice thickness and package size'
+          '#placeholder': 'e.g. regular slice, 1 lb packages'
           '#admin_title': 'Slab 1: slice thickness and package size'
           '#states':
             visible:
@@ -456,10 +456,10 @@ elements: |-
                 '!value': grind
       bacon_2:
         '#type': fieldset
-        '#title': Bacon slab 2
+        '#title': 'Bacon slab 2'
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         '#states':
           visible:
             ':input[name="hog_type"]':
@@ -481,8 +481,8 @@ elements: |-
           '#required_error': 'Slab 2: cut is required.'
         bacon_2_slice_size:
           '#type': textfield
-          '#title': Slice thickness and package size
-          '#placeholder': e.g. regular slice, 1 lb packages
+          '#title': 'Slice thickness and package size'
+          '#placeholder': 'e.g. regular slice, 1 lb packages'
           '#states':
             visible:
               ':input[name="hog_type"]':
@@ -497,7 +497,7 @@ elements: |-
       '#title': Jowl
       '#attributes':
         class:
-        - cut-sheet-part
+          - cut-sheet-part
       jowl_cut:
         '#type': radios
         '#title': Jowl
@@ -506,22 +506,22 @@ elements: |-
         '#title_display': invisible
   card_organs:
     '#type': webform_section
-    '#title': Heart and liver
+    '#title': 'Heart and liver'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     organs_pair:
       '#type': container
       '#attributes':
         class:
-        - cut-sheet-pair
+          - cut-sheet-pair
       heart_panel:
         '#type': fieldset
         '#title': Heart
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         heart:
           '#type': radios
           '#title': Heart
@@ -533,34 +533,34 @@ elements: |-
         '#title': Liver
         '#attributes':
           class:
-          - cut-sheet-part
+            - cut-sheet-part
         liver:
           '#type': radios
           '#title': Liver
           '#options': cut_sheet_liver
           '#required': true
           '#title_display': invisible
-          '#description': Liver is not guaranteed. The processor may condemn it, and then there is none to keep.
+          '#description': 'Liver is not guaranteed. The processor may condemn it, and then there is none to keep.'
   card_ground:
     '#type': webform_section
-    '#title': Ground meat
+    '#title': 'Ground meat'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     ground_use:
       '#type': checkboxes
-      '#title': What should the ground meat become? Choose one or both.
+      '#title': 'What should the ground meat become? Choose one or both.'
       '#options': cut_sheet_ground_use
       '#required': true
       '#default_value':
-      - ground_pork
+        - ground_pork
     sausage_panel:
       '#type': fieldset
       '#title': Sausage
       '#attributes':
         class:
-        - cut-sheet-part
+          - cut-sheet-part
       '#states':
         visible:
           ':input[name="ground_use[sausage]"]':
@@ -571,40 +571,40 @@ elements: |-
         '#message_message': '<ul><li>Using more than one sausage type adds work for the processor. The butcher will contact you about flavors.</li><li>Do not see what you want? Choose "Something else" to discuss it with the butcher.</li></ul>'
       sausage_types:
         '#type': checkboxes
-        '#title': Which types?
+        '#title': 'Which types?'
         '#options': cut_sheet_sausage_type
         '#required': true
         '#states':
           visible:
             ':input[name="ground_use[sausage]"]':
               checked: true
-        '#admin_title': Sausage types
-        '#required_error': Choose at least one sausage type.
+        '#admin_title': 'Sausage types'
+        '#required_error': 'Choose at least one sausage type.'
       sausage_amount_help:
         '#type': webform_message
         '#message_type': info
         '#message_message': '<p>Enter approximate pounds for each type below. To split the meat another way, such as half breakfast and half hot, leave the pounds blank and describe it in the special instructions box.</p>'
         '#states':
           visible:
-          - ':input[name="sausage_types[breakfast_bag]"]':
-              checked: true
-          - or
-          - ':input[name="sausage_types[hot_breakfast_bag]"]':
-              checked: true
-          - or
-          - ':input[name="sausage_types[smoked_sausage]"]':
-              checked: true
-          - or
-          - ':input[name="sausage_types[fully_cooked_links]"]':
-              checked: true
-          - or
-          - ':input[name="sausage_types[raw_sausage]"]':
-              checked: true
+            - ':input[name="sausage_types[breakfast_bag]"]':
+                checked: true
+            - or
+            - ':input[name="sausage_types[hot_breakfast_bag]"]':
+                checked: true
+            - or
+            - ':input[name="sausage_types[smoked_sausage]"]':
+                checked: true
+            - or
+            - ':input[name="sausage_types[fully_cooked_links]"]':
+                checked: true
+            - or
+            - ':input[name="sausage_types[raw_sausage]"]':
+                checked: true
       sausage_pair:
         '#type': container
         '#attributes':
           class:
-          - cut-sheet-pair
+            - cut-sheet-pair
         sausage_lb_breakfast_bag:
           '#type': number
           '#title': 'Breakfast sausage in bags: approximate pounds'
@@ -635,7 +635,7 @@ elements: |-
           '#field_suffix': lb
           '#min': 10
           '#step': any
-          '#description': The processor's minimum for this type is 10 lb.
+          '#description': "The processor's minimum for this type is 10 lb."
           '#states':
             visible:
               ':input[name="ground_use[sausage]"]':
@@ -648,7 +648,7 @@ elements: |-
           '#field_suffix': lb
           '#min': 10
           '#step': any
-          '#description': The processor's minimum for this type is 10 lb.
+          '#description': "The processor's minimum for this type is 10 lb."
           '#states':
             visible:
               ':input[name="ground_use[sausage]"]':
@@ -661,7 +661,7 @@ elements: |-
           '#field_suffix': lb
           '#min': 10
           '#step': any
-          '#description': The processor's minimum for this type is 10 lb.
+          '#description': "The processor's minimum for this type is 10 lb."
           '#states':
             visible:
               ':input[name="ground_use[sausage]"]':
@@ -670,27 +670,27 @@ elements: |-
                 checked: true
     ground_details:
       '#type': textarea
-      '#title': Special instructions for grind/sausage
+      '#title': 'Special instructions for grind/sausage'
       '#rows': 3
-      '#description': Use this box for special quantities, such as half breakfast sausage and half hot sausage, or for anything else about your ground meat and sausage.
+      '#description': 'Use this box for special quantities, such as half breakfast sausage and half hot sausage, or for anything else about your ground meat and sausage.'
   card_notes:
     '#type': webform_section
-    '#title': Anything else
+    '#title': 'Anything else'
     '#title_tag': h2
     '#attributes':
       class:
-      - cut-sheet-card
+        - cut-sheet-card
     special_instructions:
       '#type': textarea
-      '#title': Special instructions
+      '#title': 'Special instructions'
       '#rows': 4
   network_check:
     '#type': value
-    '#title': Network check
+    '#title': 'Network check'
     '#value': ''
   actions:
     '#type': webform_actions
-    '#title': Submit button(s)
+    '#title': 'Submit button(s)'
 css: ''
 javascript: ''
 settings:
