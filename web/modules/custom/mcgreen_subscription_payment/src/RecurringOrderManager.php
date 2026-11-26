@@ -4,6 +4,7 @@ namespace Drupal\mcgreen_subscription_payment;
 
 use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_payment\Exception\HardDeclineException;
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\ManualPaymentGatewayInterface;
 use Drupal\commerce_recurring\BillingPeriod;
 use Drupal\commerce_recurring\Entity\BillingSchedule;
 use Drupal\commerce_recurring\Entity\SubscriptionInterface;
@@ -24,7 +25,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * refreshOrder() and findOrCreateOrder() are also extended to populate the
  * payment_gateway field on the recurring order from the subscription's manual
- * gateway, keeping the order data consistent.
+ * gateway, keeping the order data consistent. A manual payment already recorded
+ * on a draft order takes precedence over the subscription's gateway.
  */
 class RecurringOrderManager extends BaseRecurringOrderManager {
 
@@ -109,8 +111,11 @@ class RecurringOrderManager extends BaseRecurringOrderManager {
   /**
    * {@inheritdoc}
    *
-   * Overridden to set payment_gateway from the manual gateway when no stored
-   * payment method exists, so the recurring order record stays accurate.
+   * Overridden to set payment_gateway from a manual gateway when no stored
+   * payment method exists, so the recurring order record stays accurate. The
+   * gateway of a recorded manual payment wins over the subscription's, since
+   * draft orders are refreshed on every save, including the one that follows
+   * adding a payment.
    */
   public function refreshOrder(OrderInterface $order) {
     /** @var \Drupal\commerce_recurring\Plugin\Field\FieldType\BillingPeriodItem $billing_period_item */
@@ -121,7 +126,7 @@ class RecurringOrderManager extends BaseRecurringOrderManager {
     $billing_profile = $payment_method ? $payment_method->getBillingProfile() : $order->getBillingProfile();
     $payment_gateway_id = $payment_method
       ? $payment_method->getPaymentGatewayId()
-      : $this->selectManualGatewayId($subscriptions);
+      : $this->selectRecordedGatewayId($order) ?? $this->selectManualGatewayId($subscriptions);
 
     $order->set('billing_profile', $billing_profile);
     $order->set('payment_method', $payment_method);
@@ -189,6 +194,34 @@ class RecurringOrderManager extends BaseRecurringOrderManager {
       'billing_period' => $billing_period,
       'billing_schedule' => $subscription->getBillingSchedule(),
     ]);
+  }
+
+  /**
+   * Returns the gateway of the order's latest manual payment, or NULL.
+   *
+   * Payments that are pending (promised but not yet received) count; voided
+   * and fully refunded ones do not.
+   *
+   * @param \Drupal\commerce_order\Entity\OrderInterface $order
+   *   The recurring order.
+   */
+  protected function selectRecordedGatewayId(OrderInterface $order): ?string {
+    if ($order->isNew()) {
+      return NULL;
+    }
+    /** @var \Drupal\commerce_payment\PaymentStorageInterface $payment_storage */
+    $payment_storage = $this->entityTypeManager->getStorage('commerce_payment');
+    // Payments are sorted oldest first.
+    foreach (array_reverse($payment_storage->loadMultipleByOrder($order)) as $payment) {
+      if (!in_array($payment->getState()->getId(), ['pending', 'completed', 'partially_refunded'], TRUE)) {
+        continue;
+      }
+      $gateway = $payment->getPaymentGateway();
+      if ($gateway && $gateway->getPlugin() instanceof ManualPaymentGatewayInterface) {
+        return $gateway->id();
+      }
+    }
+    return NULL;
   }
 
   /**

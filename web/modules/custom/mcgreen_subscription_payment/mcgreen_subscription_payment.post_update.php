@@ -127,3 +127,48 @@ function mcgreen_subscription_payment_post_update_create_order_743_subscription(
     '@recurring' => $recurring_order->id(),
   ]);
 }
+
+/**
+ * Set orders 674 and 696 to the Zelle gateway they were paid with.
+ *
+ * Their Zelle payments were recorded while they were drafts, and the refresh on
+ * save put the subscription's cash gateway back on the order.
+ */
+function mcgreen_subscription_payment_post_update_zelle_gateway_orders_674_696() {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $order_storage = $entity_type_manager->getStorage('commerce_order');
+  /** @var \Drupal\commerce_payment\PaymentStorageInterface $payment_storage */
+  $payment_storage = $entity_type_manager->getStorage('commerce_payment');
+
+  $updated = [];
+  $skipped = [];
+  foreach ([674, 696] as $order_id) {
+    /** @var \Drupal\commerce_order\Entity\OrderInterface|null $order */
+    $order = $order_storage->load($order_id);
+    if (!$order || $order->bundle() !== 'recurring' ||
+      $order->getState()->getId() !== 'completed' ||
+      $order->get('payment_gateway')->target_id !== 'cash') {
+      $skipped[] = $order_id;
+      continue;
+    }
+    // Only change an order whose completed payments were all made with Zelle.
+    $gateway_ids = [];
+    foreach ($payment_storage->loadMultipleByOrder($order) as $payment) {
+      if ($payment->isCompleted()) {
+        $gateway_ids[] = $payment->getPaymentGatewayId();
+      }
+    }
+    if (array_unique($gateway_ids) !== ['zelle']) {
+      $skipped[] = $order_id;
+      continue;
+    }
+    $order->set('payment_gateway', 'zelle');
+    $order->save();
+    $updated[] = $order_id;
+  }
+
+  return t('Set the Zelle gateway on orders: @updated. Skipped (missing or not as expected): @skipped.', [
+    '@updated' => implode(', ', $updated) ?: 'none',
+    '@skipped' => implode(', ', $skipped) ?: 'none',
+  ]);
+}
