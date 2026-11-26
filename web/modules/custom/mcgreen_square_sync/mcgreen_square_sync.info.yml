@@ -1,6 +1,6 @@
 name: 'McGreen Acres Square Sync'
 type: module
-description: 'Pulls in-person Square sales into a read-only list and suggests which Drupal orders they match.'
+description: 'Pulls in-person Square sales from Square, and links or imports them as Drupal orders.'
 package: 'McGreen Acres'
 core_version_requirement: ^11 || ^12
 configure: mcgreen_square_sync.settings
@@ -8,4 +8,7 @@ dependencies:
   - commerce:commerce_order
   - commerce:commerce_payment
   - commerce:commerce_price
+  - commerce:commerce_product
+  - commerce_reports:commerce_reports
+  - commerce_stock:commerce_stock
   - key:key

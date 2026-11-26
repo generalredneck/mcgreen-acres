@@ -10,7 +10,6 @@ use Drupal\commerce_price\Price;
 use Drupal\commerce_product\Entity\ProductVariation;
 use Drupal\mcgreen_square_sync\DecisionStorage;
 use Drupal\mcgreen_square_sync\SalesReport;
-use Drupal\Tests\commerce_order\Kernel\OrderKernelTestBase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
@@ -21,16 +20,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * @covers \Drupal\mcgreen_square_sync\DecisionStorage
  */
 #[RunTestsInSeparateProcesses]
-class SalesReportTest extends OrderKernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'commerce_payment',
-    'key',
-    'mcgreen_square_sync',
-  ];
+class SalesReportTest extends SquareSyncKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -44,6 +34,7 @@ class SalesReportTest extends OrderKernelTestBase {
       'mcgreen_square_link',
       'mcgreen_square_line_map',
       'mcgreen_square_item_map',
+      'mcgreen_square_ignored',
     ]);
     foreach (['square', 'cash'] as $id) {
       PaymentGateway::create(['id' => $id, 'label' => $id, 'plugin' => 'manual'])->save();
@@ -232,6 +223,38 @@ class SalesReportTest extends OrderKernelTestBase {
 
     $variation->delete();
     $this->assertSame([], $decisions->getLineMaps());
+  }
+
+  /**
+   * Imported and ignored sales are settled, and each can be told apart.
+   */
+  public function testImportedAndIgnored(): void {
+    $this->container->get('mcgreen_square_sync.storage')->replace([
+      $this->sale('imported', '2026-05-04T13:26:00-05:00', 1000),
+      $this->sale('ignored', '2026-05-04T13:28:00-05:00', 4000),
+    ]);
+    $decisions = $this->container->get('mcgreen_square_sync.decisions');
+    $imported = Payment::load($this->paidOrder('2026-05-04T18:00:00-05:00', '10.00'))->getOrderId();
+    $other = $this->paidOrder('2026-05-04T18:00:00-05:00', '40.00');
+    $decisions->recordImport('imported', (int) $imported);
+    $decisions->ignore(['ignored'], 'Test sale');
+
+    $report = $this->report();
+    $this->assertSame(SalesReport::IMPORTED, $report['sales']['imported']['status']);
+    $this->assertSame(SalesReport::IGNORED, $report['sales']['ignored']['status']);
+    $this->assertSame('Test sale', $report['sales']['ignored']['ignored_reason']);
+    // An ignored sale accounts for no payment.
+    $this->assertNull($report['sales']['ignored']['match']);
+    $this->assertSame([$other], array_keys($report['unmatched_payments']));
+
+    // Unlinking never frees an imported sale.
+    $decisions->unlink(['imported']);
+    $this->assertArrayHasKey('imported', $decisions->getLinks());
+
+    // Linking an ignored sale stops ignoring it.
+    $decisions->link(['ignored' => (int) Payment::load($other)->getOrderId()]);
+    $this->assertSame([], $decisions->getIgnored());
+    $this->assertSame(SalesReport::LINKED, $this->report()['sales']['ignored']['status']);
   }
 
   /**

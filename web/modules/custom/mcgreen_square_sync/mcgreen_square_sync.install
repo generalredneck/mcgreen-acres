@@ -5,6 +5,29 @@
  * Install hooks for the Square sync module.
  */
 
+use Drupal\mcgreen_square_sync\SaleImporter;
+
+/**
+ * Implements hook_install().
+ */
+function mcgreen_square_sync_install(): void {
+  // Sales from before the module went live were reconciled by hand, so only
+  // sales from now on take items out of stock.
+  $timezone = \Drupal::config('system.date')->get('timezone.default') ?: 'UTC';
+  $today = new \DateTimeImmutable('now', new \DateTimeZone($timezone));
+  \Drupal::state()->set(SaleImporter::STOCK_SINCE_STATE, $today->format('Y-m-d'));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function mcgreen_square_sync_uninstall(): void {
+  \Drupal::state()->deleteMultiple([
+    SaleImporter::STOCK_SINCE_STATE,
+    'mcgreen_square_sync.last_fetch',
+  ]);
+}
+
 /**
  * Implements hook_schema().
  */
@@ -76,10 +99,34 @@ function mcgreen_square_sync_schema(): array {
         'description' => 'Who linked it.',
       ],
       'linked' => ['type' => 'int', 'not null' => TRUE],
+      'imported' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Whether the order was created from the sale.',
+      ],
     ],
     // One order per sale; an order may cover several sales.
     'primary key' => ['sale_id'],
     'indexes' => ['order_id' => ['order_id']],
+  ];
+
+  $schema['mcgreen_square_ignored'] = [
+    'description' => 'Square sales that are not to be recorded in Drupal.',
+    'fields' => [
+      'sale_id' => $sale_id,
+      'reason' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'ignored' => ['type' => 'int', 'not null' => TRUE],
+    ],
+    'primary key' => ['sale_id'],
   ];
 
   $schema['mcgreen_square_line_map'] = [

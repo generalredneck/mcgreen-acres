@@ -6,6 +6,7 @@ use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_product\Entity\ProductVariationInterface;
 use Drupal\Core\Link;
 use Drupal\mcgreen_square_sync\ItemResolver;
+use Drupal\mcgreen_square_sync\SaleImporter;
 use Drupal\mcgreen_square_sync\SalesReport;
 
 /**
@@ -186,6 +187,8 @@ trait SaleDisplayTrait {
       SalesReport::CASH => $this->t('Cash'),
       SalesReport::OTHER => $this->t('Other payment types'),
       SalesReport::LINKED => $this->t('Linked'),
+      SalesReport::IMPORTED => $this->t('Imported'),
+      SalesReport::IGNORED => $this->t('Ignored'),
     ];
   }
 
@@ -202,6 +205,26 @@ trait SaleDisplayTrait {
    */
   protected function money(int $cents, string $currency): string {
     return $this->currencyFormatter->format(sprintf('%.2f', $cents / 100), $currency);
+  }
+
+  /**
+   * The gateways a payment that was not by card can be recorded with.
+   *
+   * @return string[]
+   *   Labels keyed by gateway ID.
+   */
+  protected function gatewayOptions(): array {
+    $gateways = $this->entityTypeManager->getStorage('commerce_payment_gateway')
+      ->loadMultiple(SaleImporter::OTHER_GATEWAYS);
+    return array_map(fn($gateway) => (string) $gateway->label(), $gateways);
+  }
+
+  /**
+   * The gateway suggested for a sale's payments that were not by card.
+   */
+  protected function defaultGateway(array $sale): string {
+    // Square's "cash" is cash here; anything else needs a deliberate choice.
+    return $sale['other'] ? '' : 'cash';
   }
 
 }

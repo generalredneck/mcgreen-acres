@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: square_item
+label: 'Square item (no product)'
+purchasableEntityType: ''
+orderType: default
+traits: {  }
+locked: false

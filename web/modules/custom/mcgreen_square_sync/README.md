@@ -3,8 +3,8 @@
 Shows in-person Square sales next to the Drupal orders that record them, so
 Drupal can be trusted as the reporting source of record.
 
-**Current scope:** fetch, link and map. Nothing is written to Square, and no
-Drupal order is created or changed. Importing sales is not built yet.
+**Current scope:** fetch, link, map, import and ignore. Nothing is written to
+Square. Importing creates new orders; existing orders are never changed.
 
 ## Setup
 
@@ -86,7 +86,42 @@ Links (`mcgreen_square_link`) and mappings (`mcgreen_square_item_map`,
 again never loses them. They live in the database only: make them on the
 production site, since pulling its database down replaces local ones.
 
+## Importing
+
+A sale can be imported once every line is mapped. Import from the list (tick,
+**Import selected**, then confirm) or from the sale's page. A sale with a
+suggested order is left out of list imports; from its page you must confirm it
+is a different sale.
+
+The new order:
+
+- is `default` type, **completed**, anonymous, dated when the sale was made, with
+  the next order number;
+- uses what Square charged. Lines with no product become **Square item** order
+  items, adjustments become order adjustments, and any amount on no line (such as
+  a tip) is its own adjustment. The import is refused if the order total would
+  differ from Square's;
+- has one payment per Square payment, carrying Square's payment ID: cards under
+  `square`, anything else under the gateway you pick (`cash`, `zelle`, `check`);
+- records the weight of by-weight packages. A custom amount counted as a
+  by-weight size has no weight, so it is added as an ordinary product line;
+- gets sales report entries.
+
+It is created completed instead of being "placed", so **no receipt, order email
+or conversion event is sent**. Stock is deducted only for sales dated on or after
+**Deduct stock for sales from** on the Settings tab. That starts as the day the
+module was installed and is kept per environment, not in config.
+
+Sales with a refund cannot be imported. An imported sale cannot be unlinked. To
+redo one, delete its order: its payments and report entries are removed with it
+(Commerce alone would leave them), but **stock is not put back**.
+
+## Ignoring
+
+**Ignore** takes a sale off the to-do list, with an optional reason from its
+page. Ignored sales account for no Drupal payment. Undo from the sale's page or
+with **Unlink or restore selected**.
+
 ## Not yet built
 
-Importing or ignoring sales, and refunds. `ItemResolver` already answers what
-each line should become.
+Refunds, and fetching on cron.

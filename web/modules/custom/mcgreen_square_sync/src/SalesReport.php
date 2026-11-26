@@ -22,6 +22,16 @@ class SalesReport {
   public const LINKED = 'linked';
 
   /**
+   * The sale's order was created from it.
+   */
+  public const IMPORTED = 'imported';
+
+  /**
+   * Staff have said the sale is not to be recorded.
+   */
+  public const IGNORED = 'ignored';
+
+  /**
    * A suggested Drupal order covers the sale's card amount.
    */
   public const MATCHED = 'matched';
@@ -58,10 +68,11 @@ class SalesReport {
    * @return array
    *   An array with:
    *   - sales: Stored sales, newest first. Each has a "status" (one of this
-   *     class's constants), "maps" (line mappings keyed by line UID), "link"
-   *     and "match". "link" is NULL or an array of "order", "sales_total" (the
-   *     cents of all sales linked to that order) and "order_total" (cents).
-   *     "match" is NULL or an array of "order", "days" and "sale_ids".
+   *     class's constants), "maps" (line mappings keyed by line UID), "link",
+   *     "match" and "ignored_reason". "link" is NULL or an array of "order",
+   *     "sales_total" (the cents of all sales linked to that order) and
+   *     "order_total" (cents). "match" is NULL or an array of "order", "days"
+   *     and "sale_ids".
    *   - unmatched_payments: Drupal card payments, newest first, that no Square
    *     sale accounts for. Each has "order", "time" and "amount".
    */
@@ -87,8 +98,10 @@ class SalesReport {
       $this->loadCardPayments($start->getTimestamp() - $window * 86400),
       fn(array $payment) => !isset($linked_orders[$payment['order']->id()]),
     );
+    $ignored = $this->decisions->getIgnored();
+    $imported = array_flip($this->decisions->getImportedSaleIds());
     $card_sales = [];
-    foreach (array_diff_key($sales, $links) as $sale_id => $sale) {
+    foreach (array_diff_key($sales, $links, $ignored) as $sale_id => $sale) {
       if ($sale['card'] > 0) {
         $card_sales[$sale_id] = ['time' => $sale['sold_at'], 'amount' => $sale['card']];
       }
@@ -100,9 +113,10 @@ class SalesReport {
       $sale['maps'] = $maps[$sale_id] ?? [];
       $sale['match'] = NULL;
       $sale['link'] = NULL;
+      $sale['ignored_reason'] = $ignored[$sale_id] ?? NULL;
       if (isset($links[$sale_id])) {
         $order = $orders[$links[$sale_id]];
-        $sale['status'] = self::LINKED;
+        $sale['status'] = isset($imported[$sale_id]) ? self::IMPORTED : self::LINKED;
         $sale['link'] = [
           'order' => $order,
           'sales_total' => $sales_totals[$order->id()],
@@ -111,6 +125,7 @@ class SalesReport {
         continue;
       }
       $sale['status'] = match (TRUE) {
+        isset($ignored[$sale_id]) => self::IGNORED,
         $sale['card'] > 0 => self::MISSING,
         $sale['cash'] > 0 && !$sale['other'] => self::CASH,
         default => self::OTHER,

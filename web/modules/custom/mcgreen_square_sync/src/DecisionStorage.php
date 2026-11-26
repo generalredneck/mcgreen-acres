@@ -45,6 +45,8 @@ class DecisionStorage {
 
   protected const ITEM_TABLE = 'mcgreen_square_item_map';
 
+  protected const IGNORED_TABLE = 'mcgreen_square_ignored';
+
   protected const MAP_TABLE = 'mcgreen_square_line_map';
 
   public function __construct(
@@ -61,19 +63,22 @@ class DecisionStorage {
    */
   public function link(array $links): void {
     foreach ($links as $sale_id => $order_id) {
-      $this->database->merge(self::LINK_TABLE)
-        ->key('sale_id', (string) $sale_id)
-        ->fields([
-          'order_id' => $order_id,
-          'uid' => $this->currentUser->id(),
-          'linked' => $this->time->getRequestTime(),
-        ])
-        ->execute();
+      $this->saveLink((string) $sale_id, $order_id, FALSE);
     }
   }
 
   /**
+   * Records that an order was created from a sale.
+   */
+  public function recordImport(string $sale_id, int $order_id): void {
+    $this->saveLink($sale_id, $order_id, TRUE);
+  }
+
+  /**
    * Removes the links of the given sales.
+   *
+   * An imported sale keeps its link, since removing it would allow the sale to
+   * be imported twice. Deleting the order removes it.
    *
    * @param string[] $sale_ids
    *   Sale IDs.
@@ -82,8 +87,71 @@ class DecisionStorage {
     if ($sale_ids) {
       $this->database->delete(self::LINK_TABLE)
         ->condition('sale_id', $sale_ids, 'IN')
+        ->condition('imported', 0)
         ->execute();
     }
+  }
+
+  /**
+   * Returns the sales whose order was created from them.
+   *
+   * @return string[]
+   *   Sale IDs.
+   */
+  public function getImportedSaleIds(): array {
+    return $this->database->select(self::LINK_TABLE, 'l')
+      ->fields('l', ['sale_id'])
+      ->condition('imported', 1)
+      ->execute()
+      ->fetchCol();
+  }
+
+  /**
+   * Marks sales as not to be recorded in Drupal.
+   *
+   * @param string[] $sale_ids
+   *   Sale IDs.
+   * @param string $reason
+   *   Why, if staff said.
+   */
+  public function ignore(array $sale_ids, string $reason = ''): void {
+    foreach ($sale_ids as $sale_id) {
+      $this->database->merge(self::IGNORED_TABLE)
+        ->key('sale_id', $sale_id)
+        ->fields([
+          'reason' => mb_substr($reason, 0, 255),
+          'uid' => $this->currentUser->id(),
+          'ignored' => $this->time->getRequestTime(),
+        ])
+        ->execute();
+    }
+  }
+
+  /**
+   * Stops ignoring sales.
+   *
+   * @param string[] $sale_ids
+   *   Sale IDs.
+   */
+  public function restore(array $sale_ids): void {
+    if ($sale_ids) {
+      $this->database->delete(self::IGNORED_TABLE)
+        ->condition('sale_id', $sale_ids, 'IN')
+        ->execute();
+    }
+  }
+
+  /**
+   * Returns the ignored sales.
+   *
+   * @return string[]
+   *   Reasons (possibly empty) keyed by sale ID.
+   */
+  public function getIgnored(): array {
+    return $this->database->select(self::IGNORED_TABLE, 'i')
+      ->fields('i', ['sale_id', 'reason'])
+      ->execute()
+      ->fetchAllKeyed();
   }
 
   /**
@@ -229,6 +297,22 @@ class DecisionStorage {
       ->condition('type', self::BY_WEIGHT)
       ->condition('target_id', $product_id)
       ->execute();
+  }
+
+  /**
+   * Saves one link. A linked sale is no longer ignored.
+   */
+  protected function saveLink(string $sale_id, int $order_id, bool $imported): void {
+    $this->database->merge(self::LINK_TABLE)
+      ->key('sale_id', $sale_id)
+      ->fields([
+        'order_id' => $order_id,
+        'uid' => $this->currentUser->id(),
+        'linked' => $this->time->getRequestTime(),
+        'imported' => (int) $imported,
+      ])
+      ->execute();
+    $this->restore([$sale_id]);
   }
 
 }

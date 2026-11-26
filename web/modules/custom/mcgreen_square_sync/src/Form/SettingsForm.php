@@ -4,11 +4,27 @@ namespace Drupal\mcgreen_square_sync\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\mcgreen_square_sync\SaleImporter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Settings for the Square sync.
  */
 class SettingsForm extends ConfigFormBase {
+
+  /**
+   * The importer, which owns the stock date.
+   */
+  protected SaleImporter $importer;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    $form = parent::create($container);
+    $form->importer = $container->get('mcgreen_square_sync.importer');
+    return $form;
+  }
 
   /**
    * {@inheritdoc}
@@ -60,7 +76,23 @@ class SettingsForm extends ConfigFormBase {
       '#config_target' => 'mcgreen_square_sync.settings:access_token_key',
       '#required' => TRUE,
     ];
+    // Kept in state, not config: each environment goes live on its own date.
+    $form['stock_since'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Deduct stock for sales from'),
+      '#description' => $this->t('Importing an older sale leaves stock alone. This is not part of exported configuration.'),
+      '#default_value' => $this->importer->getStockSince(),
+      '#required' => TRUE,
+    ];
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $this->importer->setStockSince($form_state->getValue('stock_since'));
+    parent::submitForm($form, $form_state);
   }
 
 }

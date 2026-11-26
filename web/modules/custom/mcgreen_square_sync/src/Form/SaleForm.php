@@ -10,8 +10,10 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\mcgreen_square_sync\DecisionStorage;
+use Drupal\mcgreen_square_sync\ImportException;
 use Drupal\mcgreen_square_sync\ItemResolver;
 use Drupal\mcgreen_square_sync\SaleFetcher;
+use Drupal\mcgreen_square_sync\SaleImporter;
 use Drupal\mcgreen_square_sync\SalesReport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,6 +30,7 @@ class SaleForm extends FormBase {
     protected SalesReport $report,
     protected DecisionStorage $decisions,
     protected ItemResolver $resolver,
+    protected SaleImporter $importer,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected DateFormatterInterface $dateFormatter,
     protected CurrencyFormatter $currencyFormatter,
@@ -42,6 +45,7 @@ class SaleForm extends FormBase {
       $container->get('mcgreen_square_sync.report'),
       $container->get('mcgreen_square_sync.decisions'),
       $container->get('mcgreen_square_sync.resolver'),
+      $container->get('mcgreen_square_sync.importer'),
       $container->get('entity_type.manager'),
       $container->get('date.formatter'),
       $container->get('commerce_price.currency_formatter'),
@@ -79,7 +83,16 @@ class SaleForm extends FormBase {
       ],
     ];
 
-    $form['order'] = $this->buildOrderSection($sale);
+    if ($sale['status'] === SalesReport::IGNORED) {
+      $form['ignore'] = $this->buildIgnoreSection($sale);
+    }
+    else {
+      $form['order'] = $this->buildOrderSection($sale);
+      if (!$sale['link']) {
+        $form['import'] = $this->buildImportSection($sale);
+        $form['ignore'] = $this->buildIgnoreSection($sale);
+      }
+    }
     $form['items'] = $this->buildItemsSection($sale);
 
     $form['back'] = [
@@ -126,6 +139,55 @@ class SaleForm extends FormBase {
   public function submitUnlink(array &$form, FormStateInterface $form_state): void {
     $this->decisions->unlink([$form_state->get('sale_id')]);
     $this->messenger()->addStatus($this->t('Unlinked the sale.'));
+  }
+
+  /**
+   * Requires the choices an import depends on.
+   */
+  public function validateImport(array &$form, FormStateInterface $form_state): void {
+    $button = $form_state->getTriggeringElement();
+    if ($button['#needs_gateway'] && !$form_state->getValue('gateway')) {
+      $form_state->setErrorByName('gateway', $this->t('Choose how to record the payment.'));
+    }
+    if ($button['#needs_confirmation'] && !$form_state->getValue('confirm_new')) {
+      $form_state->setErrorByName('confirm_new', $this->t('This sale may already be in Drupal. Link it instead, or confirm that it is a different sale.'));
+    }
+  }
+
+  /**
+   * Imports this sale.
+   */
+  public function submitImport(array &$form, FormStateInterface $form_state): void {
+    try {
+      $order = $this->importer->import($form_state->get('sale_id'), $form_state->getValue('gateway') ?: NULL);
+      $this->messenger()->addStatus($this->t('Imported <a href=":url">order @number</a>.', [
+        ':url' => $order->toUrl()->toString(),
+        '@number' => $order->getOrderNumber(),
+      ]));
+    }
+    catch (ImportException $e) {
+      $this->logger('mcgreen_square_sync')->error('Sale @sale: @message', [
+        '@sale' => $form_state->get('sale_id'),
+        '@message' => $e->getMessage(),
+      ]);
+      $this->messenger()->addError($e->getMessage());
+    }
+  }
+
+  /**
+   * Ignores this sale.
+   */
+  public function submitIgnore(array &$form, FormStateInterface $form_state): void {
+    $this->decisions->ignore([$form_state->get('sale_id')], trim((string) $form_state->getValue('reason')));
+    $this->messenger()->addStatus($this->t('Ignored the sale.'));
+  }
+
+  /**
+   * Stops ignoring this sale.
+   */
+  public function submitRestore(array &$form, FormStateInterface $form_state): void {
+    $this->decisions->restore([$form_state->get('sale_id')]);
+    $this->messenger()->addStatus($this->t('The sale is no longer ignored.'));
   }
 
   /**
@@ -176,6 +238,12 @@ class SaleForm extends FormBase {
       if ($mismatch = $this->totalMismatch($sale['link'], $sale['currency'])) {
         $section['warning'] = ['#type' => 'html_tag', '#tag' => 'p', '#value' => $mismatch];
       }
+      if ($sale['status'] === SalesReport::IMPORTED) {
+        $section['imported'] = [
+          '#markup' => '<p>' . $this->t('This order was imported from the sale. To import it again, delete the order first. That removes its payments and report entries, but does not put stock back.') . '</p>',
+        ];
+        return $section;
+      }
       $section['unlink'] = [
         '#type' => 'submit',
         '#value' => $this->t('Unlink'),
@@ -208,6 +276,99 @@ class SaleForm extends FormBase {
       '#validate' => ['::validateLink'],
       '#submit' => ['::submitLink'],
       '#limit_validation_errors' => [['order_number']],
+    ];
+    return $section;
+  }
+
+  /**
+   * Offers to create an order from the sale.
+   */
+  protected function buildImportSection(array $sale): array {
+    $section = [
+      '#type' => 'details',
+      '#title' => $this->t('Import'),
+      '#open' => TRUE,
+    ];
+    $problems = $this->importer->getProblems($sale, $sale['maps'], $this->decisions->getItemMaps());
+    if ($problems) {
+      $section['problems'] = [
+        '#markup' => '<p>' . $this->t('Not ready to import: @problems.', ['@problems' => implode('; ', $problems)]) . '</p>',
+      ];
+      return $section;
+    }
+    $section['help'] = [
+      '#markup' => '<p>' . ($this->importer->deductsStock($sale)
+        ? $this->t('Creates a new completed order and takes its products out of stock. No receipt is sent.')
+        : $this->t('Creates a new completed order. Stock is unchanged, since the sale is older than @date. No receipt is sent.', ['@date' => $this->importer->getStockSince()])) . '</p>',
+    ];
+    if ($this->importer->needsGatewayChoice($sale)) {
+      $section['gateway'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Record the payment that was not by card as'),
+        '#options' => $this->gatewayOptions(),
+        '#empty_option' => $this->t('- Choose -'),
+        '#empty_value' => '',
+        '#default_value' => $this->defaultGateway($sale),
+      ];
+    }
+    if ($sale['match']) {
+      $section['confirm_new'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('This is a different sale from order @order', [
+          '@order' => $sale['match']['order']->getOrderNumber(),
+        ]),
+      ];
+    }
+    $section['submit'] = [
+      '#type' => 'submit',
+      '#name' => 'import',
+      '#value' => $this->t('Import as a new order'),
+      '#validate' => ['::validateImport'],
+      '#submit' => ['::submitImport'],
+      '#limit_validation_errors' => [['gateway'], ['confirm_new']],
+    ];
+    // Remembered for validation, which only sees the submitted values.
+    $section['submit']['#needs_confirmation'] = (bool) $sale['match'];
+    $section['submit']['#needs_gateway'] = $this->importer->needsGatewayChoice($sale);
+    return $section;
+  }
+
+  /**
+   * Offers to leave the sale out, or to bring it back.
+   */
+  protected function buildIgnoreSection(array $sale): array {
+    $section = [
+      '#type' => 'details',
+      '#title' => $this->t('Ignore'),
+      '#open' => $sale['status'] === SalesReport::IGNORED,
+    ];
+    if ($sale['status'] === SalesReport::IGNORED) {
+      $section['reason_shown'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $sale['ignored_reason']
+          ? $this->t('Ignored: @reason', ['@reason' => $sale['ignored_reason']])
+          : $this->t('This sale is ignored.'),
+      ];
+      $section['restore'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Stop ignoring'),
+        '#submit' => ['::submitRestore'],
+        '#limit_validation_errors' => [],
+      ];
+      return $section;
+    }
+    $section['reason'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Reason (optional)'),
+      '#maxlength' => 255,
+    ];
+    $section['submit'] = [
+      '#type' => 'submit',
+      '#name' => 'ignore',
+      '#value' => $this->t('Ignore this sale'),
+      '#submit' => ['::submitIgnore'],
+      '#limit_validation_errors' => [['reason']],
     ];
     return $section;
   }

@@ -14,6 +14,20 @@ services:
   mcgreen_square_sync.fetcher:
     class: Drupal\mcgreen_square_sync\SaleFetcher
     arguments: ['@mcgreen_square_sync.client', '@mcgreen_square_sync.storage', '@config.factory', '@state', '@datetime.time']
+  mcgreen_square_sync.importer:
+    class: Drupal\mcgreen_square_sync\SaleImporter
+    arguments:
+      - '@mcgreen_square_sync.storage'
+      - '@mcgreen_square_sync.decisions'
+      - '@mcgreen_square_sync.resolver'
+      - '@entity_type.manager'
+      - '@commerce_stock.service_manager'
+      - '@commerce_reports.order_report_generator'
+      - '@commerce_payment.order_updater'
+      - '@lock'
+      - '@database'
+      - '@state'
+      - '@mcgreen_square_sync.fetcher'
   mcgreen_square_sync.matcher:
     class: Drupal\mcgreen_square_sync\SaleMatcher
   mcgreen_square_sync.report:

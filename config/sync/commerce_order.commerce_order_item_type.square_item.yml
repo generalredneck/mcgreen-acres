@@ -1,0 +1,10 @@
+uuid: ca3c0cea-9d52-4c98-8043-fe2bb36f0ac1
+langcode: en
+status: true
+dependencies: {  }
+id: square_item
+label: 'Square item (no product)'
+traits: {  }
+locked: false
+purchasableEntityType: ''
+orderType: default

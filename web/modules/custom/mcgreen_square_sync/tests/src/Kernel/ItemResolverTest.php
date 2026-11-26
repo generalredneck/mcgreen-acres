@@ -8,7 +8,6 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\mcgreen_square_sync\DecisionStorage;
 use Drupal\mcgreen_square_sync\ItemResolver;
-use Drupal\Tests\commerce_order\Kernel\OrderKernelTestBase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
@@ -19,16 +18,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * @covers \Drupal\mcgreen_square_sync\DecisionStorage
  */
 #[RunTestsInSeparateProcesses]
-class ItemResolverTest extends OrderKernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'commerce_payment',
-    'key',
-    'mcgreen_square_sync',
-  ];
+class ItemResolverTest extends SquareSyncKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -39,6 +29,7 @@ class ItemResolverTest extends OrderKernelTestBase {
       'mcgreen_square_link',
       'mcgreen_square_line_map',
       'mcgreen_square_item_map',
+      'mcgreen_square_ignored',
     ]);
     FieldStorageConfig::create([
       'field_name' => 'field_max_weight',

@@ -3,7 +3,6 @@
 namespace Drupal\Tests\mcgreen_square_sync\Kernel;
 
 use Drupal\key\Entity\Key;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\mcgreen_square_sync\SaleFetcher;
 use Drupal\mcgreen_square_sync\SquareException;
 use GuzzleHttp\Client;
@@ -22,12 +21,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * @covers \Drupal\mcgreen_square_sync\SaleStorage
  */
 #[RunTestsInSeparateProcesses]
-class SaleFetcherTest extends KernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = ['system', 'key', 'mcgreen_square_sync'];
+class SaleFetcherTest extends SquareSyncKernelTestBase {
 
   /**
    * Requests sent to the fake Square API.
@@ -44,7 +38,7 @@ class SaleFetcherTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installConfig(['system', 'mcgreen_square_sync']);
+    $this->installConfig(['mcgreen_square_sync']);
     $this->installSchema('mcgreen_square_sync', ['mcgreen_square_sale']);
     $this->config('system.date')->set('timezone.default', 'America/Chicago')->save();
 
