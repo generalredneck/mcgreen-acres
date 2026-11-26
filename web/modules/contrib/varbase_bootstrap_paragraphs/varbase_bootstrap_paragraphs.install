@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and update hooks for Varbase Bootstrap Paragraphs module.
+ */
+
+use Drupal\Core\Config\InstallStorage;
+use Vardot\Entity\EntityDefinitionUpdateManager;
+use Vardot\Installer\ModuleInstallerFactory;
+
+// Include all helpers and updates.
+include_once __DIR__ . '/includes/helpers.inc';
+include_once __DIR__ . '/includes/updates.inc';
+
+/**
+ * Implements hook_install().
+ */
+function varbase_bootstrap_paragraphs_install() {
+
+  // Processor for install: in varbase_bootstrap_paragraphs.info.yml file.
+  // ---------------------------------------------------------------------------.
+  ModuleInstallerFactory::installList('varbase_bootstrap_paragraphs');
+
+  // Install optional configs.
+  ModuleInstallerFactory::importConfigsFromScanedDirectory('varbase_bootstrap_paragraphs', '/^field.storage.*\\.(yml)$/i');
+  ModuleInstallerFactory::importConfigsFromScanedDirectory('varbase_bootstrap_paragraphs', '/^.*(settings.yml)$/i');
+
+  // Import Paragraph Library OPTIONAL configs after the custom install.
+  $paragraph_library_configs = [
+    'views.view.paragraphs_library_browser',
+    'entity_browser.browser.paragraphs_library_items',
+  ];
+
+  ModuleInstallerFactory::importConfigsFromList('paragraphs_library', $paragraph_library_configs, InstallStorage::CONFIG_OPTIONAL_DIRECTORY);
+
+  // Entity updates to clear up any mismatched entity and/or field definitions
+  // And Fix changes were detected in the entity type and field definitions.
+  \Drupal::classResolver()
+    ->getInstanceFromDefinition(EntityDefinitionUpdateManager::class)
+    ->applyUpdates();
+
+  // Add permissions.
+  ModuleInstallerFactory::addPermissions('varbase_bootstrap_paragraphs');
+
+}
