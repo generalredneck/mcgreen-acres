@@ -127,6 +127,8 @@ class SaleFetcher {
         'variation_name' => $line['variation_name'] ?? '',
         'note' => $line['note'] ?? '',
         'quantity' => $line['quantity'] ?? '1',
+        // Set for goods sold by weight, such as IMPERIAL_POUND.
+        'unit' => $line['quantity_unit']['measurement_unit']['weight_unit'] ?? NULL,
         'total' => $line['total_money']['amount'] ?? 0,
       ];
     }

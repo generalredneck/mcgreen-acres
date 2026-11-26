@@ -8,6 +8,9 @@ services:
   mcgreen_square_sync.decisions:
     class: Drupal\mcgreen_square_sync\DecisionStorage
     arguments: ['@database', '@current_user', '@datetime.time']
+  mcgreen_square_sync.resolver:
+    class: Drupal\mcgreen_square_sync\ItemResolver
+    arguments: ['@entity_type.manager']
   mcgreen_square_sync.fetcher:
     class: Drupal\mcgreen_square_sync\SaleFetcher
     arguments: ['@mcgreen_square_sync.client', '@mcgreen_square_sync.storage', '@config.factory', '@state', '@datetime.time']

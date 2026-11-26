@@ -6,6 +6,14 @@ mcgreen_square_sync.sales:
   requirements:
     _permission: 'administer square sync'
 
+mcgreen_square_sync.items:
+  path: '/admin/commerce/square-sales/items'
+  defaults:
+    _form: '\Drupal\mcgreen_square_sync\Form\ItemsForm'
+    _title: 'Square items'
+  requirements:
+    _permission: 'administer square sync'
+
 mcgreen_square_sync.sale:
   path: '/admin/commerce/square-sales/sale/{sale_id}'
   defaults:

@@ -3,6 +3,12 @@ mcgreen_square_sync.sales:
   route_name: mcgreen_square_sync.sales
   base_route: mcgreen_square_sync.sales
 
+mcgreen_square_sync.items:
+  title: 'Items'
+  route_name: mcgreen_square_sync.items
+  base_route: mcgreen_square_sync.sales
+  weight: 5
+
 mcgreen_square_sync.settings:
   title: 'Settings'
   route_name: mcgreen_square_sync.settings

@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\mcgreen_square_sync\DecisionStorage;
+use Drupal\mcgreen_square_sync\ItemResolver;
 use Drupal\mcgreen_square_sync\SaleFetcher;
 use Drupal\mcgreen_square_sync\SalesReport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,6 +27,7 @@ class SaleForm extends FormBase {
     protected SaleFetcher $fetcher,
     protected SalesReport $report,
     protected DecisionStorage $decisions,
+    protected ItemResolver $resolver,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected DateFormatterInterface $dateFormatter,
     protected CurrencyFormatter $currencyFormatter,
@@ -39,6 +41,7 @@ class SaleForm extends FormBase {
       $container->get('mcgreen_square_sync.fetcher'),
       $container->get('mcgreen_square_sync.report'),
       $container->get('mcgreen_square_sync.decisions'),
+      $container->get('mcgreen_square_sync.resolver'),
       $container->get('entity_type.manager'),
       $container->get('date.formatter'),
       $container->get('commerce_price.currency_formatter'),
@@ -218,48 +221,49 @@ class SaleForm extends FormBase {
       '#title' => $this->t('Items'),
       '#open' => TRUE,
     ];
-    $can_map = !$sale['link'] && array_filter($sale['items'], $this->isCustomAmount(...));
 
-    if (!$can_map) {
+    if ($sale['link']) {
       $section['list'] = [
         '#theme' => 'item_list',
         '#items' => array_map(fn(array $item) => $this->itemLabel($item, $sale['currency']), $sale['items']),
       ];
-      if ($sale['link']) {
-        $section['note'] = [
-          '#markup' => '<p>' . $this->t('The linked order already records these items, so there is nothing to map.') . '</p>',
-        ];
-      }
+      $section['note'] = [
+        '#markup' => '<p>' . $this->t('The linked order already records these items, so there is nothing to map.') . '</p>',
+      ];
       return $section;
     }
 
-    $options = $this->targetOptions();
     $section['help'] = [
-      '#markup' => '<p>' . $this->t('Say what each custom amount is. This is saved for when the sale is imported; it creates nothing yet.') . '</p>',
+      '#markup' => '<p>' . $this->t('What each line will be recorded as when the sale is imported; nothing is created yet. Catalog items are mapped once, on the <a href=":url">Items tab</a>. Custom amounts are mapped here.', [
+        ':url' => Url::fromRoute('mcgreen_square_sync.items')->toString(),
+      ]) . '</p>',
     ];
     $section['lines'] = [
       '#type' => 'table',
       '#tree' => TRUE,
-      '#header' => [$this->t('Item'), $this->t('Record as'), $this->t('Quantity (products only)')],
+      '#header' => [$this->t('Item'), $this->t('Record as'), $this->t('Quantity (custom amounts)')],
     ];
-    foreach ($sale['items'] as $item) {
+    $item_maps = $this->decisions->getItemMaps();
+    $options = NULL;
+    foreach ($sale['items'] as $index => $item) {
+      $label = ['#plain_text' => $this->itemLabel($item, $sale['currency'])];
       $uid = $item['uid'] ?? '';
-      // Only custom amounts get inputs, but every line is listed for context.
-      if (!$this->isCustomAmount($item) || $uid === '') {
-        $section['lines']['catalog_' . $uid] = [
-          'item' => ['#plain_text' => $this->itemLabel($item, $sale['currency'])],
-          'target' => ['#plain_text' => $this->t('Square catalog item')],
+      if (!empty($item['catalog_object_id']) || $uid === '') {
+        $section['lines']['catalog_' . $index] = [
+          'item' => $label,
+          'target' => ['#plain_text' => $this->resolutionText($this->resolver->resolve($item, $sale['maps'], $item_maps), $item)],
           'quantity' => ['#markup' => ''],
         ];
         continue;
       }
+      $options ??= [DecisionStorage::ADJUSTMENT => $this->t('Adjustment (not a product)')] + $this->variationOptions();
       $map = $sale['maps'][$uid] ?? NULL;
       $default = '';
       if ($map) {
         $default = $map['type'] === DecisionStorage::PRODUCT ? $map['variation_id'] : DecisionStorage::ADJUSTMENT;
       }
       $section['lines'][$uid] = [
-        'item' => ['#plain_text' => $this->itemLabel($item, $sale['currency'])],
+        'item' => $label,
         'target' => [
           '#type' => 'select',
           '#title' => $this->t('Record as'),
@@ -285,35 +289,10 @@ class SaleForm extends FormBase {
       '#validate' => ['::validateMapping'],
       '#submit' => ['::submitMapping'],
       '#limit_validation_errors' => [['lines']],
+      // Only custom amounts have anything to save here.
+      '#access' => $options !== NULL,
     ];
     return $section;
-  }
-
-  /**
-   * What a custom amount can be recorded as.
-   *
-   * Subscriptions are left out: importing one would start billing a customer.
-   */
-  protected function targetOptions(): array {
-    $groups = [];
-    $variations = $this->entityTypeManager->getStorage('commerce_product_variation')->loadMultiple();
-    /** @var \Drupal\commerce_product\Entity\ProductVariationInterface $variation */
-    foreach ($variations as $id => $variation) {
-      $product = $variation->getProduct();
-      if (!$product || ($variation->hasField('billing_schedule') && !$variation->get('billing_schedule')->isEmpty())) {
-        continue;
-      }
-      $label = $this->variationLabel($variation);
-      if ($price = $variation->getPrice()) {
-        $label .= ' (' . $this->currencyFormatter->format($price->getNumber(), $price->getCurrencyCode()) . ')';
-      }
-      if (!$variation->isPublished() || !$product->isPublished()) {
-        $label .= ' ' . $this->t('(unpublished)');
-      }
-      $groups[(string) $product->label()][$id] = $label;
-    }
-    ksort($groups, SORT_NATURAL | SORT_FLAG_CASE);
-    return [DecisionStorage::ADJUSTMENT => $this->t('Adjustment (not a product)')] + $groups;
   }
 
   /**

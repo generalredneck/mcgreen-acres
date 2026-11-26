@@ -12,7 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 class DecisionStorage {
 
   /**
-   * A line that stands for a product variation.
+   * A line or catalog item that stands for a product variation.
    */
   public const PRODUCT = 'product';
 
@@ -21,7 +21,29 @@ class DecisionStorage {
    */
   public const ADJUSTMENT = 'adjustment';
 
+  /**
+   * A weighed item, recorded as the package size its weight falls in.
+   */
+  public const BY_WEIGHT = 'by_weight';
+
+  /**
+   * An item with no Drupal product, recorded under its Square name.
+   */
+  public const NO_PRODUCT = 'none';
+
+  /**
+   * Record the quantity sold in Square.
+   */
+  public const SQUARE_QUANTITY = 'square';
+
+  /**
+   * Record one unit for each line, whatever quantity Square has.
+   */
+  public const ONE_PER_LINE = 'line';
+
   protected const LINK_TABLE = 'mcgreen_square_link';
+
+  protected const ITEM_TABLE = 'mcgreen_square_item_map';
 
   protected const MAP_TABLE = 'mcgreen_square_line_map';
 
@@ -130,6 +152,54 @@ class DecisionStorage {
   }
 
   /**
+   * Sets how a catalog item is to be recorded, or clears it.
+   *
+   * @param string $catalog_object_id
+   *   The Square catalog item variation ID.
+   * @param string|null $type
+   *   PRODUCT, BY_WEIGHT, NO_PRODUCT, or NULL to clear the item.
+   * @param int|null $target_id
+   *   The product variation for PRODUCT, or the product for BY_WEIGHT.
+   * @param string|null $quantity_rule
+   *   SQUARE_QUANTITY or ONE_PER_LINE, for PRODUCT.
+   */
+  public function setItemMap(string $catalog_object_id, ?string $type, ?int $target_id = NULL, ?string $quantity_rule = NULL): void {
+    if ($type === NULL) {
+      $this->database->delete(self::ITEM_TABLE)
+        ->condition('catalog_object_id', $catalog_object_id)
+        ->execute();
+      return;
+    }
+    $this->database->merge(self::ITEM_TABLE)
+      ->key('catalog_object_id', $catalog_object_id)
+      ->fields([
+        'type' => $type,
+        'target_id' => $type === self::NO_PRODUCT ? NULL : $target_id,
+        'quantity_rule' => $type === self::PRODUCT ? $quantity_rule ?? self::SQUARE_QUANTITY : NULL,
+      ])
+      ->execute();
+  }
+
+  /**
+   * Returns every catalog item mapping.
+   *
+   * @return array[]
+   *   Keyed by catalog object ID, each with "type", "target_id" and
+   *   "quantity_rule".
+   */
+  public function getItemMaps(): array {
+    $maps = [];
+    foreach ($this->database->select(self::ITEM_TABLE, 'i')->fields('i')->execute() as $row) {
+      $maps[$row->catalog_object_id] = [
+        'type' => $row->type,
+        'target_id' => $row->target_id === NULL ? NULL : (int) $row->target_id,
+        'quantity_rule' => $row->quantity_rule,
+      ];
+    }
+    return $maps;
+  }
+
+  /**
    * Forgets the links to a deleted order.
    */
   public function deleteOrder(int $order_id): void {
@@ -144,6 +214,20 @@ class DecisionStorage {
   public function deleteVariation(int $variation_id): void {
     $this->database->delete(self::MAP_TABLE)
       ->condition('variation_id', $variation_id)
+      ->execute();
+    $this->database->delete(self::ITEM_TABLE)
+      ->condition('type', self::PRODUCT)
+      ->condition('target_id', $variation_id)
+      ->execute();
+  }
+
+  /**
+   * Forgets the by-weight mappings to a deleted product.
+   */
+  public function deleteProduct(int $product_id): void {
+    $this->database->delete(self::ITEM_TABLE)
+      ->condition('type', self::BY_WEIGHT)
+      ->condition('target_id', $product_id)
       ->execute();
   }
 

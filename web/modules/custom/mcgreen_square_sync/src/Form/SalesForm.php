@@ -11,6 +11,7 @@ use Drupal\Core\Link;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Url;
 use Drupal\mcgreen_square_sync\DecisionStorage;
+use Drupal\mcgreen_square_sync\ItemResolver;
 use Drupal\mcgreen_square_sync\SaleFetcher;
 use Drupal\mcgreen_square_sync\SalesReport;
 use Drupal\mcgreen_square_sync\SquareException;
@@ -27,6 +28,7 @@ class SalesForm extends FormBase {
     protected SaleFetcher $fetcher,
     protected SalesReport $report,
     protected DecisionStorage $decisions,
+    protected ItemResolver $resolver,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected StateInterface $state,
     protected DateFormatterInterface $dateFormatter,
@@ -41,6 +43,7 @@ class SalesForm extends FormBase {
       $container->get('mcgreen_square_sync.fetcher'),
       $container->get('mcgreen_square_sync.report'),
       $container->get('mcgreen_square_sync.decisions'),
+      $container->get('mcgreen_square_sync.resolver'),
       $container->get('entity_type.manager'),
       $container->get('state'),
       $container->get('date.formatter'),
@@ -113,7 +116,7 @@ class SalesForm extends FormBase {
       '#submit' => ['::submitUnlink'],
     ];
 
-    $variations = $this->loadMappedVariations($report['sales']);
+    $item_maps = $this->decisions->getItemMaps();
     $options = [];
     foreach ($report['sales'] as $sale_id => $sale) {
       if ($show && $sale['status'] !== $show) {
@@ -124,7 +127,12 @@ class SalesForm extends FormBase {
       $key = $sale['status'] === SalesReport::MATCHED ? $sale_id . ':' . $sale['match']['order']->id() : $sale_id;
       $items = [];
       foreach ($sale['items'] as $item) {
-        $items[] = $this->itemLabel($item, $sale['currency']) . $this->mappingNote($sale, $item, $variations);
+        $label = $this->itemLabel($item, $sale['currency']);
+        // A linked sale's order already records its items.
+        if (!$sale['link']) {
+          $label .= ' → ' . $this->resolutionText($this->resolver->resolve($item, $sale['maps'], $item_maps), $item);
+        }
+        $items[] = $label;
       }
       $options[$key] = [
         'sold' => $this->dateFormatter->format($sale['sold_at'], 'custom', 'D, M j Y, g:i a'),
@@ -295,33 +303,6 @@ class SalesForm extends FormBase {
     return [
       '#plain_text' => $sale['status'] === SalesReport::MISSING ? $this->t('Not found') : $this->t('Not linked'),
     ];
-  }
-
-  /**
-   * Loads the product variations that lines have been mapped to.
-   */
-  protected function loadMappedVariations(array $sales): array {
-    $ids = [];
-    foreach ($sales as $sale) {
-      $ids = array_merge($ids, array_filter(array_column($sale['maps'], 'variation_id')));
-    }
-    return $this->entityTypeManager->getStorage('commerce_product_variation')->loadMultiple(array_unique($ids));
-  }
-
-  /**
-   * Says how a custom amount will be recorded when its sale is imported.
-   */
-  protected function mappingNote(array $sale, array $item, array $variations): string {
-    // A linked sale's order already records its items.
-    if ($sale['link'] || !$this->isCustomAmount($item)) {
-      return '';
-    }
-    $map = $sale['maps'][$item['uid'] ?? ''] ?? NULL;
-    if ($map && $map['type'] === DecisionStorage::ADJUSTMENT) {
-      return ' → ' . $this->t('adjustment');
-    }
-    $variation = $variations[$map['variation_id'] ?? 0] ?? NULL;
-    return $variation ? ' → ' . $map['quantity'] . ' × ' . $this->variationLabel($variation) : ' → ' . $this->t('not mapped');
   }
 
 }

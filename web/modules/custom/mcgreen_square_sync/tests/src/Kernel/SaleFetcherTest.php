@@ -122,6 +122,7 @@ class SaleFetcherTest extends KernelTestBase {
               'name' => 'Eggs',
               'variation_name' => 'Dozen',
               'quantity' => '0.5',
+              'quantity_unit' => ['measurement_unit' => ['weight_unit' => 'IMPERIAL_POUND']],
               'total_money' => ['amount' => 3500],
             ],
           ],
@@ -140,6 +141,7 @@ class SaleFetcherTest extends KernelTestBase {
     $this->assertSame(['P1', 'P3'], array_column($sale['payments'], 'id'));
     $this->assertSame('VAR1', $sale['items'][0]['catalog_object_id']);
     $this->assertSame('0.5', $sale['items'][0]['quantity']);
+    $this->assertSame('IMPERIAL_POUND', $sale['items'][0]['unit']);
     // Square sent no line UID here, so the position stands in.
     $this->assertSame('line-0', $sale['items'][0]['uid']);
 

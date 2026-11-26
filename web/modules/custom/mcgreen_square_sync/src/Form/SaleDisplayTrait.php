@@ -5,12 +5,14 @@ namespace Drupal\mcgreen_square_sync\Form;
 use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_product\Entity\ProductVariationInterface;
 use Drupal\Core\Link;
+use Drupal\mcgreen_square_sync\ItemResolver;
 use Drupal\mcgreen_square_sync\SalesReport;
 
 /**
  * How Square sales are written out on the admin pages.
  *
- * Classes using this need a "currencyFormatter" property.
+ * Classes using this need "currencyFormatter" and "entityTypeManager"
+ * properties.
  */
 trait SaleDisplayTrait {
 
@@ -65,18 +67,77 @@ trait SaleDisplayTrait {
   }
 
   /**
-   * Whether a line is an amount typed in at the register, not a catalog item.
+   * Whether a line is an amount typed in at the register.
    */
   protected function isCustomAmount(array $item): bool {
     return $item['item_type'] === 'CUSTOM_AMOUNT';
   }
 
   /**
+   * Says what a line will be recorded as.
+   *
+   * @param array $resolved
+   *   The result of ItemResolver::resolve().
+   * @param array $item
+   *   The stored sale item.
+   */
+  protected function resolutionText(array $resolved, array $item): string {
+    return (string) match ($resolved['type']) {
+      ItemResolver::VARIATION => $resolved['quantity'] . ' × ' . $this->variationLabel($resolved['variation']),
+      ItemResolver::ADJUSTMENT => $this->t('adjustment'),
+      ItemResolver::NO_PRODUCT => $this->t('no product'),
+      ItemResolver::NO_SIZE => $this->t('no package size for @quantity', ['@quantity' => $this->quantityText($item['quantity'], $item['unit'] ?? NULL)]),
+      default => $this->t('not mapped'),
+    };
+  }
+
+  /**
+   * Writes a quantity with its unit, if it has one.
+   */
+  protected function quantityText(string $quantity, ?string $unit): string {
+    return $unit === ItemResolver::POUND ? $quantity . ' lb' : $quantity;
+  }
+
+  /**
+   * Product variations to choose from, grouped by product.
+   *
+   * Subscriptions are left out: importing one would start billing a customer.
+   *
+   * @return array[]
+   *   Options keyed by variation ID, in groups keyed by product title.
+   */
+  protected function variationOptions(?callable $filter = NULL): array {
+    $groups = [];
+    $variations = $this->entityTypeManager->getStorage('commerce_product_variation')->loadMultiple();
+    /** @var \Drupal\commerce_product\Entity\ProductVariationInterface $variation */
+    foreach ($variations as $id => $variation) {
+      $product = $variation->getProduct();
+      if (!$product || ($variation->hasField('billing_schedule') && !$variation->get('billing_schedule')->isEmpty())) {
+        continue;
+      }
+      if ($filter && !$filter($variation)) {
+        continue;
+      }
+      $label = $this->variationLabel($variation);
+      if ($price = $variation->getPrice()) {
+        $label .= ' (' . $this->currencyFormatter->format($price->getNumber(), $price->getCurrencyCode()) . ')';
+      }
+      if (!$variation->isPublished() || !$product->isPublished()) {
+        $label .= ' ' . $this->t('(unpublished)');
+      }
+      $groups[(string) $product->label()][$id] = $label;
+    }
+    ksort($groups, SORT_NATURAL | SORT_FLAG_CASE);
+    return $groups;
+  }
+
+  /**
    * Names a product variation together with its product.
    */
   protected function variationLabel(ProductVariationInterface $variation): string {
-    $product = $variation->getProduct();
-    return $product ? $product->label() . ' – ' . $variation->getTitle() : (string) $variation->getTitle();
+    $title = (string) $variation->getTitle();
+    $product = (string) $variation->getProduct()?->label();
+    return $product === '' || $product === $title ? $title : $product . ' – ' . $title;
   }
 
   /**

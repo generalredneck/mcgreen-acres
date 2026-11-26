@@ -43,6 +43,7 @@ class SalesReportTest extends OrderKernelTestBase {
       'mcgreen_square_sale',
       'mcgreen_square_link',
       'mcgreen_square_line_map',
+      'mcgreen_square_item_map',
     ]);
     foreach (['square', 'cash'] as $id) {
       PaymentGateway::create(['id' => $id, 'label' => $id, 'plugin' => 'manual'])->save();

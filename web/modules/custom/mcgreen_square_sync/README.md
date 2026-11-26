@@ -59,6 +59,21 @@ can cover several sales.
 - If an order's total differs from the sum of its linked sales, both the list and
   the sale page say so.
 
+## Mapping catalog items
+
+The **Items** tab lists every Square catalog item sold since the first sale date.
+A mapping is set once per item and applies to all of its sales.
+
+| Record as | Becomes |
+| --- | --- |
+| A product, by weight | One package of the smallest size whose **Max weight** holds the line's weight. Only for items sold by the pound; a weight above the largest size is reported, not rounded down |
+| A product variation | That variation, with either the quantity sold in Square or **1 per line** (for example weighed produce recorded as one grab bag) |
+| No product | The Square name, with no stock change |
+
+By-weight package sizes are not offered one by one here, and subscription
+variations are never offered. Square items have no SKUs, so nothing is matched
+automatically.
+
 ## Mapping custom amounts
 
 On a sale's page, each custom amount can be recorded as a **product variation**
@@ -66,12 +81,12 @@ On a sale's page, each custom amount can be recorded as a **product variation**
 One custom amount maps to one thing. Subscription variations are not offered. The
 choice is stored for the future import; linked sales need none.
 
-Links (`mcgreen_square_link`) and mappings (`mcgreen_square_line_map`) are kept
-apart from the fetched sales, so fetching again never loses them. They live in
-the database only: make them on the production site, since pulling its database
-down replaces local ones.
+Links (`mcgreen_square_link`) and mappings (`mcgreen_square_item_map`,
+`mcgreen_square_line_map`) are kept apart from the fetched sales, so fetching
+again never loses them. They live in the database only: make them on the
+production site, since pulling its database down replaces local ones.
 
 ## Not yet built
 
-Mapping Square catalog items to products, importing or ignoring sales, and
-refunds.
+Importing or ignoring sales, and refunds. `ItemResolver` already answers what
+each line should become.

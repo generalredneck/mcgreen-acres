@@ -115,5 +115,37 @@ function mcgreen_square_sync_schema(): array {
     'primary key' => ['sale_id', 'line_uid'],
     'indexes' => ['variation_id' => ['variation_id']],
   ];
+
+  $schema['mcgreen_square_item_map'] = [
+    'description' => 'How a Square catalog item is to be recorded in Drupal.',
+    'fields' => [
+      'catalog_object_id' => [
+        'type' => 'varchar_ascii',
+        'length' => 192,
+        'not null' => TRUE,
+        'description' => 'Square catalog item variation ID.',
+      ],
+      'type' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => TRUE,
+        'description' => 'product, by_weight or none.',
+      ],
+      'target_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'description' => 'Product variation ID for the product type, product ID for by_weight.',
+      ],
+      'quantity_rule' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => FALSE,
+        'description' => 'For the product type: square (use the quantity sold) or line (one per line).',
+      ],
+    ],
+    'primary key' => ['catalog_object_id'],
+    'indexes' => ['target' => ['type', 'target_id']],
+  ];
   return $schema;
 }
