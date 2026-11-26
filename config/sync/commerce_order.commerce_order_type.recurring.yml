@@ -28,7 +28,7 @@ traits: {  }
 locked: true
 workflow: order_recurring
 showOrderEditLinks: true
-numberPattern: null
+numberPattern: recurring
 refresh_mode: customer
 refresh_frequency: 300
 sendReceipt: false

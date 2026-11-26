@@ -1,0 +1,13 @@
+uuid: eed89e59-430b-403f-bc7c-47d3659d9c93
+langcode: en
+status: true
+dependencies: {  }
+id: recurring
+label: Recurring
+targetEntityType: commerce_order
+plugin: yearly
+configuration:
+  pattern: 'REC-[pattern:year]-[pattern:number]'
+  initial_number: 1
+  padding: 3
+  per_store_sequence: true
