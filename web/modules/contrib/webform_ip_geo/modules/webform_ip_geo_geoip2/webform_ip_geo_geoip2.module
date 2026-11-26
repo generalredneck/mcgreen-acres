@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Local MaxMind GeoIP2 database provider for Webform IP Geo.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the Webform IP Geo settings form.
+ *
+ * Adds the MaxMind database path field directly to the existing settings form
+ * (admin/config/services/webform_ip_geo) rather than a separate page.
+ */
+function webform_ip_geo_geoip2_form_settings_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  // The base form's ID ("settings_form") is generic; make sure this is really
+  // the Webform IP Geo settings form before touching it.
+  if (\Drupal::routeMatch()->getRouteName() !== 'webform_ip_geo.settings_form') {
+    return;
+  }
+
+  $form['geoip2'] = [
+    '#type' => 'fieldset',
+    '#title' => t('MaxMind GeoIP2 (local database)'),
+    '#states' => [
+      'visible' => [
+        ':input[name="api_provider"]' => ['value' => 'geoip2'],
+      ],
+    ],
+  ];
+
+  if (!class_exists('GeoIp2\\Database\\Reader')) {
+    $form['geoip2']['#description'] = t('The geoip2/geoip2 PHP library is not installed. Run <code>composer require geoip2/geoip2</code>.');
+  }
+
+  $form['geoip2']['geoip2_database'] = [
+    '#type' => 'textfield',
+    '#title' => t('MaxMind database path'),
+    '#default_value' => \Drupal::config('webform_ip_geo_geoip2.settings')->get('database'),
+    '#description' => t('Absolute path, or a path relative to the Drupal root, to a MaxMind City database file (e.g. GeoLite2-City.mmdb or GeoIP2-City.mmdb). Download from <a href=":url" target="_blank">maxmind.com</a>.', [':url' => 'https://www.maxmind.com/']),
+  ];
+
+  // ConfigFormBase has already registered '::submitForm' on $form['#submit'] by
+  // the time form alters run, so appending here keeps the base save intact.
+  $form['#submit'][] = 'webform_ip_geo_geoip2_settings_form_submit';
+}
+
+/**
+ * Submit callback: persist the MaxMind database path.
+ */
+function webform_ip_geo_geoip2_settings_form_submit(array &$form, FormStateInterface $form_state) {
+  $path = trim((string) $form_state->getValue('geoip2_database'));
+
+  if ($path !== '') {
+    $resolved = $path;
+    if ($path[0] !== '/' && !preg_match('#^[a-zA-Z]:[\\\\/]#', $path)) {
+      $resolved = DRUPAL_ROOT . '/' . $path;
+    }
+    if (!is_file($resolved)) {
+      \Drupal::messenger()->addWarning(t('No file was found at %path. IP lookups will return no data until the database exists.', ['%path' => $resolved]));
+    }
+  }
+
+  \Drupal::configFactory()
+    ->getEditable('webform_ip_geo_geoip2.settings')
+    ->set('database', $path)
+    ->save();
+}

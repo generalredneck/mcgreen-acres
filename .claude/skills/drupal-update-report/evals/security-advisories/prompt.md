@@ -1,1 +1,0 @@
-/drupal-update-report

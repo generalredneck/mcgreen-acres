@@ -1,0 +1,11 @@
+commerce_checkout_link.checkout_link:
+  path: '/commerce-checkout-link/{commerce_order}/{timestamp}/{hash}'
+  defaults:
+    _title: 'Checkout'
+    _controller: '\Drupal\commerce_checkout_link\Controller\CommerceCheckoutLinkController::checkout'
+  options:
+    parameters:
+      commerce_order:
+        type: 'entity:commerce_order'
+  requirements:
+    _permission: 'access content'

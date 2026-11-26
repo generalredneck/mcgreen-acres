@@ -1,0 +1,206 @@
+// Varbase Bootstrap Paragraphs Default base styling.
+// -----------------------------------------------------------------------------
+@import '../defaults'; // Global defaults.
+
+.paragraph {
+  margin-right: 0;
+  margin-left: 0;
+
+  > {
+    .paragraph__column {
+      @include padding-bottom(4rem);
+
+      .paragraph {
+        > {
+          .paragraph__column {
+            float: none;
+
+            .paragraph {
+              > {
+                .paragraph__column {
+                  float: none;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      div {
+        > {
+          .paragraph {
+            right: 0;
+            left: 0;
+            width: 100%;
+            margin-right: 0;
+            margin-left: 0;
+          }
+        }
+      }
+
+      > {
+        .tab-content {
+          > {
+            .tab-pane {
+              > {
+                .paragraph {
+                  right: 0;
+                  left: 0;
+                  width: 100%;
+                  margin-right: 0;
+                  margin-left: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Nesting paragraphs.
+  .paragraph {
+    .bg-edge2edge,
+    &.bg-edge2edge {
+      position: initial;
+      right: 0 !important;
+      left: 0 !important;
+      width: 100%;
+      margin: 0;
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    .paragraph {
+      position: initial;
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+
+  // Columns Modifiers inside of Columns Element.
+  &.paragraph--type--bp-columns {
+    .paragraph--type--bp-columns__5col {
+      @include padding-left(0.9375rem);
+      @include padding-right(0.9375rem);
+
+      position: relative;
+      min-height: 1px;
+
+      @media (min-width: 768px) {
+        float: left;
+        width: 20%;
+      }
+    }
+
+    .paragraph--type--bp-columns__6col {
+      @include make-col-ready;
+
+      @include media-breakpoint-up(md) {
+        @include make-col(2);
+      }
+    }
+  }
+}
+
+.paragraph__column {
+  @include padding(0 1.5625rem);
+}
+
+.paragraph--type--bp-carousel {
+  .paragraph {
+    &:last-of-type {
+      > {
+        .paragraph__column {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.paragraph--type--bp-columns {
+  .paragraph {
+    &:last-of-type {
+      > {
+        .paragraph__column {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.paragraph--type--bp-columns-three-uneven {
+  .paragraph {
+    > {
+      .paragraph__column {
+        padding-bottom: 0;
+      }
+    }
+  }
+}
+
+.paragraph--type--bp-tabs {
+  .paragraph {
+    &:last-of-type {
+      > {
+        .paragraph__column {
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+// Resets Base Paragraph Styling for Nested Paragraphs.
+.modal {
+  .modal-body {
+    .paragraph {
+      position: initial;
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+
+  .modal-footer {
+    .paragraph {
+      position: initial;
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+}
+
+.paragraph--type--bp-columns__1col {
+  .paragraph.paragraph--width--narrow {
+    > {
+      .paragraph__column {
+        @include make-col-ready;
+
+        @include media-breakpoint-up(md) {
+          @include make-col(6);
+          @include make-col-offset(3);
+        }
+
+        @include media-breakpoint-up(lg) {
+          @include make-col(6);
+          @include make-col-offset(3);
+        }
+
+        @include media-breakpoint-up(xl) {
+          @include make-col(6);
+          @include make-col-offset(3);
+        }
+      }
+    }
+  }
+}
+
+.background-style {
+  background-repeat: no-repeat;
+  background-size: cover;
+}

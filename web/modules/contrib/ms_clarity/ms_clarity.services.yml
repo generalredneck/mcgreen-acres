@@ -1,0 +1,7 @@
+services:
+  ms_clarity.accounts:
+    class: Drupal\ms_clarity\Helpers\MicrosoftClarityAccounts
+    arguments: [ '@config.factory', '@private_key' ]
+  ms_clarity.visibility:
+    class: Drupal\ms_clarity\Helpers\VisiblityTracker
+    arguments: [ '@config.factory', '@path_alias.manager', '@path.matcher', '@user.data', '@path.current' ]
