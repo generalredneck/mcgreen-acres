@@ -200,6 +200,10 @@ class SalesChartBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * Queries commerce_order_report for daily revenue totals.
    *
+   * Report rows are left behind when their order is deleted, so the order is
+   * always joined to skip them, as the "Sales Report" view does through its
+   * required order relationship.
+   *
    * FROM_UNIXTIME() converts using MySQL's own session timezone, which does
    * not necessarily match Drupal's configured site timezone. We shift the
    * raw timestamp by the site timezone's offset before formatting so days
@@ -211,7 +215,6 @@ class SalesChartBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $end_exclusive = (clone $end)->modify('+1 day');
     $offset_seconds = $timezone->getOffset($start);
 
-    $join = '';
     $order_type_condition = '';
     $args = [
       ':currency' => $currency,
@@ -222,7 +225,6 @@ class SalesChartBlock extends BlockBase implements ContainerFactoryPluginInterfa
     if ($order_types) {
       // Mirrors the Views sales report's "Order type" exposed filter, which
       // filters commerce_order.type via the order_id relationship.
-      $join = "INNER JOIN {commerce_order} o ON o.order_id = r.order_id";
       $order_type_condition = 'AND o.type IN (:order_types[])';
       $args[':order_types[]'] = $order_types;
     }
@@ -233,7 +235,7 @@ class SalesChartBlock extends BlockBase implements ContainerFactoryPluginInterfa
        FROM {commerce_order_report} r
        INNER JOIN {commerce_order_report__amount} a
          ON a.entity_id = r.report_id AND a.deleted = 0
-       $join
+       INNER JOIN {commerce_order} o ON o.order_id = r.order_id
        WHERE r.type = 'order_report'
          AND a.amount_currency_code = :currency
          AND r.created >= :start

@@ -215,7 +215,6 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     $end_exclusive = (clone $end)->modify('+1 day');
     $offset_seconds = $timezone->getOffset($start);
 
-    $join = '';
     $order_type_condition = '';
     $args = [
       ':currency' => $currency,
@@ -226,7 +225,6 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
     if ($order_types) {
       // Mirrors the Views sales report's "Order type" exposed filter, which
       // filters commerce_order.type via the order_id relationship.
-      $join = "INNER JOIN {commerce_order} o ON o.order_id = r.order_id";
       $order_type_condition = 'AND o.type IN (:order_types[])';
       $args[':order_types[]'] = $order_types;
     }
@@ -237,7 +235,7 @@ class SalesChartWeekdayBlock extends BlockBase implements ContainerFactoryPlugin
        FROM {commerce_order_report} r
        INNER JOIN {commerce_order_report__amount} a
          ON a.entity_id = r.report_id AND a.deleted = 0
-       $join
+       INNER JOIN {commerce_order} o ON o.order_id = r.order_id
        WHERE r.type = 'order_report'
          AND a.amount_currency_code = :currency
          AND r.created >= :start
