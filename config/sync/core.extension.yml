@@ -130,6 +130,7 @@ module:
   mcgreen_by_weight_orders: 0
   mcgreen_cut_sheet: 0
   mcgreen_order_payment: 0
+  mcgreen_square_sync: 0
   mcgreen_subscription_payment: 0
   mcgreen_webform_network_check: 0
   media: 0

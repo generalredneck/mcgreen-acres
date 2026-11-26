@@ -1,0 +1,18 @@
+services:
+  mcgreen_square_sync.client:
+    class: Drupal\mcgreen_square_sync\SquareClient
+    arguments: ['@http_client', '@key.repository', '@config.factory']
+  mcgreen_square_sync.storage:
+    class: Drupal\mcgreen_square_sync\SaleStorage
+    arguments: ['@database']
+  mcgreen_square_sync.decisions:
+    class: Drupal\mcgreen_square_sync\DecisionStorage
+    arguments: ['@database', '@current_user', '@datetime.time']
+  mcgreen_square_sync.fetcher:
+    class: Drupal\mcgreen_square_sync\SaleFetcher
+    arguments: ['@mcgreen_square_sync.client', '@mcgreen_square_sync.storage', '@config.factory', '@state', '@datetime.time']
+  mcgreen_square_sync.matcher:
+    class: Drupal\mcgreen_square_sync\SaleMatcher
+  mcgreen_square_sync.report:
+    class: Drupal\mcgreen_square_sync\SalesReport
+    arguments: ['@mcgreen_square_sync.storage', '@mcgreen_square_sync.decisions', '@mcgreen_square_sync.matcher', '@entity_type.manager', '@config.factory']

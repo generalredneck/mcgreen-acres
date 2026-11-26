@@ -1,0 +1,30 @@
+mcgreen_square_sync.settings:
+  type: config_object
+  label: 'Square sync settings'
+  constraints:
+    FullyValidatable: ~
+  mapping:
+    environment:
+      type: string
+      label: 'Square environment'
+      constraints:
+        Choice:
+          - production
+          - sandbox
+    access_token_key:
+      type: string
+      label: 'Key holding the Square access token'
+      constraints:
+        NotBlank: {  }
+    start_date:
+      type: string
+      label: 'First sale date to fetch (YYYY-MM-DD)'
+      constraints:
+        Regex: '/^\d{4}-\d{2}-\d{2}$/'
+    match_window_days:
+      type: integer
+      label: 'Days allowed between a sale and its Drupal order'
+      constraints:
+        Range:
+          min: 0
+          max: 14

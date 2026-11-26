@@ -1,0 +1,4 @@
+administer square sync:
+  title: 'Administer Square sync'
+  description: 'See Square sales, fetch them from Square, and change the sync settings.'
+  restrict access: true

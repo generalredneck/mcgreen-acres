@@ -1,0 +1,23 @@
+mcgreen_square_sync.sales:
+  path: '/admin/commerce/square-sales'
+  defaults:
+    _form: '\Drupal\mcgreen_square_sync\Form\SalesForm'
+    _title: 'Square sales'
+  requirements:
+    _permission: 'administer square sync'
+
+mcgreen_square_sync.sale:
+  path: '/admin/commerce/square-sales/sale/{sale_id}'
+  defaults:
+    _form: '\Drupal\mcgreen_square_sync\Form\SaleForm'
+    _title: 'Square sale'
+  requirements:
+    _permission: 'administer square sync'
+
+mcgreen_square_sync.settings:
+  path: '/admin/commerce/square-sales/settings'
+  defaults:
+    _form: '\Drupal\mcgreen_square_sync\Form\SettingsForm'
+    _title: 'Square sync settings'
+  requirements:
+    _permission: 'administer square sync'

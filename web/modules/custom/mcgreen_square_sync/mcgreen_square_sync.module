@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Hooks for the Square sync.
+ */
+
+use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for commerce_order.
+ */
+function mcgreen_square_sync_commerce_order_delete(OrderInterface $order): void {
+  \Drupal::service('mcgreen_square_sync.decisions')->deleteOrder((int) $order->id());
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for commerce_product_variation.
+ */
+function mcgreen_square_sync_commerce_product_variation_delete(ProductVariationInterface $variation): void {
+  \Drupal::service('mcgreen_square_sync.decisions')->deleteVariation((int) $variation->id());
+}

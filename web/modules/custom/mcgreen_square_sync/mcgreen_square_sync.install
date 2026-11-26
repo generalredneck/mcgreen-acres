@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for the Square sync module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function mcgreen_square_sync_schema(): array {
+  $amount = ['type' => 'int', 'not null' => TRUE, 'default' => 0];
+
+  $schema['mcgreen_square_sale'] = [
+    'description' => 'A local copy of Square sales. Amounts are in cents.',
+    'fields' => [
+      'sale_id' => [
+        'type' => 'varchar_ascii',
+        'length' => 192,
+        'not null' => TRUE,
+        'description' => 'Square order ID, or the payment ID if it has no order.',
+      ],
+      'sold_at' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Timestamp of the first payment.',
+      ],
+      'currency' => [
+        'type' => 'varchar_ascii',
+        'length' => 3,
+        'not null' => TRUE,
+      ],
+      'total' => $amount,
+      'card' => $amount,
+      'cash' => $amount,
+      'other' => $amount,
+      'refunded' => $amount,
+      'items' => [
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'description' => 'JSON list of line items.',
+      ],
+      'payments' => [
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'description' => 'JSON list of completed payments.',
+      ],
+    ],
+    'primary key' => ['sale_id'],
+    'indexes' => [
+      'sold_at' => ['sold_at'],
+    ],
+  ];
+
+  $sale_id = [
+    'type' => 'varchar_ascii',
+    'length' => 192,
+    'not null' => TRUE,
+    'description' => 'Square sale ID.',
+  ];
+
+  // Decisions made by staff are kept apart from the copy of Square's data, so
+  // fetching again never loses them.
+  $schema['mcgreen_square_link'] = [
+    'description' => 'Which Drupal order records a Square sale.',
+    'fields' => [
+      'sale_id' => $sale_id,
+      'order_id' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'uid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Who linked it.',
+      ],
+      'linked' => ['type' => 'int', 'not null' => TRUE],
+    ],
+    // One order per sale; an order may cover several sales.
+    'primary key' => ['sale_id'],
+    'indexes' => ['order_id' => ['order_id']],
+  ];
+
+  $schema['mcgreen_square_line_map'] = [
+    'description' => 'How a line of a Square sale is to be recorded in Drupal.',
+    'fields' => [
+      'sale_id' => $sale_id,
+      'line_uid' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'Square line item UID.',
+      ],
+      'type' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => TRUE,
+        'description' => 'product or adjustment.',
+      ],
+      'variation_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'description' => 'Product variation, for the product type.',
+      ],
+      'quantity' => [
+        'type' => 'numeric',
+        'precision' => 17,
+        'scale' => 4,
+        'not null' => FALSE,
+        'description' => 'Units of the variation, for the product type.',
+      ],
+    ],
+    'primary key' => ['sale_id', 'line_uid'],
+    'indexes' => ['variation_id' => ['variation_id']],
+  ];
+  return $schema;
+}

@@ -1,0 +1,6 @@
+mcgreen_square_sync.sales:
+  title: 'Square sales'
+  description: 'Compare Square sales with Drupal orders.'
+  parent: commerce.admin_commerce
+  route_name: mcgreen_square_sync.sales
+  weight: 10
