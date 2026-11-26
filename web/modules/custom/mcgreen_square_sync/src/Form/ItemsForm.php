@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\mcgreen_square_sync\DecisionStorage;
 use Drupal\mcgreen_square_sync\ItemResolver;
+use Drupal\mcgreen_square_sync\ProductCreator;
 use Drupal\mcgreen_square_sync\SaleFetcher;
 use Drupal\mcgreen_square_sync\SaleStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -24,11 +25,17 @@ class ItemsForm extends FormBase {
    */
   protected const WEIGHT_PREFIX = 'weight:';
 
+  /**
+   * The option that creates a product for the item.
+   */
+  protected const CREATE = 'create';
+
   public function __construct(
     protected SaleFetcher $fetcher,
     protected SaleStorage $storage,
     protected DecisionStorage $decisions,
     protected ItemResolver $resolver,
+    protected ProductCreator $productCreator,
     protected EntityTypeManagerInterface $entityTypeManager,
     protected CurrencyFormatter $currencyFormatter,
   ) {}
@@ -42,6 +49,7 @@ class ItemsForm extends FormBase {
       $container->get('mcgreen_square_sync.storage'),
       $container->get('mcgreen_square_sync.decisions'),
       $container->get('mcgreen_square_sync.resolver'),
+      $container->get('mcgreen_square_sync.product_creator'),
       $container->get('entity_type.manager'),
       $container->get('commerce_price.currency_formatter'),
     );
@@ -65,7 +73,7 @@ class ItemsForm extends FormBase {
 
     $form['#cache'] = ['max-age' => 0];
     $form['intro'] = [
-      '#markup' => '<p>' . $this->t('Say once what each Square item is; every sale of it follows. This is saved for when sales are imported and creates nothing yet. Not mapped: @unmapped of @total.', [
+      '#markup' => '<p>' . $this->t('Say once what each Square item is; every sale of it follows when imported. Saving creates no orders. Not mapped: @unmapped of @total.', [
         '@unmapped' => count(array_diff_key($sold, $maps)),
         '@total' => count($sold),
       ]) . '</p>',
@@ -76,6 +84,7 @@ class ItemsForm extends FormBase {
         $this->t('<strong>By weight</strong>: each line becomes one package of the smallest size that holds its weight.'),
         $this->t('<strong>A product</strong>: records either the quantity sold in Square, or one for each line.'),
         $this->t('<strong>No product</strong>: recorded under its Square name, with no stock change.'),
+        $this->t('<strong>Create a new product</strong>: saving makes an unpublished product from the Square name and price, and maps the item to it.'),
       ],
     ];
 
@@ -88,7 +97,10 @@ class ItemsForm extends FormBase {
       }
     }
     natcasesort($by_weight);
-    $options = [DecisionStorage::NO_PRODUCT => $this->t('No product (keep the Square name)')];
+    $options = [
+      DecisionStorage::NO_PRODUCT => $this->t('No product (keep the Square name)'),
+      self::CREATE => $this->t('Create a new product (unpublished)'),
+    ];
     if ($by_weight) {
       $options[(string) $this->t('Sold by weight')] = $by_weight;
     }
@@ -168,6 +180,15 @@ class ItemsForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     $sold = $this->soldItems();
+    $taken = $this->productCreator->getTakenNames($this->itemsToCreate($form_state, $sold));
+    foreach ($taken as $name) {
+      $this->messenger()->addError($this->t('There is already a product called "@name". Pick it from the list, or add the new variation to that product first.', [
+        '@name' => $name,
+      ]));
+    }
+    if ($taken) {
+      $form_state->setErrorByName('items');
+    }
     foreach ($form_state->getValue('items') ?: [] as $id => $values) {
       if (str_starts_with((string) $values['target'], self::WEIGHT_PREFIX) && ($sold[$id]['unit'] ?? NULL) !== ItemResolver::POUND) {
         $form_state->setErrorByName("items][$id][target", $this->t('@item is not sold by the pound, so it cannot be mapped by weight.', [
@@ -181,8 +202,12 @@ class ItemsForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $to_create = $this->itemsToCreate($form_state, $this->soldItems());
+    $created = $to_create ? $this->productCreator->create($to_create) : [];
+    $this->reportCreated($created);
+
     foreach ($form_state->getValue('items') ?: [] as $id => $values) {
-      $target = (string) $values['target'];
+      $target = isset($created[$id]) ? (string) $created[$id]->id() : (string) $values['target'];
       if ($target === DecisionStorage::NO_PRODUCT) {
         $this->decisions->setItemMap($id, DecisionStorage::NO_PRODUCT);
       }
@@ -200,12 +225,46 @@ class ItemsForm extends FormBase {
   }
 
   /**
+   * The items staff asked to have products created for.
+   *
+   * @return array[]
+   *   Entries of soldItems(), keyed by catalog object ID.
+   */
+  protected function itemsToCreate(FormStateInterface $form_state, array $sold): array {
+    $chosen = array_filter(
+      $form_state->getValue('items') ?: [],
+      fn(array $values) => $values['target'] === self::CREATE,
+    );
+    return array_intersect_key($sold, $chosen);
+  }
+
+  /**
+   * Tells staff what was created and what is left to fill in.
+   *
+   * @param \Drupal\commerce_product\Entity\ProductVariationInterface[] $variations
+   *   The new variations.
+   */
+  protected function reportCreated(array $variations): void {
+    $products = [];
+    foreach ($variations as $variation) {
+      $product = $variation->getProduct();
+      $products[$product->id()] = $product;
+    }
+    foreach ($products as $product) {
+      $this->messenger()->addStatus($this->t('Created <a href=":url">@name</a>, unpublished. Edit it to set its department, weight and stock.', [
+        ':url' => $product->toUrl('edit-form')->toString(),
+        '@name' => $product->label(),
+      ]));
+    }
+  }
+
+  /**
    * Summarizes the catalog items in the stored sales.
    *
    * @return array[]
-   *   Keyed by catalog object ID, each with "label" (the latest name), "unit",
-   *   "currency", "lines", "total" (cents) and "quantities" (distinct, in
-   *   ascending order).
+   *   Keyed by catalog object ID, each with "label", "name", "variation_name",
+   *   "unit", "price" (cents for one unit), "currency" (all as most recently
+   *   sold), "lines", "total" (cents) and "quantities" (distinct, ascending).
    */
   protected function soldItems(): array {
     $items = [];
@@ -222,7 +281,10 @@ class ItemsForm extends FormBase {
         }
         $items[$id] ??= [
           'label' => $label,
+          'name' => $item['name'],
+          'variation_name' => $item['variation_name'],
           'unit' => $item['unit'] ?? NULL,
+          'price' => $item['unit_price'] ?? (int) round($item['total'] / max((float) $item['quantity'], 0.01)),
           'currency' => $sale['currency'],
           'lines' => 0,
           'total' => 0,

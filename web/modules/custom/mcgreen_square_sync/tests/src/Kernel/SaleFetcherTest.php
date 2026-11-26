@@ -117,6 +117,7 @@ class SaleFetcherTest extends SquareSyncKernelTestBase {
               'variation_name' => 'Dozen',
               'quantity' => '0.5',
               'quantity_unit' => ['measurement_unit' => ['weight_unit' => 'IMPERIAL_POUND']],
+              'base_price_money' => ['amount' => 7000],
               'total_money' => ['amount' => 3500],
             ],
           ],
@@ -136,6 +137,7 @@ class SaleFetcherTest extends SquareSyncKernelTestBase {
     $this->assertSame('VAR1', $sale['items'][0]['catalog_object_id']);
     $this->assertSame('0.5', $sale['items'][0]['quantity']);
     $this->assertSame('IMPERIAL_POUND', $sale['items'][0]['unit']);
+    $this->assertSame(7000, $sale['items'][0]['unit_price']);
     // Square sent no line UID here, so the position stands in.
     $this->assertSame('line-0', $sale['items'][0]['uid']);
 

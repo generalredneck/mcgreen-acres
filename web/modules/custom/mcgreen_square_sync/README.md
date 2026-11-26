@@ -69,6 +69,14 @@ A mapping is set once per item and applies to all of its sales.
 | A product, by weight | One package of the smallest size whose **Max weight** holds the line's weight. Only for items sold by the pound; a weight above the largest size is reported, not rounded down |
 | A product variation | That variation, with either the quantity sold in Square or **1 per line** (for example weighed produce recorded as one grab bag) |
 | No product | The Square name, with no stock change |
+| Create a new product | On save, a new **unpublished** `physical` product, which the item is then mapped to |
+
+A created product takes the Square item's name and latest unit price. Variations
+of one Square item created in the same save share a product; a variation Square
+calls "Regular" is titled "Each", or "Per lb" if sold by the pound. Creating is
+refused if a product with that name exists. Afterwards set the product's
+department, weight and stock (stock starts at zero), and publish it if it should
+be sold online. By-weight products are still set up by hand.
 
 By-weight package sizes are not offered one by one here, and subscription
 variations are never offered. Square items have no SKUs, so nothing is matched

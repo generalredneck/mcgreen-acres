@@ -130,6 +130,8 @@ class SaleFetcher {
         // Set for goods sold by weight, such as IMPERIAL_POUND.
         'unit' => $line['quantity_unit']['measurement_unit']['weight_unit'] ?? NULL,
         'total' => $line['total_money']['amount'] ?? 0,
+        // The price of one unit before any discount.
+        'unit_price' => $line['base_price_money']['amount'] ?? NULL,
       ];
     }
     return $sale;
